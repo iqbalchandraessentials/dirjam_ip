@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-@section('title', 'Login | Dirjab')
+@section('title', 'Login | Direktori Jabatan')
 @push('addon-style')
 <style>
 .bg-custom {
