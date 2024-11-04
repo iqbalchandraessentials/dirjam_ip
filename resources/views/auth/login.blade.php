@@ -10,10 +10,10 @@
     -o-background-size: cover;
     background-size: cover;
 }
-.no-gutters {
+/* .no-gutters {
     margin-right: 0;
     margin-left: 50px;
-}
+} */
 </style>
 @endpush
 @section('content')

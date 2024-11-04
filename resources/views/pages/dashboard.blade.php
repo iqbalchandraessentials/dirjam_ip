@@ -7,349 +7,188 @@
 @section('title', 'Uraian Jabatan | Direktori Jabatan')
 
 @section('content')
-<div class="col-sm-12">
+<div class="">
+<div class="row">
+        <div class="col-xl-4">
+            <!--begin::Stats Widget 13-->
+            <a href="{{ url('dashboard/registration/detail/daily') }}" class="card card-custom bg-hover-state-danger card-stretch gutter-b">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
+                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                            height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
+                                <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
+                                <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
+                                <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon-->
+                    </span>
+                    <div class="text-inverse-danger font-weight-bolder font-size-h5 mb-2 mt-5">
+                        Today
+                    </div>
+                    <div class="font-weight-bold text-inverse-danger font-size-lg" id="todayData">
+                        {{-- today data --}}
+                    </div>
+                </div>
+                <!--end::Body-->
+            </a>
+            <!--end::Stats Widget 13-->
+        </div>
+        <div class="col-xl-4">
+            <!--begin::Stats Widget 13-->
+            <a href="#" class="card card-custom bg-hover-state-warning card-stretch gutter-b">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
+                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                            height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
+                                <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
+                                <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
+                                <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon-->
+                    </span>
+                    <div class="text-inverse-warning font-weight-bolder font-size-h5 mb-2 mt-5">
+                        This Week
+                    </div>
+                    <div class="font-weight-bold text-inverse-warning font-size-lg" id="weekData">
+                        {{-- week data --}}
+                    </div>
+                </div>
+                <!--end::Body-->
+            </a>
+            <!--end::Stats Widget 13-->
+        </div>
+        <div class="col-xl-4">
+            <!--begin::Stats Widget 13-->
+            <a href="#" class="card card-custom  bg-hover-state-primary card-stretch gutter-b">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
+                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                            height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
+                                <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
+                                <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
+                                <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon-->
+                    </span>
+                    <div class="text-inverse-primary font-weight-bolder font-size-h5 mb-2 mt-5">
+                        This Month
+                    </div>
+                    <div class="font-weight-bold text-inverse-primary font-size-lg" id="monthData">
+                        {{-- month data --}}
+                    </div>
+                </div>
+                <!--end::Body-->
+            </a>
+            <!--end::Stats Widget 13-->
+        </div>
+    </div>
 
-            <div class="box">
-                <div class="box-header">
-                    <div class="row">
-                        <div class="col">
-                            <h4 class="box-title">Identitas Jabatan</h4>
-                        </div>
-                        <div class="col text-right"> <!-- Tambahkan class text-right untuk align ke kanan -->
-                            <a href="" class="btn btn-primary">
-                                <i class="ti-printer"></i><span> Cetak</span>
-                            </a>    
-                        </div>
+    <div class="row">
+        <div class="col-xl-4">
+            <!--begin::Stats Widget 13-->
+            <a href="#" class="card card-custom  bg-hover-state-success card-stretch gutter-b">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
+                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                            height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
+                                <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
+                                <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
+                                <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon-->
+                    </span>
+                    <div class="text-inverse-success font-weight-bolder font-size-h5 mb-2 mt-5">
+                        This Year
+                    </div>
+                    <div class="font-weight-bold text-inverse-success font-size-lg" id="yearData">
+                        {{-- year data --}}
                     </div>
                 </div>
-                
-                <div class="box-body">
-                    
-                    <div class="form-group mb-0">
-                        <div class="table-resposive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left font-weight-bold" style="width: 40%">Nama Jabatan</th>
-                                        <th class="text-left font-weight-bold">Jenjang Jabatan</th>
-                                        <th class="text-left font-weight-bold">Unit Kerja</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-left">OFFICER INFORMATION TECHNOLOGY DEVELOPMENT</td>
-                                        <td class="text-left text-uppercase">Generalist 2</td>
-                                        <td class="text-left">Head Office</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div id="field_wrapper"></div>
-                </div>
-            </div>
-            <div class="box">
-                <div class="box-header">
-                        <div class="form-group">
-                            <p class="lead">Fungsi Utama</p>
-                            <div class="row align-items-center">
-                                <div class="col-sm-12 col-12">
-                                    <p class="blockquote">Melakukan analisa dan melaksanakan kegiatan pengembangan terkait sistem informasi termasuk didalamnya sistem IT, framework ISMS (Information Security Management System) untuk memastikan pengembangan sistem informasi perusahaan berdasarkan prinsip GCG (Good Corporate Governance) dan SMAP (Sistem Manajemen Anti Penyuapan).</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="field_wrapper"></div>
+                <!--end::Body-->
+            </a>
+            <!--end::Stats Widget 13-->
+        </div>
+        <div class="col-xl-4">
+            <!--begin::Stats Widget 16-->
+            <a href="#" class="card card-custom card-stretch gutter-b">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <span class="svg-icon svg-icon-2x svg-icon-info">
+                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                            height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
+                                <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
+                                <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
+                                <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon-->
+                    </span>
+                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">Activation</div>
+                    <div class="font-weight-bold text-inverse-white font-size-sm" id="activationData">
+                        {{-- activaion data --}}
                     </div>
                 </div>
+                <!--end::Body-->
+            </a>
+            <!--end::Stats Widget 16-->
+        </div>
 
-
-                <div class="box">
-                    <div class="box-header">
-                        <h4 class="box-title">Tanggung Jawab Utama</h4>
-                    </div>
-                    <div class="box-body">
-                        
-                        <div class="form-group mb-0">
-                            <div class="table-resposive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-left font-weight-bold" width="5%">#</th>
-                                            <th class="text-left font-weight-bold" width="60%">Aktivitas</th>
-                                            <th class="text-left font-weight-bold" width="35%">Indikator</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">1</span></td>
-                                            <td class="text-left">
-                                                <div class="centered">
-                                                    Melaksanakan kebijakan fungsi dan standar integrasi dan pengembangan aplikasi sistem TI.
-                                                </div>
-                                            </td>
-                                                    <td class="text-left ">
-                                                <ol>
-                                                    <li>Kuantitas (%akurasi, %kesesuaian SOP, Laporan)</li>
-                                                    <li>Waktu (Bulanan, Semester, Triwulan)</li>
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">2</span></td>
-                                            <td class="text-left">
-                                                <div class="centered">
-                                                    Melaksanakan pengembangan proyek integrasi dan aplikasi sistem TI, memastikan manfaat yang dihasilkan oleh kegiatan aplikasi sistem TI sesuai, efektif dan efisien.
-                                                </div>
-                                            </td>
-                                                    <td class="text-left ">
-                                                <ol>
-                                                    <li>Kuantitas (%akurasi, %kesesuaian SOP, Laporan)</li>
-                                                    <li>Waktu (Bulanan, Semester, Triwulan)</li>
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">3</span></td>
-                                            <td class="text-left">
-                                                <div class="centered">
-                                                    Memberi masukan bidang perencanaan dalam mereview kebutuhan integrasi dan pengembangan aplikasi sistem TI.
-                                                </div>
-                                            </td>
-                                                    <td class="text-left ">
-                                                <ol>
-                                                    <li>Kuantitas (%akurasi, %kesesuaian SOP, Laporan)</li>
-                                                    <li>Waktu (Bulanan, Semester, Triwulan)</li>
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div id="field_wrapper"></div>
+        <div class="col-xl-4">
+            <!--begin::Stats Widget 16-->
+            <a href="#" class="card card-custom card-stretch gutter-b">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <span class="svg-icon svg-icon-2x svg-icon-info">
+                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                            height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
+                                <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
+                                <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
+                                <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon-->
+                    </span>
+                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">Active</div>
+                    <div class="font-weight-bold text-inverse-white font-size-sm" id="activeData">
+                        {{-- active data --}}
                     </div>
                 </div>
-
-                <div class="box">
-                    <div class="box-header">
-                        <h4 class="box-title">Tanggung Jawab Generik</h4>
-                    </div>
-                    <div class="box-body">
-                        
-                        <div class="form-group mb-0">
-                            <div class="table-resposive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-left font-weight-bold" width="5%">#</th>
-                                            <th class="text-left font-weight-bold" width="60%">Aktivitas</th>
-                                            <th class="text-left font-weight-bold" width="35%">Indikator</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">1</span></td>
-                                            <td class="text-left">
-                                                
-                                                    Mematuhi dan melaksanakan seluruh program perusahaan yang meliputi, namun tidak terbatas pada manajemen risiko (mulai dari proses identifikasi, analisa, evaluasi, mitigasi risiko, monitoring risiko beserta pelaporannya), manajemen aset, improvement unit kerja (OPI), Lingkungan dan K3 (LK3), 5S, Sistem Manajemen Terpadu (IPIMS) serta program efisiensi energi dan Knowledge Sharing (menyampaikan pengetahuan sesuai kompetensinya melalui metode mengajar/menulis/merekam/metode lainnya) sesuai dengan kewenangannya di unit kerja masing-masing.
-                                                
-                                            </td>
-                                                    <td class="text-left ">
-                                                <ol>
-                                                    <li>Kuantitas (%kesesuaian SOP, Dokumen, Laporan)</li>
-                                                    <li>Kualitas (Persen)</li>
-                                                    <li>Waktu (Bulanan, Semester, Triwulan)</li>
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">2</span></td>
-                                            <td class="text-left">
-                                                <div class="centered">
-                                                    Mematuhi seluruh ketentuan Kebijakan Anti Penyuapan dan Kebijakan terkait Penyuapan lainnya (Kebijakan Pengendalian Gratifikasi, Kebijakan Whistleblower, Kebijakan Benturan Kepentingan, Kebijakan Indonesia Power Bersih, Kode Etik, Kebijakan Keterbukaan Informasi Publik, dan Kebijakan Good Corporate Governance), menjalankan tanggung jawab pekerjaan dan tugas secara etis, jujur, rajin dan selalu waspada serta siap melaporkan setiap kasus dugaan suap dengan segera, serta berpartisipasi aktif dalam pelatihan Anti Penyuapan sesuai yang dipersyaratkan dalam peran dan tanggung jawab jabatannya.
-                                                </div>
-                                            </td>
-                                                    <td class="text-left ">
-                                                <ol>
-                                                    <li>Kuantitas (%kesesuaian SOP, Dokumen, Laporan)</li>
-                                                    <li>Kualitas (Persen)</li>
-                                                    <li>Waktu (Bulanan, Semester, Triwulan)</li>
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">3</span></td>
-                                            <td class="text-left">
-                                                <div class="centered">
-                                                    Melakukan pelaporan kegiatan fungsi kerja yang menjadi tanggung jawabnya dengan menyusun laporan rutin dan non rutin yang diatur oleh Perusahaan baik secara manual maupun pada aplikasi korporat (ERP, ERM, CSA-ICoFR dan sebagainya) untuk menjamin ketersediaan informasi terkait kegiatan kerja dan fungsinya.
-                                                </div>
-                                            </td>
-                                                    <td class="text-left ">
-                                                <ol>
-                                                    <li>Kuantitas (%kesesuaian SOP, Dokumen, Laporan)</li>
-                                                    <li>Kualitas (Persen)</li>
-                                                    <li>Waktu (Bulanan, Semester, Triwulan)</li>
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div id="field_wrapper"></div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <div class="row">
-                                    <div class="col-12 text-left">
-                                        <h4 class="box-title">Dimensi Pertanggungjawaban</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="box-body pt-0 pb-0">
-                                <div class="table-resposive">
-                                    <table class="table table-bordered">
-                                        <thead class="thead-light">
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Jumlah Bawahan Langsung Total</td>
-                                                <td>10 orang</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Kewenangan Pengadaan</td>
-                                                <td>Tidak Memiliki Wewenang Pengadaan</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Jumlah Anggaran Maksimal</td>
-                                                <td>≤ 500 juta</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <div class="row">
-                                    <div class="col-12 text-left">
-                                        <h4 class="box-title">Persyaratan Jabatan</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="box-body pt-0 pb-0">
-                                <div class="table-resposive">
-                                    <table class="table table-bordered">
-                                        <thead class="thead-light">
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Kompetensi Utama</td>
-                                                <td>-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Kompetensi Peran</td>
-                                                <td>-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Kompetensi Bidang</td>
-                                                <td>-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Pendidikan dan Pengalaman</td>
-                                                <td>
-                                                    <ol>
-                                                        <li>S2 jurusan Teknik Informatika pengalaman minimal FG tahun, Pengembangan aplikasi</li>
-                                                        <li>S1 jurusan Teknik Informatika pengalaman minimal 1.5 tahun, Pengembangan aplikasi</li>
-                                                        <li>D3 jurusan Teknik Informatika pengalaman minimal 3 tahun, Pengembangan aplikasi</li>
-                                                        <li>SMK/STM jurusan Teknik Informatika pengalaman minimal 6 tahun, Pengembangan aplikasi</li>
-                                                    </ol>
-
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="box-header">
-                        <h4 class="box-title">Karakteristik Jabatan</h4>
-                    </div>
-                    <div class="box-body">
-                        <div class="form-group mb-0">
-                            <div class="table-resposive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center font-weight-bold" width="5%">#</th>
-                                            <th class="text-center font-weight-bold" >Komunikasi Internal (Ruang Lingkup IP)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">1</span></td>
-                                            <td class="text-center">
-                                                    Melakukan komunikasi dengan User di Kantor Pusat dan Unit dalam rangka Pelayanan IT dalam proses pengembangan aplikasi sistem informasi.
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="box-header">
-                            <h4 class="box-title">Tantangan Jabatan</h4>
-                        </div>
-                        <div class="form-group mb-0">
-                            <div class="table-resposive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center font-weight-bold" width="5%">#</th>
-                                            <th class="text-center font-weight-bold" >Komunikasi Eksternal (Ruang Lingkup Eksternal IP)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">1</span></td>
-                                            <td class="text-center">
-                                                    Melakukan komunikasi dengan User di Kantor Pusat dan Unit dalam rangka Pelayanan IT dalam proses pengembangan aplikasi sistem informasi.
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="form-group mb-0">
-                            <div class="table-resposive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center font-weight-bold" width="5%">#</th>
-                                            <th class="text-center font-weight-bold" >Jenis Tantangan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">1</span></td>
-                                            <td class="text-center">
-                                                    IT audit & IT Security.
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div id="field_wrapper"></div>
-                    </div>
-                </div>
-            </div>
+                <!--end::Body-->
+            </a>
+            <!--end::Stats Widget 16-->
+        </div>
+    </div>
+</div>
     @endsection

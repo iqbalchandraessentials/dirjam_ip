@@ -16,7 +16,7 @@
             @include('Layouts._navbar')
 
             <!-- Left side column. contains the logo and sidebar -->
-            @include('Layouts._sidebar')
+            @include('Layouts._admin_sidebar')
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">

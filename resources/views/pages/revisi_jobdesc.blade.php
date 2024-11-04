@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Daftar Pengajuan | Direktori Jabatan')
+@section('title', 'Daftar Pengajuan | Tempelate Uraian Jabatan')
 
 @section('content')
     <div class="row">
@@ -60,7 +60,7 @@
                                     <div class="box-header">
                                         <div class="row">
                                             <div class="col-6 text-left">
-                                                <h4 class="box-title">List Job Description</h4>
+                                                <h4 class="box-title">Daftar Template</h4>
                                             </div>
                                         </div>
                                         <div class="box-body">
@@ -91,9 +91,11 @@
                                                 <table class="table table-striped dataTables">
                                                     <thead>
                                                         <tr>
+                                                            <th class="text-left">Status</th>
                                                             <th class="text-center text-nowrap">Template</th>
                                                             <th class="text-left">Jenjang</th>
                                                             <th class="text-center">Status</th>
+                                                            <th class="text-center">Complete</th>
                                                             <th class="text-center">Unit</th>
                                                             <th class="text-center">Opsi</th>
                                                         </tr>

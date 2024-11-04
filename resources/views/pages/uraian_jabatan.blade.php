@@ -42,19 +42,12 @@
                                                         <th class="text-left text-nowrap">Member</th>
                                                         <th class="text-left text-nowrap">Creator</th>
                                                         <th class="text-left text-nowrap">Last Post</th>
-                                                        <th class="text-center">Date</th>
                                                         <th class="text-center">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td class="flexbox flex-justified text-center mb-30"
-                                                            style="width: 150px; height: 100px;">
-                                                            <div class="no-shrink background-image"
-                                                                style="background-image: url('{{ url('img/meeting-room/meeting_room_1.jpeg') }}');">
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-left text-nowrap">Pecinta Natalie Holscher</td>
+                                                        <td class="text-left text-nowrap">1</td>
                                                         <td class="text-center">Family</td>
                                                         <td class="text-center"> <span class="badge badge-primary"> Public </span></td>
                                                         <td class="text-center">23</td>
@@ -68,34 +61,9 @@
                                                             </span>
                                                         </td> --}}
                                                         <td class="text-center text-success">
-                                                            <a href="{{ url('/club/details') }}" target="_blank" rel="noopener noreferrer">
                                                                 <span class="btn btn-success btn-block btn-rounded">Active</span>
-                                                            </a>
-                                                            {{-- <a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="View"> --}}
-                                                            {{-- <span class="btn btn-success btn-block btn-rounded" data-toggle="modal" data-target="#modal-fill">Active</span> --}}
-                                                        {{-- </a> --}}
+                                                            
                                                         </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="flexbox flex-justified text-center mb-30"
-                                                        style="width: 150px; height: 100px;">
-                                                        <div class="no-shrink background-image"
-                                                            style="background-image: url('{{ url('img/meeting-room/meeting_room_2.jpeg') }}');">
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-left text-nowrap">Pecinta Natalie Holscher</td>
-                                                    <td class="text-center">Family</td>
-                                                    <td class="text-center"> <span class="badge badge-primary"> Public </span></td>
-                                                    <td class="text-center">23</td>
-                                                    <td class="text-left">Will Smith</td>
-                                                    <td class="text-left">23-05-2023</td>
-                                                    <td class="text-left">23-05-2022</td>
-                    
-                                                    <td class="text-center text-success">
-                                                        <a href="{{ url('/club/details') }}" target="_blank" rel="noopener noreferrer">
-                                                            <span class="btn btn-success btn-block btn-rounded">Active</span>
-                                                        </a>
-                                                        
                                                     </tr>
                                                 </tbody>
                                             </table>
