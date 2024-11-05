@@ -17,11 +17,11 @@
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="basic-info-tab" data-toggle="tab" href="#basic-info"
-                               role="tab" aria-controls="basic-info" aria-selected="true">Basic Info</a>
+                               role="tab" aria-controls="basic-info" aria-selected="true">List</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="log-tab" data-toggle="tab" href="#log" 
-                               role="tab" aria-controls="log" aria-selected="false">Attendance Log</a>
+                               role="tab" aria-controls="log" aria-selected="false">Summary</a>
                         </li>
                     </ul>
                 
@@ -35,36 +35,16 @@
                                             <table class="table table-striped dataTables">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-center">#</th>
-                                                        <th class="text-left">Name</th>
-                                                        <th class="text-center text-nowrap">Category</th>
-                                                        <th class="text-left">Type</th>
-                                                        <th class="text-left text-nowrap">Member</th>
-                                                        <th class="text-left text-nowrap">Creator</th>
-                                                        <th class="text-left text-nowrap">Last Post</th>
+                                                        <th class="text-Left">Path</th>
+                                                        <th class="text-left">Jabatan</th>
+                                                        <th class="text-center">Klaster</th>
+                                                        <th class="text-left">Direktorat</th>
+                                                        <th class="text-left">Jenjang</th>
                                                         <th class="text-center">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td class="text-left text-nowrap">1</td>
-                                                        <td class="text-center">Family</td>
-                                                        <td class="text-center"> <span class="badge badge-primary"> Public </span></td>
-                                                        <td class="text-center">23</td>
-                                                        <td class="text-left">Will Smith</td>
-                                                        <td class="text-left">23-05-2023</td>
-                                                        <td class="text-left">23-05-2022</td>
-                    
-                                                        {{-- <td class="text-center">
-                                                            <span data-toggle="modal" data-target="#modal-fill">
-                                                                <i class="ti-eye"></i>
-                                                            </span>
-                                                        </td> --}}
-                                                        <td class="text-center text-success">
-                                                                <span class="btn btn-success btn-block btn-rounded">Active</span>
-                                                            
-                                                        </td>
-                                                    </tr>
+                                            
                                                 </tbody>
                                             </table>
                                         </div>
@@ -77,7 +57,7 @@
                         <div class="tab-pane fade" id="log" role="tabpanel" aria-labelledby="log-tab">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <h1>Fitriani</h1>
+                                    <h1>Summary</h1>
                                 </div>
                             </div>
                         </div>

@@ -16,23 +16,14 @@
                 <div class="card-body">
                     <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                         <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                            height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24" />
-                                <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
-                                <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
-                                <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
-                                <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
-                            </g>
-                        </svg>
+                        <i class="ti-bolt display-4"></i>
                         <!--end::Svg Icon-->
                     </span>
                     <div class="text-inverse-danger font-weight-bolder font-size-h5 mb-2 mt-5">
-                        Today
+                        Indonesia Power
                     </div>
                     <div class="font-weight-bold text-inverse-danger font-size-lg" id="todayData">
-                        {{-- today data --}}
+                        99%
                     </div>
                 </div>
                 <!--end::Body-->
@@ -46,23 +37,14 @@
                 <div class="card-body">
                     <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                         <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                            height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24" />
-                                <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
-                                <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
-                                <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
-                                <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
-                            </g>
-                        </svg>
+                      <i class="ti-bar-chart display-5"></i>
                         <!--end::Svg Icon-->
                     </span>
                     <div class="text-inverse-warning font-weight-bolder font-size-h5 mb-2 mt-5">
-                        This Week
+                        CMU
                     </div>
                     <div class="font-weight-bold text-inverse-warning font-size-lg" id="weekData">
-                        {{-- week data --}}
+                        100%
                     </div>
                 </div>
                 <!--end::Body-->
@@ -76,23 +58,14 @@
                 <div class="card-body">
                     <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                         <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                            height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24" />
-                                <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
-                                <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
-                                <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
-                                <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
-                            </g>
-                        </svg>
+                      <i class="ti-bar-chart display-5"></i>
                         <!--end::Svg Icon-->
                     </span>
                     <div class="text-inverse-primary font-weight-bolder font-size-h5 mb-2 mt-5">
-                        This Month
+                        KP
                     </div>
                     <div class="font-weight-bold text-inverse-primary font-size-lg" id="monthData">
-                        {{-- month data --}}
+                        99%
                     </div>
                 </div>
                 <!--end::Body-->
@@ -109,23 +82,14 @@
                 <div class="card-body">
                     <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                         <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                            height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24" />
-                                <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
-                                <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
-                                <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
-                                <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
-                            </g>
-                        </svg>
+                      <i class="ti-bar-chart display-5"></i>
                         <!--end::Svg Icon-->
                     </span>
                     <div class="text-inverse-success font-weight-bolder font-size-h5 mb-2 mt-5">
-                        This Year
+                        MSU
                     </div>
                     <div class="font-weight-bold text-inverse-success font-size-lg" id="yearData">
-                        {{-- year data --}}
+                        100%
                     </div>
                 </div>
                 <!--end::Body-->
@@ -139,21 +103,14 @@
                 <div class="card-body">
                     <span class="svg-icon svg-icon-2x svg-icon-info">
                         <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                            height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24" />
-                                <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
-                                <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
-                                <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
-                                <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
-                            </g>
-                        </svg>
+                      <i class="ti-bar-chart display-5"></i>
                         <!--end::Svg Icon-->
                     </span>
-                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">Activation</div>
+                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">
+                        PGU
+                    </div>
                     <div class="font-weight-bold text-inverse-white font-size-sm" id="activationData">
-                        {{-- activaion data --}}
+                        100%
                     </div>
                 </div>
                 <!--end::Body-->
@@ -168,21 +125,56 @@
                 <div class="card-body">
                     <span class="svg-icon svg-icon-2x svg-icon-info">
                         <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                            height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24" />
-                                <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
-                                <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
-                                <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
-                                <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
-                            </g>
-                        </svg>
+                      <i class="ti-bar-chart display-5"></i>
                         <!--end::Svg Icon-->
                     </span>
-                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">Active</div>
+                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">
+                        POMU
+                    </div>
                     <div class="font-weight-bold text-inverse-white font-size-sm" id="activeData">
-                        {{-- active data --}}
+                        100%
+                    </div>
+                </div>
+                <!--end::Body-->
+            </a>
+            <!--end::Stats Widget 16-->
+        </div>
+        <div class="col-xl-4">
+            <!--begin::Stats Widget 16-->
+            <a href="#" class="card card-custom card-stretch gutter-b">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <span class="svg-icon svg-icon-2x svg-icon-info">
+                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
+                      <i class="ti-bar-chart display-5"></i>
+                        <!--end::Svg Icon-->
+                    </span>
+                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">
+                        UPK
+                    </div>
+                    <div class="font-weight-bold text-inverse-white font-size-sm" id="activeData">
+                        100%
+                    </div>
+                </div>
+                <!--end::Body-->
+            </a>
+            <!--end::Stats Widget 16-->
+        </div>
+        <div class="col-xl-4">
+            <!--begin::Stats Widget 16-->
+            <a href="#" class="card card-custom card-stretch gutter-b">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <span class="svg-icon svg-icon-2x svg-icon-info">
+                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
+                      <i class="ti-bar-chart display-5"></i>
+                        <!--end::Svg Icon-->
+                    </span>
+                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">
+                        UPDK
+                    </div>
+                    <div class="font-weight-bold text-inverse-white font-size-sm" id="activeData">
+                        100%
                     </div>
                 </div>
                 <!--end::Body-->
