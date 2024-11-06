@@ -1,8 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserRoleController;
+use App\Http\Controllers\PermissionController;
+
 
 Route::get('/', function () {
     return view('pages.dashboard');
@@ -32,6 +37,23 @@ Route::get('/export-excel', [App\Http\Controllers\ExportController::class, 'expo
 
 Route::get('/export-pdf', [ReportController::class, 'exportPdf'])->name('export.pdf');
 
+Route::middleware(['auth'])->group(function () {
+    Route::resource('roles', RoleController::class);
+    Route::post('/users/{user}/assign-role', [UserRoleController::class, 'assignRole'])->name('users.assignRole');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('permissions', PermissionController::class);
+    Route::post('permissions/assign/{user}', [PermissionController::class, 'assignPermission'])->name('permissions.assign');
+});
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::post('users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
+    Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission');
+});
 
 
 Route::middleware('auth')->group(function () {

@@ -14,6 +14,14 @@
                     <div class="row">
                         <div class="col">
                             <h4 class="box-title">Identitas Jabatan</h4>
+                            <h4 class="box-title">
+                                {{-- @if(auth()->user() && auth()->user()->hasRole(['Manager', 'Admin']))
+                                    <button class="btn btn-primary">Admin/Manager Actions</button>
+                                    @else
+                                    taiiii
+                                @endif --}}
+
+                            </h4>
                         </div>
                         <div class="col text-right"> <!-- Tambahkan class text-right untuk align ke kanan -->
                             {{-- <a href="{{ route('export.excel') }}" class="btn btn-primary"> --}}

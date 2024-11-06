@@ -28,9 +28,19 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ Request::is('facilities') || Request::is('facilities/add-new') ? 'active' : '' }}">
-                        <a href="{{ url('/facilities') }}">
+                    <li class="{{ Request::is('roles') || Request::is('facilities/create') ? 'active' : '' }}">
+                        <a href="{{ route('roles.index') }}">
                             <i class="ti-more"></i>Hak Akses
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('facilities') || Request::is('facilities/add-new') ? 'active' : '' }}">
+                        <a href="{{ route('permissions.index') }}">
+                            <i class="ti-more"></i>Permission
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('facilities') || Request::is('facilities/add-new') ? 'active' : '' }}">
+                        <a href="{{ route('users.index') }}">
+                            <i class="ti-more"></i>User Index
                         </a>
                     </li>
                     <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
