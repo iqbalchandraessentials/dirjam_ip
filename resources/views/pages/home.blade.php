@@ -16,7 +16,8 @@
                             <h4 class="box-title">Identitas Jabatan</h4>
                         </div>
                         <div class="col text-right"> <!-- Tambahkan class text-right untuk align ke kanan -->
-                            <a href="" class="btn btn-primary">
+                            {{-- <a href="{{ route('export.excel') }}" class="btn btn-primary"> --}}
+                            <a href="{{ route('export.pdf') }}" class="btn btn-primary">
                                 <i class="ti-printer"></i><span> Cetak</span>
                             </a>    
                         </div>

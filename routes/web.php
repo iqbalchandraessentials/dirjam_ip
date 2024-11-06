@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,7 +28,9 @@ Route::get('/uraian_jabatan_template', function () {
     return view('pages.revisi_jobdesc');
 })->middleware(['auth', 'verified'])->name('uraian_jabatan_template');
 
+Route::get('/export-excel', [App\Http\Controllers\ExportController::class, 'exportExcel'])->name('export.excel');
 
+Route::get('/export-pdf', [ReportController::class, 'exportPdf'])->name('export.pdf');
 
 
 
