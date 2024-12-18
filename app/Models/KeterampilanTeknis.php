@@ -19,7 +19,7 @@ class KeterampilanTeknis extends Model
 
     public function detailMasterKompetensiTeknis()
     {
-        return $this->hasOne(DetailMasterKomptensiTeknis::class, 'kode_master', 'kode')
+        return $this->hasOne(MasterDetailKomptensiTeknis::class, 'kode_master', 'kode')
                     ->whereColumn('level', 'level');
     }
 }

@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanTeknis;
+use App\Models\MasalahKompleksitasKerja;
+use App\Models\MasterJabatan;
+use App\Models\TugasPokoUtamaGenerik;
 use App\Models\UraianMasterJabatan;
+use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
 
 class UraianMasterJabatanController extends Controller
@@ -13,17 +18,7 @@ class UraianMasterJabatanController extends Controller
      */
     public function index()
     {
-        $data = UraianMasterJabatan::get();
-    //     $data = UraianMasterJabatan::with([
-    //     'tugasPokoUtamaGenerik',
-    //     'hubunganKerja',
-    //     'masalahKompleksitasKerja',
-    //     'wewenangJabatan',
-    //     'spesifikasiPendidikan',
-    //     'kemampuandanPengalaman',
-    //     'keterampilanNonteknis',
-    //     'KeterampilanTeknis',
-    // ])->get();
+        $data = MasterJabatan::has('uraianMasterJabatan')->get();
         return view('pages.uraian_jabatan', ['data'=>$data]);
     }
 
@@ -46,19 +41,41 @@ class UraianMasterJabatanController extends Controller
     /**
      * Display the specified resource.
      */
+
+    function getRelatedOrFallback($data, $relation, $fallbackModel, $conditions = [])
+    {
+        if (isset($data->uraianMasterJabatan)) {
+            $firstRelation = $data->uraianMasterJabatan->$relation ?? null;
+            if ($firstRelation && isset($firstRelation)) {
+                return $firstRelation;
+            }
+        }
+
+        return $fallbackModel::where($conditions)->get();
+    }
+
     public function show($id)
     {
-        $data = UraianMasterJabatan::with([
-        'tugasPokoUtamaGenerik',
-        'hubunganKerja',
-        'masalahKompleksitasKerja',
-        'wewenangJabatan',
-        'spesifikasiPendidikan',
-        'kemampuandanPengalaman',
-        'keterampilanNonteknis',
-        'KeterampilanTeknis',
-        ])->where('id', $id)->first();        
-        return view('pages.home', ['data'=>$data]);
+        $data = MasterJabatan::with('uraianMasterJabatan')->find($id);
+        $tugaspokokGenerik = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $data->jenis_jabatan)->get();      
+        $masalahKompleksitasKerja = isset($data->uraianMasterJabatan)  && $data->uraianMasterJabatan->masalahKompleksitasKerja->isNotEmpty()
+        ? $data->uraianMasterJabatan->masalahKompleksitasKerja
+        : MasalahKompleksitasKerja::where('jenis_jabatan', $data->jenis_jabatan)->get();
+        $wewenangJabatan = isset($data->uraianMasterJabatan)  && $data->uraianMasterJabatan->wewenangJabatan->isNotEmpty()
+        ? $data->uraianMasterJabatan->wewenangJabatan
+        : WewenangJabatan::where('jenis_jabatan', $data->jenis_jabatan)->get();
+        $kemampuandanPengalaman = isset($data->uraianMasterJabatan)  && $data->uraianMasterJabatan->kemampuandanPengalaman->isNotEmpty()
+        ? $data->uraianMasterJabatan->kemampuandanPengalaman
+        : KemampuandanPengalaman::where('jenis_jabatan', $data->jenis_jabatan)->get();
+        $KeterampilanTeknis = $data->uraianMasterJabatan->first()->keterampilanTeknis;
+        return view('pages.home', [
+        'data' => $data,
+        'tugaspokokGenerik' => $tugaspokokGenerik,
+        'masalahKompleksitasKerja' => $masalahKompleksitasKerja,
+        'wewenangJabatan' => $wewenangJabatan,
+        'kemampuandanPengalaman' => $kemampuandanPengalaman,
+        'KeterampilanTeknis' => $KeterampilanTeknis
+    ]);
     }
 
     /**

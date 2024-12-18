@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->enum('aktif',[0,1])->default(1);
+            $table->string('unit_kode');
+            $table->enum('jenis_jabatan',['struktural','fungsional']);
+            $table->string('jenjang_kode');
             $table->timestamps();
         });
     }

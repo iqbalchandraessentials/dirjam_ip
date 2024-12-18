@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('master_jabatan_id');
             $table->string('nama');
-            $table->enum('jenis_jabatan',['fungsional','struktural']);
             $table->integer('unit_id');
             $table->string('fungsi_utama',4000);
             $table->string('anggaran')->nullable();

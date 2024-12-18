@@ -34,17 +34,6 @@ class UraianMasterJabatanImport implements ToCollection
         try {
             $data = [];
             $data['nama'] = isset($rows[10][4]) ? $rows[10][4] : 'Default Nama';
-            $jenis_jabatan = $rows[12][4];
-            if (strpos($jenis_jabatan, 'Struktural') !== false){
-                $data['jenis_jabatan'] = 'Struktural';
-            }
-                else if (strpos($jenis_jabatan, 'Fungsional') !== false){
-                    $data['jenis_jabatan'] ='Fungsional';
-                }
-            else{
-                $data['jenis_jabatan'] ='Tidak diketahui';
-            }
-            
             $data['fungsi_utama'] = isset($rows[21][1]) ? $rows[21][1] : 'Default Fungsi Utama';
             $anggaranMap = [
                 64 => "Investasi",
@@ -119,7 +108,6 @@ class UraianMasterJabatanImport implements ToCollection
                     ];
                 }
             }
-            // dd($this->masalah_kompleksitas_kerja);
             $data['masalah_kompleksitas_kerja'] = $this->masalah_kompleksitas_kerja;
             // WEWENANG JABATAN
             foreach ($rows as $key => $row) {
@@ -129,7 +117,6 @@ class UraianMasterJabatanImport implements ToCollection
                     ];
                 }
             }
-            // dd($this->wewenang_jabatan);
             $data['wewenang_jabatan'] = $this->wewenang_jabatan;
             // Pendidikan
             foreach ($rows as $key => $row) {
@@ -141,7 +128,6 @@ class UraianMasterJabatanImport implements ToCollection
                     ];
                 }
             }
-            // dd($this->pendidikan);
             $data['pendidikan'] = $this->pendidikan;
             // kemampuan_pengalaman
             foreach ($rows as $key => $row) {
@@ -151,41 +137,41 @@ class UraianMasterJabatanImport implements ToCollection
                     ];
                 }
             }
-            // dd($this->kemampuan_pengalaman);
             $data['kemampuan_pengalaman'] = $this->kemampuan_pengalaman;
+
             // Kompetensi Teknis
             foreach ($rows as $key => $row) {
-                if ($key >= 182 && $key <= 191) {
+                if ($key >= 183 && $key <= 192) {
                     $this->kompetensi_teknis[] = [
                         'kode_kompetensi' => $row[2],
-                        'level' => $row[5],
-                        'kode_perilaku' => $row[2] . '.' . $row[5],
+                        'level' => $row[6],
+                        'kode_perilaku' => $row[2] . '.' . $row[6],
                     ];
                 }
             }
-            // dd($this->kompetensi_teknis);
             $data['kompetensi_teknis'] = $this->kompetensi_teknis;
 
             $master_jabatan = MasterJabatan::where('nama', $data['nama'])->first();
 
+            // dd($master_jabatan);
+
             if (!$master_jabatan) {
                 // Handle error, e.g., return error message or log
-                return response()->json(['error' => 'Uraian jabatan tidak ditemukan'], 404);
+                return response()->json(['error' => 'Nama jabatan tidak ditemukan'], 404);
             }
             
             // Buat data UraianMasterJabatan
              $uraian_jabatan_id = UraianMasterJabatan::create([
                 'master_jabatan_id' => $master_jabatan->id,
                 'nama' => $data['nama'],
-                'jenis_jabatan' => $data['jenis_jabatan'],
                 'unit_id' => 1,
                 'fungsi_utama' => $data['fungsi_utama'],
                 'anggaran' => $data['anggaran'],
                 'accountability' => $data['accountability'],
                 'nature_impact' => $data['nature_impact'],
             ]);
-            $uraian_jabatan_id = $uraian_jabatan_id->id;
 
+            $uraian_jabatan_id = $uraian_jabatan_id->id;
             // dd($data);
             foreach ($data['tugas_pokok_utama'] as $x) {
                 // Cek jika 'aktivitas' dan 'output' tidak kosong
@@ -228,16 +214,16 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
             
-            foreach ($data['pendidikan'] as $x) {
-                if (!empty($x['pendidikan']) && !empty($x['pengalaman']) && !empty($x['bidang_studi'])) {
-                    SpesifikasiPendidikan::create([
-                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
-                        'pendidikan' => $x['pendidikan'],
-                        'pengalaman' => $x['pengalaman'],
-                        'bidang_studi' => $x['bidang_studi'],
-                    ]);
-                }
-            }
+            // foreach ($data['pendidikan'] as $x) {
+            //     if (!empty($x['pendidikan']) && !empty($x['pengalaman']) && !empty($x['bidang_studi'])) {
+            //         SpesifikasiPendidikan::create([
+            //             'uraian_master_jabatan_id' => $uraian_jabatan_id,
+            //             'pendidikan' => $x['pendidikan'],
+            //             'pengalaman' => $x['pengalaman'],
+            //             'bidang_studi' => $x['bidang_studi'],
+            //         ]);
+            //     }
+            // }
             
             foreach ($data['kemampuan_pengalaman'] as $x) {
                 if (!empty($x['definisi'])) {

@@ -58,13 +58,16 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    
                                                     @foreach ($data as $x => $v)
-                                                    <td>{{$x+1}}</td>
-                                                    <td>{{$v['nama']}}</td>
-                                                    <td>
+                                                    <tr>
+                                                        <td>{{$x+1}}</td>
+                                                        <td>{{$v['nama']}}</td>
+                                                        <td>
                                                         <a href="{{ route('uraian_jabatan.show', $v->id) }}" title="View Detail">  <i class="ti-eye"></i>
                                                         </a>
                                                     </td>
+                                                </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>
