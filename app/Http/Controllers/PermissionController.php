@@ -17,6 +17,8 @@ class PermissionController extends Controller
         return view('pages.permissions.index', compact('permissions'));
     }
 
+    
+
     public function create()
     {
         return view('pages.permissions.create');

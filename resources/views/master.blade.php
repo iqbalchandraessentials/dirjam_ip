@@ -14,10 +14,12 @@
     <body class="skin-light light-sidebar sidebar-mini fixed">
         <div class="wrapper">
             @include('Layouts._navbar')
-
             <!-- Left side column. contains the logo and sidebar -->
+            {{-- @if(auth()->user()->hasRole('Admin')) --}}
             @include('Layouts._sidebarAdmin')
-
+            {{-- @else
+            @include('Layouts._sidebar')
+            @endif --}}
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <div class="container">

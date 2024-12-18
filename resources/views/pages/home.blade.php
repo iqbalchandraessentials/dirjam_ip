@@ -7,49 +7,180 @@
 @section('title', 'Uraian Jabatan | Direktori Jabatan')
 
 @section('content')
-<div class="col-sm-12">
+    <div class="col-sm-12">
 
-            <div class="box">
-                <div class="box-header">
-                    <div class="row">
-                        <div class="col">
-                            <h4 class="box-title">Identitas Jabatan</h4>
-                            <h4 class="box-title">
-                                {{-- @if(auth()->user() && auth()->user()->hasRole(['Manager', 'Admin']))
-                                    <button class="btn btn-primary">Admin/Manager Actions</button>
-                                    @else
-                                    taiiii
-                                @endif --}}
-
-                            </h4>
-                        </div>
-                        <div class="col text-right"> <!-- Tambahkan class text-right untuk align ke kanan -->
-                            {{-- <a href="{{ route('export.excel') }}" class="btn btn-primary"> --}}
-                            <a href="{{ route('export.pdf') }}" class="btn btn-primary">
-                                <i class="ti-printer"></i><span> Cetak</span>
-                            </a>    
-                        </div>
+        <div class="box">
+            <div class="box-header">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="box-title">1. Identitas Jabatan</h4>
+                        <h4 class="box-title">
+                        </h4>
+                    </div>
+                    <div class="col text-right"> <!-- Tambahkan class text-right untuk align ke kanan -->
+                        {{-- <a href="{{ route('export.excel') }}" class="btn btn-primary"> --}}
+                        <a href="{{ route('export.pdf') }}" class="btn btn-primary">
+                            <i class="ti-printer"></i><span> Cetak</span>
+                        </a>
                     </div>
                 </div>
-                
+                <p class="mt-4">
+                    Merupakan kalimat singkat yang menjelaskan tujuan diciptakannya jabatan tersebut di suatu
+                    organisasi, menggambarkan hasil akhir yang hendak dicapai, cara mencapainya, bagaimana fungsi
+                    jabatan dilaksanakan, apa saja yang dipengaruhi oleh jabatan, dan untuk apa fungsi tersebut
+                    dijalankan.
+                </p>
+            </div>
+
+            <div class="box-body">
+                <div class="form-group mb-0">
+                    <div class="table-resposive">
+                        <table class="table">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Master Jabatan</td>
+                                    <td>:</td>
+                                    <td class="text-left">{{ $data['nama'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Sebutan Jabatan</td>
+                                    <td>:</td>
+                                    <td class="text-left"> - </td>
+                                </tr>
+                                <tr>
+                                    <td>Jenis Jabatan</td>
+                                    <td>:</td>
+                                    <td class="text-left"> - </td>
+                                </tr>
+                                <tr>
+                                    <td>Jenjang Jabatan</td>
+                                    <td>:</td>
+                                    <td class="text-left"> - </td>
+                                </tr>
+                                <tr>
+                                    <td>Kelompok Bisnis</td>
+                                    <td>:</td>
+                                    <td class="text-left"> - </td>
+                                </tr>
+                                <tr>
+                                    <td>Stream Bisnis</td>
+                                    <td>:</td>
+                                    <td class="text-left"> - </td>
+                                </tr>
+                                <tr>
+                                    <td>Unit Kerja</td>
+                                    <td>:</td>
+                                    <td class="text-left">Head Office</td>
+                                </tr>
+                                <tr>
+                                    <td>Jabatan Atasan Langsung</td>
+                                    <td>:</td>
+                                    <td class="text-left">-</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="field_wrapper"></div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-header">
+                <h4 class="box-title">2. Fungsi Utama</h4>
+                <div class="mt-4">
+                    <p>
+                        Merupakan kalimat singkat yang menjelaskan tujuan diciptakannya jabatan tersebut di suatu
+                        organisasi, menggambarkan hasil akhir yang hendak dicapai, cara mencapainya, bagaimana fungsi
+                        jabatan dilaksanakan, apa saja yang dipengaruhi oleh jabatan, dan untuk apa fungsi tersebut
+                        dijalankan.
+                    </p>
+                </div>
+                <div class="col-sm-12 col-12">
+                    <p class="blockquote">
+                        {{ $data['fungsi_utama'] }}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="box">
+            <div class="box-header">
+                <h4 class="box-title">3. TUGAS POKOK UTAMA DAN OUTPUT</h4>
+                <div class="mt-4">
+                    <p>
+                        Merupakan deskripsi yang spesifik tentang pekerjaan guna tercapainya tujuan jabatan, yang dilengkapi
+                        dengan informasi yang merujuk hasil kerja dapat berupa dokumen, laporan atau dokumentasi dalam
+                        bentuk lain yang dapat dipertanggungjawabkan hasilnya.
+                    </p>
+                </div>
+            </div>
+            <div class="box-body">
+
+                <div class="form-group mb-0">
+                    <div class="table-resposive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left font-weight-bold" width="5%">#</th>
+                                    <th class="text-left font-weight-bold" width="60%">Aktivitas</th>
+                                    <th class="text-left font-weight-bold" width="35%">Output</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($data['tugasPokoUtamaGenerik'] as $x => $v)
+                                    @if ($v['jenis'] == 'utama')
+                                        <tr>
+                                            <td> <span class="badge bg-dark"
+                                                    style="min-width: 32px">{{ $x + 1 }}</span></td>
+                                            <td>{{ $v['aktivitas'] }}</td>
+                                            <td>{{ $v['output'] }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="field_wrapper"></div>
+            </div>
+            <div class="box-header">
+                <h4 class="box-title">4. TUGAS POKOK GENERIK DAN OUTPUT</h4>
+                <div class="mt-5">
+                    <p>
+                        Merupakan rincian aktivitas-aktivitas umum yang diperlukan suatu jabatan sesuai jenis jabatan
+                        tersebut, yang dilengkapi dengan informasi yang merujuk hasil kerja dapat berupa dokumen, laporan
+                        atau dokumentasi dalam bentuk lain yang dapat dipertanggungjawabkan hasilnya.
+                    </p>
+                </div>
                 <div class="box-body">
-                    
+
                     <div class="form-group mb-0">
                         <div class="table-resposive">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="text-left font-weight-bold" style="width: 40%">Nama Jabatan</th>
-                                        <th class="text-left font-weight-bold">Jenjang Jabatan</th>
-                                        <th class="text-left font-weight-bold">Unit Kerja</th>
+                                        <th class="text-left font-weight-bold" width="5%">#</th>
+                                        <th class="text-left font-weight-bold" width="60%">Aktivitas</th>
+                                        <th class="text-left font-weight-bold" width="35%">Output</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-left">OFFICER INFORMATION TECHNOLOGY DEVELOPMENT</td>
-                                        <td class="text-left text-uppercase">Generalist 2</td>
-                                        <td class="text-left">Head Office</td>
-                                    </tr>
+                                    @foreach ($data['tugasPokoUtamaGenerik'] as $x => $v)
+                                        @if ($v['jenis'] == 'generik')
+                                            <tr>
+                                                <td><span class="badge bg-dark"
+                                                        style="min-width: 32px">{{ $x + 1 }}</span></td>
+                                                <td>{{ $v['aktivitas'] }}</td>
+                                                <td>{{ $v['output'] }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+
                                 </tbody>
                             </table>
                         </div>
@@ -57,308 +188,470 @@
                     <div id="field_wrapper"></div>
                 </div>
             </div>
-            <div class="box">
-                <div class="box-header">
-                        <div class="form-group">
-                            <p class="lead">Fungsi Utama</p>
-                            <div class="row align-items-center">
-                                <div class="col-sm-12 col-12">
-                                    <p class="blockquote">Melakukan analisa dan melaksanakan kegiatan pengembangan terkait sistem informasi termasuk didalamnya sistem IT, framework ISMS (Information Security Management System) untuk memastikan pengembangan sistem informasi perusahaan berdasarkan prinsip GCG (Good Corporate Governance) dan SMAP (Sistem Manajemen Anti Penyuapan).</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="field_wrapper"></div>
-                    </div>
-                </div>
+        </div>
 
-
-                <div class="box">
-                    <div class="box-header">
-                        <h4 class="box-title">Tanggung Jawab Utama</h4>
-                    </div>
-                    <div class="box-body">
-                        
-                        <div class="form-group mb-0">
-                            <div class="table-resposive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-left font-weight-bold" width="5%">#</th>
-                                            <th class="text-left font-weight-bold" width="60%">Aktivitas</th>
-                                            <th class="text-left font-weight-bold" width="35%">Indikator</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">1</span></td>
-                                            <td class="text-left">
-                                                <div class="centered">
-                                                    Melaksanakan kebijakan fungsi dan standar integrasi dan pengembangan aplikasi sistem TI.
-                                                </div>
-                                            </td>
-                                                    <td class="text-left ">
-                                                <ol>
-                                                    <li>Kuantitas (%akurasi, %kesesuaian SOP, Laporan)</li>
-                                                    <li>Waktu (Bulanan, Semester, Triwulan)</li>
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">2</span></td>
-                                            <td class="text-left">
-                                                <div class="centered">
-                                                    Melaksanakan pengembangan proyek integrasi dan aplikasi sistem TI, memastikan manfaat yang dihasilkan oleh kegiatan aplikasi sistem TI sesuai, efektif dan efisien.
-                                                </div>
-                                            </td>
-                                                    <td class="text-left ">
-                                                <ol>
-                                                    <li>Kuantitas (%akurasi, %kesesuaian SOP, Laporan)</li>
-                                                    <li>Waktu (Bulanan, Semester, Triwulan)</li>
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">3</span></td>
-                                            <td class="text-left">
-                                                <div class="centered">
-                                                    Memberi masukan bidang perencanaan dalam mereview kebutuhan integrasi dan pengembangan aplikasi sistem TI.
-                                                </div>
-                                            </td>
-                                                    <td class="text-left ">
-                                                <ol>
-                                                    <li>Kuantitas (%akurasi, %kesesuaian SOP, Laporan)</li>
-                                                    <li>Waktu (Bulanan, Semester, Triwulan)</li>
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div id="field_wrapper"></div>
-                    </div>
-                </div>
-
-                <div class="box">
-                    <div class="box-header">
-                        <h4 class="box-title">Tanggung Jawab Generik</h4>
-                    </div>
-                    <div class="box-body">
-                        
-                        <div class="form-group mb-0">
-                            <div class="table-resposive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-left font-weight-bold" width="5%">#</th>
-                                            <th class="text-left font-weight-bold" width="60%">Aktivitas</th>
-                                            <th class="text-left font-weight-bold" width="35%">Indikator</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">1</span></td>
-                                            <td class="text-left">
-                                                
-                                                    Mematuhi dan melaksanakan seluruh program perusahaan yang meliputi, namun tidak terbatas pada manajemen risiko (mulai dari proses identifikasi, analisa, evaluasi, mitigasi risiko, monitoring risiko beserta pelaporannya), manajemen aset, improvement unit kerja (OPI), Lingkungan dan K3 (LK3), 5S, Sistem Manajemen Terpadu (IPIMS) serta program efisiensi energi dan Knowledge Sharing (menyampaikan pengetahuan sesuai kompetensinya melalui metode mengajar/menulis/merekam/metode lainnya) sesuai dengan kewenangannya di unit kerja masing-masing.
-                                                
-                                            </td>
-                                                    <td class="text-left ">
-                                                <ol>
-                                                    <li>Kuantitas (%kesesuaian SOP, Dokumen, Laporan)</li>
-                                                    <li>Kualitas (Persen)</li>
-                                                    <li>Waktu (Bulanan, Semester, Triwulan)</li>
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">2</span></td>
-                                            <td class="text-left">
-                                                <div class="centered">
-                                                    Mematuhi seluruh ketentuan Kebijakan Anti Penyuapan dan Kebijakan terkait Penyuapan lainnya (Kebijakan Pengendalian Gratifikasi, Kebijakan Whistleblower, Kebijakan Benturan Kepentingan, Kebijakan Indonesia Power Bersih, Kode Etik, Kebijakan Keterbukaan Informasi Publik, dan Kebijakan Good Corporate Governance), menjalankan tanggung jawab pekerjaan dan tugas secara etis, jujur, rajin dan selalu waspada serta siap melaporkan setiap kasus dugaan suap dengan segera, serta berpartisipasi aktif dalam pelatihan Anti Penyuapan sesuai yang dipersyaratkan dalam peran dan tanggung jawab jabatannya.
-                                                </div>
-                                            </td>
-                                                    <td class="text-left ">
-                                                <ol>
-                                                    <li>Kuantitas (%kesesuaian SOP, Dokumen, Laporan)</li>
-                                                    <li>Kualitas (Persen)</li>
-                                                    <li>Waktu (Bulanan, Semester, Triwulan)</li>
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">3</span></td>
-                                            <td class="text-left">
-                                                <div class="centered">
-                                                    Melakukan pelaporan kegiatan fungsi kerja yang menjadi tanggung jawabnya dengan menyusun laporan rutin dan non rutin yang diatur oleh Perusahaan baik secara manual maupun pada aplikasi korporat (ERP, ERM, CSA-ICoFR dan sebagainya) untuk menjamin ketersediaan informasi terkait kegiatan kerja dan fungsinya.
-                                                </div>
-                                            </td>
-                                                    <td class="text-left ">
-                                                <ol>
-                                                    <li>Kuantitas (%kesesuaian SOP, Dokumen, Laporan)</li>
-                                                    <li>Kualitas (Persen)</li>
-                                                    <li>Waktu (Bulanan, Semester, Triwulan)</li>
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div id="field_wrapper"></div>
-                    </div>
-                </div>
-
+        <div class="box">
+            <div class="box-header">
                 <div class="row">
-                    <div class="col-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <div class="row">
-                                    <div class="col-12 text-left">
-                                        <h4 class="box-title">Dimensi Pertanggungjawaban</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="box-body pt-0 pb-0">
-                                <div class="table-resposive">
-                                    <table class="table table-bordered">
-                                        <thead class="thead-light">
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Jumlah Bawahan Langsung Total</td>
-                                                <td>10 orang</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Kewenangan Pengadaan</td>
-                                                <td>Tidak Memiliki Wewenang Pengadaan</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Jumlah Anggaran Maksimal</td>
-                                                <td>≤ 500 juta</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                    <div class="col-12 text-left">
+                        <h4 class="box-title">5. Dimensi Jabatan</h4>
+                        <div class="mt-5">
+                            <p>Memuat semua data relevan yang dapat diukur dan digunakan untuk menggambarkan cakupan
+                                atau besarnya tanggung jawab yang dipegang termasuk ringkasan data kuantitatif dan
+                                kualitatif yang etrkait dengan besarnya tugas ini.</p>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <div class="row">
-                                    <div class="col-12 text-left">
-                                        <h4 class="box-title">Persyaratan Jabatan</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="box-body pt-0 pb-0">
-                                <div class="table-resposive">
-                                    <table class="table table-bordered">
-                                        <thead class="thead-light">
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Kompetensi Utama</td>
-                                                <td>-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Kompetensi Peran</td>
-                                                <td>-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Kompetensi Bidang</td>
-                                                <td>-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Pendidikan dan Pengalaman</td>
-                                                <td>
-                                                    <ol>
-                                                        <li>S2 jurusan Teknik Informatika pengalaman minimal FG tahun, Pengembangan aplikasi</li>
-                                                        <li>S1 jurusan Teknik Informatika pengalaman minimal 1.5 tahun, Pengembangan aplikasi</li>
-                                                        <li>D3 jurusan Teknik Informatika pengalaman minimal 3 tahun, Pengembangan aplikasi</li>
-                                                        <li>SMK/STM jurusan Teknik Informatika pengalaman minimal 6 tahun, Pengembangan aplikasi</li>
-                                                    </ol>
-
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="box-header">
-                        <h4 class="box-title">Karakteristik Jabatan</h4>
-                    </div>
-                    <div class="box-body">
-                        <div class="form-group mb-0">
-                            <div class="table-resposive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center font-weight-bold" width="5%">#</th>
-                                            <th class="text-center font-weight-bold" >Komunikasi Internal (Ruang Lingkup IP)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">1</span></td>
-                                            <td class="text-center">
-                                                    Melakukan komunikasi dengan User di Kantor Pusat dan Unit dalam rangka Pelayanan IT dalam proses pengembangan aplikasi sistem informasi.
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="box-header">
-                            <h4 class="box-title">Tantangan Jabatan</h4>
-                        </div>
-                        <div class="form-group mb-0">
-                            <div class="table-resposive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center font-weight-bold" width="5%">#</th>
-                                            <th class="text-center font-weight-bold" >Komunikasi Eksternal (Ruang Lingkup Eksternal IP)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">1</span></td>
-                                            <td class="text-center">
-                                                    Melakukan komunikasi dengan User di Kantor Pusat dan Unit dalam rangka Pelayanan IT dalam proses pengembangan aplikasi sistem informasi.
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="form-group mb-0">
-                            <div class="table-resposive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center font-weight-bold" width="5%">#</th>
-                                            <th class="text-center font-weight-bold" >Jenis Tantangan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="badge bg-dark" style="min-width: 32px">1</span></td>
-                                            <td class="text-center">
-                                                    IT audit & IT Security.
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div id="field_wrapper"></div>
                     </div>
                 </div>
             </div>
-    @endsection
+            <div class="p-5">
+                <div class="box-body pt-0 pb-0">
+                    <p><b>5.a. Dimensi Finansial</b></p>
+                    <div class="table-resposive">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Anggaran</td>
+                                    <td>{{ $data['anggaran'] ?? 'N/A' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Accountability</td>
+                                    <td>{{ $data['accountability'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Nature Impact</td>
+                                    <td>{{ $data['nature_impact'] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="box-body pt-0 pb-0">
+                    <p><b>5.b. Dimensi Non-keuangan</b></p>
+                    <div class="table-resposive">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="2"> a. Jumlah staff yang dikelola di sub bidangnya sesuai FTK
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Jumlah Bawahan Langsung
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Langsung</td>
+                                    <td>N/A</td>
+                                </tr>
+                                <tr>
+                                    <td>Total</td>
+                                    <td>N/A</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">b. Proses bisnis yang dikelola di sub bidangnya</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-header">
+                <h4 class="box-title">6. Hubungan Kerja</h4>
+                <div>
+                    <p>
+                        Menggambarkan hubungan kedinasan antara pemegang jabatan dengan jabatan lain dalam
+                        perusahaan maupun di perusahaan lain, yang disertai dengan deskripsi tujuan dari hubungan
+                        kerja tersebut.
+                    </p>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-group mb-0">
+                    <div class="table-resposive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center font-weight-bold" width="5%">#</th>
+                                    <th class="text-center font-weight-bold">Komunikasi Internal</th>
+                                    <th class="text-center font-weight-bold">Tujuan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $no = 1; @endphp
+                                @foreach ($data['hubunganKerja'] as $x => $v)
+                                    @if ($v['jenis'] == 'internal')
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-dark"
+                                                    style="min-width: 32px">{{ $no++ }}</span>
+                                            </td>
+                                            <td>{{ $v['komunikasi'] }}</td>
+                                            <td>{{ $v['tujuan'] }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="field_wrapper"></div>
+            </div>
+            <div class="box-body">
+                <div class="form-group mb-0">
+                    <div class="table-resposive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="font-weight-bold text-center" width="5%">#</th>
+                                    <th class="font-weight-bold text-center">Komunikasi Eksternal
+                                    </th>
+                                    <th class="font-weight-bold text-center">Tujuan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $no = 1; @endphp
+                                @foreach ($data['hubunganKerja'] as $x => $v)
+                                    @if ($v['jenis'] == 'eksternal')
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-dark"
+                                                    style="min-width: 32px">{{ $no++ }}</span>
+                                            </td>
+
+                                            <td>{{ $v['komunikasi'] }}</td>
+                                            <td>{{ $v['tujuan'] }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="field_wrapper"></div>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-header">
+                <h4 class="box-title">7. MASALAH, KOMPLEKSITAS KERJA DAN TANTANGAN UTAMA</h4>
+                <div>
+                    <p>
+                        Merupakan uraian atas hal-hal yang menjadi permasalahan bagi pemangku jabatan sebagai akibat dari
+                        adanya kesulitan dalam pencapaian tujuan atau target yang ditetapkan.
+                    </p>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-group mb-0">
+                    <div class="table-resposive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="font-weight-bold text-center" width="5%">#</th>
+                                    <th class="font-weight-bold text-center">MASALAH, KOMPLEKSITAS KERJA DAN TANTANGAN
+                                        UTAMA</th>
+                                </tr>
+                            </thead>
+                            <tbody class="">
+                                @foreach ($data['masalahKompleksitasKerja'] as $x => $v)
+                                    <tr>
+                                        <td> <span class="badge bg-dark"
+                                                style="min-width: 32px">{{ $x + 1 }}</span></td>
+                                        <td>{{ $v['definisi'] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="field_wrapper"></div>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-header">
+                <h4 class="box-title">8. WEWENANG JABATAN</h4>
+                <div>
+                    <p>
+                        Menjelaskan sejauh mana peran jabatan ini dalam pengambilan keputusan dan dampak apa yang dapat
+                        ditimbulkan dari keputusan yang diambilnya.
+                    </p>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-group mb-0">
+                    <div class="table-resposive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="font-weight-bold text-center" width="5%">#</th>
+                                    <th class="font-weight-bold text-center">WEWENANG JABATAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="">
+                                @foreach ($data['wewenangJabatan'] as $x => $v)
+                                    <tr>
+                                        <td> <span class="badge bg-dark"
+                                                style="min-width: 32px">{{ $x + 1 }}</span></td>
+                                        <td>{{ $v['definisi'] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="field_wrapper"></div>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-header">
+                <h4 class="box-title">9. SPESIFIKASI JABATAN</h4>
+                <div>
+                    <p>
+                        Menguraikan dan menjelaskan pendidikan, pengetahuan pokok, keterampilan dan pengalaman minimal serta
+                        kompetensi yang diperlukan untuk mencapai tujuan jabatan, yang terdiri atas kualifikasi jabatan,
+                        kemampuan dan pengalaman, dan kompetensi.
+                    </p>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-group mb-0">
+                    <div class="table-resposive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="font-weight-bold text-center" width="5%">#</th>
+                                    <th class="font-weight-bold text-center">Pendidikan</th>
+                                    <th class="font-weight-bold text-center">Pengalaman</th>
+                                    <th class="font-weight-bold text-center" width="30%">Bidang Studi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @foreach ($data['spesifikasiPendidikan'] as $x => $v)
+                                    <tr>
+                                        <td> <span class="badge bg-dark"
+                                                style="min-width: 32px">{{ $x + 1 }}</span></td>
+                                        <td>{{ $v['pendidikan'] }}</td>
+                                        <td>{{ $v['pengalaman'] }}</td>
+                                        <td>{{ $v['bidang_studi'] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="field_wrapper"></div>
+            </div>
+            <div class="box-body">
+                <p><b> Kemampuan dan Pengalaman</b></p>
+                <div class="table-resposive">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                        </thead>
+                        <tbody>
+                            <ol type="a">
+                                @foreach ($data['kemampuandanPengalaman'] as $x)
+                                    <li> {{ $x['definisi'] }}</li>
+                                @endforeach
+                            </ol>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-header">
+                <div class="row">
+                    <div class="col-12 text-left">
+                        <h3 class="box-title">9. STRUKTUR ORGANISASI</h3>
+                        <div>
+                            <p>
+                                Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi
+                                jabatan atasan langsung, bawahan langsung serta rekan kerja (peers).
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body pt-0 pb-0">
+                </div>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-header">
+                <h4 class="box-title">11. KEBUTUHAN KOMPETENSI JABATAN (KKJ)</h4>
+                <div>
+                    <p>
+                        Memberikan informasi mengenai kebutuhan kemahiran/kompetensi yang diharapkan dalam suatu jabatan.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="box-body">
+                <div class="form-group mb-0">
+                    <div class="p-5">
+                        <b>>> Kompetensi Utama</b>
+                        <p>Kompetensi perilaku yang harus dimiliki oleh seluruh individu Pegawai dalam organisasi, pada semua fungsi dan Jenjang Jabatan.</p>
+                    </div>
+                    <div class="table-resposive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center font-weight-bold" width="5%">#</th>
+                                    <th class="text-center font-weight-bold">Kode Kompetensi</th>
+                                    <th class="text-center font-weight-bold">Kompetensi</th>
+                                    <th class="text-center font-weight-bold">Penjelasan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $no = 1; @endphp
+                                @foreach ($data['keterampilanNonteknis'] as $x => $v)
+                                    @if ($v['kategori'] == 'UTAMA')
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-dark"
+                                                    style="min-width: 32px">{{ $no++ }}</span>
+                                            </td>
+                                            <td>{{ $v['kode'] }}</td>
+                                            <td>{{ $v['detail']['nama'] }}</td>
+                                            <td>{{ $v['detail']['definisi'] }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="field_wrapper"></div>
+            </div>
+            <div class="box-body">
+                <div class="form-group mb-0">
+                    <div class="p-5">
+                        <b>>> Kompetensi Peran</b>
+                        <p>Kompetensi perilaku yang dipersyaratkan agar individu Pegawai dapat berhasil dalam suatu posisi, peran, dan Jenjang Jabatan yang spesifik.</p>
+                    </div>
+                    <div class="table-resposive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center font-weight-bold" width="5%">#</th>
+                                    <th class="text-center font-weight-bold">Kode Kompetensi</th>
+                                    <th class="text-center font-weight-bold">Kompetensi</th>
+                                    <th class="text-center font-weight-bold">Kategori</th>
+                                    <th class="text-center font-weight-bold">Penjelasan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $no = 1; @endphp
+                                @foreach ($data['keterampilanNonteknis'] as $x => $v)
+                                    @if ($v['kategori'] == 'PERAN')
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-dark"
+                                                    style="min-width: 32px">{{ $no++ }}</span>
+                                            </td>
+                                            <td>{{ $v['kode'] }}</td>
+                                            <td>{{ $v['detail']['nama'] }}</td>
+                                            <td class="text-uppercase">{{ $v['jenis'] }}</td>
+                                            <td>{{ $v['detail']['definisi'] }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="field_wrapper"></div>
+            </div>
+            <div class="box-body">
+                <div class="form-group mb-0">
+                    <div class="p-5">
+                        <b>>> Kompetensi Fungsi</b>
+                        <p>Kompetensi perilaku yang harus dimiliki untuk setiap fungsi bisnis di dalam organisasi.</p>
+                    </div>
+                    <div class="table-resposive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center font-weight-bold" width="5%">#</th>
+                                    <th class="text-center font-weight-bold">Kode Kompetensi</th>
+                                    <th class="text-center font-weight-bold">Kompetensi</th>
+                                    <th class="text-center font-weight-bold">Kategori</th>
+                                    <th class="text-center font-weight-bold">Penjelasan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $no = 1; @endphp
+                                @foreach ($data['keterampilanNonteknis'] as $x => $v)
+                                    @if ($v['kategori'] == 'FUNGSI')
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-dark"
+                                                    style="min-width: 32px">{{ $no++ }}</span>
+                                            </td>
+                                            <td>{{ $v['kode'] }}</td>
+                                            <td>{{ $v['detail']['nama'] }}</td>
+                                            <td class="text-uppercase">{{ $v['jenis'] }}</td>
+                                            <td>{{ $v['detail']['definisi'] }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="field_wrapper"></div>
+            </div>
+            <div class="box-body">
+                <div class="form-group mb-0">
+                    <div class="p-5">
+                        <b>>> Kompetensi Teknis</b>
+                        <p>Kompetensi terkait dengan pengetahuan, keterampilan dan keahlian yang diperlukan sesuai dengan tugas pokok masing-masing individu Pegawai untuk menyelesaikan pekerjaan-pekerjaan secara teknis pada jabatannya.</p>
+                    </div>
+                    <div class="table-resposive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center font-weight-bold" width="5%">#</th>
+                                    <th class="text-center font-weight-bold">Kode Kompetensi</th>
+                                    <th class="text-center font-weight-bold">Kompetensi</th>
+                                    <th class="text-center font-weight-bold">Level</th>
+                                    <th class="text-center font-weight-bold">Kategori</th>
+                                    <th class="text-center font-weight-bold">Penjelasan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $no = 1; @endphp
+                                @foreach ($data['KeterampilanTeknis'] as $x => $v)
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-dark"
+                                                    style="min-width: 32px">{{ $no++ }}</span>
+                                            </td>
+                                            <td>{{ $v['kode'] }}</td>
+                                            <td>{{ $v['master']['nama']?? '-' }}</td>
+                                            <td>{{ $v['level'] }}</td>
+                                            <td>{{ $v['kategori'] }}</td>
+                                            <td>{{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
+                                        </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="field_wrapper"></div>
+            </div>
+        </div>
+
+    </div>
+@endsection

@@ -32,20 +32,40 @@
                             <div class="row g-0">
                                 <div class="col">
                                     <div class="box-body">
+                                        @if (session('success'))
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                {{ session('success') }}
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        @endif
+                                        <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <label for="file">Upload Excel File:</label>
+                                            <input type="file" name="file" id="file" required>
+                                            <button type="submit">Import</button>
+                                        </form>
+
+
                                         <div class="table-responsive">
                                             <table class="table table-striped dataTables">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-Left">Path</th>
-                                                        <th class="text-left">Jabatan</th>
-                                                        <th class="text-center">Klaster</th>
-                                                        <th class="text-left">Direktorat</th>
-                                                        <th class="text-left">Jenjang</th>
-                                                        <th class="text-center">Status</th>
+                                                        <th class="text-Left">No.</th>
+                                                        <th class="text-center">Nama</th>
+                                                        <th class="text-Left">action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
+                                                    @foreach ($data as $x => $v)
+                                                    <td>{{$x+1}}</td>
+                                                    <td>{{$v['nama']}}</td>
+                                                    <td>
+                                                        <a href="{{ route('uraian_jabatan.show', $v->id) }}" title="View Detail">  <i class="ti-eye"></i>
+                                                        </a>
+                                                    </td>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>

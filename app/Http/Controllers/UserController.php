@@ -27,6 +27,25 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Role assigned to user successfully.');
     }
 
+    public function updateRolesPermissions(Request $request, User $user)
+{
+    $validated = $request->validate([
+        'roles' => 'array',
+        'roles.*' => 'string|exists:roles,name',
+        'permissions' => 'array',
+        'permissions.*' => 'string|exists:permissions,name',
+    ]);
+
+    // Update roles
+    $user->syncRoles($validated['roles'] ?? []);
+
+    // Update permissions
+    $user->syncPermissions($validated['permissions'] ?? []);
+
+    return redirect()->back()->with('success', 'Roles and permissions updated successfully.');
+}
+
+
     public function assignPermission(Request $request, User $user)
     {
         $request->validate(['permission' => 'required']);
