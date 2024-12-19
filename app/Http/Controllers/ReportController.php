@@ -21,5 +21,21 @@ class ReportController extends Controller
 
         // Mengatur filename
         return $pdf->download('report.pdf');
+
+
+
+        $this->load->library('PDF');
+
+        // $data["title"] = "Laporan ";
+        // $data["content"] = "v_summary_template_pdf";
+        // $html = $this->load->view($data['content'], $data, $data);
+        // $name = "Template-Jabatan-" . date('d-m-Y H-i-s') . ".pdf";
+        // $output = $this->pdf->pdf_create($html, "./temp/$name", false, "portrait");
+        // redirect(base_url("./temp/$name"));
+
+
+
+
+
     }
 }

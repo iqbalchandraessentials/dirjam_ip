@@ -38,7 +38,7 @@ Route::get('/uraian_jabatan_template', function () {
 
 Route::get('/export-excel', [App\Http\Controllers\ExportController::class, 'exportExcel'])->name('export.excel');
 
-Route::get('/export-pdf', [ReportController::class, 'exportPdf'])->name('export.pdf');
+Route::get('/export-pdf', [UraianMasterJabatanController::class, 'exportPdf'])->name('export.pdf');
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('roles', RoleController::class);

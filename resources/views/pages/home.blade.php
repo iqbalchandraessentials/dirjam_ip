@@ -24,7 +24,7 @@
                         </a>
                     </div>
                 </div>
-                <p class="mt-4">
+                <p class="mt-4 font-italic">
                     Merupakan kalimat singkat yang menjelaskan tujuan diciptakannya jabatan tersebut di suatu
                     organisasi, menggambarkan hasil akhir yang hendak dicapai, cara mencapainya, bagaimana fungsi
                     jabatan dilaksanakan, apa saja yang dipengaruhi oleh jabatan, dan untuk apa fungsi tersebut
@@ -91,7 +91,7 @@
             <div class="box-header">
                 <h4 class="box-title">2. Fungsi Utama</h4>
                 <div class="mt-4">
-                    <p>
+                    <p class="font-italic">
                         Merupakan kalimat singkat yang menjelaskan tujuan diciptakannya jabatan tersebut di suatu
                         organisasi, menggambarkan hasil akhir yang hendak dicapai, cara mencapainya, bagaimana fungsi
                         jabatan dilaksanakan, apa saja yang dipengaruhi oleh jabatan, dan untuk apa fungsi tersebut
@@ -113,7 +113,7 @@
             <div class="box-header">
                 <h4 class="box-title">3. TUGAS POKOK UTAMA DAN OUTPUT</h4>
                 <div class="mt-4">
-                    <p>
+                    <p class="font-italic">
                         Merupakan deskripsi yang spesifik tentang pekerjaan guna tercapainya tujuan jabatan, yang dilengkapi
                         dengan informasi yang merujuk hasil kerja dapat berupa dokumen, laporan atau dokumentasi dalam
                         bentuk lain yang dapat dipertanggungjawabkan hasilnya.
@@ -124,7 +124,7 @@
 
                 <div class="form-group mb-0">
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="text-left font-weight-bold" width="5%">#</th>
@@ -152,7 +152,7 @@
             <div class="box-header">
                 <h4 class="box-title">4. TUGAS POKOK GENERIK DAN OUTPUT</h4>
                 <div class="mt-5">
-                    <p>
+                    <p class="font-italic">
                         Merupakan rincian aktivitas-aktivitas umum yang diperlukan suatu jabatan sesuai jenis jabatan
                         tersebut, yang dilengkapi dengan informasi yang merujuk hasil kerja dapat berupa dokumen, laporan
                         atau dokumentasi dalam bentuk lain yang dapat dipertanggungjawabkan hasilnya.
@@ -162,7 +162,7 @@
 
                     <div class="form-group mb-0">
                         <div class="table-resposive">
-                            <table class="table">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th class="text-left font-weight-bold" width="5%">#</th>
@@ -196,7 +196,8 @@
                     <div class="col-12 text-left">
                         <h4 class="box-title">5. Dimensi Jabatan</h4>
                         <div class="mt-5">
-                            <p>Memuat semua data relevan yang dapat diukur dan digunakan untuk menggambarkan cakupan
+                            <p class="font-italic">
+                                Memuat semua data relevan yang dapat diukur dan digunakan untuk menggambarkan cakupan
                                 atau besarnya tanggung jawab yang dipegang termasuk ringkasan data kuantitatif dan
                                 kualitatif yang etrkait dengan besarnya tugas ini.</p>
                         </div>
@@ -265,7 +266,7 @@
             <div class="box-header">
                 <h4 class="box-title">6. Hubungan Kerja</h4>
                 <div>
-                    <p>
+                    <p class="font-italic">
                         Menggambarkan hubungan kedinasan antara pemegang jabatan dengan jabatan lain dalam
                         perusahaan maupun di perusahaan lain, yang disertai dengan deskripsi tujuan dari hubungan
                         kerja tersebut.
@@ -342,7 +343,7 @@
             <div class="box-header">
                 <h4 class="box-title">7. MASALAH, KOMPLEKSITAS KERJA DAN TANTANGAN UTAMA</h4>
                 <div>
-                    <p>
+                    <p class="font-italic">
                         Merupakan uraian atas hal-hal yang menjadi permasalahan bagi pemangku jabatan sebagai akibat dari
                         adanya kesulitan dalam pencapaian tujuan atau target yang ditetapkan.
                     </p>
@@ -355,8 +356,7 @@
                             <thead>
                                 <tr>
                                     <th class="font-weight-bold text-center" width="5%">#</th>
-                                    <th class="font-weight-bold text-center">MASALAH, KOMPLEKSITAS KERJA DAN TANTANGAN
-                                        UTAMA</th>
+                                    <th class="font-weight-bold text-center">MASALAH, KOMPLEKSITAS KERJA DAN TANTANGAN UTAMA</th>
                                 </tr>
                             </thead>
                             <tbody class="">
@@ -379,7 +379,7 @@
             <div class="box-header">
                 <h4 class="box-title">8. WEWENANG JABATAN</h4>
                 <div>
-                    <p>
+                    <p class="font-italic">
                         Menjelaskan sejauh mana peran jabatan ini dalam pengambilan keputusan dan dampak apa yang dapat
                         ditimbulkan dari keputusan yang diambilnya.
                     </p>
@@ -415,7 +415,7 @@
             <div class="box-header">
                 <h4 class="box-title">9. SPESIFIKASI JABATAN</h4>
                 <div>
-                    <p>
+                    <p class="font-italic">
                         Menguraikan dan menjelaskan pendidikan, pengetahuan pokok, keterampilan dan pengalaman minimal serta
                         kompetensi yang diperlukan untuk mencapai tujuan jabatan, yang terdiri atas kualifikasi jabatan,
                         kemampuan dan pengalaman, dan kompetensi.
@@ -429,29 +429,42 @@
                             <thead>
                                 <tr>
                                     <th class="font-weight-bold text-center" width="5%">#</th>
-                                    <th class="font-weight-bold text-center">Pendidikan</th>
+                                    <th class="font-weight-bold text-center">Menguraikan dan menjelaskan pendidikan, pengetahuan pokok, keterampilan dan pengalaman minimal serta
+                                        kompetensi yang diperlukan untuk mencapai tujuan jabatan, yang terdiri atas kualifikasi jabatan,
+                                        kemampuan dan pengalaman, dan kompetensi.Menguraikan dan menjelaskan pendidikan, pengetahuan pokok, keterampilan dan pengalaman minimal serta
+                                        kompetensi yang diperlukan untuk mencapai tujuan jabatan, yang terdiri atas kualifikasi jabatan,
+                                        kemampuan dan pengalaman, dan kompetensi.</th>
                                     <th class="font-weight-bold text-center">Pengalaman</th>
                                     <th class="font-weight-bold text-center" width="30%">Bidang Studi</th>
                                 </tr>
                             </thead>
-                            {{-- <tbody class="text-center">
-                                @foreach ($data['spesifikasiPendidikan'] as $x => $v)
+                            <tbody class="text-center">
+                                @foreach ($data['uraianMasterJabatan']['spesifikasiPendidikan'] as $x => $v)
                                     <tr>
                                         <td> <span class="badge bg-dark"
                                                 style="min-width: 32px">{{ $x + 1 }}</span></td>
                                         <td>{{ $v['pendidikan'] }}</td>
                                         <td>{{ $v['pengalaman'] }}</td>
-                                        <td>{{ $v['bidang_studi'] }}</td>
+                                        <td>
+                                            @php
+                                                $pattern = '/\d+\.\s*/'; // Pola untuk memisahkan berdasarkan angka diikuti titik dan spasi
+                                                $bidangStudiList = preg_split($pattern, $v['bidang_studi'], -1, PREG_SPLIT_NO_EMPTY);
+
+                                                foreach ($bidangStudiList as $index => $bidangStudi) {
+                                                    echo ($index + 1) . '. ' . trim($bidangStudi) . '<br>';
+                                                }
+                                            @endphp
+                                        </td>
                                     </tr>
                                 @endforeach
-                            </tbody> --}}
+                            </tbody>
                         </table>
                     </div>
                 </div>
                 <div id="field_wrapper"></div>
             </div>
             <div class="box-body">
-                <p><b> Kemampuan dan Pengalaman</b></p>
+                <h4><b> Kemampuan dan Pengalaman</b></h4>
                 <div class="table-resposive">
                     <table class="table table-bordered">
                         <thead class="thead-light">
@@ -474,7 +487,7 @@
                     <div class="col-12 text-left">
                         <h3 class="box-title">9. STRUKTUR ORGANISASI</h3>
                         <div>
-                            <p>
+                            <p class="font-italic">
                                 Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi
                                 jabatan atasan langsung, bawahan langsung serta rekan kerja (peers).
                             </p>
@@ -491,7 +504,7 @@
             <div class="box-header">
                 <h4 class="box-title">11. KEBUTUHAN KOMPETENSI JABATAN (KKJ)</h4>
                 <div>
-                    <p>
+                    <p class="font-italic">
                         Memberikan informasi mengenai kebutuhan kemahiran/kompetensi yang diharapkan dalam suatu jabatan.
                     </p>
                 </div>
@@ -500,11 +513,11 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="p-5">
-                        <b>>> Kompetensi Utama</b>
-                        <p>Kompetensi perilaku yang harus dimiliki oleh seluruh individu Pegawai dalam organisasi, pada semua fungsi dan Jenjang Jabatan.</p>
+                        <h4> <b>>> Kompetensi Utama</b></h4>
+                        <p class="font-italic">Kompetensi perilaku yang harus dimiliki oleh seluruh individu Pegawai dalam organisasi, pada semua fungsi dan Jenjang Jabatan.</p>
                     </div>
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="text-center font-weight-bold" width="5%">#</th>
@@ -537,11 +550,11 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="p-5">
-                        <b>>> Kompetensi Peran</b>
-                        <p>Kompetensi perilaku yang dipersyaratkan agar individu Pegawai dapat berhasil dalam suatu posisi, peran, dan Jenjang Jabatan yang spesifik.</p>
+                        <h4><b>>> Kompetensi Peran</b></h4>
+                        <p class="font-italic">Kompetensi perilaku yang dipersyaratkan agar individu Pegawai dapat berhasil dalam suatu posisi, peran, dan Jenjang Jabatan yang spesifik.</p>
                     </div>
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="text-center font-weight-bold" width="5%">#</th>
@@ -576,11 +589,11 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="p-5">
-                        <b>>> Kompetensi Fungsi</b>
-                        <p>Kompetensi perilaku yang harus dimiliki untuk setiap fungsi bisnis di dalam organisasi.</p>
+                        <h4><b>>> Kompetensi Fungsi</b></h4>
+                        <p class="font-italic">Kompetensi perilaku yang harus dimiliki untuk setiap fungsi bisnis di dalam organisasi.</p>
                     </div>
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="text-center font-weight-bold" width="5%">#</th>
@@ -615,11 +628,11 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="p-5">
-                        <b>>> Kompetensi Teknis</b>
-                        <p>Kompetensi terkait dengan pengetahuan, keterampilan dan keahlian yang diperlukan sesuai dengan tugas pokok masing-masing individu Pegawai untuk menyelesaikan pekerjaan-pekerjaan secara teknis pada jabatannya.</p>
+                        <h4><b>>> Kompetensi Teknis</b></h4>
+                        <p class="font-italic">Kompetensi terkait dengan pengetahuan, keterampilan dan keahlian yang diperlukan sesuai dengan tugas pokok masing-masing individu Pegawai untuk menyelesaikan pekerjaan-pekerjaan secara teknis pada jabatannya.</p>
                     </div>
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="text-center font-weight-bold" width="5%">#</th>
@@ -633,17 +646,19 @@
                             <tbody>
                                 @php $no = 1; @endphp
                                 @foreach ($KeterampilanTeknis as $x => $v)
+                                        @if (isset($v['master']['nama']))
                                         <tr>
                                             <td>
                                                 <span class="badge bg-dark"
                                                     style="min-width: 32px">{{ $no++ }}</span>
                                             </td>
                                             <td>{{ $v['kode'] }}</td>
-                                            <td>{{ $v['master']['nama']?? '-' }}</td>
+                                            <td>{{ $v['master']['nama']}}</td>
                                             <td>{{ $v['level'] }}</td>
                                             <td>{{ $v['kategori'] }}</td>
                                             <td>{{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
                                         </tr>
+                                        @endif
                                 @endforeach
                             </tbody>
                         </table>

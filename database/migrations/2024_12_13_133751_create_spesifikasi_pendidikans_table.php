@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('uraian_master_jabatan_id');
             $table->string('pendidikan');
+            $table->integer('pengalaman')->nullable();
+            $table->string('bidang_studi')->nullable();
             $table->timestamps();
         });
     }

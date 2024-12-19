@@ -59,9 +59,9 @@ class UraianMasterJabatan extends Model
 
     public function keterampilanTeknis()
     {
-        $enabler = $this->hasMany(KeterampilanTeknis::class, 'uraian_master_jabatan_id', 'master_jabatan_id');
         $core = $this->hasMany(KeterampilanTeknis::class, 'uraian_master_jabatan_id', 'id');
+        $enabler = $this->hasMany(KeterampilanTeknis::class, 'uraian_master_jabatan_id', 'master_jabatan_id');
         
-        return $enabler->union($core);
+        return $core->union($enabler);
     }
 }

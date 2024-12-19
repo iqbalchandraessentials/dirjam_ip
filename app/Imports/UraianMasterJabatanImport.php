@@ -129,6 +129,13 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
             $data['pendidikan'] = $this->pendidikan;
+            // 
+            // Memecah data berdasarkan angka diikuti titik
+            // $bidangStudiArray = preg_split('/\d+\.\s*/', $data['pendidikan'][0]['bidang_studi'], -1, PREG_SPLIT_NO_EMPTY);
+            // foreach ($bidangStudiArray as $bidangStudi) {
+            //     echo trim($bidangStudi);
+            // }
+            // die;
             // kemampuan_pengalaman
             foreach ($rows as $key => $row) {
                 if ($key >= 140 && $key <= 144) {
@@ -138,6 +145,7 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
             $data['kemampuan_pengalaman'] = $this->kemampuan_pengalaman;
+            // 
 
             // Kompetensi Teknis
             foreach ($rows as $key => $row) {
@@ -150,6 +158,11 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
             $data['kompetensi_teknis'] = $this->kompetensi_teknis;
+            // akhir kompetensi teknis
+
+            
+
+
 
             $master_jabatan = MasterJabatan::where('nama', $data['nama'])->first();
 
@@ -214,16 +227,16 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
             
-            // foreach ($data['pendidikan'] as $x) {
-            //     if (!empty($x['pendidikan']) && !empty($x['pengalaman']) && !empty($x['bidang_studi'])) {
-            //         SpesifikasiPendidikan::create([
-            //             'uraian_master_jabatan_id' => $uraian_jabatan_id,
-            //             'pendidikan' => $x['pendidikan'],
-            //             'pengalaman' => $x['pengalaman'],
-            //             'bidang_studi' => $x['bidang_studi'],
-            //         ]);
-            //     }
-            // }
+            foreach ($data['pendidikan'] as $x) {
+                if (!empty($x['pendidikan']) && !empty($x['pengalaman'])) {
+                    SpesifikasiPendidikan::create([
+                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
+                        'pendidikan' => $x['pendidikan'],
+                        'pengalaman' => $x['pengalaman'],
+                        'bidang_studi' => $x['bidang_studi'],
+                    ]);
+                }
+            }
             
             foreach ($data['kemampuan_pengalaman'] as $x) {
                 if (!empty($x['definisi'])) {
