@@ -272,34 +272,109 @@
                 <div style="font-weight: normal;">
                     <table>
                         <tr>
-                            <td>
-                                Anggaran
+                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                                {{ $data['uraianMasterJabatan']['anggaran'] == 'Investasi' ? 'V' : '' }}
                             </td>
-                            <td>:</td>
-                            <td><?= $data['uraianMasterJabatan']['anggaran'] ?? '-' ?></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Accountability
-                            </td>
-                            <td>:</td>
-                            <td><?= $data['uraianMasterJabatan']['accountability'] ?? '-' ?></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Accountability
-                            </td>
-                            <td>:</td>
-                            <td><?= $data['uraianMasterJabatan']['nature_impact'] ?? '-' ?></td>
-                        </tr>
-        
-                        <tr>
                             <td></td>
-                            <td>&nbsp;</td>
+                            <td>Anggaran Investasi</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                                {{ $data['uraianMasterJabatan']['anggaran'] == 'Operasional' ? 'V' : '' }}
+                            </td>
                             <td></td>
+                            <td>Anggaran Operasional</td>
                         </tr>
                     </table>
-                    <br />
+                    <b>Accountability</b>
+                    <table>    
+                        <tr>
+                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                                {{ $data['uraianMasterJabatan']['accountability'] == 'Non Quantifiable' ? 'V' : '' }}
+                            </td>
+                            <td></td>
+                            <td>Non Quantifiable</td>
+                            <td></td>
+                            <td>< 650 Juta</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                                {{ $data['uraianMasterJabatan']['accountability'] == 'Very Small' ? 'V' : '' }}
+                            </td>
+                            <td></td>
+                            <td>Very Small</td>
+                            <td></td>
+                            <td>650 Juta - 6,5 Milyar</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                                {{ $data['uraianMasterJabatan']['accountability'] == 'Small' ? 'V' : '' }}
+                            </td>
+                            <td></td>
+                            <td>Small</td>
+                            <td></td>
+                            <td>6,5 Milyar - 65 Milyar</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                                {{ $data['uraianMasterJabatan']['accountability'] == 'Medium' ? 'V' : '' }}
+                            </td>
+                            <td></td>
+                            <td>Medium</td>
+                            <td></td>
+                            <td>65 Milyar - 650 Milyar</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                                {{ $data['uraianMasterJabatan']['accountability'] == 'Large' ? 'V' : '' }}
+                            </td>
+                            <td></td>
+                            <td>Large</td>
+                            <td></td>
+                            <td>650 Milyar - 6,5 Trilyun</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                                {{ $data['uraianMasterJabatan']['accountability'] == 'Very Large' ? 'V' : '' }}
+                            </td>
+                            <td></td>
+                            <td>Very Large</td>
+                            <td></td>
+                            <td>6,5 Trilyun - 65 Trilyun</td>
+                        </tr>      
+                    </table>
+                    <b>Nature Impact</b>
+                    <table>
+                        <tr>
+                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                                {{ $data['uraianMasterJabatan']['nature_impact'] == 'Prime' ? 'V' : '' }}
+                            </td>
+                            <td></td>
+                            <td>Prime</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                                {{ $data['uraianMasterJabatan']['nature_impact'] == 'Share' ? 'V' : '' }}
+                            </td>
+                            <td></td>
+                            <td>Share</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                                {{ $data['uraianMasterJabatan']['nature_impact'] == 'Contributory' ? 'V' : '' }}
+                            </td>
+                            <td></td>
+                            <td>Contributory</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                                {{ $data['uraianMasterJabatan']['nature_impact'] == 'Remote' ? 'V' : '' }}
+                            </td>
+                            <td></td>
+                            <td>Remote</td>
+                        </tr>
+                    </table>
+                    <br>
                 </div>
             </li>
             <li>Dimensi Non-keuangan
@@ -530,6 +605,7 @@
                     </tbody>
                 </table>
             </div>
+            <br>
             <b> Kemampuan dan Pengalaman</b>
                 <div class="table-resposive">
                     <table class="table table-bordered">
@@ -703,8 +779,16 @@
                 </table>
             </div>
             <br>
-        </br>
     </li>
+    <small style="font-weight: normal">
+        - Kompetensi primer adalah Kompetensi yang wajib dimiliki oleh individu yang menduduki suatu Jabatan atau fungsi agar individu dapat berhasil pada suatu posisi, fungsi, atau Jenjang Jabatan yang spesifik.
+        <br>
+        - Kompetensi sekunder adalah Kompetensi yang perlu dimiliki untuk mendukung individu yang menduduki suatu Jabatan atau fungsi agar individu dapat berhasil pada suatu posisi, fungsi, atau Jenjang Jabatan yang spesifik.
+        <br>
+        - Kompetensi core adalah Kompetensi teknis yang wajib dimiliki berdasarkan tugas pokok sesuai fungsi utama Jabatan agar individu dapat berhasil pada suatu posisi dalam fungsi bisnis
+        <br>
+        - Kompetensi enabler adalah Kompetensi teknis yang perlu dimiliki untuk mendukung tugas pokok sesuai fungsi utama Jabatan agar individu dapat berhasil pada suatu posisi dalam fungsi bisnis.
+    </small>
 </ol>
 
 
