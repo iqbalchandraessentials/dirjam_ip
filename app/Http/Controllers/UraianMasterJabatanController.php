@@ -56,22 +56,20 @@ class UraianMasterJabatanController extends Controller
 
     public function show($id)
     {
-        $ipImage = base64_encode(file_get_contents(public_path('img/ip.png')));
-        $plnImage = base64_encode(file_get_contents(public_path('img/pln.png')));
-        dd($plnImage);
-        $data = MasterJabatan::with('uraianMasterJabatan')->find($id);
-        $tugaspokokGenerik = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $data->jenis_jabatan)->get();      
-        $masalahKompleksitasKerja = isset($data->uraianMasterJabatan)  && $data->uraianMasterJabatan->masalahKompleksitasKerja->isNotEmpty()
-        ? $data->uraianMasterJabatan->masalahKompleksitasKerja
+        $data = UraianMasterJabatan::with('masterJabatan')->find($id);
+        // dd($data);
+        $tugaspokokGenerik = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $data->masterJabatan->jenis_jabatan)->get();      
+        $masalahKompleksitasKerja = isset($data)  && $data->masalahKompleksitasKerja->isNotEmpty()
+        ? $data->masalahKompleksitasKerja
         : MasalahKompleksitasKerja::where('jenis_jabatan', $data->jenis_jabatan)->get();
-        $wewenangJabatan = isset($data->uraianMasterJabatan)  && $data->uraianMasterJabatan->wewenangJabatan->isNotEmpty()
-        ? $data->uraianMasterJabatan->wewenangJabatan
+        $wewenangJabatan = isset($data)  && $data->wewenangJabatan->isNotEmpty()
+        ? $data->wewenangJabatan
         : WewenangJabatan::where('jenis_jabatan', $data->jenis_jabatan)->get();
-        $kemampuandanPengalaman = isset($data->uraianMasterJabatan)  && $data->uraianMasterJabatan->kemampuandanPengalaman->isNotEmpty()
-        ? $data->uraianMasterJabatan->kemampuandanPengalaman
+        $kemampuandanPengalaman = isset($data)  && $data->kemampuandanPengalaman->isNotEmpty()
+        ? $data->kemampuandanPengalaman
         : KemampuandanPengalaman::where('jenis_jabatan', $data->jenis_jabatan)->get();
-        $KeterampilanTeknis = $data->uraianMasterJabatan->keterampilanTeknis;
-        // dd($KeterampilanTeknis);
+        $KeterampilanTeknis = $data->keterampilanTeknis;
+
         return view('pages.home', [
         'data' => $data,
         'tugaspokokGenerik' => $tugaspokokGenerik,
@@ -83,22 +81,21 @@ class UraianMasterJabatanController extends Controller
     }
 
 
-    public function exportPdf($id= 29048)
+    public function exportPdf($id)
     {
-        // Data yang akan ditampilkan di PDF
-        $data = MasterJabatan::with('uraianMasterJabatan')->find($id);
+        $data = UraianMasterJabatan::with('masterJabatan')->find($id);
         // dd($data);
         $tugaspokokGenerik = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $data->jenis_jabatan)->get();      
-        $masalahKompleksitasKerja = isset($data->uraianMasterJabatan)  && $data->uraianMasterJabatan->masalahKompleksitasKerja->isNotEmpty()
-        ? $data->uraianMasterJabatan->masalahKompleksitasKerja
+        $masalahKompleksitasKerja = isset($data)  && $data->masalahKompleksitasKerja->isNotEmpty()
+        ? $data->masalahKompleksitasKerja
         : MasalahKompleksitasKerja::where('jenis_jabatan', $data->jenis_jabatan)->get();
-        $wewenangJabatan = isset($data->uraianMasterJabatan)  && $data->uraianMasterJabatan->wewenangJabatan->isNotEmpty()
-        ? $data->uraianMasterJabatan->wewenangJabatan
+        $wewenangJabatan = isset($data)  && $data->wewenangJabatan->isNotEmpty()
+        ? $data->wewenangJabatan
         : WewenangJabatan::where('jenis_jabatan', $data->jenis_jabatan)->get();
-        $kemampuandanPengalaman = isset($data->uraianMasterJabatan)  && $data->uraianMasterJabatan->kemampuandanPengalaman->isNotEmpty()
-        ? $data->uraianMasterJabatan->kemampuandanPengalaman
+        $kemampuandanPengalaman = isset($data)  && $data->kemampuandanPengalaman->isNotEmpty()
+        ? $data->kemampuandanPengalaman
         : KemampuandanPengalaman::where('jenis_jabatan', $data->jenis_jabatan)->get();
-        $KeterampilanTeknis = $data->uraianMasterJabatan->keterampilanTeknis;
+        $KeterampilanTeknis = $data->keterampilanTeknis;
 
         // Membuat PDF dari view
         $pdf = PDF::loadView('pages.pdf_report', [
@@ -111,20 +108,14 @@ class UraianMasterJabatanController extends Controller
         ]);
 
         // Mengatur filename
-        return $pdf->download('report.pdf');
-        $this->load->library('PDF');
-
-        // $data["title"] = "Laporan ";
-        // $data["content"] = "v_summary_template_pdf";
-        // $html = $this->load->view($data['content'], $data, $data);
-        // $name = "Template-Jabatan-" . date('d-m-Y H-i-s') . ".pdf";
-        // $output = $this->pdf->pdf_create($html, "./temp/$name", false, "portrait");
-        // redirect(base_url("./temp/$name"));
-
-
-
-
-
+        $name = "Uraian-Jabatan-". $data->nama . date('d-m-Y H-i-s') . ".pdf";
+        return $pdf->download($name);
+    }
+    
+    public function draft($id) {
+        $data =  MasterJabatan::find($id);
+        // dd($data);
+        return view('pages.uraian_jabatan_draft',  ['data'=> $data]);
     }
 
     /**

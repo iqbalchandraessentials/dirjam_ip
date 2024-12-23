@@ -19,7 +19,7 @@
                 </a>
             </li>
         
-            <li class="treeview {{ Request::segment(1) === 'facilities' ? 'active' : '' }}">
+            <li class="treeview {{ Request::segment(1) === 'master_data' ? 'active' : '' }}">
                 <a href="#">
                     <i class="ti-settings"></i>
                     <span>Master Data</span>
@@ -28,6 +28,16 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
+                        <a href="{{ url('/facilities/categories') }}">
+                            <i class="ti-more"></i>Indikator
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
+                        <a href="{{ url('/facilities/categories') }}">
+                            <i class="ti-more"></i>Unit
+                        </a>
+                    </li>
                     <li class="{{ Request::is('roles') || Request::is('facilities/create') ? 'active' : '' }}">
                         <a href="{{ route('roles.index') }}">
                             <i class="ti-more"></i>Hak Akses
@@ -63,16 +73,8 @@
                             <i class="ti-more"></i>Tanggung Jawab Generik
                         </a>
                     </li>
-                    <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
-                        <a href="{{ url('/facilities/categories') }}">
-                            <i class="ti-more"></i>Indikator
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
-                        <a href="{{ url('/facilities/categories') }}">
-                            <i class="ti-more"></i>Unit
-                        </a>
-                    </li>
+              
+                 
                     <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
                         <a href="{{ url('/facilities/categories') }}">
                             <i class="ti-more"></i>Periode

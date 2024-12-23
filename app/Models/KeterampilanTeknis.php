@@ -9,6 +9,7 @@ class KeterampilanTeknis extends Model
     protected $fillable = [
         'uraian_master_jabatan_id',
         'kode',
+        'master_detail_kompetensi_id',
         'level',
         'kategori',
     ];
@@ -19,7 +20,6 @@ class KeterampilanTeknis extends Model
 
     public function detailMasterKompetensiTeknis()
     {
-        return $this->hasOne(MasterDetailKomptensiTeknis::class, 'kode_master', 'kode')
-                    ->whereColumn('level', 'level');
+        return $this->hasOne(MasterDetailKomptensiTeknis::class, 'kode_master', 'master_detail_kompetensi_id');
     }
 }

@@ -38,7 +38,9 @@ Route::get('/uraian_jabatan_template', function () {
 
 Route::get('/export-excel', [App\Http\Controllers\ExportController::class, 'exportExcel'])->name('export.excel');
 
-Route::get('/export-pdf', [UraianMasterJabatanController::class, 'exportPdf'])->name('export.pdf');
+Route::get('/export-pdf/{id}', [UraianMasterJabatanController::class, 'exportPdf'])->name('export.pdf');
+Route::get('/uraian_master_jabatan_draft/{id}', [UraianMasterJabatanController::class, 'draft'])->name('uraianJabatan.draft');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('roles', RoleController::class);
@@ -73,6 +75,9 @@ Route::middleware('auth')->group(function () {
 Route::get('/import', [ImportController::class, 'showForm'])->name('import.form');
 Route::post('/import', [ImportController::class, 'import'])->name('import.excel');
 
+
+
+Route::get('/master_data/indikator', [ImportController::class, 'showForm'])->name('master.indikator');
 
 
 

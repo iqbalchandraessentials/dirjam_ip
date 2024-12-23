@@ -18,7 +18,9 @@ class UraianMasterJabatan extends Model
         'nature_impact',
     ];
 
-    
+    function masterJabatan() {
+        return $this->belongsTo(MasterJabatan::class, 'master_jabatan_id', 'id');
+    }
 
     public function tugasPokoUtamaGenerik()
     {

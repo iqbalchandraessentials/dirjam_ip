@@ -18,6 +18,12 @@ class MasterJabatan extends Model
     {
         return $this->hasOne(UraianMasterJabatan::class, 'master_jabatan_id', 'id')->latestOfMany();
     }
+    
+    public function draftUraianMasterJabatan()
+    {
+        return $this->hasMany(UraianMasterJabatan::class, 'master_jabatan_id', 'id');
+    }
+
 
 
 }

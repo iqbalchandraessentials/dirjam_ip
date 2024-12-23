@@ -252,6 +252,7 @@ class UraianMasterJabatanImport implements ToCollection
                     KeterampilanTeknis::create([
                         'uraian_master_jabatan_id' => $uraian_jabatan_id,
                         'kode' => $x['kode_kompetensi'],
+                        'master_detail_kompetensi_id' => $x['kode_kompetensi'].'.'.$x['level'],
                         'kategori' => 'CORE',
                         'level' => $x['level'],
                     ]);
