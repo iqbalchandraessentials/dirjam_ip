@@ -644,7 +644,7 @@
                             </thead>
                             <tbody>
                                 @php $no = 1; @endphp
-                                @foreach ($KeterampilanTeknis as $x => $v)
+                                @foreach ($keterampilanTeknis as $x => $v)
                                         @if (isset($v['master']['nama']))
                                         <tr>
                                             <td>

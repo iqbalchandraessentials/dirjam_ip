@@ -7,11 +7,15 @@ use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanTeknis;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJabatan;
+use App\Models\MasterPendidikan;
 use App\Models\SpesifikasiPendidikan;
 use App\Models\TugasPokoUtamaGenerik;
 use App\Models\WewenangJabatan;
 use App\Models\UraianMasterJabatan;
+use App\Models\ViewTemplate;
+use App\Models\ViewUraianJabatan;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
@@ -33,8 +37,21 @@ class UraianMasterJabatanImport implements ToCollection
     {
         try {
             $data = [];
-            $data['nama'] = isset($rows[10][4]) ? $rows[10][4] : 'Default Nama';
-            $data['fungsi_utama'] = isset($rows[21][1]) ? $rows[21][1] : 'Default Fungsi Utama';
+            $data['nama'] =   $rows[10][4];
+            $viewUraianJabatan = ViewUraianJabatan::select(['MASTER_JABATAN','DESCRIPTION','jen','TYPE','SITEID'])->where('MASTER_JABATAN', $data['nama'])->first();
+            // dd($viewUraianJabatan);
+            if (!$viewUraianJabatan) {
+                return redirect()->back()->with('error', 'Nama Master jabatan tidak ditemukan');
+            }
+            if (!$data['nama']) {
+                $errors[] = 'Master jabatan kosong';
+            }
+            // fungsi utama
+            $data['fungsi_utama'] =  $rows[21][1] ;
+            if (!$data['fungsi_utama']) {
+                $errors[] = 'Fungsi utama kosong';
+            }
+            // dimesi finansial
             $anggaranMap = [
                 64 => "Investasi",
                 65 => "Operasional",
@@ -66,7 +83,6 @@ class UraianMasterJabatanImport implements ToCollection
             $data['accountability'] = getValueFromRows($rows, $accountabilityMap, 'Non Quantifiable');
             $data['nature_impact'] = getValueFromRows($rows, $natureImpactMap, '');
 
-
             // TUGAS POKOK UTAMA DAN OUTPUT
             foreach ($rows as $key => $row) {
                 if ($key >= 26 && $key <= 50) {
@@ -78,25 +94,38 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
             $data['tugas_pokok_utama'] = $this->tugas_pokok_utama;
-
+            
             // HUBUNGAN KERJA
             foreach ($rows as $key => $row) {
                 if ($key >= 90 && $key <= 101) {
-                    $this->hubungan_kerja[] = [
-                        'komunikasi' => $row[2], // Sesuaikan kolom
-                        'tujuan' => $row[3],
-                        'jenis' => 'internal',
-                    ];
+                    // Pastikan data valid sebelum dimasukkan ke array
+                    if (!empty($row[2]) && !empty($row[3])) {
+                        $this->hubungan_kerja[] = [
+                            'komunikasi' => $row[2], // Sesuaikan kolom
+                            'tujuan' => $row[3],
+                            'jenis' => 'internal',
+                        ];
+                    }
                 }
             }
+
+            if (empty($this->hubungan_kerja)) {
+                $errors[] = 'Hubungan kerja kosong';
+            }
+
             foreach ($rows as $key => $row) {
                 if ($key >= 104 && $key <= 111) {
-                    $this->hubungan_kerja[] = [
-                        'komunikasi' => $row[2], // Sesuaikan kolom
-                        'tujuan' => $row[3],
-                        'jenis' => 'eksternal',
-                    ];
+                    if (!empty($row[2]) && !empty($row[3])) {
+                        $this->hubungan_kerja[] = [
+                            'komunikasi' => $row[2], // Sesuaikan kolom
+                            'tujuan' => $row[3],
+                            'jenis' => 'eksternal',
+                        ];
+                    }
                 }
+            }
+            if (empty($this->hubungan_kerja)) {
+                $errors[] = 'Hubungan kerja kosong';
             }
             $data['hubungan_kerja'] = $this->hubungan_kerja;
 
@@ -108,6 +137,7 @@ class UraianMasterJabatanImport implements ToCollection
                     ];
                 }
             }
+
             $data['masalah_kompleksitas_kerja'] = $this->masalah_kompleksitas_kerja;
             // WEWENANG JABATAN
             foreach ($rows as $key => $row) {
@@ -129,14 +159,7 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
             $data['pendidikan'] = $this->pendidikan;
-            // 
-            // Memecah data berdasarkan angka diikuti titik
-            // $bidangStudiArray = preg_split('/\d+\.\s*/', $data['pendidikan'][0]['bidang_studi'], -1, PREG_SPLIT_NO_EMPTY);
-            // foreach ($bidangStudiArray as $bidangStudi) {
-            //     echo trim($bidangStudi);
-            // }
-            // die;
-            // kemampuan_pengalaman
+   
             foreach ($rows as $key => $row) {
                 if ($key >= 140 && $key <= 144) {
                     $this->kemampuan_pengalaman[] = [
@@ -146,7 +169,6 @@ class UraianMasterJabatanImport implements ToCollection
             }
             $data['kemampuan_pengalaman'] = $this->kemampuan_pengalaman;
             // 
-
             // Kompetensi Teknis
             foreach ($rows as $key => $row) {
                 if ($key >= 183 && $key <= 192) {
@@ -159,33 +181,40 @@ class UraianMasterJabatanImport implements ToCollection
             }
             $data['kompetensi_teknis'] = $this->kompetensi_teknis;
             // akhir kompetensi teknis
-
-            
-
-
-
-            $master_jabatan = MasterJabatan::where('nama', $data['nama'])->first();
-
-            // dd($master_jabatan);
-
-            if (!$master_jabatan) {
-                // Handle error, e.g., return error message or log
-                return response()->json(['error' => 'Nama jabatan tidak ditemukan'], 404);
+            if (!empty($errors)) {
+                return redirect()->back()->with('error', implode(', ', $errors));
             }
-            
+            // end of get data
+            // dd($data);   
+            // dd($viewUraianJabatan);
+            // +=+
+            $viewUraianJabatan['jenis_jabatan'] = $viewUraianJabatan['type'] == 'S' ? 'struktural' : 'fungsional';
+            $master_jabatan = MasterJabatan::updateOrCreate(
+                [
+                    'nama' => $viewUraianJabatan['master_jabatan']
+                ],
+                [
+                    'unit_kode' => $viewUraianJabatan['description'], // Data yang akan diupdate atau dibuat
+                    'jenis_jabatan' => $viewUraianJabatan['jenis_jabatan'],
+                    'jenjang_kode' => $viewUraianJabatan['jen'],
+                ]
+            );
             // Buat data UraianMasterJabatan
              $uraian_jabatan_id = UraianMasterJabatan::create([
                 'master_jabatan_id' => $master_jabatan->id,
                 'nama' => $data['nama'],
-                'unit_id' => 1,
+                'unit_id' => $viewUraianJabatan['siteid'],
                 'fungsi_utama' => $data['fungsi_utama'],
                 'anggaran' => $data['anggaran'],
                 'accountability' => $data['accountability'],
                 'nature_impact' => $data['nature_impact'],
+                'created_by' => Auth::id(),
+                'status' => 'APPROVE',
             ]);
+            
+           
 
             $uraian_jabatan_id = $uraian_jabatan_id->id;
-            // dd($data);
             foreach ($data['tugas_pokok_utama'] as $x) {
                 // Cek jika 'aktivitas' dan 'output' tidak kosong
                 if (!empty($x['aktivitas']) && !empty($x['output'])) {
@@ -197,7 +226,20 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
-
+            
+            // SELECT kn.*, vt.nama FROM KETERAMPILAN_NONTEKNIS kn LEFT JOIN master_jabatans vt ON kn.uraian_master_jabatan_id = vt.id;
+            foreach ($data['kompetensi_teknis'] as $x) {
+                if (!empty($x['kode_kompetensi']) && !empty($x['level'])) {
+                    $master_detail_kompetensi = $x['kode_kompetensi'].'.'.$x['level'];
+                    KeterampilanTeknis::create([
+                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
+                        'kode' => $x['kode_kompetensi'],
+                        'master_detail_kompetensi_id' => $master_detail_kompetensi,
+                        'kategori' => "CORE",
+                        'level' => $x['level'],
+                    ]);
+                }
+            }    
             foreach ($data['hubungan_kerja'] as $x) {
                 if (!empty($x['komunikasi']) && !empty($x['tujuan']) && !empty($x['jenis'])) {
                     HubunganKerja::create([
@@ -208,7 +250,6 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
-            
             foreach ($data['masalah_kompleksitas_kerja'] as $x) {
                 if (!empty($x['masalah_kompleksitas_kerja'])) {
                     MasalahKompleksitasKerja::create([
@@ -217,7 +258,6 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
-            
             foreach ($data['wewenang_jabatan'] as $x) {
                 if (!empty($x['wewenang_jabatan'])) {
                     WewenangJabatan::create([
@@ -226,18 +266,7 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
-            
-            foreach ($data['pendidikan'] as $x) {
-                if (!empty($x['pendidikan']) && !empty($x['pengalaman'])) {
-                    SpesifikasiPendidikan::create([
-                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
-                        'pendidikan' => $x['pendidikan'],
-                        'pengalaman' => $x['pengalaman'],
-                        'bidang_studi' => $x['bidang_studi'],
-                    ]);
-                }
-            }
-            
+
             foreach ($data['kemampuan_pengalaman'] as $x) {
                 if (!empty($x['definisi'])) {
                     KemampuandanPengalaman::create([
@@ -246,22 +275,32 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
+              
             
-            foreach ($data['kompetensi_teknis'] as $x) {
-                if (!empty($x['kode_kompetensi']) && !empty($x['level'])) {
-                    KeterampilanTeknis::create([
+             foreach ($data['pendidikan'] as $x) {
+                if (!empty($x['pendidikan']) && !empty($x['pengalaman'])) {
+                    // Cari data pengalaman berdasarkan jenjang jabatan dan nama pendidikan
+                    $pengalaman = MasterPendidikan::select('pengalaman')
+                        ->where('jenjang_jabatan', $viewUraianJabatan->jen)
+                        ->where('nama', $x['pendidikan'])
+                        ->first();
+
+                    // Validasi pengalaman agar hanya angka
+                    $pengalamanValue = is_numeric($pengalaman->pengalaman) ? $pengalaman->pengalaman : 0;
+
+                    // Buat entri di tabel SpesifikasiPendidikan
+                    SpesifikasiPendidikan::create([
                         'uraian_master_jabatan_id' => $uraian_jabatan_id,
-                        'kode' => $x['kode_kompetensi'],
-                        'master_detail_kompetensi_id' => $x['kode_kompetensi'].'.'.$x['level'],
-                        'kategori' => 'CORE',
-                        'level' => $x['level'],
+                        'pendidikan' => $x['pendidikan'],
+                        'pengalaman' => $pengalamanValue, // Pastikan tipe data numerik
+                        'bidang_studi' => $x['bidang_studi'] ?? null, // Default ke null jika tidak ada
                     ]);
                 }
-            }            
-            
+            };
             return $uraian_jabatan_id;
         } catch (\Exception $e) {
             Log::error('Error saat membuat uraian jabatan: ' . $e->getMessage());
+            return redirect()->back()->with('error',  $e->getMessage());
         }
     }
 }

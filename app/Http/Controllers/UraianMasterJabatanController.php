@@ -18,6 +18,7 @@ class UraianMasterJabatanController extends Controller
      */
     public function index()
     {
+
         $data = MasterJabatan::has('uraianMasterJabatan')->get();
         return view('pages.uraian_jabatan', ['data'=>$data]);
     }
@@ -56,7 +57,7 @@ class UraianMasterJabatanController extends Controller
 
     public function show($id)
     {
-        $data = UraianMasterJabatan::with('masterJabatan')->find($id);
+        $data = UraianMasterJabatan::with(['masterJabatan','keterampilanTeknis'])->find($id);
         // dd($data);
         $tugaspokokGenerik = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $data->masterJabatan->jenis_jabatan)->get();      
         $masalahKompleksitasKerja = isset($data)  && $data->masalahKompleksitasKerja->isNotEmpty()
@@ -68,7 +69,13 @@ class UraianMasterJabatanController extends Controller
         $kemampuandanPengalaman = isset($data)  && $data->kemampuandanPengalaman->isNotEmpty()
         ? $data->kemampuandanPengalaman
         : KemampuandanPengalaman::where('jenis_jabatan', $data->jenis_jabatan)->get();
-        $KeterampilanTeknis = $data->keterampilanTeknis;
+        $data = UraianMasterJabatan::with(['masterJabatan','keterampilanTeknis.detailMasterKompetensiTeknis'])->find($id);
+        $core = $data->keterampilanTeknisCore;
+        $enabler = $data->keterampilanTeknisEnabler;
+        $keterampilanTeknis = $core->merge($enabler);
+
+      
+        // dd($keterampilanTeknis);
 
         return view('pages.home', [
         'data' => $data,
@@ -76,7 +83,7 @@ class UraianMasterJabatanController extends Controller
         'masalahKompleksitasKerja' => $masalahKompleksitasKerja,
         'wewenangJabatan' => $wewenangJabatan,
         'kemampuandanPengalaman' => $kemampuandanPengalaman,
-        'KeterampilanTeknis' => $KeterampilanTeknis
+        'keterampilanTeknis' => $keterampilanTeknis
     ]);
     }
 
@@ -95,7 +102,9 @@ class UraianMasterJabatanController extends Controller
         $kemampuandanPengalaman = isset($data)  && $data->kemampuandanPengalaman->isNotEmpty()
         ? $data->kemampuandanPengalaman
         : KemampuandanPengalaman::where('jenis_jabatan', $data->jenis_jabatan)->get();
-        $KeterampilanTeknis = $data->keterampilanTeknis;
+        $core = $data->keterampilanTeknisCore;
+        $enabler = $data->keterampilanTeknisEnabler;
+        $KeterampilanTeknis = $core->merge($enabler);
 
         // Membuat PDF dari view
         $pdf = PDF::loadView('pages.pdf_report', [

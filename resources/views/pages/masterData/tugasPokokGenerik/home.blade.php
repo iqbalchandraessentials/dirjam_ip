@@ -1,3 +1,5 @@
+
+
 @extends('master')
 
 @section('title', 'Uraian Jabatan | Direktori Jabatan')
@@ -9,7 +11,7 @@
                 <div class="box-header">
                     <div class="row">
                         <div class="col-6 text-left">
-                            <h4 class="box-title">{{ $data->nama }}</h4>
+                            <h4 class="box-title">Tugas Pokok Generik</h4>
                         </div>
                     </div>
                 </div>
@@ -23,23 +25,19 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-Left">No.</th>
-                                                <th class="text-Left">created_at</th>
-                                                <th class="text-center">Nama</th>
-                                                <th class="text-center">action</th>
+                                                <th class="text-center">Aktivitas</th>
+                                                <th class="text-center">Output</th>
+                                                <th class="text-center">Jenis jabatan</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
-
-                                            @foreach ($data->draftUraianMasterJabatan as $x => $v)
+                                            @foreach ($data as $x => $v)
                                                 <tr>
                                                     <td>{{ $x + 1 }}</td>
-                                                    <td>{{ $v['created_at'] }}</td>
-                                                    <td><a
-                                                            href="{{ route('uraian_jabatan.show', $v->id) }}">{{ $v['nama'] }}</a>
-                                                    </td>
-                                                    <td class="text-center"><a href="{{ route('export.pdf', $v->id) }}"><i
-                                                                class="ti-printer"></i></a></td>
+                                                        <td>{{ $v['aktivitas'] }}</td>                                                    
+                                                        <td>{{ $v['output'] }}</td>                                                    
+                                                        <td>{{ $v['jenis_jabatan'] }}</td>                                                    
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -49,6 +47,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

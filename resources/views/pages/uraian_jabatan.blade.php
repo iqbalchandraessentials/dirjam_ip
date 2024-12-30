@@ -23,6 +23,30 @@
                             </button>
                         </div>
                     @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <ul>
+                                <li>Import data gagal !!</li>
+                                @foreach ($errors->all() as $error)
+                                    <li> error: {{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+
                     <div style="margin-bottom: 15px">
                         <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data">
                             @csrf
@@ -54,6 +78,7 @@
                                         </td>
                                         <td class="text-center">
                                             <a href="{{ route('export.pdf', $v->uraianMasterJabatan->id) }}"><i class="ti-printer"></i></a>
+                                            <a href="{{route('uraianJabatan.draft', $v->id)}}" class="ml-3"> <i class="ti-view-list-alt"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -61,10 +86,6 @@
                         </table>
                     </div>
                 </div>
-
-
-
-
             </div>
         </div>
     </div>

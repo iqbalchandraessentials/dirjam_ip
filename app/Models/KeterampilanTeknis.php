@@ -11,8 +11,9 @@ class KeterampilanTeknis extends Model
         'kode',
         'master_detail_kompetensi_id',
         'level',
-        'kategori',
+        'kategori'
     ];
+    protected $guarded = ['id'];
     public function master()
     {
         return $this->hasOne(MasterKompetensiTeknis::class, 'kode', 'kode');

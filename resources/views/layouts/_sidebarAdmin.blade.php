@@ -4,12 +4,12 @@
         <!-- sidebar menu-->
         <ul class="sidebar-menu" data-widget="tree">
             {{-- <li class="header nav-small-cap text-uppercase">Approval List</li> --}}
-            <li class="pt-3 {{ Request::is('approval_list') ? 'active' : '' }}">
+            {{-- <li class="pt-3 {{ Request::is('approval_list') ? 'active' : '' }}">
                 <a href="{{ route('approval_list') }}">
                     <i class="ti-clipboard"></i>
                     <span>Approval List</span>
                 </a>
-            </li>
+            </li> --}}
         
             {{-- <li class="header nav-small-cap text-uppercase">Job Description</li> --}}
             <li class="{{ Request::is('home') ? 'active' : '' }}">
@@ -28,62 +28,41 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
-                        <a href="{{ url('/facilities/categories') }}">
+                    <li class="{{ Request::is('master_data/indikator') ? 'active' : '' }}">
+                        <a href="{{ route('master.indikator') }}">
                             <i class="ti-more"></i>Indikator
                         </a>
                     </li>
-                    <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
-                        <a href="{{ url('/facilities/categories') }}">
-                            <i class="ti-more"></i>Unit
+                    <li class="{{ Request::is('master_data/tugasPokokGenerik') ? 'active' : '' }}">
+                        <a href="{{ route('master.tugasPokokGenerik') }}">
+                            <i class="ti-more"></i>Tugas Pokok Generik
                         </a>
                     </li>
-                    <li class="{{ Request::is('roles') || Request::is('facilities/create') ? 'active' : '' }}">
+                    <li class="{{ Request::is('master_data/masalahDanWewenang') ? 'active' : '' }}">
+                        <a href="{{ route('master.masalahDanWewenang') }}">
+                            <i class="ti-more"></i>Masalah dan Wewenang
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('roles') ? 'active' : '' }}">
                         <a href="{{ route('roles.index') }}">
                             <i class="ti-more"></i>Hak Akses
                         </a>
                     </li>
-                    <li class="{{ Request::is('facilities') || Request::is('facilities/add-new') ? 'active' : '' }}">
+                    <li class="{{ Request::is('permissions') ? 'active' : '' }}">
                         <a href="{{ route('permissions.index') }}">
                             <i class="ti-more"></i>Permission
                         </a>
                     </li>
-                    <li class="{{ Request::is('facilities') || Request::is('facilities/add-new') ? 'active' : '' }}">
+                    <li class="{{ Request::is('users') ? 'active' : '' }}">
                         <a href="{{ route('users.index') }}">
                             <i class="ti-more"></i>User Index
                         </a>
                     </li>
-                    <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
-                        <a href="{{ url('/facilities/categories') }}">
-                            <i class="ti-more"></i>Bidang Studi
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
-                        <a href="{{ url('/facilities/categories') }}">
-                            <i class="ti-more"></i>Pendidikan
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
-                        <a href="{{ url('/facilities/categories') }}">
-                            <i class="ti-more"></i>Jenjang
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
-                        <a href="{{ url('/facilities/categories') }}">
-                            <i class="ti-more"></i>Tanggung Jawab Generik
-                        </a>
-                    </li>
-              
-                 
-                    <li class="{{ Request::is('facilities/categories') ? 'active' : '' }}">
-                        <a href="{{ url('/facilities/categories') }}">
-                            <i class="ti-more"></i>Periode
-                        </a>
-                    </li>
                 </ul>
             </li>
+            
                     
-            <li class="treeview {{ Request::is('revisi_uraian_jabatan') ? 'active' : '' }}">
+            {{-- <li class="treeview {{ Request::is('revisi_uraian_jabatan') ? 'active' : '' }}">
                 <a href="#">
                     <i class="ti-medall-alt"></i>
                     <span>Kompetensi</span>
@@ -108,7 +87,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
 
         
             <li class="{{ Request::is('uraian_jabatan') ? 'active' : '' }}">

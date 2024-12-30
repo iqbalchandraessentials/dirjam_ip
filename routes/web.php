@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
@@ -59,12 +60,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('uraian_jabatan', UraianMasterJabatanController::class);
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('users', [UserController::class, 'index'])->name('users.index');
-    Route::post('users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
-    Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission');
-    Route::post('users/{user}/updateRolesPermissions', [UserController::class, 'assignPermission'])->name('users.updateRolesPermissions');
-});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -76,8 +72,21 @@ Route::get('/import', [ImportController::class, 'showForm'])->name('import.form'
 Route::post('/import', [ImportController::class, 'import'])->name('import.excel');
 
 
+Route::middleware(['auth'])->group(function () {
+    // Master Data Routes
+    Route::prefix('master_data')->group(function () {
+        Route::get('indikator', [MasterDataController::class, 'indikator'])->name('master.indikator');
+        Route::get('tugasPokokGenerik', [MasterDataController::class, 'tugasPokokGenerik'])->name('master.tugasPokokGenerik');
+        Route::get('masalahDanWewenang', [MasterDataController::class, 'masalahDanWewenang'])->name('master.masalahDanWewenang');
+    });
 
-Route::get('/master_data/indikator', [ImportController::class, 'showForm'])->name('master.indikator');
+    // User Management Routes
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::post('users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
+    Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission');
+    Route::post('users/{user}/updateRolesPermissions', [UserController::class, 'updateRolesPermissions'])->name('users.updateRolesPermissions');
+});
+
 
 
 

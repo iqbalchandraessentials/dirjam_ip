@@ -16,8 +16,10 @@ class UraianMasterJabatan extends Model
         'anggaran',
         'accountability',
         'nature_impact',
+        'created_by',
+        'status'
     ];
-
+    protected $guarded = ['id'];
     function masterJabatan() {
         return $this->belongsTo(MasterJabatan::class, 'master_jabatan_id', 'id');
     }
@@ -48,11 +50,11 @@ class UraianMasterJabatan extends Model
     }
     public function keterampilanNonteknis()
     {
-        return $this->hasMany(KeterampilanNonteknis::class, 'uraian_master_jabatan_id', 'master_jabatan_id');
+        return $this->hasMany(KeterampilanNonteknis::class, 'master_jabatan', 'nama');
     }
     public function KeterampilanTeknisEnabler()
     {
-        return $this->hasMany(KeterampilanTeknis::class, 'uraian_master_jabatan_id', 'master_jabatan_id');
+        return $this->hasMany(KeterampilanTeknis::class, 'master_jabatan', 'nama')->where('kategori','ENABLER');
     }
     public function KeterampilanTeknisCore()
     {
@@ -62,7 +64,7 @@ class UraianMasterJabatan extends Model
     public function keterampilanTeknis()
     {
         $core = $this->hasMany(KeterampilanTeknis::class, 'uraian_master_jabatan_id', 'id');
-        $enabler = $this->hasMany(KeterampilanTeknis::class, 'uraian_master_jabatan_id', 'master_jabatan_id');
+        $enabler = $this->hasMany(KeterampilanTeknis::class, 'master_jabatan', 'nama')->where('kategori','ENABLER');
         
         return $core->union($enabler);
     }

@@ -13,4 +13,5 @@ class TugasPokoUtamaGenerik extends Model
         'output',
         'jenis',
     ];
+    protected $guarded = ['id'];
 }
