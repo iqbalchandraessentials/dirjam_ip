@@ -9,6 +9,6 @@ class MasterKompetensiTeknis extends Model
     
     public function level()
     {
-        return $this->hasOne(MasterKompetensiTeknis::class, 'kode', 'kode');
+        return $this->hasMany(MasterDetailKomptensiTeknis::class, 'kode_master', 'kode');
     }
 }

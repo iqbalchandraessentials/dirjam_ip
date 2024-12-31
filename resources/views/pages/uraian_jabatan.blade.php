@@ -62,7 +62,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-Left">No.</th>
-                                    <th class="text-center">Nama</th>
+                                    <th class="text-center">Master Jabatan</th>
                                     <th class="text-center">action</th>
                                 </tr>
                             </thead>
@@ -77,6 +77,7 @@
                                             </a>
                                         </td>
                                         <td class="text-center">
+                                            <a href="{{ route('export.excel', $v->uraianMasterJabatan->id) }}" class="ml-3"><i class="ti-layout"> </i></a>
                                             <a href="{{ route('export.pdf', $v->uraianMasterJabatan->id) }}"><i class="ti-printer"></i></a>
                                             <a href="{{route('uraianJabatan.draft', $v->id)}}" class="ml-3"> <i class="ti-view-list-alt"></i></a>
                                         </td>

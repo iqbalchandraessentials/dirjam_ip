@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\ProfileController;
@@ -37,7 +38,7 @@ Route::get('/uraian_jabatan_template', function () {
     return view('pages.revisi_jobdesc');
 })->middleware(['auth', 'verified'])->name('uraian_jabatan_template');
 
-Route::get('/export-excel', [App\Http\Controllers\ExportController::class, 'exportExcel'])->name('export.excel');
+Route::get('/export-excel/{id}', [ExportController::class, 'exportExcel'])->name('export.excel');
 
 Route::get('/export-pdf/{id}', [UraianMasterJabatanController::class, 'exportPdf'])->name('export.pdf');
 Route::get('/uraian_master_jabatan_draft/{id}', [UraianMasterJabatanController::class, 'draft'])->name('uraianJabatan.draft');
@@ -76,8 +77,12 @@ Route::middleware(['auth'])->group(function () {
     // Master Data Routes
     Route::prefix('master_data')->group(function () {
         Route::get('indikator', [MasterDataController::class, 'indikator'])->name('master.indikator');
+        Route::get('pendidikan', [MasterDataController::class, 'pendidikan'])->name('master.pendidikan');
         Route::get('tugasPokokGenerik', [MasterDataController::class, 'tugasPokokGenerik'])->name('master.tugasPokokGenerik');
         Route::get('masalahDanWewenang', [MasterDataController::class, 'masalahDanWewenang'])->name('master.masalahDanWewenang');
+        Route::get('komptensiTeknis', [MasterDataController::class, 'masterKompetensiTeknis'])->name('master.masterKompetensiTeknis');
+        Route::get('komptensiTeknis/{id}', [MasterDataController::class, 'detailMasterKompetensiTeknis'])->name('master.detailMasterKompetensiTeknis');
+        Route::get('komptensiNonTeknis', [MasterDataController::class, 'masterKompetensiNonTeknis'])->name('master.masterKompetensiNonTeknis');
     });
 
     // User Management Routes

@@ -71,12 +71,12 @@
     <tr>
         <td colspan="3">
             <table style="width: 100%">
-                 <tr>
+                <tr>
                     @php
-                    $ipImage = base64_encode(file_get_contents(public_path('img/ip.png')));
-                    $plnImage = base64_encode(file_get_contents(public_path('img/pln.png')));
+                        $ipImage = base64_encode(file_get_contents(public_path('img/ip.png')));
+                        $plnImage = base64_encode(file_get_contents(public_path('img/pln.png')));
                     @endphp
-                    <td style="text-align: left;border:none; height: 40px">   
+                    <td style="text-align: left;border:none; height: 40px">
                         <img src="data:image/png;base64,{{ $ipImage }}" style="float: left; height: 40px" />
                     </td>
                     <td style="text-align: right;border:none; height: 40px">
@@ -88,26 +88,26 @@
     </tr>
     <tr>
         <th style="" rowspan="4">
-            <br/>
-            <span style="font-size: 18px; text-transform: capitalize;">URAIAN JABATAN - HEAD OFFICE</span><br/>
+            <br />
+            <span style="font-size: 18px; text-transform: capitalize;">URAIAN JABATAN - HEAD OFFICE</span><br />
             <span style="font-size: 16px"><?= $data['nama'] ?></span>
-            <br/>
-            <br/>
+            <br />
+            <br />
         </th>
         <td style="width:110px">Tanggal</td>
         <td style="width:140px"><?= $data['created_at'] ?></td>
     </tr>
     <tr>
         <td>No Record</td>
-        <td><?= "-"  ?></td>
+        <td><?= '-' ?></td>
     </tr>
     <tr>
         <td>Revisi</td>
-        <td><?=  "-" ?></td>
+        <td><?= '-' ?></td>
     </tr>
     <tr>
         <td>Status</td>
-        <td><?= "Sudah di Validasi " ?></td>
+        <td><?= 'Sudah di Validasi ' ?></td>
     </tr>
 </table>
 <br />
@@ -132,7 +132,16 @@
                 <tr>
                     <td>Sebutan Jabatan</td>
                     <td>:</td>
-                    <td><?= '-' ?></td>
+                    <td>
+                        @if (isset($jabatans) && count($jabatans) > 0)
+
+                            @foreach ($jabatans as $key)
+                                - {{ $key->jabatan->jabatan ?? 'Tidak ada jabatan' }} <br>
+                            @endforeach
+                        @else
+                            <p>Tidak ada data jabatan.</p>
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <td>Jenis Jabatan</td>
@@ -145,34 +154,49 @@
                     <td>Kelompok Bisnis</td>
                     <td>:</td>
                     <td>
-                        <?= '-' ?>
+                        @if (isset($jabatans) && count($jabatans) > 0)
+
+                            @foreach ($jabatans as $key)
+                                - {{ $key->jabatan->nama_profesi ?? 'Tidak ada nama_profesi' }}
+                            @endforeach
+                        @else
+                            <p>Tidak ada data nama_profesi.</p>
+                        @endif
                     </td>
                 </tr>
                 <tr>
                     <td>Stream Bisnis</td>
                     <td>:</td>
                     <td>
-                        <?= '-' ?>
                     </td>
                 </tr>
                 <tr>
                     <td>Unit Kerja</td>
                     <td>:</td>
                     <td>
-                        <?= "Head Office" ?>
+                        @if (isset($jabatans) && count($jabatans) > 0)
+
+                            @foreach ($jabatans as $key)
+                                - {{ $key->jabatan->description ?? 'Tidak ada Unit Kerja' }}
+                            @endforeach
+                        @else
+                            <p>Tidak ada data Unit Kerja.</p>
+                        @endif
                     </td>
                 </tr>
                 <tr>
                     <td>Jabatan Atasan Langsung</td>
                     <td>:</td>
                     <td>
-                        <?= '-' ?>
+                        @if (isset($jabatans) && count($jabatans) > 0)
+
+                            @foreach ($jabatans as $key)
+                                - {{ $key->jabatan->atasan_langsung ?? 'Tidak ada atasan_langsung' }}
+                            @endforeach
+                        @else
+                            <p>Tidak ada data atasan_langsung.</p>
+                        @endif
                     </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>&nbsp;</td>
-                    <td></td>
                 </tr>
             </table>
         </div>
@@ -219,7 +243,7 @@
             </table>
         </div>
     </li>
-    <br/>
+    <br />
 
     <li>TUGAS POKOK GENERIK DAN OUTPUT
         <small class="mini">
@@ -258,138 +282,152 @@
             atau besarnya tanggung jawab yang dipegang termasuk ringkasan data kuantitatif dan
             kualitatif yang etrkait dengan besarnya tugas ini.
         </small>
-        
-            5.a. Dimensi Finansial
-                <div style="font-weight: normal;">
-                    <table>
-                        <tr>
-                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                {{ $data['anggaran'] == 'Investasi' ? 'V' : '' }}
-                            </td>
-                            <td></td>
-                            <td>Anggaran Investasi</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                {{ $data['anggaran'] == 'Operasional' ? 'V' : '' }}
-                            </td>
-                            <td></td>
-                            <td>Anggaran Operasional</td>
-                        </tr>
-                    </table>
-                    <b>Accountability</b>
-                    <table>    
-                        <tr>
-                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                {{ $data['accountability'] == 'Non Quantifiable' ? 'V' : '' }}
-                            </td>
-                            <td></td>
-                            <td>Non Quantifiable</td>
-                            <td></td>
-                            <td>< 650 Juta</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                {{ $data['accountability'] == 'Very Small' ? 'V' : '' }}
-                            </td>
-                            <td></td>
-                            <td>Very Small</td>
-                            <td></td>
-                            <td>650 Juta - 6,5 Milyar</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                {{ $data['accountability'] == 'Small' ? 'V' : '' }}
-                            </td>
-                            <td></td>
-                            <td>Small</td>
-                            <td></td>
-                            <td>6,5 Milyar - 65 Milyar</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                {{ $data['accountability'] == 'Medium' ? 'V' : '' }}
-                            </td>
-                            <td></td>
-                            <td>Medium</td>
-                            <td></td>
-                            <td>65 Milyar - 650 Milyar</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                {{ $data['accountability'] == 'Large' ? 'V' : '' }}
-                            </td>
-                            <td></td>
-                            <td>Large</td>
-                            <td></td>
-                            <td>650 Milyar - 6,5 Trilyun</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                {{ $data['accountability'] == 'Very Large' ? 'V' : '' }}
-                            </td>
-                            <td></td>
-                            <td>Very Large</td>
-                            <td></td>
-                            <td>6,5 Trilyun - 65 Trilyun</td>
-                        </tr>      
-                    </table>
-                    <b>Nature Impact</b>
-                    <table>
-                        <tr>
-                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                {{ $data['nature_impact'] == 'Prime' ? 'V' : '' }}
-                            </td>
-                            <td></td>
-                            <td>Prime</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                {{ $data['nature_impact'] == 'Share' ? 'V' : '' }}
-                            </td>
-                            <td></td>
-                            <td>Share</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                {{ $data['nature_impact'] == 'Contributory' ? 'V' : '' }}
-                            </td>
-                            <td></td>
-                            <td>Contributory</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                {{ $data['nature_impact'] == 'Remote' ? 'V' : '' }}
-                            </td>
-                            <td></td>
-                            <td>Remote</td>
-                        </tr>
-                    </table>
-                </div>
-                <br>
-                5.b. Dimensi Non-keuangan
-                <div style="font-weight: normal;">
-                        a. Jumlah staff yang dikelola di sub bidangnya sesuai FTK
-                        <table style="width: 100%; margin-left: 20px;">
-                            <tr>
-                                <td style="width: 20%;">Jumlah Bawahan Langsung</td>
-                                <td style="width: 5%;">:</td>
-                                <td style="width: 75%;">-</td>
-                            </tr>
-                            <tr>
-                                <td>Langsung</td>
-                                <td>:</td>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <td>Total</td>
-                                <td>:</td>
-                                <td>-</td>
-                            </tr>
-                        </table>
-                        b. Proses bisnis yang dikelola di sub bidangnya
-                    
-                </div>
+
+        5.a. Dimensi Finansial
+        <div style="font-weight: normal;">
+            <table>
+                <tr>
+                    <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                        {{ $data['anggaran'] == 'Investasi' ? 'V' : '' }}
+                    </td>
+                    <td></td>
+                    <td>Anggaran Investasi</td>
+                </tr>
+                <tr>
+                    <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                        {{ $data['anggaran'] == 'Operasional' ? 'V' : '' }}
+                    </td>
+                    <td></td>
+                    <td>Anggaran Operasional</td>
+                </tr>
+            </table>
+            <b>Accountability</b>
+            <table>
+                <tr>
+                    <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                        {{ $data['accountability'] == 'Non Quantifiable' ? 'V' : '' }}
+                    </td>
+                    <td></td>
+                    <td>Non Quantifiable</td>
+                    <td></td>
+                    <td>
+                        < 650 Juta</td>
+                </tr>
+                <tr>
+                    <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                        {{ $data['accountability'] == 'Very Small' ? 'V' : '' }}
+                    </td>
+                    <td></td>
+                    <td>Very Small</td>
+                    <td></td>
+                    <td>650 Juta - 6,5 Milyar</td>
+                </tr>
+                <tr>
+                    <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                        {{ $data['accountability'] == 'Small' ? 'V' : '' }}
+                    </td>
+                    <td></td>
+                    <td>Small</td>
+                    <td></td>
+                    <td>6,5 Milyar - 65 Milyar</td>
+                </tr>
+                <tr>
+                    <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                        {{ $data['accountability'] == 'Medium' ? 'V' : '' }}
+                    </td>
+                    <td></td>
+                    <td>Medium</td>
+                    <td></td>
+                    <td>65 Milyar - 650 Milyar</td>
+                </tr>
+                <tr>
+                    <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                        {{ $data['accountability'] == 'Large' ? 'V' : '' }}
+                    </td>
+                    <td></td>
+                    <td>Large</td>
+                    <td></td>
+                    <td>650 Milyar - 6,5 Trilyun</td>
+                </tr>
+                <tr>
+                    <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                        {{ $data['accountability'] == 'Very Large' ? 'V' : '' }}
+                    </td>
+                    <td></td>
+                    <td>Very Large</td>
+                    <td></td>
+                    <td>6,5 Trilyun - 65 Trilyun</td>
+                </tr>
+            </table>
+            <b>Nature Impact</b>
+            <table>
+                <tr>
+                    <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                        {{ $data['nature_impact'] == 'Prime' ? 'V' : '' }}
+                    </td>
+                    <td></td>
+                    <td>Prime</td>
+                </tr>
+                <tr>
+                    <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                        {{ $data['nature_impact'] == 'Share' ? 'V' : '' }}
+                    </td>
+                    <td></td>
+                    <td>Share</td>
+                </tr>
+                <tr>
+                    <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                        {{ $data['nature_impact'] == 'Contributory' ? 'V' : '' }}
+                    </td>
+                    <td></td>
+                    <td>Contributory</td>
+                </tr>
+                <tr>
+                    <td style="width: 20px; text-align: center; border: 1px solid #000;">
+                        {{ $data['nature_impact'] == 'Remote' ? 'V' : '' }}
+                    </td>
+                    <td></td>
+                    <td>Remote</td>
+                </tr>
+            </table>
+        </div>
+        <br>
+        5.b. Dimensi Non-keuangan
+        <div style="font-weight: normal;">
+            a. Jumlah staff yang dikelola di sub bidangnya sesuai FTK
+            <table style="width: 100%; margin-left: 20px;">
+                <tr>
+                    <td style="width: 20%;">Jumlah Bawahan Langsung</td>
+                    <td>:</td>
+                    <td>
+                        @if (isset($jabatans) && count($jabatans) > 0)
+
+                            @foreach ($jabatans as $key)
+                                - {{ $key->jabatan->bawahan_langsung ?? '0' }}
+                            @endforeach
+                        @else
+                            <p>0</p>
+                        @endif
+                    </td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td>:</td>
+                    <td>
+                        @if (isset($jabatans) && count($jabatans) > 0)
+
+                            @foreach ($jabatans as $key)
+                                - {{ $key->jabatan->total_bawahan ?? '0' }}
+                            @endforeach
+                        @else
+                            <p>0</p>
+                        @endif
+                    </td>
+                </tr>
+            </table>
+            b. Proses bisnis yang dikelola di sub bidangnya
+
+        </div>
     </li>
     <br />
 
@@ -426,7 +464,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>          
+            </div>
             <br>
             <div class="form-group">
                 <label class="col-sm-2 control-label"></label>
@@ -461,7 +499,7 @@
     <li>MASALAH, KOMPLEKSITAS KERJA DAN TANTANGAN UTAMA
         <small class="mini">
             Merupakan uraian atas hal-hal yang menjadi permasalahan bagi pemangku jabatan sebagai akibat dari
-                        adanya kesulitan dalam pencapaian tujuan atau target yang ditetapkan.
+            adanya kesulitan dalam pencapaian tujuan atau target yang ditetapkan.
         </small>
         <div style="font-weight: normal">
             <div class="form-group">
@@ -474,10 +512,10 @@
                     </thead>
                     <tbody>
                         @foreach ($masalahKompleksitasKerja as $x => $v)
-                                    <tr>
-                                        <td style="text-align: center"> {{ $x + 1 }}</td>
-                                        <td>{{ $v['definisi'] }}</td>
-                                    </tr>
+                            <tr>
+                                <td style="text-align: center"> {{ $x + 1 }}</td>
+                                <td>{{ $v['definisi'] }}</td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -501,17 +539,17 @@
                     </thead>
                     <tbody>
                         @foreach ($wewenangJabatan as $x => $v)
-                        <tr>
-                            <td style="text-align: center"> {{ $x + 1 }}</td>
-                            <td>{{ $v['definisi'] }}</td>
-                        </tr>
-                    @endforeach
+                            <tr>
+                                <td style="text-align: center"> {{ $x + 1 }}</td>
+                                <td>{{ $v['definisi'] }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </li>
-</br>
+    </br>
     <li>SPESIFIKASI JABATAN
         <small class="mini">
             Menguraikan dan menjelaskan pendidikan, pengetahuan pokok, keterampilan dan pengalaman minimal serta
@@ -531,43 +569,63 @@
                     </thead>
                     <tbody>
                         @foreach ($data['spesifikasiPendidikan'] as $x => $v)
-                                    <tr>
-                                        <td style="text-align: center"> {{ $x + 1 }}</td>
-                                        <td style=" text-align: center">{{ $v['pendidikan'] }}</td>
-                                        <td style=" text-align: center">{{ $v['pengalaman'] }}</td>
-                                        <td>
-                                            @php
-                                                $pattern = '/\d+\.\s*/'; // Pola untuk memisahkan berdasarkan angka diikuti titik dan spasi
-                                                $bidangStudiList = preg_split($pattern, $v['bidang_studi'], -1, PREG_SPLIT_NO_EMPTY);
+                            <tr>
+                                <td style="text-align: center"> {{ $x + 1 }}</td>
+                                <td style=" text-align: center">{{ $v['pendidikan'] }}</td>
+                                <td style=" text-align: center">{{ $v['pengalaman'] }}</td>
+                                <td>
+                                    @php
+                                        $pattern = '/\d+\.\s*/'; // Pola untuk memisahkan berdasarkan angka diikuti titik dan spasi
+                                        $bidangStudiList = preg_split(
+                                            $pattern,
+                                            $v['bidang_studi'],
+                                            -1,
+                                            PREG_SPLIT_NO_EMPTY,
+                                        );
 
-                                                foreach ($bidangStudiList as $index => $bidangStudi) {
-                                                    echo ($index + 1) . '. ' . trim($bidangStudi) . '<br>';
-                                                }
-                                            @endphp
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                        foreach ($bidangStudiList as $index => $bidangStudi) {
+                                            echo $index + 1 . '. ' . trim($bidangStudi) . '<br>';
+                                        }
+                                    @endphp
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
             <b>Kemampuan dan Pengalaman</b>
             <ol type="a" style="padding-left: 0; margin-left: 2; list-style-position: inside;">
                 @foreach ($kemampuandanPengalaman as $x)
-                <li style="margin: 2; padding: ;">{{ $x['definisi'] }}</li>
+                    <li style="margin: 2; padding: ;">{{ $x['definisi'] }}</li>
                 @endforeach
-            </ol>                   
-                </div>
+            </ol>
+        </div>
         </div>
         </br>
     </li>
-    
+
     <li>STRUKTUR ORGANISASI
         <small class="mini">
-            Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi jabatan atasan langsung, bawahan langsung serta rekan kerja (peers).
+            Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi jabatan atasan
+            langsung, bawahan langsung serta rekan kerja (peers).
         </small>
+        <div class="">
+            @if (isset($jabatans) && $jabatans->count() > 0)
+                    @foreach ($jabatans as $v)
+                    @if (!empty($v->sto))  <!-- Ensure sto is not empty -->
+                    <div class="col-12" id="sto">
+                                    <!-- Menampilkan HTML yang sudah dirender -->
+                                    {!! $v->sto !!}
+                                </div>
+                                @endif
+                            @endforeach
+                        @else
+                            <p>Tidak ada data</p>
+                        @endif
+        </div>
     </li>
     <br>
-    
+
     <li>KEBUTUHAN KOMPETENSI JABATAN (KKJ)
         <small class="mini">
             Memberikan informasi mengenai kebutuhan kemahiran/kompetensi yang diharapkan dalam suatu jabatan.
@@ -575,7 +633,8 @@
         <div style="font-weight: normal">
             <b>>> Kompetensi Utama</b>
             <small class="mini">
-                Kompetensi perilaku yang harus dimiliki oleh seluruh individu Pegawai dalam organisasi, pada semua fungsi dan Jenjang Jabatan.
+                Kompetensi perilaku yang harus dimiliki oleh seluruh individu Pegawai dalam organisasi, pada semua
+                fungsi dan Jenjang Jabatan.
             </small>
             <div class="form-group">
                 <table class="table " id="table">
@@ -607,111 +666,118 @@
         <div class="form-group" style="font-weight: normal">
             <b>>> Kompetensi Peran</b>
             <small class="mini">
-                Kompetensi perilaku yang dipersyaratkan agar individu Pegawai dapat berhasil dalam suatu posisi, peran, dan Jenjang Jabatan yang spesifik.
+                Kompetensi perilaku yang dipersyaratkan agar individu Pegawai dapat berhasil dalam suatu posisi, peran,
+                dan Jenjang Jabatan yang spesifik.
             </small>
             <table class="table " id="table">
                 <thead>
                     <tr>
                         <th style="text-align: center; width:5%;">No</th>
-                            <th style="text-align: center">Kode Kompetensi</th>
-                            <th style="text-align: center">Kompetensi</th>
-                            <th style="text-align: center">Kategori</th>
-                            <th style="text-align: center">Penjelasan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $no = 1; @endphp
-                        @foreach ($data['keterampilanNonteknis'] as $x => $v)
-                            @if ($v['kategori'] == 'PERAN')
-                                <tr style="text-align: center" class="text-center">
-                                    <td> {{ $no++ }}</td>
-                                    <td>{{ $v['kode'] }}</td>
-                                    <td>{{ $v['detail']['nama'] }}</td>
-                                    <td style="text-transform: uppercase;">{{ $v['jenis'] }}</td>
-                                    <td style="text-align: left">{{ $v['detail']['definisi'] }}</td>
-                                </tr>
-                            @endif
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <br>
-            <b>>> Kompetensi Fungsi</b>
-            <small class="mini">
-                Kompetensi perilaku yang harus dimiliki untuk setiap fungsi bisnis di dalam organisasi.
-            </small>
-            <div class="form-group" style="font-weight: normal">
+                        <th style="text-align: center">Kode Kompetensi</th>
+                        <th style="text-align: center">Kompetensi</th>
+                        <th style="text-align: center">Kategori</th>
+                        <th style="text-align: center">Penjelasan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php $no = 1; @endphp
+                    @foreach ($data['keterampilanNonteknis'] as $x => $v)
+                        @if ($v['kategori'] == 'PERAN')
+                            <tr style="text-align: center" class="text-center">
+                                <td> {{ $no++ }}</td>
+                                <td>{{ $v['kode'] }}</td>
+                                <td>{{ $v['detail']['nama'] }}</td>
+                                <td style="text-transform: uppercase;">{{ $v['jenis'] }}</td>
+                                <td style="text-align: left">{{ $v['detail']['definisi'] }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <b>>> Kompetensi Fungsi</b>
+        <small class="mini">
+            Kompetensi perilaku yang harus dimiliki untuk setiap fungsi bisnis di dalam organisasi.
+        </small>
+        <div class="form-group" style="font-weight: normal">
             <table class="table " id="table">
                 <thead>
                     <tr>
                         <th style="text-align: center; width:5%;">No</th>
-                            <th style="text-align: center">Kode Kompetensi</th>
-                            <th style="text-align: center">Kompetensi</th>
-                            <th style="text-align: center">Kategori</th>
-                            <th style="text-align: center">Penjelasan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $no = 1; @endphp
-                        @foreach ($data['keterampilanNonteknis'] as $x => $v)
-                            @if ($v['kategori'] == 'FUNGSI')
-                                <tr>
-                                    <td style="text-align: center;"> {{ $no++ }}</td>
-                                    <td style="text-align: center;">{{ $v['kode'] }}</td>
-                                    <td style="text-align: center;">{{ $v['detail']['nama'] ?? '' }}</td>
-                                    <td style="text-align: center; text-transform: uppercase;">{{ $v['jenis'] ?? '' }}</td>
-                                    <td>{{ $v['detail']['definisi'] ?? '' }}</td>
-                                </tr>
-                            @endif
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <br>
-            <b>>> Kompetensi Teknis</b>
-            <small class="mini">
-                Kompetensi terkait dengan pengetahuan, keterampilan dan keahlian yang diperlukan sesuai dengan tugas pokok masing-masing individu Pegawai untuk menyelesaikan pekerjaan-pekerjaan secara teknis pada jabatannya.
-            </small>
-            <div class="form-group" style="font-weight: normal">
+                        <th style="text-align: center">Kode Kompetensi</th>
+                        <th style="text-align: center">Kompetensi</th>
+                        <th style="text-align: center">Kategori</th>
+                        <th style="text-align: center">Penjelasan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php $no = 1; @endphp
+                    @foreach ($data['keterampilanNonteknis'] as $x => $v)
+                        @if ($v['kategori'] == 'FUNGSI')
+                            <tr>
+                                <td style="text-align: center;"> {{ $no++ }}</td>
+                                <td style="text-align: center;">{{ $v['kode'] }}</td>
+                                <td style="text-align: center;">{{ $v['detail']['nama'] ?? '' }}</td>
+                                <td style="text-align: center; text-transform: uppercase;">{{ $v['jenis'] ?? '' }}
+                                </td>
+                                <td>{{ $v['detail']['definisi'] ?? '' }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <b>>> Kompetensi Teknis</b>
+        <small class="mini">
+            Kompetensi terkait dengan pengetahuan, keterampilan dan keahlian yang diperlukan sesuai dengan tugas pokok
+            masing-masing individu Pegawai untuk menyelesaikan pekerjaan-pekerjaan secara teknis pada jabatannya.
+        </small>
+        <div class="form-group" style="font-weight: normal">
             <table class="table " id="table">
                 <thead>
                     <tr>
                         <th style="text-align: center; width:5%;">No</th>
-                                    <th style="text-align: center">Kode Kompetensi</th>
-                                    <th style="text-align: center">Kompetensi</th>
-                                    <th style="text-align: center">Level</th>
-                                    <th style="text-align: center">Kategori</th>
-                                    <th style="text-align: center">Penjelasan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $no = 1; @endphp
-                        @foreach ($KeterampilanTeknis as $x => $v)
-                                @if (isset($v['master']['nama']))
-                                <tr>
-                                    <td style="text-align: center"> {{ $no++ }}</td>
-                                    <td style="text-align: center">{{ $v['kode'] }}</td>
-                                    <td style="text-align: center">{{ $v['master']['nama']}}</td>
-                                    <td style="text-align: center">{{ $v['level'] }}</td>
-                                    <td style="text-align: center">{{ $v['kategori'] }}</td>
-                                    <td>{{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
-                                </tr>
-                                @endif
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <br>
+                        <th style="text-align: center">Kode Kompetensi</th>
+                        <th style="text-align: center">Kompetensi</th>
+                        <th style="text-align: center">Level</th>
+                        <th style="text-align: center">Kategori</th>
+                        <th style="text-align: center">Penjelasan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php $no = 1; @endphp
+                    @foreach ($KeterampilanTeknis as $x => $v)
+                        @if (isset($v['master']['nama']))
+                            <tr>
+                                <td style="text-align: center"> {{ $no++ }}</td>
+                                <td style="text-align: center">{{ $v['kode'] }}</td>
+                                <td style="text-align: center">{{ $v['master']['nama'] }}</td>
+                                <td style="text-align: center">{{ $v['level'] }}</td>
+                                <td style="text-align: center">{{ $v['kategori'] }}</td>
+                                <td>{{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <br>
     </li>
     <small style="font-weight: normal" class="mini">
         Keterangan :
         <br>
-        - Kompetensi primer adalah Kompetensi yang wajib dimiliki oleh individu yang menduduki suatu Jabatan atau fungsi agar individu dapat berhasil pada suatu posisi, fungsi, atau Jenjang Jabatan yang spesifik.
+        - Kompetensi primer adalah Kompetensi yang wajib dimiliki oleh individu yang menduduki suatu Jabatan atau fungsi
+        agar individu dapat berhasil pada suatu posisi, fungsi, atau Jenjang Jabatan yang spesifik.
         <br>
-        - Kompetensi sekunder adalah Kompetensi yang perlu dimiliki untuk mendukung individu yang menduduki suatu Jabatan atau fungsi agar individu dapat berhasil pada suatu posisi, fungsi, atau Jenjang Jabatan yang spesifik.
+        - Kompetensi sekunder adalah Kompetensi yang perlu dimiliki untuk mendukung individu yang menduduki suatu
+        Jabatan atau fungsi agar individu dapat berhasil pada suatu posisi, fungsi, atau Jenjang Jabatan yang spesifik.
         <br>
-        - Kompetensi core adalah Kompetensi teknis yang wajib dimiliki berdasarkan tugas pokok sesuai fungsi utama Jabatan agar individu dapat berhasil pada suatu posisi dalam fungsi bisnis
+        - Kompetensi core adalah Kompetensi teknis yang wajib dimiliki berdasarkan tugas pokok sesuai fungsi utama
+        Jabatan agar individu dapat berhasil pada suatu posisi dalam fungsi bisnis
         <br>
-        - Kompetensi enabler adalah Kompetensi teknis yang perlu dimiliki untuk mendukung tugas pokok sesuai fungsi utama Jabatan agar individu dapat berhasil pada suatu posisi dalam fungsi bisnis.
+        - Kompetensi enabler adalah Kompetensi teknis yang perlu dimiliki untuk mendukung tugas pokok sesuai fungsi
+        utama Jabatan agar individu dapat berhasil pada suatu posisi dalam fungsi bisnis.
     </small>
 </ol>

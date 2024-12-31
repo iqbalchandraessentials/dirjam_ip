@@ -28,9 +28,19 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ Request::is('master_data/indikator') ? 'active' : '' }}">
-                        <a href="{{ route('master.indikator') }}">
-                            <i class="ti-more"></i>Indikator
+                    <li class="{{ Request::is('master_data/komptensiTeknis') ? 'active' : '' }}">
+                        <a href="{{ route('master.masterKompetensiTeknis') }}">
+                            <i class="ti-more"></i>Kompetensi Teknis
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('master_data/komptensiNonTeknis') ? 'active' : '' }}">
+                        <a href="{{ route('master.masterKompetensiNonTeknis') }}">
+                            <i class="ti-more"></i>Kompetensi Non Teknis
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('master_data/pendidikan') ? 'active' : '' }}">
+                        <a href="{{ route('master.pendidikan') }}">
+                            <i class="ti-more"></i>Pendidikan
                         </a>
                     </li>
                     <li class="{{ Request::is('master_data/tugasPokokGenerik') ? 'active' : '' }}">
@@ -40,7 +50,12 @@
                     </li>
                     <li class="{{ Request::is('master_data/masalahDanWewenang') ? 'active' : '' }}">
                         <a href="{{ route('master.masalahDanWewenang') }}">
-                            <i class="ti-more"></i>Masalah dan Wewenang
+                            <i class="ti-more"></i>Default Data
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('master_data/indikator') ? 'active' : '' }}">
+                        <a href="{{ route('master.indikator') }}">
+                            <i class="ti-more"></i>Indikator
                         </a>
                     </li>
                     <li class="{{ Request::is('roles') ? 'active' : '' }}">

@@ -1,5 +1,3 @@
-
-
 @extends('master')
 
 @section('title', 'Uraian Jabatan | Direktori Jabatan')
@@ -11,7 +9,7 @@
                 <div class="box-header">
                     <div class="row">
                         <div class="col-6 text-left">
-                            <h4 class="box-title">Tugas Pokok Generik</h4>
+                            <h4 class="box-title">Master Master Kompetnsi Teknis</h4>
                         </div>
                     </div>
                 </div>
@@ -25,25 +23,24 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-Left">No.</th>
-                                                <th class="text-center" width="40%">Aktivitas</th>
-                                                <th class="text-center" width="30%">Output</th>
-                                                <th class="text-center">Jenis jabatan</th>
-                                                <th class="text-center">action</th>
+                                                <th class="text-center">Kode</th>
+                                                <th class="text-center">Nama</th>
+                                                <th class="text-center">Singkatan</th>
+                                                <th class="text-center">Jenis</th>
+                                                <th class="text-center">Definisi</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
+
                                             @foreach ($data as $x => $v)
                                                 <tr>
                                                     <td>{{ $x + 1 }}</td>
-                                                        <td>{{ $v['aktivitas'] }}</td>                                                    
-                                                        <td>{{ $v['output'] }}</td>                                                    
-                                                        <td>{{ $v['jenis_jabatan'] }}</td>    
-                                                        <td class="text-center">
-                                                            <a  class="btn btn-secondary btn-circle btn-xs  "><i
-                                                                    class="ti-pencil fa-lg"></i></a> <a
-                                                                class="btn text-white btn-secondary btn-circle btn-xs  "><i
-                                                                    class="ti-trash fa-lg"></i></a></td>                                                
+                                                    <td class="text-center">{{ $v['kode'] }}</td>
+                                                    <td class="text-center">{{ $v['nama'] }}</td>
+                                                    <td class="">{{ $v['singkatan'] }}</td>
+                                                    <td class="">{{ $v['jenis'] }}</td>
+                                                    <td class="">{{ $v['definisi'] }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
