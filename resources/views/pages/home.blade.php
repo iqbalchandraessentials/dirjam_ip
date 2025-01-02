@@ -5,7 +5,13 @@
 
     <style>
     #sto table td div {
-        font-size: 16px !important;
+        font-size: 12px !important;
+    }
+    #sto {
+        margin-bottom: 25px;
+    }
+    #sto table tbody tr td ol li {
+        font-size: 9px !important;
     }
 </style>
 @endsection
@@ -16,7 +22,6 @@
 
 @section('content')
     <div class="col-sm-12">
-
         <div class="box">
             <div class="box-header">
                 <div class="row">
@@ -85,27 +90,27 @@
                             <tr>
                                 <td><b> Jenjang Jabatan</b></td>
                                 <td>:</td>
-                                <td class="text-left"> {{ $data['MasterJabatan']['jenjang_kode'] }} </td>
+                                <td class="text-left text-uppercase"> {{ $data['MasterJabatan']['jenjangJabatan']['nama'] }} </td>
                             </tr>
                             <tr>
                                 <td><b> Kelompok Bisnis</b></td>
                                 <td>:</td>
-                                <td class="text-left">
+                                <td class="text-left text-uppercase">
                                     @if (isset($jabatans) && count($jabatans) > 0)
 
                                         @foreach ($jabatans as $key)
-                                            - {{ $key->jabatan->nama_profesi ?? 'Tidak ada nama_profesi' }}
+                                            - {{ $key->jabatan->namaProfesi->nama_profesi ?? 'Tidak ada nama_profesi' }}
                                         @endforeach
                                     @else
                                         <p>Tidak ada data nama_profesi.</p>
                                     @endif
                                 </td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <td><b> Stream Bisnis</b></td>
                                 <td>:</td>
                                 <td class="text-left"> </td>
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <td><b> Unit Kerja</b></td>
                                 <td>:</td>
@@ -663,20 +668,15 @@
                 </div>
             </div>
         
-            <div class="box-body pt-0 pb-5 d-flex justify-content-center">
+            <div class="box-body pt-0 d-flex justify-content-center">
                 <div class="row">
-                    @if (isset($jabatans) && $jabatans->count() > 0)
-                    @foreach ($jabatans as $v)
-                    @if (!empty($v->sto))  <!-- Ensure sto is not empty -->
-                    <div class="col-12" id="sto">
-                                    <!-- Menampilkan HTML yang sudah dirender -->
-                                    {!! $v->sto !!}
-                                </div>
-                                @endif
-                            @endforeach
-                        @else
-                            <p>Tidak ada data</p>
-                        @endif
+                    @if (isset($strukturOrganisasi))
+                        <div class="col-12" id="sto">
+                            {!! $strukturOrganisasi !!}
+                        </div>
+                    @else
+                        <p>Tidak ada data</p>
+                    @endif
                 </div>
             </div>
         </div>

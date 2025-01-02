@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DummyExport;
-use App\Exports\UraianJabatanExportExcel;
 use App\Models\KemampuandanPengalaman;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\TugasPokoUtamaGenerik;
@@ -12,7 +11,6 @@ use App\Models\UraianMasterJabatan;
 use App\Models\ViewUraianJabatan;
 use App\Models\WewenangJabatan;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
@@ -20,8 +18,6 @@ class ExportController extends Controller
 {
     public function exportExcel($id)
     {
-
-
         $data = UraianMasterJabatan::with('masterJabatan')->find($id);
         $data['jabatans'] = ViewUraianJabatan::select('uraian_jabatan_id', 'jabatan', 'position_id', 'NAMA_PROFESI', 'DESCRIPTION', 'JEN', 'ATASAN_LANGSUNG')->where('MASTER_JABATAN', $data['nama'])->get();
         $jabatans = $data["jabatans"];
@@ -53,9 +49,8 @@ class ExportController extends Controller
         $objPHPExcel->setCellValue("G4", date_format($data['created_at'],'d-m-Y'));
         $objPHPExcel->setCellValue("G5", "-");
         $objPHPExcel->setCellValue("G6", "-");
-        $objPHPExcel->setCellValue("G7", "Sudah di Validasi");
+        $objPHPExcel->setCellValue("G7", "SUDAH DI VALDASI");
         $objPHPExcel->setCellValue("E11", $data->nama);
-        
         // Sebutan Jabatan        
         $dataToInsert = "";
         foreach ($jabatans as $key) {
@@ -68,11 +63,11 @@ class ExportController extends Controller
         // Jenis Jabatan
         $objPHPExcel->setCellValue("E13", $data['masterJabatan']['type'] == "S" ? "STRUKTURAL" : 'FUNSIIONAL');
         // Jenjang Jabatan
-        $objPHPExcel->setCellValue("E14", $data['masterJabatan']['jenjang_kode']);
+        $objPHPExcel->setCellValue("E14", strtoupper($data['MasterJabatan']['jenjangJabatan']['nama']));
         // KELOMPOK PROFESI
         $dataToInsert = "";
         foreach ($jabatans as $key) {
-            $dataToInsert .= "-" .$key->jabatan->nama_profesi ."\n";
+            $dataToInsert .= "-" .strtoupper($key->jabatan->namaProfesi->nama_profesi) ."\n";
         }           
         $objPHPExcel->setCellValue("E15", $dataToInsert);
         $objPHPExcel->getStyle("E15")->getAlignment()->setWrapText(true);
@@ -83,7 +78,7 @@ class ExportController extends Controller
          // Unis Kerja
          $dataToInsert = "";
          foreach ($jabatans as $key) {
-             $dataToInsert .= "-" .$key->jabatan->description ."\n";
+             $dataToInsert .= "-" . strtoupper($key->jabatan->description) ."\n";
          }           
          $objPHPExcel->setCellValue("E17", $dataToInsert);
          $objPHPExcel->getStyle("E17")->getAlignment()->setWrapText(true);
@@ -223,10 +218,10 @@ class ExportController extends Controller
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
             'borders' => [
                 'outline' => [
-                    'style' =>Border::BORDER_THIN,
-                    'color' => ['rgb' => '000000']
+                    'style' => Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000'],
                 ],
-            ]
+            ],
         ]);
         $objPHPExcel->getStyle("B$baris:C$baris")->getAlignment()->setWrapText(true);
         $objPHPExcel->getStyle("B$baris:C$baris")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
@@ -851,7 +846,7 @@ class ExportController extends Controller
                 $objPHPExcel->setCellValue("B$baris", " $no.");
                 $objPHPExcel->setCellValue("C$baris", $key->kode);
                 $objPHPExcel->setCellValue("D$baris", $key['detail']['nama']);
-                $objPHPExcel->setCellValue("F$baris", $key['jenis']);
+                $objPHPExcel->setCellValue("F$baris", strtoupper($key['jenis']));
                 $objPHPExcel->setCellValue("G$baris", $key['detail']['definisi']);
                 $objPHPExcel->duplicateStyle($input, "B$baris:H$baris");
                 $objPHPExcel->mergeCells("D$baris:E$baris");

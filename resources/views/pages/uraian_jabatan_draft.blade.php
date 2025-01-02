@@ -7,11 +7,7 @@
         <div class="col-12">
             <div class="box">
                 <div class="box-header">
-                    <div class="row">
-                        <div class="col-6 text-left">
-                            <h4 class="box-title">{{ $data->nama }}</h4>
-                        </div>
-                    </div>
+                    <h4 class="box-title">DRAFT: {{ $data->nama }}</h4>
                 </div>
                 <div class="box-body">
                     {{-- Tab Content: Basic Info --}}
@@ -38,8 +34,10 @@
                                                     <td><a
                                                             href="{{ route('uraian_jabatan.show', $v->id) }}">{{ $v['nama'] }}</a>
                                                     </td>
-                                                    <td class="text-center"><a href="{{ route('export.pdf', $v->id) }}"><i
-                                                                class="ti-printer"></i></a></td>
+                                                    <td class="text-center">
+                                                        <a href="{{ route('export.excel', $v->id) }}"><i class="ti-layout-grid4"></i></a>
+                                                        <a href="{{ route('export.pdf', $v->id) }}"><i class="ti-printer"></i></a>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

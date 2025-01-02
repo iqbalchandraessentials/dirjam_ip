@@ -25,6 +25,10 @@ class MasterJabatan extends Model
         return $this->hasMany(UraianMasterJabatan::class, 'master_jabatan_id', 'id');
     }
 
+    public function jenjangJabatan()
+    {
+        return $this->hasOne(MasterJenjangJabatan::class, 'kode', 'jenjang_kode');
+    }
 
 
 }

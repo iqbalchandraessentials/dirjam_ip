@@ -12,7 +12,6 @@ use App\Models\SpesifikasiPendidikan;
 use App\Models\TugasPokoUtamaGenerik;
 use App\Models\WewenangJabatan;
 use App\Models\UraianMasterJabatan;
-use App\Models\ViewTemplate;
 use App\Models\ViewUraianJabatan;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -210,10 +209,7 @@ class UraianMasterJabatanImport implements ToCollection
                 'nature_impact' => $data['nature_impact'],
                 'created_by' => Auth::id(),
                 'status' => 'APPROVE',
-            ]);
-            
-           
-
+             ]);
             $uraian_jabatan_id = $uraian_jabatan_id->id;
             foreach ($data['tugas_pokok_utama'] as $x) {
                 // Cek jika 'aktivitas' dan 'output' tidak kosong
@@ -226,8 +222,6 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
-            
-            // SELECT kn.*, vt.nama FROM KETERAMPILAN_NONTEKNIS kn LEFT JOIN master_jabatans vt ON kn.uraian_master_jabatan_id = vt.id;
             foreach ($data['kompetensi_teknis'] as $x) {
                 if (!empty($x['kode_kompetensi']) && !empty($x['level'])) {
                     $master_detail_kompetensi = $x['kode_kompetensi'].'.'.$x['level'];
@@ -266,7 +260,6 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
-
             foreach ($data['kemampuan_pengalaman'] as $x) {
                 if (!empty($x['definisi'])) {
                     KemampuandanPengalaman::create([
@@ -275,8 +268,6 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
-              
-            
              foreach ($data['pendidikan'] as $x) {
                 if (!empty($x['pendidikan']) && !empty($x['pengalaman'])) {
                     // Cari data pengalaman berdasarkan jenjang jabatan dan nama pendidikan

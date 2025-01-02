@@ -64,6 +64,14 @@
         ul li {
             text-indent: -5px;
         }
+        #sto {
+        margin-bottom: 25px;
+        padding-bottom: 10px;
+            display: block;
+        }
+        #sto table {
+            margin: auto;
+        }
     </style>
 </head>
 
@@ -95,7 +103,7 @@
             <br />
         </th>
         <td style="width:110px">Tanggal</td>
-        <td style="width:140px"><?= $data['created_at'] ?></td>
+        <td style="width:140px"><?= date_format($data['created_at'],'d-m-Y') ?></td>
     </tr>
     <tr>
         <td>No Record</td>
@@ -107,7 +115,7 @@
     </tr>
     <tr>
         <td>Status</td>
-        <td><?= 'Sudah di Validasi ' ?></td>
+        <td><?= 'SUDAH DI VALIDASI' ?></td>
     </tr>
 </table>
 <br />
@@ -147,7 +155,14 @@
                     <td>Jenis Jabatan</td>
                     <td>:</td>
                     <td>
-                        <?= $data['masterJabatan']['jenjang_kode'] ?>
+                        <?= $data['masterJabatan']['TYPE'] == "S" ? "STRUKTURAL" : 'FUNSIIONAL' ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Jenjang Jabatan</td>
+                    <td>:</td>
+                    <td>
+                        <?=  strtoupper($data['MasterJabatan']['jenjangJabatan']['nama']) ?>
                     </td>
                 </tr>
                 <tr>
@@ -157,19 +172,19 @@
                         @if (isset($jabatans) && count($jabatans) > 0)
 
                             @foreach ($jabatans as $key)
-                                - {{ $key->jabatan->nama_profesi ?? 'Tidak ada nama_profesi' }}
+                                - {{ strtoupper($key->jabatan->namaProfesi->nama_profesi) ?? 'Tidak ada nama_profesi' }}
                             @endforeach
                         @else
                             <p>Tidak ada data nama_profesi.</p>
                         @endif
                     </td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <td>Stream Bisnis</td>
                     <td>:</td>
                     <td>
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td>Unit Kerja</td>
                     <td>:</td>
@@ -177,7 +192,7 @@
                         @if (isset($jabatans) && count($jabatans) > 0)
 
                             @foreach ($jabatans as $key)
-                                - {{ $key->jabatan->description ?? 'Tidak ada Unit Kerja' }}
+                                - {{ strtoupper($key->jabatan->description) ?? 'Tidak ada Unit Kerja' }}
                             @endforeach
                         @else
                             <p>Tidak ada data Unit Kerja.</p>
@@ -603,29 +618,19 @@
         </div>
         </br>
     </li>
-
     <li>STRUKTUR ORGANISASI
         <small class="mini">
             Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi jabatan atasan
             langsung, bawahan langsung serta rekan kerja (peers).
         </small>
-        <div class="">
-            @if (isset($jabatans) && $jabatans->count() > 0)
-                    @foreach ($jabatans as $v)
-                    @if (!empty($v->sto))  <!-- Ensure sto is not empty -->
-                    <div class="col-12" id="sto">
-                                    <!-- Menampilkan HTML yang sudah dirender -->
-                                    {!! $v->sto !!}
-                                </div>
-                                @endif
-                            @endforeach
-                        @else
-                            <p>Tidak ada data</p>
-                        @endif
-        </div>
+        @if (isset($strukturOrganisasi))
+        <div style="margin-bottom: 25px; width: 100%;"id="sto">
+                {!! $strukturOrganisasi !!}
+            </div>
+            <div style="height: 25px;"></div>
+        @endif
     </li>
     <br>
-
     <li>KEBUTUHAN KOMPETENSI JABATAN (KKJ)
         <small class="mini">
             Memberikan informasi mengenai kebutuhan kemahiran/kompetensi yang diharapkan dalam suatu jabatan.
@@ -654,7 +659,7 @@
                                     <td> {{ $no++ }}</td>
                                     <td>{{ $v['kode'] }}</td>
                                     <td>{{ $v['detail']['nama'] ?? '' }}</td>
-                                    <td style="text-align: left">{{ $v['detail']['definisi'] ?? '' }}</td>
+                                    <td style="text-align: justify">{{ $v['detail']['definisi'] ?? '' }}</td>
                                 </tr>
                             @endif
                         @endforeach
@@ -688,7 +693,7 @@
                                 <td>{{ $v['kode'] }}</td>
                                 <td>{{ $v['detail']['nama'] }}</td>
                                 <td style="text-transform: uppercase;">{{ $v['jenis'] }}</td>
-                                <td style="text-align: left">{{ $v['detail']['definisi'] }}</td>
+                                <td style="text-align: justify">{{ $v['detail']['definisi'] }}</td>
                             </tr>
                         @endif
                     @endforeach
@@ -719,9 +724,8 @@
                                 <td style="text-align: center;"> {{ $no++ }}</td>
                                 <td style="text-align: center;">{{ $v['kode'] }}</td>
                                 <td style="text-align: center;">{{ $v['detail']['nama'] ?? '' }}</td>
-                                <td style="text-align: center; text-transform: uppercase;">{{ $v['jenis'] ?? '' }}
-                                </td>
-                                <td>{{ $v['detail']['definisi'] ?? '' }}</td>
+                                <td style="text-align: center; text-transform: uppercase;">{{ $v['jenis'] ?? '' }}</td>
+                                <td style="text-align: justify">{{ $v['detail']['definisi'] ?? '' }}</td>
                             </tr>
                         @endif
                     @endforeach
@@ -756,7 +760,7 @@
                                 <td style="text-align: center">{{ $v['master']['nama'] }}</td>
                                 <td style="text-align: center">{{ $v['level'] }}</td>
                                 <td style="text-align: center">{{ $v['kategori'] }}</td>
-                                <td>{{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
+                                <td style="text-align: justify">{{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
                             </tr>
                         @endif
                     @endforeach

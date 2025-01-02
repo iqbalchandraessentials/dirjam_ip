@@ -9,7 +9,7 @@
                 <div class="box-header">
                     <div class="row">
                         <div class="col-6 text-left">
-                            <h4 class="box-title">Master Master Kompetnsi Teknis</h4>
+                            <h4 class="box-title">Master Kompetnsi Non Teknis</h4>
                         </div>
                     </div>
                 </div>
