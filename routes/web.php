@@ -37,6 +37,11 @@ Route::get('/approval_list', function () {
 // Route dengan middleware auth dan verified untuk uraian_jabatan
 Route::middleware(['auth'])->group(function () {
     Route::resource('uraian_jabatan', UraianJabatanController::class); 
+        // Route untuk export PDF
+    Route::get('uraian_jabatan/export-pdf/{id}', [UraianJabatanController::class, 'exportPdf'])
+    ->name('uraian_jabatan.export_pdf');
+    Route::get('uraian_jabatan/export-excel/{id}', [ExportController::class, 'exportExcel'])
+    ->name('uraian_jabatan.export_excel');
 });
 
 // Route dengan middleware auth untuk uraian_jabatan_template

@@ -36,16 +36,12 @@
                         </p>
                     </div>
                     <div class="col text-right">
-                        {{-- <a href="{{ route('uraian_jabatan_template.draft', $data['masterJabatan']['id']) }}"
-                            class="btn btn-secondary">
-                            <i class="ti-view-list-alt"></i><span> Draft</span>
-                        </a>
-                        <a href="{{ route('uraian_jabatan_template.export_pdf', $data['id']) }}" class="btn btn-secondary">
+                        <a href="{{ route('uraian_jabatan.export_pdf', $data->uraian_jabatan_id) }}" class="btn btn-secondary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
-                        <a href="{{ route('uraian_jabatan_template.export_excel', $data['id']) }}" class="btn btn-secondary">
+                        <a href="{{ route('uraian_jabatan.export_excel', $data->uraian_jabatan_id) }}" class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span>Excell</span>
-                        </a> --}}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -65,40 +61,47 @@
                             <tr>
                                 <td><b> Master Jabatan</b></td>
                                 <td>:</td>
-                                <td class="text-left">{{ $jabatan['master_jabatan'] }}</td>
+                                <td class="text-left">{{ $data['jabatan']['master_jabatan'] }}</td>
                             </tr>
                             <tr>
                                 <td><b> Sebutan Jabatan</b></td>
                                 <td>:</td>
                                 <td class="text-left">
-                                    {{ $jabatan['jabatan'] }}
+                                    {{ $data['jabatan']['jabatan'] }}
 
                                 </td>
                             </tr>
                             <tr>
                                 <td><b> Jenjang Jabatan</b></td>
                                 <td>:</td>
-                                <td class="text-left text-uppercase"> {{ $jabatan['jen'] }} </td>
+                                <td class="text-left text-uppercase"> {{ $data['jabatan']['jenjangJabatan']['nama'] }} </td>
                             </tr>
                             <tr>
                                 <td><b> Kelompok Bisnis</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase">
-                                  {{ $jabatan['nama_profesi'] }}
+                                  {{ $data['jabatan']['nama_profesi'] }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b> Divisi/Departemen/Bidang/Bagian</b></td>
+                                <td>:</td>
+                                <td class="text-left text-uppercase">
+                                  {{ $data['jabatan']['divisi'] }}
                                 </td>
                             </tr>
                             <tr>
                                 <td><b> Unit Kerja</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase">
-                                    {{$jabatan->description}}
+                                    {{$data['jabatan']->description}}
                                 </td>
                             </tr>
                             <tr>
                                 <td><b> Jabatan Atasan Langsung</b></td>
                                 <td>:</td>
                                 <td class="text-left">
-                                  {{$jabatan['atasan_langsung']}}
+                                  {{$data['jabatan']['atasan_langsung']}}
                                 </td>
                             </tr>
 
@@ -122,7 +125,7 @@
                     </p>
                 </div>
                 <div class="col-sm-12 col-12">
-                    <p class="blockquote">
+                    <p class="blockquote text-justify">
                         {{ $data->fungsi_utama }}
                     </p>
                 </div>
@@ -160,8 +163,8 @@
                                         <tr>
                                             <td> <span class="badge bg-dark"
                                                     style="min-width: 32px">{{ $x + 1 }}</span></td>
-                                            <td>{{ $v['aktivitas'] }}</td>
-                                            {{-- <td>{{ $v['output'] }}</td> --}}
+                                            <td class="text-justify">{{ $v['aktivitas'] }}</td>
+                                            <td class="text-justify">{{ $v['output'] }}</td>
                                         </tr>
                                 @endforeach
                             </tbody>
@@ -196,8 +199,8 @@
                                             <tr>
                                                 <td><span class="badge bg-dark"
                                                         style="min-width: 32px">{{ $x + 1 }}</span></td>
-                                                <td>{{ $v['aktivitas'] }}</td>
-                                                {{-- <td>{{ $v['output'] }}</td> --}}
+                                                <td class="text-justify">{{ $v['aktivitas'] }}</td>
+                                                <td class="text-justify">{{ $v['output'] }}</td>
                                             </tr>
                                     @endforeach
                                 </tbody>
@@ -208,7 +211,7 @@
                 </div>
             </div>
         </div>
-        {{-- <div class="box">
+        <div class="box">
             <div class="box-header">
                 <div class="row">
                     <div class="col-12 text-left">
@@ -229,14 +232,14 @@
                         <table>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['anggaran'] == 'Investasi' ? 'V' : '' }}
+                                    {{-- {{ $data['anggaran'] == 'Investasi' ? 'V' : '' }} --}}
                                 </td>
                                 <td></td>
                                 <td>Anggaran Investasi</td>
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['anggaran'] == 'Operasional' ? 'V' : '' }}
+                                    {{-- {{ $data['anggaran'] == 'Operasional' ? 'V' : '' }} --}}
                                 </td>
                                 <td></td>
                                 <td>Anggaran Operasional</td>
@@ -248,7 +251,7 @@
                         <table>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['accountability'] == 'Non Quantifiable' ? 'V' : '' }}
+                                    {{ $data['kewenangan_pengadaan'] == null ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Non Quantifiable</td>
@@ -258,7 +261,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['accountability'] == 'Very Small' ? 'V' : '' }}
+                                    {{ $data['kewenangan_pengadaan'] == '650 juta < n ≤ 6.5 milyar' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Very Small</td>
@@ -267,7 +270,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['accountability'] == 'Small' ? 'V' : '' }}
+                                    {{ $data['kewenangan_pengadaan'] == '6.5 milyar < n ≤ 65 milyar' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Small</td>
@@ -276,7 +279,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['accountability'] == 'Medium' ? 'V' : '' }}
+                                    {{ $data['kewenangan_pengadaan'] == '65 milyar < n ≤ 650 milyar' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Medium</td>
@@ -285,7 +288,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['accountability'] == 'Large' ? 'V' : '' }}
+                                    {{ $data['kewenangan_pengadaan'] == '650 Milyar - 6,5 Trilyun' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Large</td>
@@ -294,7 +297,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['accountability'] == 'Very Large' ? 'V' : '' }}
+                                    {{ $data['kewenangan_pengadaan'] == '6,5 Trilyun - 65 Trilyun' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Very Large</td>
@@ -308,28 +311,28 @@
                         <table>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['nature_impact'] == 'Prime' ? 'V' : '' }}
+                                    {{-- {{ $data['nature_impact'] == 'Prime' ? 'V' : '' }} --}}
                                 </td>
                                 <td></td>
                                 <td>Prime</td>
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['nature_impact'] == 'Share' ? 'V' : '' }}
+                                    {{-- {{ $data['nature_impact'] == 'Share' ? 'V' : '' }} --}}
                                 </td>
                                 <td></td>
                                 <td>Share</td>
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['nature_impact'] == 'Contributory' ? 'V' : '' }}
+                                    {{-- {{ $data['nature_impact'] == 'Contributory' ? 'V' : '' }} --}}
                                 </td>
                                 <td></td>
                                 <td>Contributory</td>
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['nature_impact'] == 'Remote' ? 'V' : '' }}
+                                    {{-- {{ $data['nature_impact'] == 'Remote' ? 'V' : '' }} --}}
                                 </td>
                                 <td></td>
                                 <td>Remote</td>
@@ -356,27 +359,15 @@
                                 <tr>
                                     <td>Langsung</td>
                                     <td>
-                                        @if (isset($jabatans) && count($jabatans) > 0)
 
-                                            @foreach ($jabatans as $key)
-                                                - {{ $key->jabatan->bawahan_langsung ?? '0' }}
-                                            @endforeach
-                                        @else
-                                            <p>0</p>
-                                        @endif
+                                        {{ $data['jabatan']->bawahan_langsung ?? '0' }}
+                                        
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Total</td>
                                     <td>
-                                        @if (isset($jabatans) && count($jabatans) > 0)
-
-                                            @foreach ($jabatans as $key)
-                                                - {{ $key->jabatan->total_bawahan ?? '0' }}
-                                            @endforeach
-                                        @else
-                                            <p>0</p>
-                                        @endif
+                                        {{ $data['jabatan']->total_bawahan ?? '0' }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -387,7 +378,7 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
 
 
         <div class="box">
@@ -420,8 +411,8 @@
                                                 <span class="badge bg-dark"
                                                     style="min-width: 32px">{{ $no++ }}</span>
                                             </td>
-                                            <td>{{ $v['subjek'] }}</td>
-                                            <td>{{ $v['tujuan'] }}</td>
+                                            <td class="text-center">{{ $v['subjek'] }}</td>
+                                            <td class="text-center">{{ $v['tujuan'] }}</td>
                                         </tr>
                                 @endforeach
                             </tbody>
@@ -450,8 +441,8 @@
                                                 <span class="badge bg-dark"
                                                     style="min-width: 32px">{{ $no++ }}</span>
                                             </td>
-                                            <td>{{ $v['subjek'] }}</td>
-                                            <td>{{ $v['tujuan'] }}</td>
+                                            <td class="text-center">{{ $v['subjek'] }}</td>
+                                            <td class="text-center">{{ $v['tujuan'] }}</td>
                                         </tr>
                                 @endforeach
                             </tbody>
@@ -484,10 +475,14 @@
                             </thead>
                             <tbody class="">
                                 @foreach ($data['tantangan'] as $x => $v)
-                                    <tr>
-                                        <td> <span class="badge bg-dark"
-                                                style="min-width: 32px">{{ $x + 1 }}</span></td>
-                                        <td>{{ $v['TANTANGAN'] }}</td>
+                                <tr>
+                                    <td> <span class="badge bg-dark"
+                                        style="min-width: 32px">{{ $x + 1 }}</span></td>
+                                        @if ( isset($v['TANTANGAN']))
+                                        <td class="text-center">{{ $v['TANTANGAN'] }}</td>
+                                        @else
+                                        <td class="text-center">{{ $v['definisi'] }}</td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -523,7 +518,11 @@
                                     <tr>
                                         <td> <span class="badge bg-dark"
                                                 style="min-width: 32px">{{ $x + 1 }}</span></td>
-                                        <td>{{ $v['PENGAMBILAN_KEPUTUSAN'] }}</td>
+                                                @if ( isset($v['pengambilan_keputusan']))
+                                        <td class="text-center">{{ $v['pengambilan_keputusan'] }}</td>
+                                        @else
+                                        <td class="text-center">{{ $v['definisi'] }}</td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -533,7 +532,6 @@
 
             </div>
         </div>
-
         <div class="box">
             <div class="box-header">
                 <h4 class="box-title">9. SPESIFIKASI JABATAN</h4>
@@ -548,7 +546,7 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="font-weight-bold text-center" width="5%">#</th>
@@ -604,7 +602,7 @@
                         </thead>
                         <tbody>
                             <ol type="a">
-                                <li> {{ $jobdesc }} </li>
+                                <li> {{ $jobdesc ?? "" }} </li>
                             </ol>
                         </tbody>
                     </table>
@@ -612,7 +610,7 @@
             </div>
         </div>
 
-        {{-- <div class="box">
+        <div class="box">
             <div class="box-header">
                 <div class="row">
                     <div class="col-12 text-left">
@@ -628,20 +626,20 @@
             </div>
         
             <div class="box-body pt-0 d-flex justify-content-center">
-                <div class="row">
-                    @if (isset($strukturOrganisasi))
+                <div class="row" style="display: block;  margin-bottom:90px">
+                    @if (isset($data['struktur_organisasi']))
                         <div class="col-12" id="sto">
-                            {!! $strukturOrganisasi !!}
+                            {!! $data['struktur_organisasi'] !!}
                         </div>
                     @else
                         <p>Tidak ada data</p>
                     @endif
                 </div>
             </div>
-        </div> --}}
+        </div>
         
 
-        {{-- <div class="box">
+        <div class="box">
             <div class="box-header">
                 <h4 class="box-title">11. KEBUTUHAN KOMPETENSI JABATAN (KKJ)</h4>
                 <div>
@@ -669,7 +667,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $no = 1; @endphp
+                                {{-- @php $no = 1; @endphp
                                 @foreach ($data['keterampilanNonteknis'] as $x => $v)
                                     @if ($v['kategori'] == 'UTAMA')
                                         <tr>
@@ -678,11 +676,11 @@
                                                     style="min-width: 32px">{{ $no++ }}</span>
                                             </td>
                                             <td>{{ $v['kode'] }}</td>
-                                            <td>{{ $v['detail']['nama'] ?? '' }}</td>
-                                            <td>{{ $v['detail']['definisi'] ?? '' }}</td>
+                                            <td class="text-justify">{{ $v['detail']['nama'] ?? '' }}</td>
+                                            <td class="text-justify">{{ $v['detail']['definisi'] ?? '' }}</td>
                                         </tr>
                                     @endif
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
@@ -708,7 +706,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $no = 1; @endphp
+                                {{-- @php $no = 1; @endphp
                                 @foreach ($data['keterampilanNonteknis'] as $v)
                                     @if ($v['kategori'] == 'PERAN')
                                         <tr>
@@ -717,12 +715,12 @@
                                                     style="min-width: 32px">{{ $no++ }}</span>
                                             </td>
                                             <td>{{ $v['kode'] }}</td>
-                                            <td>{{ $v['detail']['nama'] }}</td>
+                                            <td class="text-justify">{{ $v['detail']['nama'] }}</td>
                                             <td class="text-uppercase">{{ $v['jenis'] }}</td>
-                                            <td>{{ $v['detail']['definisi'] }}</td>
+                                            <td class="text-justify">{{ $v['detail']['definisi'] }}</td>
                                         </tr>
                                     @endif
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
@@ -748,7 +746,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $no = 1; @endphp
+                                {{-- @php $no = 1; @endphp
                                 @foreach ($data['keterampilanNonteknis'] as $x => $v)
                                     @if ($v['kategori'] == 'FUNGSI')
                                         <tr>
@@ -757,12 +755,12 @@
                                                     style="min-width: 32px">{{ $no++ }}</span>
                                             </td>
                                             <td>{{ $v['kode'] }}</td>
-                                            <td>{{ $v['detail']['nama'] ?? '' }}</td>
+                                            <td class="text-justify">{{ $v['detail']['nama'] ?? '' }}</td>
                                             <td class="text-uppercase">{{ $v['jenis'] ?? '' }}</td>
-                                            <td>{{ $v['detail']['definisi'] ?? '' }}</td>
+                                            <td class="text-justify">{{ $v['detail']['definisi'] ?? '' }}</td>
                                         </tr>
                                     @endif
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
@@ -790,7 +788,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $no = 1; @endphp
+                                {{-- @php $no = 1; @endphp
                                 @foreach ($keterampilanTeknis as $x => $v)
                                     @if (isset($v['master']['nama']))
                                         <tr>
@@ -805,14 +803,14 @@
                                             <td>{{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
                                         </tr>
                                     @endif
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
                 </div>
 
             </div>
-        </div> --}}
+        </div>
 
     </div>
 @endsection

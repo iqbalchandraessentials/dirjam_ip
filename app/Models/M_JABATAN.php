@@ -2,12 +2,30 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class M_JABATAN extends Model
 {
+    use HasFactory;
     protected $table = 'VIEW_URAIAN_JABATAN';
+    protected $table2 = 'JENJANG';
+    // If you have a primary key other than 'id', specify it here
+    protected $primaryKey = 'POSITION_ID'; // Or whatever your primary key is
+    public $timestamps = false; // If you don't have created_at and updated_at columns
+
+    public function getById($id)
+    {
+        return DB::table($this->table)
+            ->select("$this->table.*", "$this->table2.*") // Use selectRaw if needed for complex selects
+            ->join($this->table2, "$this->table2.JENJANG_KD", "=", "$this->table.JEN")
+            ->where("$this->table.POSITION_ID", $id)
+            ->first(); // Use first() to get a single object, not a collection
+    }
+
+
+
     public function getKlaster($cond = "")
     {
         $query = DB::table($this->table); // Buat query builder baru di dalam metode
@@ -23,7 +41,7 @@ class M_JABATAN extends Model
     
         return $query->get();
     }
-    
+
     public function getAll($cond = "")
     {
         $query = DB::table($this->table); // Buat query builder baru di dalam metode
@@ -35,6 +53,16 @@ class M_JABATAN extends Model
         $query->select("$this->table.*");
     
         return $query->get();
+    }
+
+    public function jenjangJabatan()
+    {
+        return $this->hasOne(MasterJenjangJabatan::class, 'kode', 'jen');
+    }
+
+    public function namaProfesi()
+    {
+        return $this->hasOne(M_PROFESI::class, 'KODE_NAMA_PROFESI', 'nama_profesi');
     }
     
 }
