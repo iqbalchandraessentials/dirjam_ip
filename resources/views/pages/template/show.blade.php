@@ -29,7 +29,7 @@
                         <h2 class="box-title">
 
                             <i class="ti-file"></i>
-                            Uraian Jabatan
+                            TEMPLATE
                         </h2>
                         <p>
                             {{date_format($data['created_at'],'d-m-Y')}}
@@ -255,7 +255,7 @@
             <div class="box-header">
                 <div class="row">
                     <div class="col-12 text-left">
-                        <h4 class="box-title">5. Dimensi Jabatan</h4>
+                        <h4 class="box-title">5. DIMENSI JABATAN</h4>
                         <div class="mt-5">
                             <p class="font-italic">
                                 Memuat semua data relevan yang dapat diukur dan digunakan untuk menggambarkan cakupan
@@ -434,7 +434,7 @@
 
         <div class="box">
             <div class="box-header">
-                <h4 class="box-title">6. Hubungan Kerja</h4>
+                <h4 class="box-title">6. HUBUNGAN KERJA</h4>
                 <div>
                     <p class="font-italic">
                         Menggambarkan hubungan kedinasan antara pemegang jabatan dengan jabatan lain dalam
@@ -669,7 +669,7 @@
             </div>
         
             <div class="box-body pt-0 d-flex justify-content-center">
-                <div class="row">
+                <div class="row" style="display: block;  margin-bottom:90px">
                     @if (isset($data['struktur_organisasi']))
                         <div class="col-12" id="sto">
                             {!! $data['struktur_organisasi'] !!}

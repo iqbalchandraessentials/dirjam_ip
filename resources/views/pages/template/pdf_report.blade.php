@@ -87,25 +87,25 @@
     <tr>
         <th style="" rowspan="4">
             <br />
-            <span style="font-size: 18px; text-transform: capitalize;">URAIAN JABATAN - HEAD OFFICE</span><br />
-            <span style="font-size: 16px"><?= $data['nama'] ?></span>
+            <span style="font-size: 18px; text-transform: capitalize;">TEMPLATE </span><br />
+            <span style="font-size: 16px">{{ $data['nama'] }}</span>
             <br />
             <br />
         </th>
         <td style="width:110px">Tanggal</td>
-        <td style="width:140px"><?= date_format($data['created_at'],'d-m-Y') ?></td>
+        <td style="width:140px">{{ date_format($data['created_at'],'d-m-Y') }}</td>
     </tr>
     <tr>
         <td>No Record</td>
-        <td><?= '-' ?></td>
+        <td>{{ '-' }}</td>
     </tr>
     <tr>
         <td>Revisi</td>
-        <td><?= '-' ?></td>
+        <td>{{ '-' }}</td>
     </tr>
     <tr>
         <td>Status</td>
-        <td><?= 'SUDAH DI VALIDASI' ?></td>
+        <td>{{ 'SUDAH DI VALIDASI' }}</td>
     </tr>
 </table>
 <br />
@@ -125,7 +125,7 @@
                 <tr>
                     <td>Master Jabatan</td>
                     <td>:</td>
-                    <td><?= $data['nama'] ?></td>
+                    <td>{{ $data['nama'] }}</td>
                 </tr>
                 <tr>
                     <td>Sebutan Jabatan</td>
@@ -145,14 +145,14 @@
                     <td>Jenis Jabatan</td>
                     <td>:</td>
                     <td>
-                        <?= $data['masterJabatan']['TYPE'] == "S" ? "STRUKTURAL" : 'FUNSIIONAL' ?>
+                        {{ $data['masterJabatan']['TYPE'] == "S" ? "STRUKTURAL" : 'FUNSIIONAL' }}
                     </td>
                 </tr>
                 <tr>
                     <td>Jenjang Jabatan</td>
                     <td>:</td>
                     <td>
-                        <?=  strtoupper($data['MasterJabatan']['jenjangJabatan']['nama']) ?>
+                        {{  strtoupper($data['MasterJabatan']['jenjangJabatan']['nama']) }}
                     </td>
                 </tr>
                 <tr>
@@ -215,7 +215,7 @@
             dijalankan.
         </small>
         <div style="font-weight: normal; text-align: justify; margin-left:3px;">
-            <?= nl2br($data->fungsi_utama) ?>
+            {{ nl2br($data->fungsi_utama) }}
         </div>
     </li>
     <br>
@@ -616,7 +616,7 @@
         
             @if (isset($data->strukturOrganisasi))
                 {!! $data->strukturOrganisasi !!}
-                <div style="height: 25px;"></div>
+                <div style="height: 20%; margin-bottom:20px; display:block;"></div>
             @endif
     </li>
     <br>

@@ -80,7 +80,7 @@
                                 <td><b> Kelompok Bisnis</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase">
-                                  {{ $data['jabatan']['nama_profesi'] }}
+                                  {{ $data['jabatan']['namaProfesi']['nama_profesi'] }}
                                 </td>
                             </tr>
                             <tr>
@@ -215,7 +215,7 @@
             <div class="box-header">
                 <div class="row">
                     <div class="col-12 text-left">
-                        <h4 class="box-title">5. Dimensi Jabatan</h4>
+                        <h4 class="box-title">5. DIMENSI JABATAN</h4>
                         <div class="mt-5">
                             <p class="font-italic">
                                 Memuat semua data relevan yang dapat diukur dan digunakan untuk menggambarkan cakupan
@@ -383,7 +383,7 @@
 
         <div class="box">
             <div class="box-header">
-                <h4 class="box-title">6. Hubungan Kerja</h4>
+                <h4 class="box-title">6. HUBUNGAN KERJA</h4>
                 <div>
                     <p class="font-italic">
                         Menggambarkan hubungan kedinasan antara pemegang jabatan dengan jabatan lain dalam
@@ -637,8 +637,6 @@
                 </div>
             </div>
         </div>
-        
-
         <div class="box">
             <div class="box-header">
                 <h4 class="box-title">11. KEBUTUHAN KOMPETENSI JABATAN (KKJ)</h4>
@@ -648,7 +646,6 @@
                     </p>
                 </div>
             </div>
-
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="p-5">
@@ -685,7 +682,6 @@
                         </table>
                     </div>
                 </div>
-
             </div>
             <div class="box-body">
                 <div class="form-group mb-0">
@@ -725,7 +721,6 @@
                         </table>
                     </div>
                 </div>
-
             </div>
             <div class="box-body">
                 <div class="form-group mb-0">
@@ -765,7 +760,6 @@
                         </table>
                     </div>
                 </div>
-
             </div>
             <div class="box-body">
                 <div class="form-group mb-0">
@@ -808,9 +802,7 @@
                         </table>
                     </div>
                 </div>
-
             </div>
         </div>
-
     </div>
 @endsection

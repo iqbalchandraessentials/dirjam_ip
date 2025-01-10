@@ -145,7 +145,14 @@
                     <td>Jenjang Jabatan</td>
                     <td>:</td>
                     <td>
-                        <?=  strtoupper($data['jabatan']['nama_profesi']) ?>
+                        <?=  strtoupper($data['jabatan']['jenjangJabatan']['nama']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Kelompok Bisnis</td>
+                    <td>:</td>
+                    <td>
+                        <?=  strtoupper($data['jabatan']['namaProfesi']['nama_profesi']) ?>
                     </td>
                 </tr>
                 <tr>
@@ -245,7 +252,7 @@
         </div>
     </li>
     <br />
-    <li>Dimensi Jabatan
+    <li>DIMENSI JABATAN
         <small class="mini">
             Memuat semua data relevan yang dapat diukur dan digunakan untuk menggambarkan cakupan
             atau besarnya tanggung jawab yang dipegang termasuk ringkasan data kuantitatif dan

@@ -50,13 +50,10 @@ class UraianJabatanController extends Controller
     /**
      * Display the specified resource.
      */
-
-
-
     public function show(string $id)
     {
         $data = $this->getDatas($id);
-        dd($data['jabatan']['namaProfesi']);
+        // dd($data['jabatan']['namaProfesi']);
         return view('pages.uraian_jabatan.show', ['data' => $data]);
 
     }
