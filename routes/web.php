@@ -34,14 +34,29 @@ Route::get('/approval_list', function () {
     return view('pages.approval_list');
 })->middleware(['auth', 'verified'])->name('approval_list');
 
-Route::get('/uraian_jabatan_template', function () {
-    return view('pages.revisi_jobdesc');
-})->middleware(['auth', 'verified'])->name('uraian_jabatan_template');
+// Route dengan middleware auth dan verified untuk uraian_jabatan
+Route::middleware(['auth'])->group(function () {
+    Route::resource('uraian_jabatan', UraianJabatanController::class); 
+});
 
-Route::get('/export-excel/{id}', [ExportController::class, 'exportExcel'])->name('export.excel');
+// Route dengan middleware auth untuk uraian_jabatan_template
+Route::middleware(['auth'])->group(function () {
+    // Resource route untuk UraianMasterJabatanController
+    Route::resource('uraian_jabatan_template', UraianMasterJabatanController::class);
 
-Route::get('/export-pdf/{id}', [UraianMasterJabatanController::class, 'exportPdf'])->name('export.pdf');
-Route::get('/uraian_master_jabatan_draft/{id}', [UraianMasterJabatanController::class, 'draft'])->name('uraianJabatan.draft');
+    // Route untuk draft uraian jabatan
+    Route::get('uraian_jabatan_template/draft/{id}', [UraianMasterJabatanController::class, 'draft'])
+         ->name('uraian_jabatan_template.draft'); 
+
+    // Route untuk export Excel
+    Route::get('uraian_jabatan_template/export-excel/{id}', [ExportController::class, 'exportExcel'])
+         ->name('uraian_jabatan_template.export_excel');
+
+    // Route untuk export PDF
+    Route::get('uraian_jabatan_template/export-pdf/{id}', [UraianMasterJabatanController::class, 'exportPdf'])
+         ->name('uraian_jabatan_template.export_pdf');
+});
+
 
 
 Route::middleware(['auth'])->group(function () {
@@ -57,9 +72,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::middleware(['auth'])->group(function () {
-    Route::resource('uraian_jabatan', UraianMasterJabatanController::class);
-});
 
 
 

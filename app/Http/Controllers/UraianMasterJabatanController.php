@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\KemampuandanPengalaman;
-use App\Models\M_PROFESI;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJabatan;
 use App\Models\TugasPokoUtamaGenerik;
@@ -12,32 +11,25 @@ use App\Models\ViewUraianJabatan;
 use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use PDF; // Import PDF facade
+use PDF;
 
 class UraianMasterJabatanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
 
         $data = MasterJabatan::has('uraianMasterJabatan')->get();
-        return view('pages.uraian_jabatan', ['data' => $data]);
+        return view('pages.template.index', ['data' => $data]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
         //
@@ -47,26 +39,14 @@ class UraianMasterJabatanController extends Controller
      * Display the specified resource.
      */
 
-    function getRelatedOrFallback($data, $relation, $fallbackModel, $conditions = [])
-    {
-        if (isset($data->uraianMasterJabatan)) {
-            $firstRelation = $data->uraianMasterJabatan->$relation ?? null;
-            if ($firstRelation && isset($firstRelation)) {
-                return $firstRelation;
-            }
-        }
-
-        return $fallbackModel::where($conditions)->get();
-    }
-
     public function show($id)
     {
         $data = UraianMasterJabatan::with(['masterJabatan', 'keterampilanTeknis'])->find($id);
 
         $data['jabatans'] = ViewUraianJabatan::select('uraian_jabatan_id', 'parent_position_id', 'jabatan', 'position_id', 'NAMA_PROFESI', 'DESCRIPTION', 'JEN', 'ATASAN_LANGSUNG')
-        ->where('MASTER_JABATAN', $data['nama'])
-        ->get();
-    
+            ->where('MASTER_JABATAN', $data['nama'])
+            ->get();
+
         $jabatans = $data["jabatans"];
         foreach ($jabatans as $v) {
             $x = ViewUraianJabatan::select(['jabatan', 'type', 'DESCRIPTION', 'BAWAHAN_LANGSUNG', 'TOTAL_BAWAHAN', 'NAMA_PROFESI', 'ATASAN_LANGSUNG'])
@@ -74,7 +54,7 @@ class UraianMasterJabatanController extends Controller
                 ->first();
             $v->jabatan = $x;
         }
-        $strukturOrganisasi = $this->sto($jabatans[0]['parent_position_id'], $jabatans[0]['position_id']);   
+        $strukturOrganisasi = $this->sto($jabatans[0]['parent_position_id'], $jabatans[0]['position_id']);
 
         $tugaspokokGenerik = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $data->masterJabatan->jenis_jabatan)->get();
         $masalahKompleksitasKerja = isset($data)  && $data->masalahKompleksitasKerja->isNotEmpty()
@@ -92,7 +72,7 @@ class UraianMasterJabatanController extends Controller
         $keterampilanTeknis = $core->merge($enabler);
         // dd($keterampilanTeknis);
 
-        return view('pages.home', [
+        return view('pages.template.show', [
             'data' => $data,
             'tugaspokokGenerik' => $tugaspokokGenerik,
             'masalahKompleksitasKerja' => $masalahKompleksitasKerja,
@@ -105,8 +85,79 @@ class UraianMasterJabatanController extends Controller
         ]);
     }
 
+    public function exportPdf($id)
+    {
+        $data = UraianMasterJabatan::with('masterJabatan')->find($id);
+        $data['jabatans'] = ViewUraianJabatan::select('uraian_jabatan_id', 'jabatan', 'position_id', 'NAMA_PROFESI', 'DESCRIPTION', 'JEN', 'ATASAN_LANGSUNG')->where('MASTER_JABATAN', $data['nama'])->get();
+        $jabatans = $data["jabatans"];
+        foreach ($jabatans as $v) {
+            $x = ViewUraianJabatan::select(['jabatan', 'type', 'DESCRIPTION', 'BAWAHAN_LANGSUNG', 'TOTAL_BAWAHAN', 'NAMA_PROFESI', 'ATASAN_LANGSUNG'])->where('position_id', $v->position_id)->first();
+            $v->jabatan = $x;
+        }
+        $strukturOrganisasi = $this->sto($jabatans[0]['parent_position_id'], $jabatans[0]['position_id']);
+        // dd($strukturOrganisasi);
+        $tugaspokokGenerik = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $data->masterJabatan->jenis_jabatan)->get();
+        $masalahKompleksitasKerja = isset($data)  && $data->masalahKompleksitasKerja->isNotEmpty()
+            ? $data->masalahKompleksitasKerja
+            : MasalahKompleksitasKerja::where('jenis_jabatan', $data->jenis_jabatan)->get();
+        $wewenangJabatan = isset($data)  && $data->wewenangJabatan->isNotEmpty()
+            ? $data->wewenangJabatan
+            : WewenangJabatan::where('jenis_jabatan', $data->jenis_jabatan)->get();
+        $kemampuandanPengalaman = isset($data)  && $data->kemampuandanPengalaman->isNotEmpty()
+            ? $data->kemampuandanPengalaman
+            : KemampuandanPengalaman::where('jenis_jabatan', $data->jenis_jabatan)->get();
+        $core = $data->keterampilanTeknisCore;
+        $enabler = $data->keterampilanTeknisEnabler;
+        $KeterampilanTeknis = $core->merge($enabler);
+        // Membuat PDF dari view
+        $pdf = PDF::loadView('pages.pdf_report', [
+            'data' => $data,
+            'tugaspokokGenerik' => $tugaspokokGenerik,
+            'masalahKompleksitasKerja' => $masalahKompleksitasKerja,
+            'wewenangJabatan' => $wewenangJabatan,
+            'kemampuandanPengalaman' => $kemampuandanPengalaman,
+            'KeterampilanTeknis' => $KeterampilanTeknis,
+            'jabatans' => $jabatans,
+            'strukturOrganisasi' => $strukturOrganisasi,
+        ]);
 
-        public function sto($id = "", $now = "")
+        // Mengatur filename
+        $name = "Uraian-Jabatan-" . $data->nama . date('d-m-Y H-i-s') . ".pdf";
+        return $pdf->download($name);
+    }
+
+    public function draft($id)
+    {
+        $data =  MasterJabatan::find($id);
+        // dd($data);
+        return view('pages.template.draft',  ['data' => $data]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(UraianMasterJabatan $uraianMasterJabatan)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, UraianMasterJabatan $uraianMasterJabatan)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(UraianMasterJabatan $uraianMasterJabatan)
+    {
+        //
+    }
+
+    public function sto($id = "", $now = "")
     {
         $query = DB::table('IP_URJAB_ATASAN_LANGSUNG')
             ->where('position_id', $now)
@@ -165,7 +216,6 @@ class UraianMasterJabatanController extends Controller
                 $html .= "</div></td>";
                 $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
                 $html .= "</tr>";
-
                 $html .= "<tr>";
                 $x = 0;
                 $posz = [];
@@ -368,79 +418,5 @@ class UraianMasterJabatanController extends Controller
         }
 
         return $html;
-    }
-
-    public function exportPdf($id)
-    {
-        $data = UraianMasterJabatan::with('masterJabatan')->find($id);
-        $data['jabatans'] = ViewUraianJabatan::select('uraian_jabatan_id', 'jabatan', 'position_id', 'NAMA_PROFESI', 'DESCRIPTION', 'JEN', 'ATASAN_LANGSUNG')->where('MASTER_JABATAN', $data['nama'])->get();
-
-        $jabatans = $data["jabatans"];
-        foreach ($jabatans as $v) {
-            $x = ViewUraianJabatan::select(['jabatan', 'type', 'DESCRIPTION', 'BAWAHAN_LANGSUNG', 'TOTAL_BAWAHAN', 'NAMA_PROFESI', 'ATASAN_LANGSUNG'])->where('position_id', $v->position_id)->first();
-            $v->jabatan = $x;
-        }
-        $strukturOrganisasi = $this->sto($jabatans[0]['parent_position_id'], $jabatans[0]['position_id']);
-        // dd($strukturOrganisasi);
-        $tugaspokokGenerik = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $data->masterJabatan->jenis_jabatan)->get();
-        $masalahKompleksitasKerja = isset($data)  && $data->masalahKompleksitasKerja->isNotEmpty()
-            ? $data->masalahKompleksitasKerja
-            : MasalahKompleksitasKerja::where('jenis_jabatan', $data->jenis_jabatan)->get();
-        $wewenangJabatan = isset($data)  && $data->wewenangJabatan->isNotEmpty()
-            ? $data->wewenangJabatan
-            : WewenangJabatan::where('jenis_jabatan', $data->jenis_jabatan)->get();
-        $kemampuandanPengalaman = isset($data)  && $data->kemampuandanPengalaman->isNotEmpty()
-            ? $data->kemampuandanPengalaman
-            : KemampuandanPengalaman::where('jenis_jabatan', $data->jenis_jabatan)->get();
-        $core = $data->keterampilanTeknisCore;
-        $enabler = $data->keterampilanTeknisEnabler;
-        $KeterampilanTeknis = $core->merge($enabler);
-
-        // Membuat PDF dari view
-        $pdf = PDF::loadView('pages.pdf_report', [
-            'data' => $data,
-            'tugaspokokGenerik' => $tugaspokokGenerik,
-            'masalahKompleksitasKerja' => $masalahKompleksitasKerja,
-            'wewenangJabatan' => $wewenangJabatan,
-            'kemampuandanPengalaman' => $kemampuandanPengalaman,
-            'KeterampilanTeknis' => $KeterampilanTeknis,
-            'jabatans' => $jabatans,
-            'strukturOrganisasi' => $strukturOrganisasi,
-        ]);
-
-        // Mengatur filename
-        $name = "Uraian-Jabatan-" . $data->nama . date('d-m-Y H-i-s') . ".pdf";
-        return $pdf->download($name);
-    }
-
-    public function draft($id)
-    {
-        $data =  MasterJabatan::find($id);
-        // dd($data);
-        return view('pages.uraian_jabatan_draft',  ['data' => $data]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(UraianMasterJabatan $uraianMasterJabatan)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, UraianMasterJabatan $uraianMasterJabatan)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(UraianMasterJabatan $uraianMasterJabatan)
-    {
-        //
     }
 }

@@ -104,21 +104,21 @@
                 </ul>
             </li> --}}
 
-        
+            {{-- <li class="header nav-small-cap text-uppercase">Others</li> --}}
             <li class="{{ Request::is('uraian_jabatan') ? 'active' : '' }}">
                 <a href="{{ url('uraian_jabatan') }}">
-                    <i class="ti-medall"></i>
+                    <i class="ti-clipboard"></i>
                     <span>Uraian Jabatan</span>
                 </a>
             </li>
         
-            {{-- <li class="header nav-small-cap text-uppercase">Others</li> --}}
-            <li class="{{ Request::is('template') ? 'active' : '' }}">
-                <a href="{{ url('template') }}">
-                    <i class="ti-clipboard"></i>
+            <li class="{{ Request::is('uraian_jabatan_template*') ? 'active' : '' }}">
+                <a href="{{ url('uraian_jabatan_template') }}">
+                    <i class="ti-medall"></i>
                     <span>Template</span>
                 </a>
             </li>
+        
         
             <li class="treeview {{ Request::is('loader') ? 'active' : '' }}">
                 <a href="#">

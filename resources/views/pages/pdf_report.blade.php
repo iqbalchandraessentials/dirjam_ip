@@ -1,6 +1,5 @@
 <head>
     <meta charset="utf-8">
-
     <style>
         * {
             font-family: sans-serif;
@@ -24,7 +23,6 @@
         #table td {
             border-collapse: collapse;
             border: 1px #000 solid;
-
             padding: 3px;
         }
 
@@ -63,14 +61,6 @@
 
         ul li {
             text-indent: -5px;
-        }
-        #sto {
-        margin-bottom: 25px;
-        padding-bottom: 10px;
-            display: block;
-        }
-        #sto table {
-            margin: auto;
         }
     </style>
 </head>
@@ -216,6 +206,7 @@
             </table>
         </div>
     </li>
+    <br>
     <li>TUJUAN JABATAN
         <small class="mini">
             Merupakan kalimat singkat yang menjelaskan tujuan diciptakannya jabatan tersebut di suatu
@@ -259,7 +250,6 @@
         </div>
     </li>
     <br />
-
     <li>TUGAS POKOK GENERIK DAN OUTPUT
         <small class="mini">
             Merupakan rincian aktivitas-aktivitas umum yang diperlukan suatu jabatan sesuai jenis jabatan
@@ -623,12 +613,11 @@
             Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi jabatan atasan
             langsung, bawahan langsung serta rekan kerja (peers).
         </small>
-        @if (isset($strukturOrganisasi))
-        <div style="margin-bottom: 25px; width: 100%;"id="sto">
+        
+            @if (isset($strukturOrganisasi))
                 {!! $strukturOrganisasi !!}
-            </div>
-            <div style="height: 25px;"></div>
-        @endif
+                <div style="height: 25px;"></div>
+            @endif
     </li>
     <br>
     <li>KEBUTUHAN KOMPETENSI JABATAN (KKJ)
