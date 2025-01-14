@@ -18,11 +18,12 @@ class ImportController extends Controller
     public function import(Request $request)
     { 
         try {
-            $import = Excel::import(new UraianMasterJabatanImport, $request->file('file'));
+            Excel::import(new UraianMasterJabatanImport, $request->file('file'));
             session()->flash('success', 'Data uraian jabatan berhasil diupload, mohon periksa kembali.');
-            return redirect()->route('uraian_jabatan.index');
+            return redirect()->route('uraian_jabatan_template.index');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error importing data: ' . $e->getMessage());
         }
     }
+
 }

@@ -105,17 +105,17 @@
             </li> --}}
 
             {{-- <li class="header nav-small-cap text-uppercase">Others</li> --}}
-            <li class="{{ Request::is('uraian_jabatan/*') ? 'active' : '' }}">
+            <li class="{{ Request::is(['uraian_jabatan/*', 'uraian_jabatan']) ? 'active' : '' }}">
                 <a href="{{ url('uraian_jabatan') }}">
                     <i class="ti-clipboard"></i>
                     <span>Uraian Jabatan</span>
                 </a>
             </li>
         
-            <li class="{{ Request::is('uraian_jabatan_template/*') ? 'active' : '' }}">
+            <li class="{{ Request::is('uraian_jabatan_template/*','uraian_jabatan_template') ? 'active' : '' }}">
                 <a href="{{ url('uraian_jabatan_template') }}">
                     <i class="ti-medall"></i>
-                    <span>Template</span>
+                    <span>Template Jabatan</span>
                 </a>
             </li>
         

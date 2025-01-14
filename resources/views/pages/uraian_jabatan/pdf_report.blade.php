@@ -152,7 +152,7 @@
                     <td>Kelompok Bisnis</td>
                     <td>:</td>
                     <td>
-                        <?=  strtoupper($data['jabatan']['namaProfesi']['nama_profesi']) ?>
+                        <?=  strtoupper($data['jabatan']['namaProfesi']['nama_profesi'] ?? $data['jabatan']['namaProfesi'])  ?>
                     </td>
                 </tr>
                 <tr>
@@ -471,10 +471,10 @@
                         @foreach ($data['tantangan'] as $x => $v)
                             <tr>
                                 <td style="text-align: center"> {{ $x + 1 }}</td>
-                                @if ( isset($v['TANTANGAN']))
-                                        <td style="text-align: center;">{{ $v['TANTANGAN'] }}</td>
+                                @if ( isset($v['tantangan']))
+                                        <td style="text-align: center;">{{ $v['tantangan'] }}</td>
                                         @else
-                                        <td style="text-align: center;">{{ $v['definisi'] }}</td>
+                                        <td style="text-align: justify">{{ $v['definisi'] }}</td>
                                 @endif
                             </tr>
                         @endforeach
@@ -505,7 +505,7 @@
                                 @if ( isset($v['pengambilan_keputusan']))
                                 <td style="text-align: center;">{{ $v['pengambilan_keputusan'] }}</td>
                                 @else
-                                <td style="text-align: center;">{{ $v['definisi'] }}</td>
+                                <td style="text-align: justify">{{ $v['definisi'] }}</td>
                                 @endif
                             </tr>
                         @endforeach
@@ -607,7 +607,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
+                        @php $no = 1; @endphp
+                                @foreach ($data['keterampilan_non_teknis'] as $x => $v)
+                                    @if ($v['kategori'] == 'UTAMA')
+                                        <tr>
+                                            <td style="text-align: center">
+                                                <span class="badge bg-dark"
+                                                    style="min-width: 32px">{{ $no++ }}</span>
+                                            </td>
+                                            <td style="text-align: center">{{ $v['kode'] }}</td>
+                                            <td style="text-align: center">{{ $v['detail']['nama'] ?? '' }}</td>
+                                            <td style="text-align: justify">{{ $v['detail']['definisi'] ?? '' }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
                     </tbody>
                 </table>
             </div>
@@ -630,7 +643,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                   
+                    @php $no = 1; @endphp
+                    @foreach ($data['keterampilan_non_teknis'] as $v)
+                        @if ($v['kategori'] == 'PERAN')
+                            <tr>
+                                <td>
+                                    <span class="badge bg-dark"
+                                        style="min-width: 32px">{{ $no++ }}</span>
+                                </td>
+                                <td>{{ $v['kode'] }}</td>
+                                <td style="text-align: center">{{ $v['detail']['nama'] }}</td>
+                                <td style="text-align: center">{{ strtoupper($v['jenis']) }}</td>
+                                <td style="text-align: justify">{{ $v['detail']['definisi'] }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -651,7 +678,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    @php $no = 1; @endphp
+                                @foreach ($data['keterampilan_non_teknis'] as $x => $v)
+                                    @if ($v['kategori'] == 'FUNGSI')
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-dark"
+                                                    style="min-width: 32px">{{ $no++ }}</span>
+                                            </td>
+                                            <td>{{ $v['kode'] }}</td>
+                                            <td style="text-align: center">{{ $v['detail']['nama'] ?? '' }}</td>
+                                            <td style="text-align: center">{{ strtoupper($v['jenis']) ?? '' }}</td>
+                                            <td style="text-align: justify">{{ $v['detail']['definisi'] ?? '' }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
                 </tbody>
             </table>
         </div>
@@ -674,7 +715,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    @php $no = 1; @endphp
+                                @foreach ($data['keterampilan_teknis'] as $x => $v)
+                                    @if (isset($v['master']['nama']))
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-dark"
+                                                    style="min-width: 32px">{{ $no++ }}</span>
+                                            </td>
+                                            <td style="text-align: center">{{ $v['kode'] }}</td>
+                                            <td style="text-align: center">{{ $v['master']['nama'] }}</td>
+                                            <td style="text-align: center">{{ $v['level'] }}</td>
+                                            <td style="text-align: center">{{ $v['kategori'] }}</td>
+                                            <td style="text-align: justify">{{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
                 </tbody>
             </table>
         </div>

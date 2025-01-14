@@ -80,7 +80,7 @@
                                 <td><b> Kelompok Bisnis</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase">
-                                  {{ $data['jabatan']['namaProfesi']['nama_profesi'] }}
+                                  {{ $data['jabatan']['namaProfesi']['nama_profesi'] ?? $data['jabatan']['namaProfesi'] }}
                                 </td>
                             </tr>
                             <tr>
@@ -478,8 +478,8 @@
                                 <tr>
                                     <td> <span class="badge bg-dark"
                                         style="min-width: 32px">{{ $x + 1 }}</span></td>
-                                        @if ( isset($v['TANTANGAN']))
-                                        <td class="text-center">{{ $v['TANTANGAN'] }}</td>
+                                        @if ( isset($v['tantangan']))
+                                        <td class="text-center">{{ $v['tantangan'] }}</td>
                                         @else
                                         <td class="text-center">{{ $v['definisi'] }}</td>
                                         @endif
@@ -664,8 +664,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @php $no = 1; @endphp
-                                @foreach ($data['keterampilanNonteknis'] as $x => $v)
+                                @php $no = 1; @endphp
+                                @foreach ($data['keterampilan_non_teknis'] as $x => $v)
                                     @if ($v['kategori'] == 'UTAMA')
                                         <tr>
                                             <td>
@@ -677,7 +677,7 @@
                                             <td class="text-justify">{{ $v['detail']['definisi'] ?? '' }}</td>
                                         </tr>
                                     @endif
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -702,8 +702,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @php $no = 1; @endphp
-                                @foreach ($data['keterampilanNonteknis'] as $v)
+                                @php $no = 1; @endphp
+                                @foreach ($data['keterampilan_non_teknis'] as $v)
                                     @if ($v['kategori'] == 'PERAN')
                                         <tr>
                                             <td>
@@ -716,7 +716,7 @@
                                             <td class="text-justify">{{ $v['detail']['definisi'] }}</td>
                                         </tr>
                                     @endif
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -741,8 +741,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @php $no = 1; @endphp
-                                @foreach ($data['keterampilanNonteknis'] as $x => $v)
+                                @php $no = 1; @endphp
+                                @foreach ($data['keterampilan_non_teknis'] as $x => $v)
                                     @if ($v['kategori'] == 'FUNGSI')
                                         <tr>
                                             <td>
@@ -755,7 +755,7 @@
                                             <td class="text-justify">{{ $v['detail']['definisi'] ?? '' }}</td>
                                         </tr>
                                     @endif
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -782,8 +782,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @php $no = 1; @endphp
-                                @foreach ($keterampilanTeknis as $x => $v)
+                                @php $no = 1; @endphp
+                                @foreach ($data['keterampilan_teknis'] as $x => $v)
                                     @if (isset($v['master']['nama']))
                                         <tr>
                                             <td>
@@ -797,7 +797,7 @@
                                             <td>{{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
                                         </tr>
                                     @endif
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

@@ -64,5 +64,17 @@ class M_JABATAN extends Model
     {
         return $this->hasOne(M_PROFESI::class, 'KODE_NAMA_PROFESI', 'nama_profesi');
     }
-    
+    public function keterampilanNonteknis()
+    {
+        return $this->hasMany(KeterampilanNonteknis::class, 'master_jabatan', 'nama');
+    }
+    public function KeterampilanTeknisEnabler()
+    {
+        return $this->hasMany(KeterampilanTeknis::class, 'master_jabatan', 'nama')->where('kategori','ENABLER');
+    }
+    public function KeterampilanTeknisCore()
+    {
+        return $this->hasMany(KeterampilanTeknis::class, 'uraian_master_jabatan_id', 'id');
+    }
+
 }

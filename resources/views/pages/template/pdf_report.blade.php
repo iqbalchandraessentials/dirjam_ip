@@ -87,7 +87,7 @@
     <tr>
         <th style="" rowspan="4">
             <br />
-            <span style="font-size: 18px; text-transform: capitalize;">TEMPLATE </span><br />
+            <span style="font-size: 18px; text-transform: capitalize;">TEMPLATE JABATAN </span><br />
             <span style="font-size: 16px">{{ $data['nama'] }}</span>
             <br />
             <br />
@@ -519,7 +519,7 @@
                         @foreach ($data['masalah_kompleksitas_kerja'] as $x => $v)
                             <tr>
                                 <td style="text-align: center"> {{ $x + 1 }}</td>
-                                <td>{{ $v['definisi'] }}</td>
+                                <td style="text-align: justify">{{ $v['definisi'] }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -546,7 +546,7 @@
                         @foreach ($data['wewenang_jabatan'] as $x => $v)
                             <tr>
                                 <td style="text-align: center"> {{ $x + 1 }}</td>
-                                <td>{{ $v['definisi'] }}</td>
+                                <td style="text-align: justify">{{ $v['definisi'] }}</td>
                             </tr>
                         @endforeach
                     </tbody>

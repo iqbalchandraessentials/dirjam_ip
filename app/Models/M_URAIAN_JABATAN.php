@@ -21,4 +21,5 @@ class M_URAIAN_JABATAN extends Model
         return $query->get();
     }
 
+    
 }

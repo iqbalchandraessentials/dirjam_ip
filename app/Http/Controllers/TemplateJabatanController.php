@@ -13,13 +13,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
 
-class UraianMasterJabatanController extends Controller
+class TemplateJabatanController extends Controller
 {
     
     public function index()
     {
-
         $data = MasterJabatan::has('uraianMasterJabatan')->get();
+        // dd($data[0]);
         return view('pages.template.index', ['data' => $data]);
     }
 
@@ -53,13 +53,14 @@ class UraianMasterJabatanController extends Controller
         $pdf = PDF::loadView('pages.template.pdf_report', [
             'data' => $data
         ]);
-        $name = "Template_Uraian_Jabatan_" . $data->nama . date('d-m-Y H-i-s') . ".pdf";
+        $name = "Template_Jabatan_" . $data->nama . date('d-m-Y H-i-s') . ".pdf";
         return $pdf->download($name);
     }
 
     public function draft($id)
     {
         $data =  MasterJabatan::find($id);
+        // dd($data);
         return view('pages.template.draft',  ['data' => $data]);
     }
 
