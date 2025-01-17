@@ -11,6 +11,7 @@ class KeterampilanNonteknis extends Model
         'kode',
         'kategori',
         'jenis',
+        'master_jabatan',
     ];
     public function detail()
     {

@@ -10,6 +10,8 @@ class MasterKompetensiNonteknis extends Model
         'kode',
         'nama',
         'singkatan',
-        'definisi'
+        'jenis',
+        'definisi',
+        'created_by'
     ];
 }

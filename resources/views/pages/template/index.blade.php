@@ -48,7 +48,7 @@
                     @endif
 
                     <div style="margin-bottom: 15px">
-                        <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('import.templateJabatan') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                         <label for="file">Upload Excel File:</label>
                         <input type="file" name="file" id="file" required>

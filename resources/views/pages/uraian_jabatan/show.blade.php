@@ -311,28 +311,28 @@
                         <table>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{-- {{ $data['nature_impact'] == 'Prime' ? 'V' : '' }} --}}
+                                    {{ $data['nature_of_impact']?->kategori === 'Prime' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Prime</td>
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{-- {{ $data['nature_impact'] == 'Share' ? 'V' : '' }} --}}
+                                    {{ $data['nature_of_impact']?->kategori === 'Share' ? 'V' : '' }}
                                 </td>
                                 <td></td>
-                                <td>Share</td>
+                                <td>Shared</td>
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{-- {{ $data['nature_impact'] == 'Contributory' ? 'V' : '' }} --}}
+                                    {{ $data['nature_of_impact']?->kategori === 'Contributory' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Contributory</td>
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{-- {{ $data['nature_impact'] == 'Remote' ? 'V' : '' }} --}}
+                                    {{ $data['nature_of_impact']?->kategori === 'Remote' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Remote</td>
@@ -406,6 +406,7 @@
                             <tbody>
                                 @php $no = 1; @endphp
                                 @foreach ($data['komunikasi_internal'] as $x => $v)
+                                @if ($v['subjek'])
                                         <tr>
                                             <td>
                                                 <span class="badge bg-dark"
@@ -414,6 +415,7 @@
                                             <td class="text-center">{{ $v['subjek'] }}</td>
                                             <td class="text-center">{{ $v['tujuan'] }}</td>
                                         </tr>
+                                        @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -436,6 +438,7 @@
                             <tbody>
                                 @php $no = 1; @endphp
                                 @foreach ($data['komunikasi_external'] as $x => $v)
+                                @if ($v['subjek'])
                                         <tr>
                                             <td>
                                                 <span class="badge bg-dark"
@@ -444,6 +447,7 @@
                                             <td class="text-center">{{ $v['subjek'] }}</td>
                                             <td class="text-center">{{ $v['tujuan'] }}</td>
                                         </tr>
+                                        @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -585,7 +589,6 @@
                                         <td class="text-center">{{ $item->pendidikan }}</td>
                                         <td class="tex-left">{!! $bidang !!}</td>
                                         <td class="text-center">{!! $pengalaman !!}</td>
-                                        {{-- <td class="text-center">{{ $jobdesc }}</td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -601,8 +604,11 @@
                         <thead class="thead-light">
                         </thead>
                         <tbody>
-                            <ol type="a">
-                                <li> {{ $jobdesc ?? "" }} </li>
+                                <ol type="a"  style="padding-left: 0; margin-left: 2; list-style-position: inside;">
+                                    <li> {{ $jobdesc ?? "" }} </li>
+                                    @foreach ($data['kemampuan_dan_pengalaman'] as $v)
+                                        <li>{{ $v->definisi }}</li>
+                                    @endforeach
                             </ol>
                         </tbody>
                     </table>
@@ -614,7 +620,7 @@
             <div class="box-header">
                 <div class="row">
                     <div class="col-12 text-left">
-                        <h3 class="box-title">9. STRUKTUR ORGANISASI</h3>
+                        <h3 class="box-title">10. STRUKTUR ORGANISASI</h3>
                         <div>
                             <p class="font-italic">
                                 Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi

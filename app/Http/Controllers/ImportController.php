@@ -2,22 +2,100 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\KeterampilanNonteknisImport;
+use App\Imports\KeterampilanTeknisImport;
 use Illuminate\Http\Request;
-use App\Imports\DataImport;
+use App\Imports\KompetensiTeknisImport;
+use App\Imports\MasterKompetensiNonTeknisImport;
 use App\Imports\UraianMasterJabatanImport;
-use App\Models\UraianMasterJabatan;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportController extends Controller
 {
-    public function showForm()
+    public function masterKompetensiTeknis(Request $request)
     {
-        return view('import');
+        try {
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls,csv',
+            ]);
+            Excel::import(new KompetensiTeknisImport, $request->file('file'));
+            session()->flash('success', 'Master Keterampilan Teknis berhasil diupload, mohon periksa kembali.');
+            return redirect()->route('master.masterKompetensiTeknis');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+
+            $errorMessages = [];
+            foreach ($failures as $failure) {
+                $errorMessages[] = 'Baris ' . $failure->row() . ': ' . implode(', ', $failure->errors());
+            }
+            return redirect()->back()->withErrors($errorMessages);
+        }
+    }
+    public function masterKompetensiNonTeknis(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls,csv',
+            ]);
+            Excel::import(new MasterKompetensiNonTeknisImport, $request->file('file'));
+            session()->flash('success', 'Master Keterampilan Non Teknis berhasil diupload, mohon periksa kembali.');
+            return redirect()->route('master.masterKompetensiNonTeknis');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+
+            $errorMessages = [];
+            foreach ($failures as $failure) {
+                $errorMessages[] = 'Baris ' . $failure->row() . ': ' . implode(', ', $failure->errors());
+            }
+
+            return redirect()->back()->withErrors($errorMessages);
+        }
+    }
+    public function mappingKompetensiTeknis(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls,csv',
+            ]);
+            Excel::import(new KeterampilanTeknisImport, $request->file('file'));
+            session()->flash('success', 'Mapping Keterampilan Teknis berhasil diupload, mohon periksa kembali.');
+            return redirect()->route('master.mappingkomptensiTeknis');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+
+            $errorMessages = [];
+            foreach ($failures as $failure) {
+                $errorMessages[] = 'Baris ' . $failure->row() . ': ' . implode(', ', $failure->errors());
+            }
+            return redirect()->back()->withErrors($errorMessages);
+        }
+    }
+    public function mappingKompetensiNonTeknis(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls,csv',
+            ]);
+            Excel::import(new KeterampilanNonteknisImport, $request->file('file'));
+            session()->flash('success', 'Mapping Keterampilan Non Teknis berhasil diupload, mohon periksa kembali.');
+            return redirect()->route('master.mappingkomptensiTeknis');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+
+            $errorMessages = [];
+            foreach ($failures as $failure) {
+                $errorMessages[] = 'Baris ' . $failure->row() . ': ' . implode(', ', $failure->errors());
+            }
+            return redirect()->back()->withErrors($errorMessages);
+        }
     }
 
     public function import(Request $request)
-    { 
+    {
         try {
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls,csv',
+            ]);
             Excel::import(new UraianMasterJabatanImport, $request->file('file'));
             session()->flash('success', 'Data uraian jabatan berhasil diupload, mohon periksa kembali.');
             return redirect()->route('uraian_jabatan_template.index');
@@ -25,5 +103,4 @@ class ImportController extends Controller
             return redirect()->back()->with('error', 'Error importing data: ' . $e->getMessage());
         }
     }
-
 }

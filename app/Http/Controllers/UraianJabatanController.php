@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\JabatanLamaBaru;
 use App\Models\jenjang\M_JENJANG;
+use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanNonteknis;
 use App\Models\KeterampilanTeknis;
 use App\Models\M_AKTIVITAS;
@@ -15,15 +16,18 @@ use App\Models\M_MAP_PENDIDIKAN;
 use App\Models\M_PENGAMBILAN_KEPUTUSAN;
 use App\Models\M_TANTANGAN;
 use App\Models\M_URAIAN_JABATAN;
+use App\Models\MappingNatureOfImpact;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJenjangJabatan;
 use App\Models\MasterUnit;
 use App\Models\MelengkapiData;
 use App\Models\TEMPLATE_ACUAN_V;
+use App\Models\TugasPokoUtamaGenerik;
 use App\Models\unit\M_UNIT;
 use App\Models\ViewUraianJabatan;
 use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PDF;
 
@@ -87,7 +91,6 @@ class UraianJabatanController extends Controller
     public function show(string $id)
     {
         $data = $this->getDatas($id);
-        // dd($data['jabatan']['namaProfesi']);
         return view('pages.uraian_jabatan.show', ['data' => $data]);
 
     }
@@ -143,20 +146,16 @@ class UraianJabatanController extends Controller
     {
         // Mengambil data uraian jabatan
         $data = M_URAIAN_JABATAN::where('URAIAN_JABATAN_ID', $id)->firstOrFail();
-        
         // Mengambil data jabatan
         $jabatan = M_JABATAN::where('POSITION_ID', $data->position_id)->firstOrFail();
         $data['jabatan'] = $jabatan;
-        
-    
-        
-
-
+        // $jabatan->nama_profesi = '';
+        $data['nature_of_impact'] = MappingNatureOfImpact::select('kategori')->where('KODE_PROFESI', $jabatan->nama_profesi)->first();
+        // dd($data['nature_of_impact']);
         // Memotong dua kata terakhir dari jabatan
         $jabatanText = $jabatan->jabatan;
         $words = explode(' ', $jabatanText);
         $jabatanTrimmed = implode(' ', array_slice($words, 0, count($words) - 2));
-    
         // Mencari data jabatan lama baru berdasarkan potongan nama jabatan
         $melengkapiData = JabatanLamaBaru::whereRaw('LOWER(jabatan) LIKE ?', ['%' . strtolower($jabatanTrimmed) . '%'])->first();
         // dd($data);
@@ -164,32 +163,24 @@ class UraianJabatanController extends Controller
         $templateAcuan = optional($melengkapiData)->master_jabatan 
             ? TEMPLATE_ACUAN_V::where('NAMA_TEMPLATE', $melengkapiData->master_jabatan)->first() 
             : null;
-
         // $data['fungsi_utama'] = isset($data['fungsi_utama']) ? $data['fungsi_utama'] : $templateAcuan['fungsi_utama'];
-    
         // Mengambil data aktivitas berdasarkan uraian jabatan
         $aktivitas = M_AKTIVITAS::where('uraian_jabatan_id', $jabatan->template_id)->get();
         $id = $jabatan->template_id;
-        
         if ($aktivitas->isEmpty()) {
             $aktivitas = M_AKTIVITAS::where('URAIAN_JABATAN_ID', $jabatan->uraian_jabatan_id)->get();
             $id = $jabatan->uraian_jabatan_id;
         }
-        
         if ($aktivitas->isEmpty() && $templateAcuan) {
             $aktivitas = M_AKTIVITAS::where('URAIAN_JABATAN_ID', $templateAcuan->uraian_jabatan_id)->get();
             $id = $templateAcuan->uraian_jabatan_id;
         }
-    
-        $data["aktivitas"] = $aktivitas;
         
-        // Debugging output
-        // dd($uraianJabatan["aktivitas"]);
-    
-
-        $data['aktivitas_generik'] = M_AKTIVITAS_GENERIK::where('JENIS',$jabatan->type)->get();
+        $data["aktivitas"] = $aktivitas;
         $type = $jabatan->type == "S" ? "struktural" : "fungsional";
+        $data['aktivitas_generik'] = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan',$type)->get();
         $mapPendidikan = new M_MAP_PENDIDIKAN();
+        $data['kemampuan_dan_pengalaman'] = KemampuandanPengalaman::where('jenis_jabatan', $type)->get();
         $data['pendidikan'] = $mapPendidikan->getByJabatan($id);
         $data['komunikasi_internal'] = M_KOMUNIKASI::where('LINGKUP_FLAG', 'internal')->where('URAIAN_JABATAN_ID', $id)->orderBy('URUTAN')->get();
         $data['komunikasi_external'] = M_KOMUNIKASI::where('LINGKUP_FLAG', 'external')->where('URAIAN_JABATAN_ID', $id)->orderBy('URUTAN')->get();
@@ -205,7 +196,6 @@ class UraianJabatanController extends Controller
          } else {
              $data['pengambilan_keputusan'] = WewenangJabatan::where('jenis_jabatan', $type)->get();
         }
-
         $data['struktur_organisasi'] = $this->sto($jabatan['parent_position_id'], $jabatan['position_id']);
         $data['keterampilan_non_teknis'] = KeterampilanNonteknis::where('MASTER_JABATAN', $data['jabatan']['master_jabatan'])->get();
         $data_core = KeterampilanTeknis::where('URAIAN_MASTER_JABATAN_ID', $data['jabatan']['template_id'])->get();
@@ -498,5 +488,4 @@ class UraianJabatanController extends Controller
 
         return $html;
     }
-
 }

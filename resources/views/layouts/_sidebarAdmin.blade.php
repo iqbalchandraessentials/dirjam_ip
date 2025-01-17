@@ -28,19 +28,24 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
+                    {{-- <li class="{{ Request::is('master_data/mappingkomptensiTeknis') ? 'active' : '' }}">
+                        <a href="{{ route('master.mappingkomptensiTeknis') }}">
+                            <i class="ti-more"></i>Mapping Kompetensi Teknis
+                        </a>
+                    </li> --}}
                     <li class="{{ Request::is('master_data/komptensiTeknis') ? 'active' : '' }}">
                         <a href="{{ route('master.masterKompetensiTeknis') }}">
                             <i class="ti-more"></i>Kompetensi Teknis
                         </a>
                     </li>
+                    {{-- <li class="{{ Request::is('master_data/mappingkomptensiNonTeknis') ? 'active' : '' }}">
+                        <a href="{{ route('master.mappingkomptensiNonTeknis') }}">
+                            <i class="ti-more"></i>Mapping Kompetensi Non Teknis
+                        </a>
+                    </li> --}}
                     <li class="{{ Request::is('master_data/komptensiNonTeknis') ? 'active' : '' }}">
                         <a href="{{ route('master.masterKompetensiNonTeknis') }}">
                             <i class="ti-more"></i>Kompetensi Non Teknis
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('master_data/pendidikan') ? 'active' : '' }}">
-                        <a href="{{ route('master.pendidikan') }}">
-                            <i class="ti-more"></i>Pendidikan
                         </a>
                     </li>
                     <li class="{{ Request::is('master_data/tugasPokokGenerik') ? 'active' : '' }}">
@@ -48,9 +53,19 @@
                             <i class="ti-more"></i>Tugas Pokok Generik
                         </a>
                     </li>
+                    <li class="{{ Request::is('master_data/masterJabatan') ? 'active' : '' }}">
+                        <a href="{{ route('master.masterJabatan') }}">
+                            <i class="ti-more"></i>Master Jabatan
+                        </a>
+                    </li>
                     <li class="{{ Request::is('master_data/masalahDanWewenang') ? 'active' : '' }}">
                         <a href="{{ route('master.masalahDanWewenang') }}">
                             <i class="ti-more"></i>Default Data
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('master_data/pendidikan') ? 'active' : '' }}">
+                        <a href="{{ route('master.pendidikan') }}">
+                            <i class="ti-more"></i>Pendidikan
                         </a>
                     </li>
                     <li class="{{ Request::is('master_data/indikator') ? 'active' : '' }}">
