@@ -6,8 +6,9 @@ use App\Models\MasterKompetensiTeknis;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class MasterKompetensiTeknisImport implements ToModel, WithHeadingRow
+class MasterKompetensiTeknisImport implements ToModel, WithHeadingRow, WithValidation
 {
     /**
     * @param array $row
@@ -25,9 +26,7 @@ class MasterKompetensiTeknisImport implements ToModel, WithHeadingRow
     }
     public function rules(): array
     {
-        return [
-            'kode' => 'required|string|max:50|unique',
-        ];
+    return ['kode' => 'required|string|max:50|unique:master_kompetensi_teknis,kode',];
     }
     public function customValidationMessages()
     {

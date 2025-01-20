@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Uraian Jabatan | Direktori Jabatan')
+@section('title', 'Mapping Kompetensi Non Teknis')
 
 @section('content')
     <div class="col-12">
@@ -9,6 +9,11 @@
                 <div class="row">
                     <div class="col-6 text-left">
                         <h4 class="box-title">Mapping Komptensi Non Teknis</h4>
+                    </div>
+                    <div class="col-6 text-right">
+                        <a href="{{ route('export.exportMappingKompetensiNonTeknis') }}" class="btn btn-secondary">
+                            <i class="ti-layout-grid4"></i><span class="ml-1">Excell</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -63,20 +68,19 @@
                                 <table class="table table-striped dataTables">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">Master Jabatan</th>
                                             <th class="text-center">Kode</th>
                                             <th class="text-center">Komptensi</th>
+                                            <th class="text-center">Master Jabatan</th>
                                             <th class="text-center">Kategori</th>
                                             <th class="text-center">Jenis</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                         @foreach ($data as $x => $v)
                                             <tr>
-                                                <td>{{ $v['master_jabatan'] }}</td>
                                                 <td class="text-center">{{ $v['kode'] }}</td>
                                                 <td class="text-center">{{ $v->detail->nama ?? '-' }}</td>
+                                                <td>{{ $v['master_jabatan'] }}</td>
                                                 <td class="text-center">{{ $v['kategori'] }}</td>
                                                 <td class="text-center">{{ $v['jenis'] }}</td>
                                             </tr>

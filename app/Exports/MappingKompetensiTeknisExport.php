@@ -4,30 +4,32 @@ namespace App\Exports;
 
 use App\Models\KeterampilanTeknis;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class MappingKompetensiTeknisExport implements FromCollection
+class MappingKompetensiTeknisExport implements FromCollection, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        return KeterampilanTeknis::all([
-        'master_jabatan_id',
-        'kode',
-        'master_detail_kompetensi_id',
-        'level',
-        'kategori'
-    ]);
+        return KeterampilanTeknis::whereNotNull('master_jabatan')->get([
+            'master_jabatan',
+            'kode',
+            'level',
+            'master_detail_kompetensi_id',
+            'kategori'
+        ]);
     }
     // PLNip24#
     public function headings(): array
     {
         return [
-        'master_jabatan_id',
+        'master_jabatan',
         'kode',
-        'master_detail_kompetensi_id',
         'level',
-        'kategori'];
+        'master_detail_kompetensi_id',
+        'kategori'
+        ];
     }
 }

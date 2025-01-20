@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Uraian Jabatan | Direktori Jabatan')
+@section('title', 'Mapping Kompetensi Teknis')
 
 @section('content')
     <div class="col-12">
@@ -8,7 +8,12 @@
             <div class="box-header">
                 <div class="row">
                     <div class="col-6 text-left">
-                        <h4 class="box-title">Master Jabatan</h4>
+                        <h4 class="box-title">Mapping Kompetensi Teknis</h4>
+                    </div>
+                    <div class="col-6 text-right">
+                        <a href="{{ route('export.exportMappingKompetensiTeknis') }}" class="btn btn-secondary">
+                            <i class="ti-layout-grid4"></i><span class="ml-1">Excell</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -43,7 +48,7 @@
                         </div>
                     @endif
                     <div style="margin-bottom: 15px">
-                        <form action="{{ route('import.mappingKompetensiTeknis') }}" method="POST"
+                        <form action="{{ route('import.mappingKeterampilanTeknis') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             <label for="file">Upload Excel File:</label>
@@ -60,21 +65,20 @@
                                     <thead>
                                         <tr>
                                             <th class="text-Left">No.</th>
-                                            <th class="text-center">Master Jabatan</th>
                                             <th class="text-center">Kode</th>
                                             <th class="text-center">Komptensi</th>
+                                            <th class="text-center">Master Jabatan</th>
                                             <th class="text-center">Level</th>
                                             <th class="text-center">Jenis</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                         @foreach ($data as $x => $v)
                                             <tr>
                                                 <td>{{ $x + 1 }}</td>
-                                                <td>{{ $v['master_jabatan'] }}</td>
                                                 <td class="text-center">{{ $v['kode'] }}</td>
-                                                <td class="text-center">{{ $v->master->nama ?? '-' }}</td>
+                                                <td class="text-center text-uppercase">{{ $v->master->nama ?? '-' }}</td>
+                                                <td>{{ $v['master_jabatan'] ? $v['master_jabatan'] : $v['uraianJabatan']['nama'] }}</td>
                                                 <td class="text-center">{{ $v['level'] }}</td>
                                                 <td class="text-center">{{ $v['kategori'] }}</td>
                                             </tr>

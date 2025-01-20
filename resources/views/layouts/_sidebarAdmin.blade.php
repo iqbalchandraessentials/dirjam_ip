@@ -33,7 +33,12 @@
                             <i class="ti-more"></i>Mapping Kompetensi Teknis
                         </a>
                     </li> --}}
-                    <li class="{{ Request::is('master_data/komptensiTeknis') ? 'active' : '' }}">
+                    <li class="{{ Request::is('master_data/masterJabatan') ? 'active' : '' }}">
+                        <a href="{{ route('master.masterJabatan') }}">
+                            <i class="ti-more"></i>Master Jabatan
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('master_data/komptensiTeknis', 'master_data/mappingkomptensiTeknis') ? 'active' : '' }}">
                         <a href="{{ route('master.masterKompetensiTeknis') }}">
                             <i class="ti-more"></i>Kompetensi Teknis
                         </a>
@@ -43,7 +48,7 @@
                             <i class="ti-more"></i>Mapping Kompetensi Non Teknis
                         </a>
                     </li> --}}
-                    <li class="{{ Request::is('master_data/komptensiNonTeknis') ? 'active' : '' }}">
+                    <li class="{{ Request::is('master_data/komptensiNonTeknis', 'master_data/mappingkomptensiNonTeknis') ? 'active' : '' }}">
                         <a href="{{ route('master.masterKompetensiNonTeknis') }}">
                             <i class="ti-more"></i>Kompetensi Non Teknis
                         </a>
@@ -53,14 +58,9 @@
                             <i class="ti-more"></i>Tugas Pokok Generik
                         </a>
                     </li>
-                    <li class="{{ Request::is('master_data/masterJabatan') ? 'active' : '' }}">
-                        <a href="{{ route('master.masterJabatan') }}">
-                            <i class="ti-more"></i>Master Jabatan
-                        </a>
-                    </li>
                     <li class="{{ Request::is('master_data/masalahDanWewenang') ? 'active' : '' }}">
                         <a href="{{ route('master.masalahDanWewenang') }}">
-                            <i class="ti-more"></i>Default Data
+                            <i class="ti-more"></i>Default Master Data
                         </a>
                     </li>
                     <li class="{{ Request::is('master_data/pendidikan') ? 'active' : '' }}">

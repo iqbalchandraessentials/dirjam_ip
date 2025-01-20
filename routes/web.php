@@ -50,9 +50,9 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('import')->group(function () {
         Route::post('templateJabatan', [ImportController::class, 'import'])->name('import.templateJabatan');
         Route::post('masterKompetensiTeknis', [ImportController::class, 'masterKompetensiTeknis'])->name('import.masterKompetensiTeknis');
-        Route::post('mappingKompetensiTeknis', [ImportController::class, 'mappingKompetensiTeknis'])->name('import.mappingKompetensiTeknis');
         Route::post('masterKompetensiNonTeknis', [ImportController::class, 'masterKompetensiNonTeknis'])->name('import.masterKompetensiNonTeknis');
         Route::post('mappingKompetensiNonTeknis', [ImportController::class, 'mappingKompetensiNonTeknis'])->name('import.mappingKompetensiNonTeknis');
+        Route::post('mappingKeterampilanTeknis', [ImportController::class, 'mappingKeterampilanTeknis'])->name('import.mappingKeterampilanTeknis');
     });
     Route::prefix('export')->group(function () {
         Route::get('masterKompetensiNonTeknis', [MasterDataController::class, 'exportMasterKompetensiNonTeknis'])->name('export.exportMasterKompetensiNonTeknis');

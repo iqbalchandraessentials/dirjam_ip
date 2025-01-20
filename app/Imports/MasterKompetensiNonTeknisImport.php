@@ -6,8 +6,9 @@ use App\Models\MasterKompetensiNonTeknis;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class MasterKompetensiNonTeknisImport implements ToModel, WithHeadingRow
+class MasterKompetensiNonTeknisImport implements ToModel,WithValidation, WithHeadingRow
 {
     public function __construct()
     {

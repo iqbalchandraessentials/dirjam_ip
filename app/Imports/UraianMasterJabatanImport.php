@@ -16,6 +16,7 @@ use App\Models\ViewUraianJabatan;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class UraianMasterJabatanImport implements ToCollection
@@ -92,8 +93,10 @@ class UraianMasterJabatanImport implements ToCollection
                     ];
                 }
             }
+            if (empty($this->tugas_pokok_utama[0]['aktivitas'])) {
+                $errors[] = 'Tugas Pokok Utama Dan Output kosong';
+            }
             $data['tugas_pokok_utama'] = $this->tugas_pokok_utama;
-            
             // HUBUNGAN KERJA
             foreach ($rows as $key => $row) {
                 if ($key >= 90 && $key <= 101) {
@@ -108,8 +111,8 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
 
-            if (empty($this->hubungan_kerja)) {
-                $errors[] = 'Hubungan kerja kosong';
+            if (empty($this->hubungan_kerja[0]['komunikasi'])) {
+                $errors[] = 'Hubungan Kerja Internal kosong';
             }
 
             foreach ($rows as $key => $row) {
@@ -123,11 +126,10 @@ class UraianMasterJabatanImport implements ToCollection
                     }
                 }
             }
-            if (empty($this->hubungan_kerja)) {
-                $errors[] = 'Hubungan kerja kosong';
+            if (empty($this->hubungan_kerja[0]['komunikasi'])) {
+                $errors[] = 'Hubungan kerja Eksternal kosong';
             }
             $data['hubungan_kerja'] = $this->hubungan_kerja;
-
             // MASALAH, KOMPLEKSITAS KERJA DAN TANTANGAN UTAMA
             foreach ($rows as $key => $row) {
                 if ($key >= 116 && $key <= 120) {
@@ -136,7 +138,6 @@ class UraianMasterJabatanImport implements ToCollection
                     ];
                 }
             }
-
             $data['masalah_kompleksitas_kerja'] = $this->masalah_kompleksitas_kerja;
             // WEWENANG JABATAN
             foreach ($rows as $key => $row) {
@@ -157,6 +158,9 @@ class UraianMasterJabatanImport implements ToCollection
                     ];
                 }
             }
+            if (empty($this->pendidikan[0]['pendidikan'])) {
+                $errors[] = 'Pendidikan kosong';
+            }
             $data['pendidikan'] = $this->pendidikan;
    
             foreach ($rows as $key => $row) {
@@ -167,19 +171,32 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
             $data['kemampuan_pengalaman'] = $this->kemampuan_pengalaman;
-            // 
             // Kompetensi Teknis
             foreach ($rows as $key => $row) {
                 if ($key >= 183 && $key <= 192) {
-                    $this->kompetensi_teknis[] = [
-                        'kode_kompetensi' => $row[2],
-                        'level' => $row[6],
-                        'kode_perilaku' => $row[2] . '.' . $row[6],
-                    ];
+                    $kodeKompetensi = isset($row[2]) && !empty(trim($row[2])) ? trim($row[2]) : null;
+                    if ($kodeKompetensi) { 
+                        $this->kompetensi_teknis[] = [
+                            'kode_kompetensi' => $kodeKompetensi,
+                            'level' => isset($row[6]) ? trim($row[6]) : null,
+                            'kode_perilaku' => $kodeKompetensi . '.' . (isset($row[6]) ? trim($row[6]) : ''),
+                        ];
+                    }
                 }
+            }
+            // Aturan validasi untuk setiap item di array
+            $rules = [
+                '*.kode_kompetensi' => 'required|string|exists:master_kompetensi_teknis,kode|max:50',
+                '*.level' => 'required|integer|min:1|max:5',
+            ];
+            // Lakukan validasi
+            $validator = Validator::make($this->kompetensi_teknis, $rules);
+            if ($validator->fails()) {
+                $errors[] = 'Komptensi Teknis salah atau kosong';
             }
             $data['kompetensi_teknis'] = $this->kompetensi_teknis;
             // akhir kompetensi teknis
+            // menampilkan error
             if (!empty($errors)) {
                 return redirect()->back()->with('error', implode(', ', $errors));
             }

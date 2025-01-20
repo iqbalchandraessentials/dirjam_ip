@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\MappingKompetensiNonTeknisExport;
+use App\Exports\MappingKompetensiTeknisExport;
 use App\Exports\MasterKompetensiNonTeknisExport;
 use App\Exports\MasterKompetensiTeknisExport;
 use App\Models\IndikatorOutput;
@@ -75,6 +76,15 @@ class MasterDataController extends Controller
     {
         return Excel::download(new MasterKompetensiTeknisExport, 'Master_Kompentensi_Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
     }
+    public function exportMappingKompetensiTeknis()
+    {
+        return Excel::download(new MappingKompetensiTeknisExport, 'Mapping_Kompentensi_Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
+    }
+    public function exportMappingKompetensiNonTeknis()
+    {
+        return Excel::download(new MappingKompetensiNonTeknisExport, 'Mapping_Kompentensi_Non_Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
+    }
+
     public function mappingkomptensiTeknis() {
         $data = KeterampilanTeknis::with('master')->get();
         return view('pages.masterData.kompetensiTeknis.mapping', ['data' => $data]);
