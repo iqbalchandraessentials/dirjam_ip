@@ -1,9 +1,28 @@
 @extends('master')
 
-@section('title', 'Uraian Jabatan | Direktori Jabatan')
+@section('title', 'Default Master Data | Direktori Jabatan')
 
 @section('content')
     <div class="col-12">
+
+        <div class="box">
+            <div class="box-header">
+                <div class="row">
+                    <div class="col">
+                        <h2 class="box-title">
+                            <i class="ti-file"></i>
+                            Master Default Data
+                        </h2>
+                    </div>
+                    <div class="col text-right">
+                        <a href="{{route('export.exportMasterDefaultData')}}" class="btn btn-secondary">
+                            <i class="ti-layout-grid4"></i><span>Excell</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="box">
             <div class="box-header">
                 <div class="row">
@@ -24,8 +43,6 @@
                                             <th class="text-Left">No.</th>
                                             <th class="text-center">Definisi</th>
                                             <th class="text-center">Jenis Jabatan</th>
-                                            <th class="text-center">action</th>
-
 
                                         </tr>
                                     </thead>
@@ -36,11 +53,6 @@
                                                 <td>{{ $x + 1 }}</td>
                                                 <td>{{ $v['definisi'] }}</td>
                                                 <td class="text-center">{{ $v['jenis_jabatan'] }}</td>
-                                                <td class="text-center">
-                                                    <a  class="btn btn-secondary btn-circle btn-xs  "><i
-                                                            class="ti-pencil fa-lg"></i></a> <a
-                                                        class="btn text-white btn-secondary btn-circle btn-xs  "><i
-                                                            class="ti-trash fa-lg"></i></a></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -72,8 +84,6 @@
                                             <th class="text-Left">No.</th>
                                             <th class="text-center" width="60%">Definisi</th>
                                             <th class="text-center">Jenis Jabatan</th>
-                                            <th class="text-center">action</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -83,11 +93,6 @@
                                                 <td>{{ $x + 1 }}</td>
                                                 <td>{{ $v['definisi'] }}</td>
                                                 <td class="text-center">{{ $v['jenis_jabatan'] }}</td>
-                                                <td class="text-center">
-                                                    <a  class="btn btn-secondary btn-circle btn-xs  "><i
-                                                            class="ti-pencil fa-lg"></i></a> <a
-                                                        class="btn text-white btn-secondary btn-circle btn-xs  "><i
-                                                            class="ti-trash fa-lg"></i></a></td>
                                                 
                                             </tr>
                                         @endforeach
@@ -120,8 +125,6 @@
                                             <th class="text-Left">No.</th>
                                             <th class="text-center" width="60%">Definisi</th>
                                             <th class="text-center">Jenis Jabatan</th>
-                                            <th class="text-center">action</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -131,12 +134,6 @@
                                                 <td>{{ $x + 1 }}</td>
                                                 <td>{{ $v['definisi'] }}</td>
                                                 <td class="text-center">{{ $v['jenis_jabatan'] }}</td>
-                                                <td class="text-center">
-                                                    <a  class="btn btn-secondary btn-circle btn-xs  "><i
-                                                            class="ti-pencil fa-lg"></i></a> <a
-                                                        class="btn text-white btn-secondary btn-circle btn-xs  "><i
-                                                            class="ti-trash fa-lg"></i></a></td>
-                                                
                                             </tr>
                                         @endforeach
                                     </tbody>

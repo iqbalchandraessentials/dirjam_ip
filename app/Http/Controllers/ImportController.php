@@ -60,7 +60,7 @@ class ImportController extends Controller
             ]);
             Excel::import(new KeterampilanNonteknisImport, $request->file('file'));
             session()->flash('success', 'Mapping Keterampilan Non Teknis berhasil diupload, mohon periksa kembali.');
-            return redirect()->route('master.mappingkomptensiTeknis');
+            return redirect()->route('master.mappingkomptensiNonTeknis');
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();
 

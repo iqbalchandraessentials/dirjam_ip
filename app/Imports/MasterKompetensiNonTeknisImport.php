@@ -12,7 +12,7 @@ class MasterKompetensiNonTeknisImport implements ToModel,WithValidation, WithHea
 {
     public function __construct()
     {
-        MasterKompetensiNonTeknis::truncate();
+        MasterKompetensiNonTeknis::query()->delete();
     }
     /**
     * @param array $row
@@ -36,7 +36,7 @@ class MasterKompetensiNonTeknisImport implements ToModel,WithValidation, WithHea
     public function rules(): array
     {
         return [
-            'kode' => 'required|string|max:50|unique',
+            'kode' => 'required|string|max:50|unique:master_kompetensi_nonteknis,kode',
             'definisi' => 'required|string|min:10',
         ];
     }

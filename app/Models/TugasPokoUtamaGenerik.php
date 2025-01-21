@@ -10,6 +10,7 @@ class TugasPokoUtamaGenerik extends Model
     protected $fillable = [
         'uraian_master_jabatan_id',
         'aktivitas',
+        'jenis_jabatan',
         'output',
         'jenis',
     ];

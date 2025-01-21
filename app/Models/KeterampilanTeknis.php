@@ -7,14 +7,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class KeterampilanTeknis extends Model
 {
+    use SoftDeletes;
+    
     protected $fillable = [
         'uraian_master_jabatan_id',
         'kode',
         'master_detail_kompetensi_id',
         'level',
         'kategori',
+        'master_jabatan',
         'created_by'
     ];
+    // Pastikan Anda memiliki kolom deleted_at di tabel yang sesuai
+    protected $dates = ['deleted_at'];
     
     public function master()
     {

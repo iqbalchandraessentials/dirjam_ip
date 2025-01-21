@@ -45,12 +45,40 @@ class MasterDataController extends Controller
         // dd($data);
         return view('pages.masterData.tugasPokokGenerik.index', ['data' => $data]);
     }
+    public function TugasPokokGenerikStore(Request $request) {
+        // dd($request->all());
+        $request->validate([
+            'aktivitas' => 'required|string',
+            'output' => 'required|string',
+            'jenis_jabatan' => 'required|string',
+        ]);
+        TugasPokoUtamaGenerik::create($request->only('aktivitas', 'output', 'jenis_jabatan', 'jenis'));
+        return redirect()->route('master.tugasPokokGenerik')->with('success', 'Data berhasil ditambahkan.');
+    }
+    public function TugasPokokGenerikUpdate(Request $request)
+    {
+        $request->validate([
+            'aktivitas' => 'required|string',
+            'output' => 'required|string',
+            'jenis_jabatan' => 'required|string',
+        ]);
+
+        $data = TugasPokoUtamaGenerik::findOrFail($request->id);
+        $data->update($request->only('aktivitas', 'output', 'jenis_jabatan','jenis'));
+        return redirect()->route('master.tugasPokokGenerik')->with('success', 'Data berhasil diperbarui.');
+    }
+    public function TugasPokokGenerikDestroy(Request $request)
+    {
+        $data = TugasPokoUtamaGenerik::findOrFail($request->id);;
+        $data->delete();
+        return redirect()->route('master.tugasPokokGenerik')->with('success', 'Data berhasil dihapus.');
+    }
     
-    public function masalahDanWewenang() {
+    public function defaultMasterData() {
         $masalahKompleksitasKerja = MasalahKompleksitasKerja::whereNotNull('jenis_jabatan')->get(); 
         $wewenangJabatan = WewenangJabatan::whereNotNull('jenis_jabatan')->get();
         $kemampuandanPengalaman = KemampuandanPengalaman::whereNotNull('jenis_jabatan')->get(); 
-        return view('pages.masterData.masalahDanWewenang.index', [
+        return view('pages.masterData.defaultMasterData.index', [
             'masalahKompleksitasKerja' => $masalahKompleksitasKerja,
             'wewenangJabatan' => $wewenangJabatan,
             'kemampuandanPengalaman' => $kemampuandanPengalaman,

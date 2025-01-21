@@ -10,13 +10,10 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 
 class KeterampilanTeknisImport implements ToModel, WithValidation, WithHeadingRow
 {
-    /**
-     * Konstruksi kelas, truncate table jika diperlukan.
-     */
+    
     public function __construct()
     {
-        // Hati-hati dengan truncate, pastikan ini memang diinginkan
-        KeterampilanTeknis::truncate();
+        KeterampilanTeknis::query()->delete();
     }
 
     /**
@@ -45,11 +42,11 @@ class KeterampilanTeknisImport implements ToModel, WithValidation, WithHeadingRo
     public function rules(): array
     {
         return [
-            'master_jabatan' => 'required|string|exists:master_jabatan_unit,master_jabatan',
-            'kode' => 'required|string|max:50|exists:master_kompetensi_teknis,kode',
-            'master_detail_kompetensi_id' => 'required|string',
-            'level' => 'required|integer|min:1|max:5',
-            'kategori' => 'required|string',
+            // 'master_jabatan' => 'required|string|exists:master_jabatan_unit,master_jabatan',
+            // 'kode' => 'required|string|max:50|exists:master_kompetensi_teknis,kode',
+            // 'master_detail_kompetensi_id' => 'required|string',
+            // 'level' => 'required|integer|min:1|max:5',
+            // 'kategori' => 'required|string',
         ];
     }
 
@@ -61,17 +58,17 @@ class KeterampilanTeknisImport implements ToModel, WithValidation, WithHeadingRo
     public function customValidationMessages()
     {
         return [
-            'master_jabatan.required' => 'Kolom master_jabatan wajib diisi.',
-            'master_jabatan.exists' => 'Master jabatan yang diimport tidak valid.',
-            'kode.required' => 'Kolom kode wajib diisi.',
-            'kode.exists' => 'Kode yang diimport tidak valid.',
-            'master_detail_kompetensi_id.required' => 'Kolom master_detail_kompetensi_id wajib diisi.',
-            'master_detail_kompetensi_id.exists' => 'Master detail kompetensi yang diimport tidak valid.',
-            'level.required' => 'Kolom level wajib diisi.',
-            'level.integer' => 'Kolom level harus berupa angka.',
-            'level.min' => 'Kolom level minimal bernilai 1.',
-            'level.max' => 'Kolom level maksimal bernilai 5.',
-            'kategori.required' => 'Kolom kategori wajib diisi.',
+            // 'master_jabatan.required' => 'Kolom master_jabatan wajib diisi.',
+            // 'master_jabatan.exists' => 'Master jabatan yang diimport tidak valid.',
+            // 'kode.required' => 'Kolom kode wajib diisi.',
+            // 'kode.exists' => 'Kode yang diimport tidak valid.',
+            // 'master_detail_kompetensi_id.required' => 'Kolom master_detail_kompetensi_id wajib diisi.',
+            // 'master_detail_kompetensi_id.exists' => 'Master detail kompetensi yang diimport tidak valid.',
+            // 'level.required' => 'Kolom level wajib diisi.',
+            // 'level.integer' => 'Kolom level harus berupa angka.',
+            // 'level.min' => 'Kolom level minimal bernilai 1.',
+            // 'level.max' => 'Kolom level maksimal bernilai 5.',
+            // 'kategori.required' => 'Kolom kategori wajib diisi.',
         ];
     }
 }

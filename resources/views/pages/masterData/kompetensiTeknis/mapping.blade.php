@@ -64,7 +64,7 @@
                                 <table id="datatable" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th class="text-left">No.</th>
+                                            {{-- <th class="text-left">No.</th> --}}
                                             <th class="text-center">Kode</th>
                                             <th class="text-center">Komptensi</th>
                                             <th class="text-center">Master Jabatan</th>
@@ -93,7 +93,7 @@
         serverSide: true,
         ajax: "{{ route('master.mappingkomptensiTeknis') }}",
         columns: [
-            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false }, // Kolom index
+            // { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false }, // Kolom index
             { data: 'kode', name: 'kode' },
             { data: 'master.nama', name: 'master.nama' },
             { data: 'master_jabatan', name: 'master_jabatan' },

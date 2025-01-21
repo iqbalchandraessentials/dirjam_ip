@@ -15,6 +15,7 @@ class MasterKompetensiTeknis extends Model
         'name',
         'created_by',
     ];
+    protected $dates = ['deleted_at'];
 
 
     public function level()

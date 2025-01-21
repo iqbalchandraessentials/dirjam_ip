@@ -59,6 +59,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('masterKompetensiTeknis', [ExportController::class, 'exportMasterKompetensiTeknis'])->name('export.exportMasterKompetensiTeknis');
         Route::get('MappingKompetensiNonTeknis', [ExportController::class, 'exportMappingKompetensiNonTeknis'])->name('export.exportMappingKompetensiNonTeknis');
         Route::get('MappingKompetensiTeknis', [ExportController::class, 'exportMappingKompetensiTeknis'])->name('export.exportMappingKompetensiTeknis');
+        Route::get('MasterJabatanUnit', [ExportController::class, 'exportMasterJabatanUnit'])->name('export.exportMasterJabatanUnit');
+        Route::get('MasterDefaultData', [ExportController::class, 'exportMasterDefaultData'])->name('export.exportMasterDefaultData');
     });
 
     // Master Data Routes
@@ -66,7 +68,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('indikator', [MasterDataController::class, 'indikator'])->name('master.indikator');
         Route::get('pendidikan', [MasterDataController::class, 'pendidikan'])->name('master.pendidikan');
         Route::get('tugasPokokGenerik', [MasterDataController::class, 'tugasPokokGenerik'])->name('master.tugasPokokGenerik');
-        Route::get('masalahDanWewenang', [MasterDataController::class, 'masalahDanWewenang'])->name('master.masalahDanWewenang');
+        Route::post('TugasPokokGenerikStore', [MasterDataController::class, 'TugasPokokGenerikStore'])->name('master.TugasPokokGenerikStore');
+        Route::post('TugasPokokGenerikUpdate', [MasterDataController::class, 'TugasPokokGenerikUpdate'])->name('master.TugasPokokGenerikUpdate');
+        Route::post('TugasPokokGenerikDestroy', [MasterDataController::class, 'TugasPokokGenerikDestroy'])->name('master.TugasPokokGenerikDestroy');
+        Route::get('defaultMasterData', [MasterDataController::class, 'defaultMasterData'])->name('master.defaultMasterData');
         Route::get('komptensiTeknis', [MasterDataController::class, 'masterKompetensiTeknis'])->name('master.masterKompetensiTeknis');
         Route::get('komptensiTeknis/{id}', [MasterDataController::class, 'detailMasterKompetensiTeknis'])->name('master.detailMasterKompetensiTeknis');
         Route::get('mappingkomptensiNonTeknis', [MasterDataController::class, 'mappingkomptensiNonTeknis'])->name('master.mappingkomptensiNonTeknis');

@@ -6,6 +6,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DummyExport;
 use App\Exports\MappingKompetensiNonTeknisExport;
 use App\Exports\MappingKompetensiTeknisExport;
+use App\Exports\MasterDefaultDataExport;
+use App\Exports\MasterJabatanUnitExport;
 use App\Exports\MasterKompetensiNonTeknisExport;
 use App\Exports\MasterKompetensiTeknisExport;
 use App\Models\KemampuandanPengalaman;
@@ -29,6 +31,10 @@ class ExportController extends Controller
     {
         return Excel::download(new MappingKompetensiTeknisExport, 'Mapping Kompentensi Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
     }
+    public function exportMasterJabatanUnit()
+    {
+        return Excel::download(new MasterJabatanUnitExport, 'Master Jabatan Unit.'. date('d-m-Y H-i-s') .'.xlsx');
+    }
     public function exportMasterKompetensiNonTeknis()
     {
         return Excel::download(new MasterKompetensiNonTeknisExport, 'Master Kompentensi Non Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
@@ -36,6 +42,10 @@ class ExportController extends Controller
     public function exportMappingKompetensiNonTeknis()
     {
         return Excel::download(new MappingKompetensiNonTeknisExport, 'Mapping Kompentensi Non Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
+    }
+    public function exportMasterDefaultData()
+    {
+        return Excel::download(new MasterDefaultDataExport, 'Master Default Data.'. date('d-m-Y H-i-s') .'.xlsx');
     }
 
     public function exportExcel($id)

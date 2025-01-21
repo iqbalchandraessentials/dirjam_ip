@@ -58,8 +58,8 @@
                             <i class="ti-more"></i>Tugas Pokok Generik
                         </a>
                     </li>
-                    <li class="{{ Request::is('master_data/masalahDanWewenang') ? 'active' : '' }}">
-                        <a href="{{ route('master.masalahDanWewenang') }}">
+                    <li class="{{ Request::is('master_data/defaultMasterData') ? 'active' : '' }}">
+                        <a href="{{ route('master.defaultMasterData') }}">
                             <i class="ti-more"></i>Default Master Data
                         </a>
                     </li>

@@ -13,7 +13,7 @@ class KeterampilanNonteknisImport implements ToModel, WithValidation, WithHeadin
     public function __construct()
     {
         // Hati-hati dengan truncate, pastikan ini memang diinginkan
-        KeterampilanNonteknis::truncate();
+        KeterampilanNonteknis::query()->delete();
     }
     /**
     * @param array $row
@@ -38,8 +38,8 @@ class KeterampilanNonteknisImport implements ToModel, WithValidation, WithHeadin
     public function rules(): array
     {
         return [
-            'master_jabatan' => 'required|string|exists:master_jabatan_unit,master_jabatan',
-            'kode' => 'required|string|max:50|exists:master_kompetensi_teknis,kode',
+            // 'master_jabatan' => 'required|string|exists:master_jabatan_unit,master_jabatan',
+            // 'kode' => 'required|string|max:50|exists:master_kompetensi_teknis,kode',
             'kategori' => 'required|string',
         ];
     }
@@ -52,10 +52,10 @@ class KeterampilanNonteknisImport implements ToModel, WithValidation, WithHeadin
     public function customValidationMessages()
     {
         return [
-            'master_jabatan.required' => 'Kolom master_jabatan wajib diisi.',
-            'master_jabatan.exists' => 'Master jabatan yang diimport tidak valid.',
-            'kode.required' => 'Kolom kode wajib diisi.',
-            'kode.exists' => 'Kode yang diimport tidak valid.',
+            // 'master_jabatan.required' => 'Kolom master_jabatan wajib diisi.',
+            // 'master_jabatan.exists' => 'Master jabatan yang diimport tidak valid.',
+            // 'kode.required' => 'Kolom kode wajib diisi.',
+            // 'kode.exists' => 'Kode yang diimport tidak valid.',
             'kategori.required' => 'Kolom kategori wajib diisi.',
         ];
     }
