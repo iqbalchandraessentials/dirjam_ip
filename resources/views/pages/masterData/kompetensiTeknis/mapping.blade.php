@@ -61,10 +61,10 @@
                     <div class="col">
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table class="table table-striped dataTables">
+                                <table id="datatable" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th class="text-Left">No.</th>
+                                            <th class="text-left">No.</th>
                                             <th class="text-center">Kode</th>
                                             <th class="text-center">Komptensi</th>
                                             <th class="text-center">Master Jabatan</th>
@@ -72,19 +72,9 @@
                                             <th class="text-center">Jenis</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach ($data as $x => $v)
-                                            <tr>
-                                                <td>{{ $x + 1 }}</td>
-                                                <td class="text-center">{{ $v['kode'] }}</td>
-                                                <td class="text-center text-uppercase">{{ $v->master->nama ?? '-' }}</td>
-                                                <td>{{ $v['master_jabatan'] ? $v['master_jabatan'] : $v['uraianJabatan']['nama'] }}</td>
-                                                <td class="text-center">{{ $v['level'] }}</td>
-                                                <td class="text-center">{{ $v['kategori'] }}</td>
-                                            </tr>
-                                        @endforeach
+                                    <tbody class="text-uppercase">
                                     </tbody>
-                                </table>
+                                </table>                                
                             </div>
                         </div>
                     </div>
@@ -93,4 +83,25 @@
         </div>
     </div>
 
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function () {
+    $('#datatable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('master.mappingkomptensiTeknis') }}",
+        columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false }, // Kolom index
+            { data: 'kode', name: 'kode' },
+            { data: 'master.nama', name: 'master.nama' },
+            { data: 'master_jabatan', name: 'master_jabatan' },
+            { data: 'level', name: 'level' },
+            { data: 'kategori', name: 'kategori' },
+        ],
+    });
+});
+
+</script>
 @endsection

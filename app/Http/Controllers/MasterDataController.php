@@ -2,11 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\MappingKompetensiNonTeknisExport;
-use App\Exports\MappingKompetensiTeknisExport;
-use App\Exports\MasterKompetensiNonTeknisExport;
-use App\Exports\MasterKompetensiTeknisExport;
-use App\Models\IndikatorOutput;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanNonteknis;
 use App\Models\KeterampilanTeknis;
@@ -19,23 +14,23 @@ use App\Models\MasterPendidikan;
 use App\Models\TugasPokoUtamaGenerik;
 use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class MasterDataController extends Controller
 {
 
 // input, edit, delete master data 
 // export excel uraian jabatan 
-// test upload, validation, testing template jabatan
 // pengabungan data jabatan existing dengan yang baru import data template
 // filter per unit di uraian jabatan
 
+// test upload, validation, testing template jabatan [oke]
 // masterjabatan dihilangkan [oke]
 // jenis jabatan diganti kelompok bisnis [oke]
 // tugas pokok generik dan output pakai data yang batu dari master mbak suci [okee]
 // kemampuan dan pengalaman yang a. (data yang lama) lalu b. c. nya diambil dari master data mbak suci [oke]
 // spesifikasi jabatan nya kebalik pengalaman dan bidang studi nya [oke]
-// dimensi jabatan disesuaikan dengan data yang ada di master mbak suci
+// dimensi jabatan disesuaikan dengan data yang ada di master mbak suci [oke]
 
 
 
@@ -72,45 +67,59 @@ class MasterDataController extends Controller
         // dd($data);
         return view('pages.masterData.kompetensiTeknis.show', ['data' => $data]);
     }
-    public function exportMasterKompetensiTeknis()
-    {
-        return Excel::download(new MasterKompetensiTeknisExport, 'Master_Kompentensi_Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
-    }
-    public function exportMappingKompetensiTeknis()
-    {
-        return Excel::download(new MappingKompetensiTeknisExport, 'Mapping_Kompentensi_Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
-    }
-    public function exportMappingKompetensiNonTeknis()
-    {
-        return Excel::download(new MappingKompetensiNonTeknisExport, 'Mapping_Kompentensi_Non_Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
-    }
-
-    public function mappingkomptensiTeknis() {
-        $data = KeterampilanTeknis::with('master')->get();
-        return view('pages.masterData.kompetensiTeknis.mapping', ['data' => $data]);
-    }
     public function masterKompetensiNonTeknis() {
         $data = MasterKompetensiNonteknis::get();
         return view('pages.masterData.kompetensiNonTeknis.index', ['data' => $data]);
     }
-    public function exportMasterKompetensiNonTeknis()
+   
+    public function mappingkomptensiNonTeknis(Request $request)
     {
-        return Excel::download(new MappingKompetensiNonTeknisExport, 'Mapping_Kompentensi_Non_Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
+        if ($request->ajax()) {
+            $data = KeterampilanNonteknis::with('detail')->select('keterampilan_nonteknis.*');
+            return DataTables::of($data)
+                ->addColumn('nama_kompetensi', function ($row) {
+                    return $row->detail->nama ?? '-';
+                })
+                ->make(true);
+        }
+
+        return view('pages.masterData.kompetensiNonTeknis.mapping');
     }
-    public function mappingkomptensiNonTeknis() {
-        $data = KeterampilanNonteknis::get();
-        return view('pages.masterData.kompetensiNonTeknis.mapping', ['data' => $data]);
+    public function mappingkomptensiTeknis(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = KeterampilanTeknis::with('master')->select('keterampilan_teknis.*');
+            return DataTables::of($data)
+                ->addIndexColumn() // Tambahkan ini untuk menambahkan nomor indeks ke data
+                ->editColumn('master_jabatan', function ($row) {
+                    return $row['master_jabatan'] ?: ($row['uraianJabatan']['nama'] ?? '-');
+                })
+                ->editColumn('master.nama', function ($row) {
+                    return strtoupper($row->master->nama ?? '-');
+                })
+                ->make(true);
+        }
+    
+        return view('pages.masterData.kompetensiTeknis.mapping');
     }
+   
+    public function masterJabatan(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = MASTER_JABATAN_UNIT::select('master_jabatan', 'siteid');
+            return DataTables::of($data)
+                ->addIndexColumn() // Menambahkan kolom nomor urut
+                ->make(true);
+        }
+        return view('pages.masterData.masterJabatanUnit.index');
+    }
+    
     public function pendidikan() {
         $data = MasterPendidikan::get();
         // dd($data);
         return view('pages.masterData.pendidikan.index', ['data' => $data]);
     }
-    public function masterJabatan() {
-        $data = MASTER_JABATAN_UNIT::get();
-        // dd($data);
-        return view('pages.masterData.masterJabatanUnit.index', ['data' => $data]);
-    }
+   
 
 
 }

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DummyExport;
+use App\Exports\MappingKompetensiNonTeknisExport;
+use App\Exports\MappingKompetensiTeknisExport;
+use App\Exports\MasterKompetensiNonTeknisExport;
+use App\Exports\MasterKompetensiTeknisExport;
 use App\Models\KemampuandanPengalaman;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\TugasPokoUtamaGenerik;
@@ -16,6 +20,24 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class ExportController extends Controller
 {
+
+    public function exportMasterKompetensiTeknis()
+    {
+        return Excel::download(new MasterKompetensiTeknisExport, 'Master Kompentensi Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
+    }
+    public function exportMappingKompetensiTeknis()
+    {
+        return Excel::download(new MappingKompetensiTeknisExport, 'Mapping Kompentensi Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
+    }
+    public function exportMasterKompetensiNonTeknis()
+    {
+        return Excel::download(new MasterKompetensiNonTeknisExport, 'Master Kompentensi Non Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
+    }
+    public function exportMappingKompetensiNonTeknis()
+    {
+        return Excel::download(new MappingKompetensiNonTeknisExport, 'Mapping Kompentensi Non Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
+    }
+
     public function exportExcel($id)
     {
         $data = UraianMasterJabatan::with('masterJabatan')->find($id);

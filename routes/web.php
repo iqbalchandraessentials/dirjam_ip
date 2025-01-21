@@ -55,12 +55,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('mappingKeterampilanTeknis', [ImportController::class, 'mappingKeterampilanTeknis'])->name('import.mappingKeterampilanTeknis');
     });
     Route::prefix('export')->group(function () {
-        Route::get('masterKompetensiNonTeknis', [MasterDataController::class, 'exportMasterKompetensiNonTeknis'])->name('export.exportMasterKompetensiNonTeknis');
-        Route::get('masterKompetensiTeknis', [MasterDataController::class, 'exportMasterKompetensiTeknis'])->name('export.exportMasterKompetensiTeknis');
-        Route::get('MappingKompetensiNonTeknis', [MasterDataController::class, 'exportMappingKompetensiNonTeknis'])->name('export.exportMappingKompetensiNonTeknis');
-        Route::get('MappingKompetensiTeknis', [MasterDataController::class, 'exportMappingKompetensiTeknis'])->name('export.exportMappingKompetensiTeknis');
+        Route::get('masterKompetensiNonTeknis', [ExportController::class, 'exportMasterKompetensiNonTeknis'])->name('export.exportMasterKompetensiNonTeknis');
+        Route::get('masterKompetensiTeknis', [ExportController::class, 'exportMasterKompetensiTeknis'])->name('export.exportMasterKompetensiTeknis');
+        Route::get('MappingKompetensiNonTeknis', [ExportController::class, 'exportMappingKompetensiNonTeknis'])->name('export.exportMappingKompetensiNonTeknis');
+        Route::get('MappingKompetensiTeknis', [ExportController::class, 'exportMappingKompetensiTeknis'])->name('export.exportMappingKompetensiTeknis');
     });
-    
+
     // Master Data Routes
     Route::prefix('master_data')->group(function () {
         Route::get('indikator', [MasterDataController::class, 'indikator'])->name('master.indikator');
@@ -68,9 +68,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('tugasPokokGenerik', [MasterDataController::class, 'tugasPokokGenerik'])->name('master.tugasPokokGenerik');
         Route::get('masalahDanWewenang', [MasterDataController::class, 'masalahDanWewenang'])->name('master.masalahDanWewenang');
         Route::get('komptensiTeknis', [MasterDataController::class, 'masterKompetensiTeknis'])->name('master.masterKompetensiTeknis');
-        Route::get('mappingkomptensiTeknis', [MasterDataController::class, 'mappingkomptensiTeknis'])->name('master.mappingkomptensiTeknis');
         Route::get('komptensiTeknis/{id}', [MasterDataController::class, 'detailMasterKompetensiTeknis'])->name('master.detailMasterKompetensiTeknis');
         Route::get('mappingkomptensiNonTeknis', [MasterDataController::class, 'mappingkomptensiNonTeknis'])->name('master.mappingkomptensiNonTeknis');
+        Route::get('mappingkomptensiTeknis', [MasterDataController::class, 'mappingkomptensiTeknis'])->name('master.mappingkomptensiTeknis');
         Route::get('komptensiNonTeknis', [MasterDataController::class, 'masterKompetensiNonTeknis'])->name('master.masterKompetensiNonTeknis');
         Route::get('masterJabatan', [MasterDataController::class, 'masterJabatan'])->name('master.masterJabatan');
     });
@@ -84,24 +84,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/users/{user}/assign-role', [UserRoleController::class, 'assignRole'])->name('users.assignRole');
 });
 
-
-Route::middleware(['auth'])->group(function () {
-});
-
 Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.updatePermissions');
-
 Route::middleware(['auth'])->group(function () {
     Route::resource('permissions', PermissionController::class);
     Route::post('permissions/assign/{user}', [PermissionController::class, 'assignPermission'])->name('permissions.assign');
-});
 
-Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-
-
 
 require __DIR__ . '/auth.php';

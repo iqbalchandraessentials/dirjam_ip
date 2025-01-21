@@ -8,6 +8,7 @@ class KeterampilanNonteknis extends Model
 {
     protected $fillable = [
         'uraian_master_jabatan_id',
+        'created_by',
         'kode',
         'kategori',
         'jenis',

@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Uraian Jabatan | Direktori Jabatan')
+@section('title', 'Master Jabatan dan Unit | Direktori Jabatan')
 
 @section('content')
     <div class="col-12">
@@ -18,25 +18,18 @@
                     <div class="col">
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table class="table table-striped dataTables">
+                                <table id="datatable" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th class="text-Left">No.</th>
+                                            <th class="text-left">No.</th>
                                             <th class="text-center">Nama</th>
                                             <th class="text-center">Unit</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
-                                        @foreach ($data as $x => $v)
-                                            <tr>
-                                                <td>{{ $x + 1 }}</td>
-                                                <td>{{ $v['master_jabatan'] }}</td>
-                                                <td class="text-center">{{ $v['siteid'] }}</td>
-                                            </tr>
-                                        @endforeach
+                                        <!-- Data akan otomatis diisi oleh DataTables -->
                                     </tbody>
-                                </table>
+                                </table>                                
                             </div>
                         </div>
                     </div>
@@ -45,4 +38,22 @@
         </div>
     </div>
 
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function () {
+            $('#datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('master.masterJabatan') }}", // Ganti dengan route ke fungsi `masterJabatan`
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false }, // Kolom nomor urut
+                    { data: 'master_jabatan', name: 'master_jabatan' }, // Kolom nama master jabatan
+                    { data: 'siteid', name: 'siteid', className: 'text-center' } // Kolom unit
+                ],
+            });
+        });
+
+    </script>
 @endsection

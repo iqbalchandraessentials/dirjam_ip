@@ -26,8 +26,6 @@
                             </button>
                         </div>
                     @endif
-
-
                     @if (session('error'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             {{ session('error') }}
@@ -65,7 +63,7 @@
                     <div class="col">
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table class="table table-striped dataTables">
+                                <table id="datatable" class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th class="text-center">Kode</th>
@@ -75,16 +73,8 @@
                                             <th class="text-center">Jenis</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach ($data as $x => $v)
-                                            <tr>
-                                                <td class="text-center">{{ $v['kode'] }}</td>
-                                                <td class="text-center">{{ $v->detail->nama ?? '-' }}</td>
-                                                <td>{{ $v['master_jabatan'] }}</td>
-                                                <td class="text-center">{{ $v['kategori'] }}</td>
-                                                <td class="text-center">{{ $v['jenis'] }}</td>
-                                            </tr>
-                                        @endforeach
+                                    <tbody class="text-uppercase">
+
                                     </tbody>
                                 </table>
                             </div>
@@ -94,5 +84,25 @@
             </div>
         </div>
     </div>
+
+    @section('script')
+    <script>
+        $(document).ready(function () {
+            $('#datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('master.mappingkomptensiNonTeknis') }}",
+                columns: [
+                    { data: 'kode', name: 'kode', className: 'text-center' },
+                    { data: 'nama_kompetensi', name: 'detail.nama', className: 'text-center' },
+                    { data: 'master_jabatan', name: 'master_jabatan' },
+                    { data: 'kategori', name: 'kategori', className: 'text-center' },
+                    { data: 'jenis', name: 'jenis', className: 'text-center' },
+                ],
+            });
+        });
+    </script>
+    @endsection
+
 
 @endsection

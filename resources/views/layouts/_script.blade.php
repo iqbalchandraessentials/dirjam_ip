@@ -7,8 +7,6 @@
 <script src="{{ asset('vendor/raphael/raphael.min.js') }}"></script>
 <script src="{{ asset('vendor/morris/morris.min.js') }}"></script>
 <script src="{{ asset('vendor/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
-{{-- <script src="{{ asset('vendor/fullcalendar/fullcalendar.js') }}"></script> --}}
-{{-- <script src="{{ asset('js/pages/calendar.js') }}"></script> --}}
 <script src="{{ asset('vendor/c3/d3.min.js') }}"></script>
 <script src="{{ asset('vendor/c3/c3.min.js') }}"></script>
 <script src="{{ asset('vendor/echarts/echarts-en.min.js') }}"></script>
@@ -17,6 +15,8 @@
 <script src="{{ asset('vendor/datatable-bootsrtrap4/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('vendor/datatable-bootsrtrap4/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('js/template.js') }}"></script>
-{{-- <script src="{{ asset('js/pages/dashboard4.js') }}"></script> --}}
 <script src="{{ asset('js/demo.js') }}"></script>
 <script src="{{ asset('js/meus.js') }}"></script>
+{{-- <script src="{{ asset('js/pages/dashboard4.js') }}"></script> --}}
+{{-- <script src="{{ asset('vendor/fullcalendar/fullcalendar.js') }}"></script> --}}
+{{-- <script src="{{ asset('js/pages/calendar.js') }}"></script> --}}
