@@ -36,14 +36,14 @@
                         </p>
                     </div>
                     <div class="col text-right">
-                        <a href="{{ route('uraian_jabatan_template.draft', $data['masterJabatan']['id']) }}"
+                        <a href="{{ route('template_jabatan.draft', $data['masterJabatan']['id']) }}"
                             class="btn btn-secondary">
                             <i class="ti-view-list-alt"></i><span> Draft</span>
                         </a>
-                        <a href="{{ route('uraian_jabatan_template.export_pdf', $data['id']) }}" class="btn btn-secondary">
+                        <a href="{{ route('template_jabatan.export_pdf', $data['id']) }}" class="btn btn-secondary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
-                        <a href="{{ route('uraian_jabatan_template.export_excel', $data['id']) }}" class="btn btn-secondary">
+                        <a href="{{ route('template_jabatan.export_excel', $data['id']) }}" class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span>Excell</span>
                         </a>
                     </div>

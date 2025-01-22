@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Pendidikan | Direktori Jabatan')
+@section('title', 'Master Pendidikan | Direktori Jabatan')
 
 @section('content')
 
@@ -14,7 +14,7 @@
                         </div>
                         <div class="col-6 text-right">
                             <button type="button" id="btnCreate" class="btn btn-success mb-3">
-                                <i class="ti-plus" style="margin-right: 5px;"></i> Add Data
+                                <i class="ti-plus" style="margin-right: 5px;"></i> Add
                             </button>
                         </div>
                     </div>
@@ -33,8 +33,7 @@
                         <table class="table table-striped dataTables">
                             <thead>
                                 <tr>
-                                    <th class="text-left">No.</th>
-                                    <th class="text-left">Pendidikan</th>
+                                    <th class="text-center">Pendidikan</th>
                                     <th class="text-center">Pengalaman</th>
                                     <th class="text-center">Jenjang Jabatan</th>
                                     <th class="text-center">Action</th>
@@ -43,8 +42,7 @@
                             <tbody>
                                 @foreach ($data as $index => $data)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $data->nama }}</td>
+                                        <td class="text-center">{{ $data->nama }}</td>
                                         <td class="text-center">{{ $data->pengalaman }}</td>
                                         <td class="text-center">{{ $data->jenjang_jabatan }}</td>
                                         <td class="text-center">

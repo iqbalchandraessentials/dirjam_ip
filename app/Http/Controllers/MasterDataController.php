@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\jenjang\M_JENJANG;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanNonteknis;
 use App\Models\KeterampilanTeknis;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MASTER_JABATAN_UNIT;
+use App\Models\MasterBidangStudi;
 use App\Models\MasterIndikatorOutput;
 use App\Models\MasterKompetensiNonteknis;
 use App\Models\MasterKompetensiTeknis;
 use App\Models\MasterPendidikan;
 use App\Models\TugasPokoUtamaGenerik;
+use App\Models\unit\M_UNIT;
 use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,8 +40,16 @@ class MasterDataController extends Controller
 
     public function indikator() {
         $data = MasterIndikatorOutput::get();
-        // dd($data);
         return view('pages.masterData.indikator.index', ['data' => $data]);
+    }
+
+    public function jenjangJabatan() {
+        $data = M_JENJANG::get();
+        return view('pages.masterData.jenjang.index', ['data' => $data]);
+    }
+    public function unit() {
+        $data = M_UNIT::get();
+        return view('pages.masterData.unit.index', ['data' => $data]);
     }
     
     public function tugasPokokGenerik() {
@@ -158,8 +169,13 @@ class MasterDataController extends Controller
     
     public function pendidikan() {
         $data = MasterPendidikan::get();
-        // dd($data);
-        return view('pages.masterData.pendidikan.index', ['data' => $data]);
+        $jenjang = M_JENJANG::select(['jenjang_kd', 'jenjang_nama'])->get();
+        $bidangStudi = MasterBidangStudi::get();
+        return view('pages.masterData.pendidikan.index', [
+            'data' => $data,
+            'jenjang' => $jenjang,
+            'bidangStudi' => $bidangStudi
+        ]);
     }
      // Menyimpan data baru
      public function createPendidikan(Request $request)

@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Default Master Data | Direktori Jabatan')
+@section('title', 'Master Default Data | Direktori Jabatan')
 
 @section('content')
     <div class="col-12">

@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Uraian Jabatan | Direktori Jabatan')
+@section('title', 'Master Indikator | Direktori Jabatan')
 
 @section('content')
     <div class="row">

@@ -63,7 +63,7 @@ class RoleController extends Controller
             $role->givePermissionTo($validated['permissions']);
         }
 
-        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
+        return redirect()->route('roles.create')->with('success', 'Role created successfully.');
     }
 
 

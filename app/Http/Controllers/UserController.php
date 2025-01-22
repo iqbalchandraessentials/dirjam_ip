@@ -13,9 +13,9 @@ class UserController extends Controller
     {
         $users = User::all();
         $roles = Role::all();
-        $permissions = Permission::all();
+        // $permissions = Permission::all();
 
-        return view('pages.users.index', compact('users', 'roles', 'permissions'));
+        return view('pages.masterData.users.index', compact('users', 'roles'));
     }
 
     public function assignRole(Request $request, User $user)

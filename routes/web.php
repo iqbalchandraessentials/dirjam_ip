@@ -39,13 +39,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('uraian_jabatan/export-pdf/{id}', [UraianJabatanController::class, 'exportPdf'])->name('uraian_jabatan.export_pdf');
     Route::get('uraian_jabatan/export-excel/{id}', [ExportController::class, 'exportExcel'])->name('uraian_jabatan.export_excel');
     // template jabatan
-    Route::resource('uraian_jabatan_template', TemplateJabatanController::class);
-    Route::get('uraian_jabatan_template/draft/{id}', [TemplateJabatanController::class, 'draft'])
-        ->name('uraian_jabatan_template.draft');
-    Route::get('uraian_jabatan_template/export-excel/{id}', [ExportController::class, 'exportExcel'])
-        ->name('uraian_jabatan_template.export_excel');
-    Route::get('uraian_jabatan_template/export-pdf/{id}', [TemplateJabatanController::class, 'exportPdf'])
-        ->name('uraian_jabatan_template.export_pdf');
+    Route::resource('template_jabatan', TemplateJabatanController::class);
+    Route::get('template_jabatan/draft/{id}', [TemplateJabatanController::class, 'draft'])->name('template_jabatan.draft');
+    Route::get('template_jabatan/export-excel/{id}', [ExportController::class, 'exportExcel'])->name('template_jabatan.export_excel');
+    Route::get('template_jabatan/export-pdf/{id}', [TemplateJabatanController::class, 'exportPdf'])->name('template_jabatan.export_pdf');
     // import data
     Route::prefix('import')->group(function () {
         Route::post('templateJabatan', [ImportController::class, 'import'])->name('import.templateJabatan');
@@ -82,15 +79,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('mappingkomptensiTeknis', [MasterDataController::class, 'mappingkomptensiTeknis'])->name('master.mappingkomptensiTeknis');
         Route::get('komptensiNonTeknis', [MasterDataController::class, 'masterKompetensiNonTeknis'])->name('master.masterKompetensiNonTeknis');
         Route::get('masterJabatan', [MasterDataController::class, 'masterJabatan'])->name('master.masterJabatan');
+        Route::get('jenjangJabatan', [MasterDataController::class, 'jenjangJabatan'])->name('master.jenjangJabatan');
+        Route::get('unit', [MasterDataController::class, 'unit'])->name('master.unit');
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
     });
 
     // User Management Routes
-    Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::post('users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
+    
     Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission');
     Route::post('users/{user}/updateRolesPermissions', [UserController::class, 'updateRolesPermissions'])->name('users.updateRolesPermissions');
     Route::resource('roles', RoleController::class);
-    Route::post('/users/{user}/assign-role', [UserRoleController::class, 'assignRole'])->name('users.assignRole');
 });
 
 Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.updatePermissions');

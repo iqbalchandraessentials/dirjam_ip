@@ -14,20 +14,33 @@
               <div class="modal-body">
                   <input type="hidden" name="id" id="dataId">
                   <div class="form-group">
-                      <label for="nama">Nama</label>
-                      <input type="text" class="form-control" name="nama" id="nama"
-                          required>
+                      <label for="nama">Pendidikan</label>
+                      <select class="form-control" style="width: 100%;" name="nama" id="nama" required>
+                        <option selected disabled>Pilih</option>
+                        <option value="SMK/STM">SMK/STM</option>
+                        <option value="D3">D3</option>
+                        <option value="S1">S1</option>
+                        <option value="S2">S2</option>
+                        <option value="S3">S3</option>
+                      </select>
                   </div>
+                  <div class="form-group">
+                    <label for="jenjang_jabatan">Jenjang Jabatan</label>
+                    <select class="form-control" style="width: 100%;"  name="jenjang_jabatan" id="jenjang_jabatan" required>
+                        <option selected disabled>Pilih</option>
+                        @foreach ($jenjang as $v)
+                        <option value="{{$v->jenjang_kd}}">{{$v->jenjang_nama}}</option>
+                        @endforeach
+                    </select>
+                </div> 
                   <div class="form-group">
                       <label for="pengalaman">Pengalaman</label>
                       <input type="text" class="form-control" name="pengalaman" id="pengalaman"
                           required>
                   </div>
-                  <div class="form-group">
-                      <label for="jenjang_jabatan">Jenjang Jabatan</label>
-                      <input type="text" class="form-control" name="jenjang_jabatan"
-                          id="jenjang_jabatan" required>
-                  </div>
+                  <small>*) 0 untuk <i>fresh graduate</i></small>
+              
+
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary"

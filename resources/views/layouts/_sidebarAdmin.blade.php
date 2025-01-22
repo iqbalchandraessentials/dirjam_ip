@@ -68,23 +68,33 @@
                             <i class="ti-more"></i>Pendidikan
                         </a>
                     </li>
+                    <li class="{{ Request::is('master_data/jenjangJabatan') ? 'active' : '' }}">
+                        <a href="{{ route('master.jenjangJabatan') }}">
+                            <i class="ti-more"></i>Jenjang Jabatan
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('master_data/unit') ? 'active' : '' }}">
+                        <a href="{{ route('master.unit') }}">
+                            <i class="ti-more"></i>Unit
+                        </a>
+                    </li>
                     <li class="{{ Request::is('master_data/indikator') ? 'active' : '' }}">
                         <a href="{{ route('master.indikator') }}">
                             <i class="ti-more"></i>Indikator
                         </a>
                     </li>
-                    <li class="{{ Request::is('roles') ? 'active' : '' }}">
+                    {{-- <li class="{{ Request::is('roles') ? 'active' : '' }}">
                         <a href="{{ route('roles.index') }}">
                             <i class="ti-more"></i>Hak Akses
                         </a>
-                    </li>
-                    <li class="{{ Request::is('permissions') ? 'active' : '' }}">
+                    </li> --}}
+                    {{-- <li class="{{ Request::is('permissions') ? 'active' : '' }}">
                         <a href="{{ route('permissions.index') }}">
                             <i class="ti-more"></i>Permission
                         </a>
-                    </li>
-                    <li class="{{ Request::is('users') ? 'active' : '' }}">
-                        <a href="{{ route('users.index') }}">
+                    </li> --}}
+                    <li class="{{ Request::is('master_data/users') ? 'active' : '' }}">
+                        <a href="{{ url('master_data/users') }}">
                             <i class="ti-more"></i>User Index
                         </a>
                     </li>
@@ -118,22 +128,20 @@
                     </li>
                 </ul>
             </li> --}}
-
             {{-- <li class="header nav-small-cap text-uppercase">Others</li> --}}
+            <li class="{{ Request::is('template_jabatan/*','template_jabatan') ? 'active' : '' }}">
+                <a href="{{ url('template_jabatan') }}">
+                    <i class="ti-medall"></i>
+                    <span>Template Jabatan</span>
+                </a>
+            </li>
+
             <li class="{{ Request::is(['uraian_jabatan/*', 'uraian_jabatan']) ? 'active' : '' }}">
                 <a href="{{ url('uraian_jabatan') }}">
                     <i class="ti-clipboard"></i>
                     <span>Uraian Jabatan</span>
                 </a>
-            </li>
-        
-            <li class="{{ Request::is('uraian_jabatan_template/*','uraian_jabatan_template') ? 'active' : '' }}">
-                <a href="{{ url('uraian_jabatan_template') }}">
-                    <i class="ti-medall"></i>
-                    <span>Template Jabatan</span>
-                </a>
-            </li>
-        
+            </li>       
         
             <li class="treeview {{ Request::is('loader') ? 'active' : '' }}">
                 <a href="#">

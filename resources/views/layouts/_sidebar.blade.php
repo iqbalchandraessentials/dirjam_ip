@@ -27,8 +27,8 @@
                     </a>
                 </li>
             
-                <li class="{{ Request::is('uraian_jabatan_template') ? 'active' : '' }}">
-                    <a href="{{ url('uraian_jabatan_template') }}">
+                <li class="{{ Request::is('template_jabatan') ? 'active' : '' }}">
+                    <a href="{{ url('template_jabatan') }}">
                         <i class="ti-pencil-alt"></i>
                         <span>Revisi Job Description</span>
                     </a>

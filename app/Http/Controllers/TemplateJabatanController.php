@@ -19,7 +19,6 @@ class TemplateJabatanController extends Controller
     public function index()
     {
         $data = MasterJabatan::has('uraianMasterJabatan')->get();
-        // dd($data[0]);
         return view('pages.template.index', ['data' => $data]);
     }
 

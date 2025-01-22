@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'KOMPTENSI TEKNIS')
+@section('title', 'Master Komptensi Teknis')
 
 @section('content')
     <div class="row">

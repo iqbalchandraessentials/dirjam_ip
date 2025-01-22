@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Uraian Jabatan | Direktori Jabatan')
+@section('title', 'Master Bidang Studi | Direktori Jabatan')
 
 @section('content')
 

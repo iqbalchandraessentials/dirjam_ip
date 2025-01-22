@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Template Uraian Jabatan | Direktori Jabatan')
+@section('title', 'Template Jabatan | Direktori Jabatan')
 
 @section('content')
     <div class="row">
@@ -9,7 +9,7 @@
                 <div class="box-header">
                     <div class="row">
                         <div class="col-6 text-left">
-                            <h4 class="box-title">List Template Uraian Jabatan </h4>
+                            <h4 class="box-title">List Template Jabatan </h4>
                         </div>
                     </div>
                 </div>
@@ -63,6 +63,7 @@
                                 <tr>
                                     <th class="text-Left">No.</th>
                                     <th class="text-center">Master Jabatan</th>
+                                    <th class="text-center">Unit</th>
                                     <th class="text-center">action</th>
                                 </tr>
                             </thead>
@@ -72,14 +73,17 @@
                                     <tr>
                                         <td>{{ $x + 1 }}</td>
                                         <td>
-                                            <a href="{{ route('uraian_jabatan_template.show', $v->uraianMasterJabatan->id) }}" title="View Detail">
+                                            <a href="{{ route('template_jabatan.show', $v->uraianMasterJabatan->id) }}" title="View Detail">
                                                 {{ $v['nama'] }}
                                             </a>
                                         </td>
+                                        <td>
+                                            {{$v->unit_kode}}
+                                        </td>
                                         <td class="text-center">
-                                            <a href="{{ route('uraian_jabatan_template.export_excel', $v->uraianMasterJabatan->id) }}" class=""><i class="ti-layout"> </i></a>
-                                            <a href="{{ route('uraian_jabatan_template.export_pdf', $v->uraianMasterJabatan->id) }}"><i class="ti-printer"></i></a>
-                                            <a href="{{route('uraian_jabatan_template.draft', $v->id)}}" class="ml-3"> <i class="ti-view-list-alt"></i></a>
+                                            <a href="{{ route('template_jabatan.export_excel', $v->uraianMasterJabatan->id) }}" class=""><i class="ti-layout"> </i></a>
+                                            <a href="{{ route('template_jabatan.export_pdf', $v->uraianMasterJabatan->id) }}"><i class="ti-printer"></i></a>
+                                            <a href="{{route('template_jabatan.draft', $v->id)}}" class="ml-3"> <i class="ti-view-list-alt"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
