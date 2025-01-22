@@ -11,7 +11,7 @@
                         <h4 class="box-title">Mapping Komptensi Non Teknis</h4>
                     </div>
                     <div class="col-6 text-right">
-                        <a href="{{ route('export.exportMappingKompetensiNonTeknis') }}" class="btn btn-secondary">
+                        <a href="{{ route('export.MappingKompetensiNonTeknis') }}" class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span class="ml-1">Excell</span>
                         </a>
                     </div>

@@ -13,6 +13,7 @@ class TugasPokoUtamaGenerik extends Model
         'jenis_jabatan',
         'output',
         'jenis',
+        'created_by'
     ];
     protected $guarded = ['id'];
 }

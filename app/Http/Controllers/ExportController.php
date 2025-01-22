@@ -22,7 +22,6 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class ExportController extends Controller
 {
-
     public function exportMasterKompetensiTeknis()
     {
         return Excel::download(new MasterKompetensiTeknisExport, 'Master Kompentensi Teknis.'. date('d-m-Y H-i-s') .'.xlsx');

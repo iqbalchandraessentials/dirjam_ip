@@ -5,8 +5,9 @@ namespace App\Exports;
 use App\Models\MasterDetailKomptensiTeknis;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithTitle;
 
-class MasterDetailKompetensiTeknisSheet implements FromCollection, WithHeadings
+class MasterDetailKompetensiTeknisSheet implements FromCollection, WithHeadings, WithTitle
 {
     public function collection()
     {
@@ -17,4 +18,10 @@ class MasterDetailKompetensiTeknisSheet implements FromCollection, WithHeadings
     {
         return ['kode_master','level','perilaku','kode_master_level'];
     }
+
+    public function title(): string
+    {
+        return 'Master Detail Komptensi Teknis';
+    }
+
 }

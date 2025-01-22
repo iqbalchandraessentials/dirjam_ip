@@ -2,12 +2,12 @@
 
 namespace App\Exports;
 
-use App\Models\MasterKompetensiTeknis;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class MasterKompetensiTeknisExport implements WithMultipleSheets
 {
+    use Exportable;
     /**
      * Return an array of sheets.
      */

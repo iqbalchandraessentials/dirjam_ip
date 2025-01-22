@@ -17,7 +17,7 @@
                                 target="_blank" rel="noopener noreferrer">
                                 <i class="ti-eye me-1"></i><span class="ml-1"> Mapping</span>
                             </a>
-                            <a href="{{ route('export.exportMasterKompetensiTeknis') }}" class="btn btn-secondary">
+                            <a href="{{ route('export.MasterKompetensiTeknis') }}" class="btn btn-secondary">
                                 <i class="ti-layout-grid4"></i><span class="ml-1"> Excell</span>
                             </a>
                         </div>

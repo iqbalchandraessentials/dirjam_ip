@@ -14,6 +14,7 @@ use App\Models\MasterPendidikan;
 use App\Models\TugasPokoUtamaGenerik;
 use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class MasterDataController extends Controller
@@ -51,8 +52,15 @@ class MasterDataController extends Controller
             'aktivitas' => 'required|string',
             'output' => 'required|string',
             'jenis_jabatan' => 'required|string',
+            
         ]);
-        TugasPokoUtamaGenerik::create($request->only('aktivitas', 'output', 'jenis_jabatan', 'jenis'));
+        TugasPokoUtamaGenerik::create([
+            'aktivitas' => $request->aktivitas,
+            'output' => $request->output,
+            'jenis_jabatan' => $request->jenis_jabatan,
+            'jenis' => $request->jenis,
+            'created_by' => Auth::user()->nama,
+        ]);
         return redirect()->route('master.tugasPokokGenerik')->with('success', 'Data berhasil ditambahkan.');
     }
     public function TugasPokokGenerikUpdate(Request $request)
@@ -64,7 +72,13 @@ class MasterDataController extends Controller
         ]);
 
         $data = TugasPokoUtamaGenerik::findOrFail($request->id);
-        $data->update($request->only('aktivitas', 'output', 'jenis_jabatan','jenis'));
+        $data->update([
+            'aktivitas' => $request->aktivitas,
+            'output' => $request->output,
+            'jenis_jabatan' => $request->jenis_jabatan,
+            'jenis' => $request->jenis,
+            'created_by' => Auth::user()->nama,
+        ]);
         return redirect()->route('master.tugasPokokGenerik')->with('success', 'Data berhasil diperbarui.');
     }
     public function TugasPokokGenerikDestroy(Request $request)
@@ -147,6 +161,53 @@ class MasterDataController extends Controller
         // dd($data);
         return view('pages.masterData.pendidikan.index', ['data' => $data]);
     }
+     // Menyimpan data baru
+     public function createPendidikan(Request $request)
+     {
+         $request->validate([
+             'nama' => 'required|string',
+             'pengalaman' => 'required|string',
+             'jenjang_jabatan' => 'required|string',
+         ]);
+ 
+         MasterPendidikan::create([
+             'nama' => $request->nama,
+             'pengalaman' => $request->pengalaman,
+             'jenjang_jabatan' => $request->jenjang_jabatan,
+             'created_by' => Auth::user()->nama,
+         ]);
+ 
+         return redirect()->route('master.pendidikan')->with('success', 'Data pendidikan berhasil ditambahkan.');
+     }
+ 
+     // Memperbarui data
+     public function updatePendidikan(Request $request)
+     {
+         $request->validate([
+             'nama' => 'required|string',
+             'pengalaman' => 'required|string',
+             'jenjang_jabatan' => 'required|string',
+         ]);
+ 
+         $pendidikan = MasterPendidikan::findOrFail($request->id);
+         $pendidikan->update([
+             'nama' => $request->nama,
+             'pengalaman' => $request->pengalaman,
+             'jenjang_jabatan' => $request->jenjang_jabatan,
+             'created_by' => Auth::user()->nama,
+         ]);
+ 
+         return redirect()->route('master.pendidikan')->with('success', 'Data pendidikan berhasil diupadate.');
+     }
+ 
+     // Menghapus data
+     public function deletePendidikan(Request $request)
+     {
+         $pendidikan = MasterPendidikan::findOrFail($request->id);
+         $pendidikan->delete();
+ 
+         return redirect()->route('master.pendidikan')->with('success', 'Data pendidikan berhasil dihapus.');
+     }
    
 
 

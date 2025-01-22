@@ -9,5 +9,7 @@ class WewenangJabatan extends Model
     protected $fillable = [
         'uraian_master_jabatan_id',
         'definisi',
+        'jenis_jabatan',
+        'created_by'
     ];
 }

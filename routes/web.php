@@ -53,20 +53,24 @@ Route::middleware(['auth'])->group(function () {
         Route::post('masterKompetensiNonTeknis', [ImportController::class, 'masterKompetensiNonTeknis'])->name('import.masterKompetensiNonTeknis');
         Route::post('mappingKompetensiNonTeknis', [ImportController::class, 'mappingKompetensiNonTeknis'])->name('import.mappingKompetensiNonTeknis');
         Route::post('mappingKeterampilanTeknis', [ImportController::class, 'mappingKeterampilanTeknis'])->name('import.mappingKeterampilanTeknis');
+        Route::post('masterDefaultData', [ImportController::class, 'masterDefaultData'])->name('import.masterDefaultData');
     });
     Route::prefix('export')->group(function () {
-        Route::get('masterKompetensiNonTeknis', [ExportController::class, 'exportMasterKompetensiNonTeknis'])->name('export.exportMasterKompetensiNonTeknis');
-        Route::get('masterKompetensiTeknis', [ExportController::class, 'exportMasterKompetensiTeknis'])->name('export.exportMasterKompetensiTeknis');
-        Route::get('MappingKompetensiNonTeknis', [ExportController::class, 'exportMappingKompetensiNonTeknis'])->name('export.exportMappingKompetensiNonTeknis');
-        Route::get('MappingKompetensiTeknis', [ExportController::class, 'exportMappingKompetensiTeknis'])->name('export.exportMappingKompetensiTeknis');
-        Route::get('MasterJabatanUnit', [ExportController::class, 'exportMasterJabatanUnit'])->name('export.exportMasterJabatanUnit');
-        Route::get('MasterDefaultData', [ExportController::class, 'exportMasterDefaultData'])->name('export.exportMasterDefaultData');
+        Route::get('masterKompetensiNonTeknis', [ExportController::class, 'exportMasterKompetensiNonTeknis'])->name('export.MasterKompetensiNonTeknis');
+        Route::get('masterKompetensiTeknis', [ExportController::class, 'exportMasterKompetensiTeknis'])->name('export.MasterKompetensiTeknis');
+        Route::get('MappingKompetensiNonTeknis', [ExportController::class, 'exportMappingKompetensiNonTeknis'])->name('export.MappingKompetensiNonTeknis');
+        Route::get('MappingKompetensiTeknis', [ExportController::class, 'exportMappingKompetensiTeknis'])->name('export.MappingKompetensiTeknis');
+        Route::get('MasterJabatanUnit', [ExportController::class, 'exportMasterJabatanUnit'])->name('export.MasterJabatanUnit');
+        Route::get('MasterDefaultData', [ExportController::class, 'exportMasterDefaultData'])->name('export.MasterDefaultData');
     });
 
     // Master Data Routes
     Route::prefix('master_data')->group(function () {
         Route::get('indikator', [MasterDataController::class, 'indikator'])->name('master.indikator');
         Route::get('pendidikan', [MasterDataController::class, 'pendidikan'])->name('master.pendidikan');
+        Route::post('pendidikan/create', [MasterDataController::class, 'createPendidikan'])->name('master.pendidikan.create');
+        Route::post('pendidikan/update', [MasterDataController::class, 'updatePendidikan'])->name('master.pendidikan.update');
+        Route::post('pendidikan/delete', [MasterDataController::class, 'deletePendidikan'])->name('master.pendidikan.delete');
         Route::get('tugasPokokGenerik', [MasterDataController::class, 'tugasPokokGenerik'])->name('master.tugasPokokGenerik');
         Route::post('TugasPokokGenerikStore', [MasterDataController::class, 'TugasPokokGenerikStore'])->name('master.TugasPokokGenerikStore');
         Route::post('TugasPokokGenerikUpdate', [MasterDataController::class, 'TugasPokokGenerikUpdate'])->name('master.TugasPokokGenerikUpdate');

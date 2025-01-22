@@ -44,12 +44,12 @@ class UraianMasterJabatanImport implements ToCollection
                 return redirect()->back()->with('error', 'Nama Master jabatan tidak ditemukan');
             }
             if (!$data['nama']) {
-                $errors[] = 'Master jabatan kosong';
+                return redirect()->back()->with('error','Master jabatan kosong');
             }
             // fungsi utama
             $data['fungsi_utama'] =  $rows[21][1] ;
             if (!$data['fungsi_utama']) {
-                $errors[] = 'Fungsi utama kosong';
+                return redirect()->back()->with('error','Fungsi utama kosong');
             }
             // dimesi finansial
             $anggaranMap = [
@@ -94,7 +94,7 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
             if (empty($this->tugas_pokok_utama[0]['aktivitas'])) {
-                $errors[] = 'Tugas Pokok Utama Dan Output kosong';
+                return redirect()->back()->with('error','Tugas Pokok Utama Dan Output kosong');
             }
             $data['tugas_pokok_utama'] = $this->tugas_pokok_utama;
             // HUBUNGAN KERJA
@@ -112,7 +112,7 @@ class UraianMasterJabatanImport implements ToCollection
             }
 
             if (empty($this->hubungan_kerja[0]['komunikasi'])) {
-                $errors[] = 'Hubungan Kerja Internal kosong';
+                return redirect()->back()->with('error','Hubungan Kerja Internal kosong');
             }
 
             foreach ($rows as $key => $row) {
@@ -127,7 +127,7 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
             if (empty($this->hubungan_kerja[0]['komunikasi'])) {
-                $errors[] = 'Hubungan kerja Eksternal kosong';
+                return redirect()->back()->with('error','Hubungan kerja Eksternal kosong');
             }
             $data['hubungan_kerja'] = $this->hubungan_kerja;
             // MASALAH, KOMPLEKSITAS KERJA DAN TANTANGAN UTAMA
@@ -159,7 +159,7 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
             if (empty($this->pendidikan[0]['pendidikan'])) {
-                $errors[] = 'Pendidikan kosong';
+                return redirect()->back()->with('error','Pendidikan kosong');
             }
             $data['pendidikan'] = $this->pendidikan;
    
@@ -192,7 +192,7 @@ class UraianMasterJabatanImport implements ToCollection
             // Lakukan validasi
             $validator = Validator::make($this->kompetensi_teknis, $rules);
             if ($validator->fails()) {
-                $errors[] = 'Komptensi Teknis salah atau kosong';
+                return redirect()->back()->with('error','Komptensi Teknis salah atau kosong');
             }
             $data['kompetensi_teknis'] = $this->kompetensi_teknis;
             // akhir kompetensi teknis
