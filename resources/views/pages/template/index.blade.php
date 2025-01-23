@@ -81,8 +81,8 @@
                                             {{$v->unit_kode}}
                                         </td>
                                         <td class="text-center">
-                                            <a href="{{ route('template_jabatan.export_excel', $v->uraianMasterJabatan->id) }}" class=""><i class="ti-layout"> </i></a>
-                                            <a href="{{ route('template_jabatan.export_pdf', $v->uraianMasterJabatan->id) }}"><i class="ti-printer"></i></a>
+                                            <a href="{{ route('export.templateJabatanExcel', $v->uraianMasterJabatan->id) }}" class=""><i class="ti-layout"> </i></a>
+                                            <a href="{{ route('export.templateJabatanPdf', $v->uraianMasterJabatan->id) }}"><i class="ti-printer"></i></a>
                                             <a href="{{route('template_jabatan.draft', $v->id)}}" class="ml-3"> <i class="ti-view-list-alt"></i></a>
                                         </td>
                                     </tr>

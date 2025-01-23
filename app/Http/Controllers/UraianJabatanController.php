@@ -31,7 +31,6 @@ use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use PDF;
 
 use function PHPUnit\Framework\isNull;
 
@@ -95,16 +94,6 @@ class UraianJabatanController extends Controller
         $data = $this->getDatas($id);
         return view('pages.uraian_jabatan.show', ['data' => $data]);
 
-    }
-
-    public function exportPdf($id)
-    {
-        $data = $this->getDatas($id);
-        $pdf = PDF::loadView('pages.uraian_jabatan.pdf_report', [
-            'data' => $data
-        ]);
-        $name = "URAIAN_JABATAN-" . $data['jabatan']['jabatan'] . date('d-m-Y H-i-s') . ".pdf";
-        return $pdf->download($name);
     }
    
 

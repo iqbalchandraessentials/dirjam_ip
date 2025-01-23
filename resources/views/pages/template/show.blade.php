@@ -40,10 +40,10 @@
                             class="btn btn-secondary">
                             <i class="ti-view-list-alt"></i><span> Draft</span>
                         </a>
-                        <a href="{{ route('template_jabatan.export_pdf', $data['id']) }}" class="btn btn-secondary">
+                        <a href="{{ route('export.templateJabatanPdf', $data['id']) }}" class="btn btn-secondary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
-                        <a href="{{ route('template_jabatan.export_excel', $data['id']) }}" class="btn btn-secondary">
+                        <a href="{{ route('export.templateJabatanExcel', $data['id']) }}" class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span>Excell</span>
                         </a>
                     </div>

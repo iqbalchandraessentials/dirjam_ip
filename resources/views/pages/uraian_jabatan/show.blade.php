@@ -561,7 +561,6 @@
                                     <th class="font-weight-bold text-center">Pendidikan</th>
                                     <th class="font-weight-bold text-center">Bidang Studi</th>
                                     <th class="font-weight-bold text-center">Pengalaman Minimal</th>
-                                    {{-- <th class="font-weight-bold text-center" >Deskripsi Pekerjaan</th> --}}
                                 </tr>
                             </thead>
                             <tbody>

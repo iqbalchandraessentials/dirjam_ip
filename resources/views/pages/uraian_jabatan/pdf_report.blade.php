@@ -464,11 +464,7 @@
                         @if ($v['tantangan'] || $v['definisi'])
                             <tr>
                                 <td style="text-align: center"> {{ $x + 1 }}</td>
-                                @if (isset($v['tantangan']))
-                                    <td style="text-align: center;">{{ $v['tantangan'] }}</td>
-                                @else
-                                    <td style="text-align: justify">{{ $v['definisi'] }}</td>
-                                @endif
+                                    <td style="text-align: justify;">{{ isset($v['tantangan']) ? $v['tantangan']  : $v['definisi'] }}</td>
                             </tr>
                         @endif
                         @endforeach
@@ -497,11 +493,7 @@
                         @if ($v['pengambilan_keputusan'] || $v['definisi'])
                             <tr>
                                 <td style="text-align: center"> {{ $x + 1 }}</td>
-                                @if (isset($v['pengambilan_keputusan']))
-                                    <td style="text-align: center;">{{ $v['pengambilan_keputusan'] }}</td>
-                                @else
-                                    <td style="text-align: justify">{{ $v['definisi'] }}</td>
-                                @endif
+                                    <td style="text-align: justify;">{{ isset($v['pengambilan_keputusan']) ? $v['pengambilan_keputusan'] : $v['definisi']  }}</td>
                             </tr>
                         @endif
                         @endforeach

@@ -47,16 +47,6 @@ class TemplateJabatanController extends Controller
         ]);
     }
 
-    public function exportPdf($id)
-    {
-        $data = $this->getDatas($id);
-        $pdf = PDF::loadView('pages.template.pdf_report', [
-            'data' => $data
-        ]);
-        $name = "Template_Jabatan_" . $data->nama . date('d-m-Y H-i-s') . ".pdf";
-        return $pdf->download($name);
-    }
-
     public function draft($id)
     {
         $data =  MasterJabatan::find($id);
