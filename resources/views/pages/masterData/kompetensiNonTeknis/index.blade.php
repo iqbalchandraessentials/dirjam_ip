@@ -12,7 +12,7 @@
                             <h4 class="box-title">Master Kompetnsi Non Teknis</h4>
                         </div>
                         <div class="col-6 text-right">
-                            <a href="{{ route('master.mappingkomptensiNonTeknis') }}" class="btn btn-success mb-3" target="_blank" rel="noopener noreferrer">
+                            <a href="{{ route('master.mappingkomptensiNonTeknis') }}" class="btn btn-success mb-3" rel="noopener noreferrer">
                                 <i class="ti-eye me-1"></i> <span class="ml-1">Mapping</span>
                             </a>
                             <a href="{{ route('export.MappingKompetensiNonTeknis') }}" class="btn btn-secondary">

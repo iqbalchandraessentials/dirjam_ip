@@ -12,4 +12,8 @@ class MasterPendidikan extends Model
         "pengalaman",
         "jenjang_jabatan",
     ];
+
+    
+
+
 }

@@ -53,7 +53,7 @@
                                             @csrf
                                             <div class="input-group">
                                                 <!-- Tambahkan kelas w-100 untuk lebar penuh -->
-                                                <select name="role" class="form-select" style="width: 220px" required>
+                                                <select name="role" class="form-select" style="width: 250px" required>
                                                     <option value="" disabled selected >Select Role</option>
                                                     @foreach ($roles as $role)
                                                         <option value="{{ $role->name }}">{{ $role->name }}</option>

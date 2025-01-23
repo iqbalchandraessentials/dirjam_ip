@@ -65,9 +65,9 @@
                                     <thead>
                                         <tr>
                                             {{-- <th class="text-left">No.</th> --}}
+                                            <th class="text-center">Master Jabatan</th>
                                             <th class="text-center">Kode</th>
                                             <th class="text-center">Komptensi</th>
-                                            <th class="text-center">Master Jabatan</th>
                                             <th class="text-center">Level</th>
                                             <th class="text-center">Jenis</th>
                                         </tr>
@@ -94,9 +94,9 @@
         ajax: "{{ route('master.mappingkomptensiTeknis') }}",
         columns: [
             // { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false }, // Kolom index
+            { data: 'master_jabatan', name: 'master_jabatan' },
             { data: 'kode', name: 'kode' },
             { data: 'master.nama', name: 'master.nama' },
-            { data: 'master_jabatan', name: 'master_jabatan' },
             { data: 'level', name: 'level' },
             { data: 'kategori', name: 'kategori' },
         ],

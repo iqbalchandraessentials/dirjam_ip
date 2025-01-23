@@ -611,7 +611,7 @@
                                         <td> <span class="badge bg-dark"
                                                 style="min-width: 32px">{{ $x + 1 }}</span></td>
                                         <td>{{ $v['pendidikan'] }}</td>
-                                        <td>{{ $v['pengalaman'] }}</td>
+                                        <td>{{ $v['pengalaman'] == 0 ? 'Fresh Graduate' : $v['pengalaman'] }}</td>
                                         <td>
                                             @php
                                                 $pattern = '/\d+\.\s*/'; // Pola untuk memisahkan berdasarkan angka diikuti titik dan spasi

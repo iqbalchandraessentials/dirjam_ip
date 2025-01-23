@@ -36,10 +36,10 @@
                         </p>
                     </div>
                     <div class="col text-right">
-                        <a href="{{ route('uraian_jabatan.export_pdf', $data->uraian_jabatan_id) }}" class="btn btn-secondary">
+                        <a href="{{ route('uraian_jabatan.export_pdf', $data['uraian_jabatan_id']) }}" class="btn btn-secondary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
-                        <a href="{{ route('uraian_jabatan.export_excel', $data->uraian_jabatan_id) }}" class="btn btn-secondary">
+                        <a href="{{ route('uraian_jabatan.export_excel', $data['uraian_jabatan_id']) }}" class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span>Excell</span>
                         </a>
                     </div>
@@ -126,7 +126,7 @@
                 </div>
                 <div class="col-sm-12 col-12">
                     <p class="blockquote text-justify">
-                        {{ $data->fungsi_utama }}
+                        {{ $data['fungsi_utama'] }}
                     </p>
                 </div>
 
@@ -159,7 +159,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data->aktivitas as $x => $v)
+                                @foreach ($data['aktivitas'] as $x => $v)
                                         <tr>
                                             <td> <span class="badge bg-dark"
                                                     style="min-width: 32px">{{ $x + 1 }}</span></td>
@@ -232,14 +232,14 @@
                         <table>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{-- {{ $data['anggaran'] == 'Investasi' ? 'V' : '' }} --}}
+                                    {{ $data['anggaran'] == 'Investasi' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Anggaran Investasi</td>
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{-- {{ $data['anggaran'] == 'Operasional' ? 'V' : '' }} --}}
+                                    {{ $data['anggaran'] == 'Operasional' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Anggaran Operasional</td>
@@ -311,28 +311,28 @@
                         <table>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['nature_of_impact']?->kategori === 'Prime' ? 'V' : '' }}
+                                    {{ $data['nature_of_impact'] == 'Prime' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Prime</td>
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['nature_of_impact']?->kategori === 'Share' ? 'V' : '' }}
+                                    {{ $data['nature_of_impact'] == 'Share' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Shared</td>
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['nature_of_impact']?->kategori === 'Contributory' ? 'V' : '' }}
+                                    {{ $data['nature_of_impact'] == 'Contributory' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Contributory</td>
                             </tr>
                             <tr>
                                 <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                                    {{ $data['nature_of_impact']?->kategori === 'Remote' ? 'V' : '' }}
+                                    {{ $data['nature_of_impact'] == 'Remote' ? 'V' : '' }}
                                 </td>
                                 <td></td>
                                 <td>Remote</td>
@@ -406,16 +406,16 @@
                             <tbody>
                                 @php $no = 1; @endphp
                                 @foreach ($data['komunikasi_internal'] as $x => $v)
-                                @if ($v['subjek'])
+                                @if ($v['subjek'] || $v['komunikasi'] )
                                         <tr>
                                             <td>
                                                 <span class="badge bg-dark"
                                                     style="min-width: 32px">{{ $no++ }}</span>
                                             </td>
-                                            <td class="text-center">{{ $v['subjek'] }}</td>
+                                            <td class="text-center">{{ $v['subjek'] ? $v['subjek'] : $v['komunikasi'] }}</td>
                                             <td class="text-center">{{ $v['tujuan'] }}</td>
                                         </tr>
-                                        @endif
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -438,13 +438,13 @@
                             <tbody>
                                 @php $no = 1; @endphp
                                 @foreach ($data['komunikasi_external'] as $x => $v)
-                                @if ($v['subjek'])
+                                @if ($v['subjek'] || $v['komunikasi'] )
                                         <tr>
                                             <td>
                                                 <span class="badge bg-dark"
                                                     style="min-width: 32px">{{ $no++ }}</span>
                                             </td>
-                                            <td class="text-center">{{ $v['subjek'] }}</td>
+                                            <td class="text-center">{{ $v['subjek'] ? $v['subjek'] : $v['komunikasi'] }}</td>
                                             <td class="text-center">{{ $v['tujuan'] }}</td>
                                         </tr>
                                         @endif
@@ -479,6 +479,7 @@
                             </thead>
                             <tbody class="">
                                 @foreach ($data['tantangan'] as $x => $v)
+                                @if ($v['tantangan'] || $v['definisi'])
                                 <tr>
                                     <td> <span class="badge bg-dark"
                                         style="min-width: 32px">{{ $x + 1 }}</span></td>
@@ -488,6 +489,7 @@
                                         <td class="text-center">{{ $v['definisi'] }}</td>
                                         @endif
                                     </tr>
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -519,6 +521,7 @@
                             </thead>
                             <tbody class="">
                                 @foreach ($data["pengambilan_keputusan"] as $x => $v)
+                                @if ($v['pengambilan_keputusan'] || $v['definisi'])
                                     <tr>
                                         <td> <span class="badge bg-dark"
                                                 style="min-width: 32px">{{ $x + 1 }}</span></td>
@@ -528,6 +531,7 @@
                                         <td class="text-center">{{ $v['definisi'] }}</td>
                                         @endif
                                     </tr>
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -587,7 +591,12 @@
                                     <tr>
                                         <td class="text-center">{{ $i + 1 }}</td>
                                         <td class="text-center">{{ $item->pendidikan }}</td>
-                                        <td class="tex-left">{!! $bidang !!}</td>
+                                        <td class="tex-left">  @if (isset($item->bidang_studi))
+                                                {{$item->bidang_studi}}
+                                            @else
+                                                {!! $bidang !!}
+                                            @endif 
+                                        </td>
                                         <td class="text-center">{!! $pengalaman !!}</td>
                                     </tr>
                                 @endforeach
@@ -605,7 +614,9 @@
                         </thead>
                         <tbody>
                                 <ol type="a"  style="padding-left: 0; margin-left: 2; list-style-position: inside;">
+                                    @if ($jobdesc)
                                     <li> {{ $jobdesc ?? "" }} </li>
+                                    @endif
                                     @foreach ($data['kemampuan_dan_pengalaman'] as $v)
                                         <li>{{ $v->definisi }}</li>
                                     @endforeach

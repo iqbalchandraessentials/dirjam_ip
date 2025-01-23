@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\KemampuandanPengalaman;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJabatan;
+use App\Models\MasterPendidikan;
 use App\Models\TugasPokoUtamaGenerik;
 use App\Models\UraianMasterJabatan;
 use App\Models\ViewUraianJabatan;
@@ -115,6 +116,15 @@ class TemplateJabatanController extends Controller
         $core = $data->keterampilanTeknisCore;
         $enabler = $data->keterampilanTeknisEnabler;
         $data['keterampilan_teknis'] = $core->merge($enabler);
+        $data['spesifikasiPendidikan'] = $data['spesifikasiPendidikan'];
+        foreach ($data['spesifikasiPendidikan'] as $key => $item) {
+            $masterPendidikan = MasterPendidikan::where('nama', $item['pendidikan'])
+                ->where('jenjang_jabatan', $data['jabatans'][0]['jen'])
+                ->first();
+            
+            // Menambahkan pengalaman ke dalam array
+            $data['spesifikasiPendidikan'][$key]['pengalaman'] = $masterPendidikan ? $masterPendidikan->pengalaman : '-';
+        }
         return $data;
     }
 

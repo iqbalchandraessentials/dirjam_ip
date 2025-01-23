@@ -577,7 +577,7 @@
                             <tr>
                                 <td style="text-align: center"> {{ $x + 1 }}</td>
                                 <td style=" text-align: center">{{ $v['pendidikan'] }}</td>
-                                <td style=" text-align: center">{{ $v['pengalaman'] }}</td>
+                                <td style=" text-align: center">{{ $v['pengalaman'] == 0 ? 'Fresh Graduate' : $v['pengalaman'] }}</td>
                                 <td>
                                     @php
                                         $pattern = '/\d+\.\s*/'; // Pola untuk memisahkan berdasarkan angka diikuti titik dan spasi

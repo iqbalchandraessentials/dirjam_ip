@@ -95,7 +95,7 @@
                     </li> --}}
                     <li class="{{ Request::is('master_data/users') ? 'active' : '' }}">
                         <a href="{{ url('master_data/users') }}">
-                            <i class="ti-more"></i>User Index
+                            <i class="ti-more"></i>User Manajemen
                         </a>
                     </li>
                 </ul>
@@ -143,7 +143,7 @@
                 </a>
             </li>       
         
-            <li class="treeview {{ Request::is('loader') ? 'active' : '' }}">
+            {{-- <li class="treeview {{ Request::is('loader') ? 'active' : '' }}">
                 <a href="#">
                     <i class="ti-calendar"></i>
                     <span>Loader</span>
@@ -163,7 +163,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
         
             <li class="{{ Request::is('faq') ? 'active' : '' }}">
                 <a href="{{ url('faq') }}">
