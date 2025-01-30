@@ -15,6 +15,7 @@ use App\Models\MasterKompetensiTeknis;
 use App\Models\MasterPendidikan;
 use App\Models\TugasPokoUtamaGenerik;
 use App\Models\unit\M_UNIT;
+use App\Models\ViewUraianJabatan;
 use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,41 @@ class MasterDataController extends Controller
         $data = MasterIndikatorOutput::get();
         return view('pages.masterData.indikator.index', ['data' => $data]);
     }
+
+
+    public function storeIndikator(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+        ]);
+
+        MasterIndikatorOutput::create([
+            'nama' => $request->nama,
+        ]);
+
+        return redirect()->route('master.indikator')->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function updateIndikator(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+        ]);
+
+        $indikator = MasterIndikatorOutput::findOrFail($request->id);
+        $indikator->update([
+            'nama' => $request->nama,
+        ]);
+
+        return redirect()->route('master.indikator')->with('success', 'Data berhasil diperbarui');
+    }
+
+    public function deleteIndikator(Request $request)
+    {
+        MasterIndikatorOutput::findOrFail($request->id)->delete();
+        return redirect()->route('master.indikator')->with('success', 'Data berhasil dihapus');
+    }
+
 
     public function jenjangJabatan() {
         $data = M_JENJANG::get();
@@ -110,10 +146,22 @@ class MasterDataController extends Controller
         ]);
     }
 
-    public function masterKompetensiTeknis() {
-        $data = MasterKompetensiTeknis::get();
-        // dd($data);
-        return view('pages.masterData.kompetensiTeknis.index', ['data' => $data]);
+    public function masterKompetensiTeknis(Request $request) {
+        
+        
+        if ($request->ajax()) {
+            $data = MasterKompetensiTeknis::get();
+            return DataTables::of($data)
+            ->addColumn('kode', function ($row) {
+                return '<a href="' . route('master.detailMasterKompetensiTeknis', $row->id) . '">' . $row->kode . '</a>';
+            })
+            ->addColumn('nama', function ($row) {
+                return '<a href="' . route('master.detailMasterKompetensiTeknis', $row->id) . '">' . $row->nama . '</a>';
+            })
+            ->rawColumns(['kode', 'nama']) // Untuk mendukung HTML di kolom
+            ->make(true);
+        }
+        return view('pages.masterData.kompetensiTeknis.index');
     }
     public function detailMasterKompetensiTeknis($id) {
         $data = MasterKompetensiTeknis::with('level')->find($id);
@@ -159,7 +207,7 @@ class MasterDataController extends Controller
     public function masterJabatan(Request $request)
     {
         if ($request->ajax()) {
-            $data = MASTER_JABATAN_UNIT::select('master_jabatan', 'siteid');
+            $data = ViewUraianJabatan::select('master_jabatan', 'siteid');
             return DataTables::of($data)
                 ->addIndexColumn() // Menambahkan kolom nomor urut
                 ->make(true);

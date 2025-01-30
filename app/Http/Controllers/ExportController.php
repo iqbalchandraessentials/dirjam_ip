@@ -65,7 +65,7 @@ class ExportController extends Controller
         $pdf = PDF::loadView('pages.template.pdf_report', [
             'data' => $data
         ]);
-        $name = "Template_Jabatan_" . $data->nama . date('d-m-Y H-i-s') . ".pdf";
+        $name = "Template_Jabatan_" . $data['nama'] . date('d-m-Y H-i-s') . ".pdf";
         return $pdf->download($name);
     }
 

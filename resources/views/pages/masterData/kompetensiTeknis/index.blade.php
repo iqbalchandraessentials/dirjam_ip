@@ -73,29 +73,16 @@
                             <div class="box-body">
                                 
                                 <div class="table-responsive">
-                                    <table class="table table-striped dataTables">
+                                    <table id="dataTables" class="table table-striped ">
                                         <thead>
                                             <tr>
                                                 <th class="text-center">Kode</th>
                                                 <th class="text-center">Nama</th>
                                                 <th class="text-center">Name</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
-
-                                            @foreach ($data as $x => $v)
-                                                <tr>
-                                                    <td class="text-center">
-                                                        <a
-                                                            href="{{ route('master.detailMasterKompetensiTeknis', $v['id']) }}">
-                                                            {{ $v['kode'] }}
-                                                        </a>
-                                                    </td>
-                                                    <td class="text-center">{{ $v['nama'] }}</td>
-                                                    <td class="text-center">{{ $v['name'] }}</td>
-                                                </tr>
-                                            @endforeach
+                                            <!-- Data akan diisi oleh DataTables melalui AJAX -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -107,5 +94,25 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+<script>
+    $(document).ready(function() {
+        $('#dataTables').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('master.masterKompetensiTeknis') }}",
+            columns: [
+                { data: 'kode', name: 'kode', className: 'text-center' },
+                { data: 'nama', name: 'nama', className: 'text-center' },
+                { data: 'name', name: 'name', className: 'text-center' }
+            ],
+            order: [[1, 'asc']], // Sortir berdasarkan kolom Nama secara default
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.11.5/i18n/id.json" // Bahasa Indonesia (opsional)
+            }
+        });
+    });
+</script>
 
 @endsection

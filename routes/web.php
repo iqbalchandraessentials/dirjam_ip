@@ -7,7 +7,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\TemplateJabatanController;
 use App\Http\Controllers\UraianJabatanController;
@@ -35,7 +34,7 @@ Route::get('/approval_list', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('uraian_jabatan', UraianJabatanController::class);
-    Route::get('filter-uraian_jabatan/', [UraianJabatanController::class, 'filterData'])->name('filter-jabatan');
+    Route::post('filter-uraian_jabatan/', [UraianJabatanController::class, 'filterData'])->name('filterUraianJabatan');
     // template jabatan
     Route::resource('template_jabatan', TemplateJabatanController::class);
     Route::get('template_jabatan/draft/{id}', [TemplateJabatanController::class, 'draft'])->name('template_jabatan.draft');
@@ -64,6 +63,9 @@ Route::middleware(['auth'])->group(function () {
     // Master Data Routes
     Route::prefix('master_data')->group(function () {
         Route::get('indikator', [MasterDataController::class, 'indikator'])->name('master.indikator');
+        Route::post('indikator/create', [MasterDataController::class, 'storeIndikator'])->name('master.storeIndikator');
+        Route::post('indikator/edit', [MasterDataController::class, 'updateIndikator'])->name('master.updateIndikator');
+        Route::post('indikator/delete', [MasterDataController::class, 'deleteIndikator'])->name('master.deleteIndikator');
         Route::get('pendidikan', [MasterDataController::class, 'pendidikan'])->name('master.pendidikan');
         Route::post('pendidikan/create', [MasterDataController::class, 'createPendidikan'])->name('master.pendidikan.create');
         Route::post('pendidikan/update', [MasterDataController::class, 'updatePendidikan'])->name('master.pendidikan.update');

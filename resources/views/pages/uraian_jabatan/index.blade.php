@@ -16,71 +16,49 @@
 
                 <div class="box-body">
 
-                    <form action="{{ route('filter-jabatan') }}" method="GET" class="form-horizontal">
-
+                    <form action="{{ route('filterUraianJabatan') }}" method="POST" class="form-horizontal">
+                        @csrf
                         <div class="d-flex justify-content-center">
                             <div class="row">
-                                {{-- <div class="col-4">
+                                <div class="col">
                                     <div class="form-group d-flex align-items-center">
                                         <label for="unit" class="mr-3 mb-0">Unit:</label>
-                                        <select class="form-control select2" name="unit" style="width: 100%;">
-                                            <option selected disabled>All</option>
+                                        <select class="form-control select2" name="unit">
+                                            @if(isset($selectUnit))
+                                            <option selected disabled>{{$selectUnit}}</option>
+                                            @endif
                                             @foreach ($unitOptions as $unit)
-                                                <option value="{{ $unit->kode }}">
-                                                    {{ $unit->nama }}
+                                                <option value="{{ $unit->unit_kd }}" 
+                                                    {{ old('unit', request('unit')) == $unit->unit_kd ? 'selected' : '' }}>
+                                                    {{ $unit->unit_nama }}
                                                 </option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                {{-- <div class="col-md-4">
                                     <div class="form-group d-flex align-items-center">
                                         <label for="jenjang" class="mr-3 mb-0">Jenjang:</label>
-                                        <select class="form-control select2" name="jenjang" style="width: 100%;">
-                                            <option selected disabled>All</option>
+                                        <select class="form-control select2" name="jenjang" style="width: 500px;">
+                                            <option selected disabled>Select Jenjang</option>
                                             @foreach ($jenjangOptions as $jenjang)
-                                                <option value="{{ $jenjang->kode }}">
+                                                <option value="{{ $jenjang->kode }}" 
+                                                    {{ old('jenjang', request('jenjang')) == $jenjang->kode ? 'selected' : '' }}>
                                                     {{ $jenjang->nama }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                </div>
-                            </div> --}}
-                            {{--  --}}
-                                {{-- <div class="col">
-                                    <div class="form-group d-flex align-items-center">
-                                        <label for="jenjang" class="mr-3 mb-0">Unit</label>
-                                            <select class="select2" style="width: 100%" multiple name="unit[]">
-                                                @foreach ($unitOptions as $unit)
-                                                    <option value="{{ $unit->kode }}"
-                                                        {{ in_array($unit, request('unit', [])) ? 'selected' : '' }}>
-                                                        {{ $unit->nama }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
                                     </div>
                                 </div> --}}
-                                {{-- <div class="col">
-                                    <div class="form-group d-flex align-items-center">
-                                        <label for="jenjang" class="mr-3 mb-0">Jenjang</label>
-                                            <select class="select2" style="width: 100%" multiple name="jenjang[]">
-                                                @foreach ($jenjangOptions as $jenjang)
-                                                    <option value="{{ $jenjang->kode }}"
-                                                        {{ in_array($jenjang, request('jenjang', [])) ? 'selected' : '' }}>
-                                                        {{ $jenjang->nama }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                    </div>
-                                </div> --}}
-                                {{-- <div class="col-auto">
+                                <div class="col-auto">
                                     <div class="form-group">
-                                            <button type="submit" class="btn btn-primary ml-2"><i class="ti-search"></i></button>
-                                        </div>
-                                    </div> --}}
+                                        <button type="submit" class="btn btn-primary ml-2"><i class="ti-search"></i></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
+                    
 
 
                     <div class="table-responsive">
@@ -89,8 +67,8 @@
                                 <tr>
                                     <th>Path</th>
                                     <th>Jabatan</th>
-                                    <th>Klaster</th>
-                                    <th>Direktorat</th>
+                                    {{-- <th>Klaster</th>
+                                    <th>Direktorat</th> --}}
                                     <th>Unit</th>
                                     <th>Jenjang</th>
                                     <th>Opsi</th>
@@ -98,53 +76,40 @@
                             </thead>
                             <tbody id="tableBody">
                                 @foreach ($jabatans as $key)
-                                    @php
-                                        $jab = str_replace(' ', '&nbsp;', $key->hierarchy);
-                                        $a = str_repeat('&nbsp;', $key->leveling * 10);
-                                        $mj = "$a&nbsp;($key->master_jabatan <small>$key->position_id</small>)";
+                                @php
 
-                                        $param = request()->getQueryString();
-                                        $link =
-                                            $key->status === '-'
-                                                ? url('uraian_jabatan', $key->position_id)
-                                                : url('uraian_jabatan', $key->uraian_jabatan_id);
-                                        $link2 =
-                                            $key->status === '-'
-                                                ? ''
-                                                : '<a href="' .
-                                                    route('export.uraianJabatanExcel', $key->uraian_jabatan_id)  .
-                                                    '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>';
-
-                                        $button = '';
-                                      
-                                            $edit =
-                                                '<a href="' .
-                                                $link .
-                                                '" class="btn btn-xs btn-success"><i class="fa fa-search"></i></a>';
-                                            $print =
-                                                '<a href="' .
-                                                route('export.uraianJabatanPDF', $key->uraian_jabatan_id) .
-                                                '" class="btn btn-xs btn-primary"><i class="fa fa-print"></i></a>';
-                                            $button = "$link2 $print";
-
-                                        // if (session('role') === 'readonly' && $key->status === '-') {
-                                        //     $jab = str_replace(' ', '&nbsp;', $key->hierarchy);
-                                        //     $button = $button === $add ? '' : $button;
-                                        // } else {
-                                        //     $jab =
-                                        //         '<a href="' .
-                                        //         $link .
-                                        //         '">' .
-                                        //         str_replace(' ', '&nbsp;', $key->hierarchy) .
-                                        //         '</a>';
-                                        // }
-                                    @endphp
+                                
+                                    // Tambahkan indentasi sesuai dengan leveling
+                                    $a = str_repeat('&nbsp;', $key->leveling * 10);
+                                
+                                    // Buat informasi tambahan master jabatan dan position ID
+                                    $mj = "$a&nbsp;($key->master_jabatan <small>$key->position_id</small>)";
+                                
+                                    // Buat URL untuk tautan utama
+                                    $link = $key->status === '-'
+                                        ? url('uraian_jabatan', $key->position_id)
+                                        : url('uraian_jabatan', $key->uraian_jabatan_id);
+                                    // Buat string hierarchy dengan mengganti spasi menjadi HTML entity
+                                    $jab = '<a href="' . $link . '">' . str_replace(' ', '&nbsp;', $key->hierarchy) . '</a>';
+                                    // Buat tombol export Excel (jika status tidak '-')
+                                    $link2 = $key->status === '-'
+                                        ? ''
+                                        : '<a href="' . route('export.uraianJabatanExcel', $key->uraian_jabatan_id) . '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>';
+                                
+                                    // Buat tombol edit dan print
+                                    $edit = '<a href="' . $link . '" class="btn btn-xs btn-success"><i class="fa fa-search"></i></a>';
+                                    $print = '<a href="' . route('export.uraianJabatanPDF', $key->uraian_jabatan_id) . '" class="btn btn-xs btn-primary"><i class="fa fa-print"></i></a>';
+                                
+                                    // Gabungkan tombol menjadi satu
+                                    $button = "$link2 $print";
+                                @endphp
+                            
 
                                     <tr>
                                         <td><small style="display:none">{{ $key->path }}</small></td>
                                         <td><small><b>{!! $jab !!}</b><br />{!! $mj !!}</small></td>
-                                        <td>{{ $key->klaster }}</td>
-                                        <td>{{ $key->direktorat }}</td>
+                                        {{-- <td>{{ $key->klaster }}</td>
+                                        <td>{{ $key->direktorat }}</td> --}}
                                         <td><small>{{ $key->siteid }}</small></td>
                                         <td><small>{{ $key->jen }}</small></td>
                                         <td>{!! $button !!}</td>

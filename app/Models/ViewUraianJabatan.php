@@ -10,12 +10,12 @@ class ViewUraianJabatan extends Model
 
     public function namaProfesi()
     {
-        return $this->hasOne(M_PROFESI::class, 'KODE_NAMA_PROFESI', 'nama_profesi');
+        return $this->hasOne(M_PROFESI::class, 'kode_nama_profesi', 'nama_profesi');
     }
 
     public function jenjangJabatan()
     {
-        return $this->hasOne(MasterJenjangJabatan::class, 'kode', 'jenjang_kode');
+        return $this->hasOne(MasterJenjangJabatan::class, 'kode', 'jen');
     }
 
 }

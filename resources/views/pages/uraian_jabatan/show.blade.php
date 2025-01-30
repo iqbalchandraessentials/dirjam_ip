@@ -36,10 +36,10 @@
                         </p>
                     </div>
                     <div class="col text-right">
-                        <a href="{{ route('uraian_jabatan.export_pdf', $data['uraian_jabatan_id']) }}" class="btn btn-secondary">
+                        <a href="{{ route('export.uraianJabatanPDF', $data['uraian_jabatan_id']) }}" class="btn btn-secondary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
-                        <a href="{{ route('uraian_jabatan.export_excel', $data['uraian_jabatan_id']) }}" class="btn btn-secondary">
+                        <a href="{{ route('export.uraianJabatanExcel', $data['uraian_jabatan_id']) }}" class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span>Excell</span>
                         </a>
                     </div>
@@ -612,7 +612,7 @@
                         <thead class="thead-light">
                         </thead>
                         <tbody>
-                                <ol type="a"  style="padding-left: 0; margin-left: 2; list-style-position: inside;">
+                            <ol type="a"  style="padding-left: 0; margin-left: 2; list-style-position: inside;">
                                     @if ($jobdesc)
                                     <li> {{ $jobdesc ?? "" }} </li>
                                     @endif

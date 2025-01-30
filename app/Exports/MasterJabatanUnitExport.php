@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\MASTER_JABATAN_UNIT;
+use App\Models\ViewUraianJabatan;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 class MasterJabatanUnitExport implements FromCollection
@@ -12,7 +12,7 @@ class MasterJabatanUnitExport implements FromCollection
     */
     public function collection()
     {
-        return MASTER_JABATAN_UNIT::all();
+        return ViewUraianJabatan::all();
     }
     public function headings(): array
     {

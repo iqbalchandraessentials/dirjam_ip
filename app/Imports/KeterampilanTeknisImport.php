@@ -7,21 +7,22 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class KeterampilanTeknisImport implements ToModel, WithValidation, WithHeadingRow
+class KeterampilanTeknisImport implements ToModel, WithValidation, WithHeadingRow, WithBatchInserts, WithChunkReading
 {
-    
+    protected $master_jabatan;
+    protected $masterKompetensiTeknis;
+
     public function __construct()
     {
         KeterampilanTeknis::query()->delete();
+        $this->master_jabatan = DB::table('master_jabatan')->pluck('master_jabatan')->toArray();
+        $this->masterKompetensiTeknis = DB::table('master_kompetensi_teknis')->pluck('kode')->toArray();
     }
 
-    /**
-     * Memasukkan data ke model.
-     *
-     * @param array $row
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
     public function model(array $row)
     {
         return new KeterampilanTeknis([
@@ -33,42 +34,35 @@ class KeterampilanTeknisImport implements ToModel, WithValidation, WithHeadingRo
             'created_by' => Auth::user()->name,
         ]);
     }
-
-    /**
-     * Aturan validasi untuk data.
-     *
-     * @return array
-     */
+    
     public function rules(): array
     {
         return [
-            // 'master_jabatan' => 'required|string|exists:master_jabatan_unit,master_jabatan',
-            // 'kode' => 'required|string|max:50|exists:master_kompetensi_teknis,kode',
-            // 'master_detail_kompetensi_id' => 'required|string',
-            // 'level' => 'required|integer|min:1|max:5',
-            // 'kategori' => 'required|string',
+            // 'master_jabatan' => ['required', 'string', function ($attribute, $value, $fail) {
+            //     if (!in_array($value, $this->master_jabatan)) {
+            //         $fail("The $attribute is invalid.");
+            //     }
+            // }],
+            'kode' => ['required', 'string', 'max:50', function ($attribute, $value, $fail) {
+                if (!in_array($value, $this->masterKompetensiTeknis)) {
+                    $fail("The $attribute is invalid.");
+                }
+            }],
+            'master_detail_kompetensi_id' => 'required|string',
+            'level' => 'required|integer|min:1|max:5',
+            'kategori' => 'required|string',
         ];
     }
 
-    /**
-     * Pesan kustom untuk validasi.
-     *
-     * @return array
-     */
-    public function customValidationMessages()
+
+    public function batchSize(): int
     {
-        return [
-            // 'master_jabatan.required' => 'Kolom master_jabatan wajib diisi.',
-            // 'master_jabatan.exists' => 'Master jabatan yang diimport tidak valid.',
-            // 'kode.required' => 'Kolom kode wajib diisi.',
-            // 'kode.exists' => 'Kode yang diimport tidak valid.',
-            // 'master_detail_kompetensi_id.required' => 'Kolom master_detail_kompetensi_id wajib diisi.',
-            // 'master_detail_kompetensi_id.exists' => 'Master detail kompetensi yang diimport tidak valid.',
-            // 'level.required' => 'Kolom level wajib diisi.',
-            // 'level.integer' => 'Kolom level harus berupa angka.',
-            // 'level.min' => 'Kolom level minimal bernilai 1.',
-            // 'level.max' => 'Kolom level maksimal bernilai 5.',
-            // 'kategori.required' => 'Kolom kategori wajib diisi.',
-        ];
+        return 1000; // Memproses data per 1000 baris
     }
+
+    public function chunkSize(): int
+    {
+        return 1000; // Membaca file dalam chunk 1000 baris
+    }
+
 }

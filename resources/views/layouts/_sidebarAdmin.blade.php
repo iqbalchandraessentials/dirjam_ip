@@ -38,7 +38,7 @@
                             <i class="ti-more"></i>Master Jabatan
                         </a>
                     </li>
-                    <li class="{{ Request::is('master_data/komptensiTeknis', 'master_data/mappingkomptensiTeknis') ? 'active' : '' }}">
+                    <li class="{{ Request::is('master_data/komptensiTeknis', 'master_data/mappingkomptensiTeknis', 'master_data/komptensiTeknis/*') ? 'active' : '' }}">
                         <a href="{{ route('master.masterKompetensiTeknis') }}">
                             <i class="ti-more"></i>Kompetensi Teknis
                         </a>
@@ -136,7 +136,7 @@
                 </a>
             </li>
 
-            <li class="{{ Request::is(['uraian_jabatan/*', 'uraian_jabatan']) ? 'active' : '' }}">
+            <li class="{{ Request::is(['uraian_jabatan/*', 'uraian_jabatan', 'filter-uraian_jabatan']) ? 'active' : '' }}">
                 <a href="{{ url('uraian_jabatan') }}">
                     <i class="ti-clipboard"></i>
                     <span>Uraian Jabatan</span>

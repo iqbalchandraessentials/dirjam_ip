@@ -39,34 +39,44 @@ class UraianJabatanController extends Controller
 
     public function index()
     {
-        $jabatans = ViewUraianJabatan::where('unit_kd', 'KP')->get();
+        $jabatans = ViewUraianJabatan::where('unit_kd', Auth::user()->unit_kd)->get();
         $jenjangOptions  = MasterJenjangJabatan::get();
-        $unitOptions  = MasterUnit::get();
-        return view('pages.uraian_jabatan.index', compact('jenjangOptions', 'unitOptions', 'jabatans'));
+        $unitOptions  = M_UNIT::select(['unit_kd', 'unit_nama'])->get();
+        $selectUnit = Auth::user()->unitKerja->unit_nama;
+        return view('pages.uraian_jabatan.index', compact('jenjangOptions', 'unitOptions', 'jabatans', 'selectUnit'));
 
     }
 
     public function filterData(Request $request)
     {
-        $unit = $request->input('unit');
+            $unit = $request->input('unit');
+            $jenjang = $request->input('jenjang');
+            // Filter data berdasarkan unit dan jenjang (jika ada)
+            $query = ViewUraianJabatan::query();
+            if ($unit) {
+                $query->where('unit_kd', $unit);
+            }
+            // if ($jenjang) {
+            //     $query->where('jenjang_kd', $jenjang); // Sesuaikan dengan nama kolom di database
+            // }
+            $jabatans = $query->get();
+        
+            // Ambil data untuk dropdown
+            $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->get();
+            $jenjangOptions = MasterJenjangJabatan::select('kode', 'nama')->get();
+        
+            // Kirim input kembali ke view
+            return view('pages.uraian_jabatan.index', compact('jabatans', 'jenjangOptions', 'unitOptions'));
+        
 
-        if (is_null($unit)) {
-            $results = ViewUraianJabatan::all(); // Get all records if unit is null
-        } elseif (is_array($unit)) {
-            $results = ViewUraianJabatan::whereIn('UNIT_KD', $unit)->get();
-        } else {
-            $results = ViewUraianJabatan::where('UNIT_KD', $unit)->get(); // If it's a single value
-        }
-        if ($results->isNotEmpty()) {
-            dd($results);
-        } else {
-            dd('No results found.');
-        }
-        $unitOptions = MasterUnit::select('kode', 'nama')->get();
-        $jenjangOptions = MasterJenjangJabatan::select('kode', 'nama')->get();
-        // dd($unitOptions);
-          // Mengembalikan hasil ke view
-        return view('pages.uraian_jabatan.index', compact('jabatans', 'jenjangOptions', 'unitOptions'));
+            // if (is_null($unit)) {
+            //     $results = ViewUraianJabatan::all(); // Get all records if unit is null
+            // } elseif (is_array($unit)) {
+            //     $results = ViewUraianJabatan::whereIn('UNIT_KD', $unit)->get();
+            // } else {
+            //     $results = ViewUraianJabatan::where('UNIT_KD', $unit)->get(); // If it's a single value
+            // }
+        
     }
 
 

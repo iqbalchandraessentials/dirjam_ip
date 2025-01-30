@@ -87,13 +87,13 @@
     <tr>
         <th style="" rowspan="4">
             <br />
-            <span style="font-size: 18px; text-transform: capitalize;">TEMPLATE JABATAN </span><br />
-            <span style="font-size: 16px">{{ $data['nama'] }}</span>
+            <span style="font-size: 18px; text-transform: capitalize;">TEMPLATE JABATAN <br />
+            <span style="font-size: 16px">{{ $data['nama'] }}
             <br />
             <br />
         </th>
         <td style="width:110px">Tanggal</td>
-        <td style="width:140px">{{ date_format($data['created_at'],'d-m-Y') }}</td>
+        <td style="width:140px">{{ isset($data['created_at']) ?? date_format($data['created_at'],'d-m-Y') }}</td>
     </tr>
     <tr>
         <td>No Record</td>
@@ -131,10 +131,9 @@
                     <td>Sebutan Jabatan</td>
                     <td>:</td>
                     <td>
-                        @if (isset($data->jabatans) && count($data->jabatans) > 0)
-
-                            @foreach ($data->jabatans as $key)
-                                - {{ $key->jabatan->jabatan ?? 'Tidak ada jabatan' }} <br>
+                        @if (isset($data['jabatans']) && count($data['jabatans']) > 0)
+                            @foreach ($data['jabatans'] as $key)
+                                - {{ $key['jabatan'] ?? 'Tidak ada jabatan' }} <br>
                             @endforeach
                         @else
                             <p>Tidak ada data jabatan.</p>
@@ -145,25 +144,25 @@
                     <td>Jenis Jabatan</td>
                     <td>:</td>
                     <td>
-                        {{ $data['masterJabatan']['TYPE'] == "S" ? "STRUKTURAL" : 'FUNSIIONAL' }}
+                        {{ $data['masterJabatan']['type'] == "S" ? "STRUKTURAL" : 'FUNSIIONAL' }}
                     </td>
                 </tr>
                 <tr>
                     <td>Jenjang Jabatan</td>
                     <td>:</td>
                     <td>
-                        {{  strtoupper($data['MasterJabatan']['jenjangJabatan']['nama']) }}
+                        {{  strtoupper($data['masterJabatan']['jenjangJabatan']['nama']) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Kelompok Bisnis</td>
                     <td>:</td>
                     <td>
-                        @if (isset($data->jabatans) && count($data->jabatans) > 0)
+                        @if (isset($data['jabatans']) && count($data['jabatans']) > 0)
 
-                            @foreach ($data->jabatans as $key)
-                                - {{ strtoupper($key->jabatan->namaProfesi->nama_profesi) ?? 'Tidak ada nama_profesi' }}
-                            @endforeach
+                        @foreach ($data['jabatans'] as $key)
+                            - {{  strtoupper($key['namaProfesi']['nama_profesi']) ?? 'Tidak ada nama_profesi' }} <br>
+                        @endforeach
                         @else
                             <p>Tidak ada data nama_profesi.</p>
                         @endif
@@ -179,10 +178,10 @@
                     <td>Unit Kerja</td>
                     <td>:</td>
                     <td>
-                        @if (isset($data->jabatans) && count($data->jabatans) > 0)
+                        @if (isset($data['jabatans']) && count($data['jabatans']) > 0)
 
-                            @foreach ($data->jabatans as $key)
-                                - {{ strtoupper($key->jabatan->description) ?? 'Tidak ada Unit Kerja' }}
+                        @foreach ($data['jabatans'] as $key)
+                                - {{ strtoupper($key->description) ?? 'Tidak ada Unit Kerja' }} <br>
                             @endforeach
                         @else
                             <p>Tidak ada data Unit Kerja.</p>
@@ -193,10 +192,9 @@
                     <td>Jabatan Atasan Langsung</td>
                     <td>:</td>
                     <td>
-                        @if (isset($data->jabatans) && count($data->jabatans) > 0)
-
-                            @foreach ($data->jabatans as $key)
-                                - {{ $key->jabatan->atasan_langsung ?? 'Tidak ada atasan_langsung' }}
+                        @if (isset($data['jabatans']) && count($data['jabatans']) > 0)
+                            @foreach ($data['jabatans'] as $key)
+                                - {{ $key->atasan_langsung ?? 'Tidak ada atasan_langsung' }} <br>
                             @endforeach
                         @else
                             <p>Tidak ada data atasan_langsung.</p>
@@ -215,7 +213,7 @@
             dijalankan.
         </small>
         <div style="font-weight: normal; text-align: justify; margin-left:3px;">
-            {{ nl2br($data->fungsi_utama) }}
+            {{ nl2br($data['fungsi_utama']) }}
         </div>
     </li>
     <br>
@@ -236,12 +234,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data->tugasPokoUtamaGenerik as $x => $v)
-                        @if ($v['jenis'] == 'utama')
+                    @foreach ($data['tugasPokoUtamaGenerik'] as $x => $v)
+                    @if (isset($v['jenis']) == 'utama')
+                        <tr>
+                            <td>{{ $x + 1 }}</td>
+                            <td style="text-align: justify">{{ $v['aktivitas'] }}</td>
+                            <td style="text-align: justify">{{ $v['output'] }}</td>
+                            </tr>
+                            @else
                             <tr>
-                                <td style="text-align: center"> {{ $x + 1 }}</td>
-                                <td>{{ $v['aktivitas'] }}</td>
-                                <td>{{ $v['output'] }}</td>
+                                <td>{{ $x + 1 }}</td>
+                                <td style="text-align: justify">{{ $v['aktivitas'] }}</td>
+                                <td style="text-align: justify"></td>
                             </tr>
                         @endif
                     @endforeach
@@ -267,7 +271,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data->tugas_pokok_generik as $x => $v)
+                    @foreach ($data['tugas_pokok_generik'] as $x => $v)
                         @if ($v['jenis'] == 'generik')
                             <tr>
                                 <td style="text-align: center"> {{ $x + 1 }}</td>
@@ -293,14 +297,14 @@
             <table>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['anggaran'] == 'Investasi' ? 'V' : '' }}
+                        {{ isset($data['anggaran']) && $data['anggaran'] == 'Investasi' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Anggaran Investasi</td>
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['anggaran'] == 'Operasional' ? 'V' : '' }}
+                        {{ isset($data['anggaran']) && $data['anggaran'] == 'Operasional' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Anggaran Operasional</td>
@@ -310,7 +314,7 @@
             <table>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['accountability'] == 'Non Quantifiable' ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == 'Non Quantifiable' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Non Quantifiable</td>
@@ -320,7 +324,7 @@
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['accountability'] == 'Very Small' ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == 'Very Small' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Very Small</td>
@@ -329,7 +333,7 @@
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['accountability'] == 'Small' ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == 'Small' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Small</td>
@@ -338,7 +342,7 @@
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['accountability'] == 'Medium' ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == 'Medium' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Medium</td>
@@ -347,7 +351,7 @@
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['accountability'] == 'Large' ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == 'Large' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Large</td>
@@ -356,7 +360,7 @@
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['accountability'] == 'Very Large' ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == 'Very Large' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Very Large</td>
@@ -368,28 +372,28 @@
             <table>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['nature_impact'] == 'Prime' ? 'V' : '' }}
+                        {{ isset($data['nature_impact']) && $data['nature_impact'] == 'Prime' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Prime</td>
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['nature_impact'] == 'Share' ? 'V' : '' }}
+                        {{ isset($data['nature_impact']) && $data['nature_impact'] == 'Share' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Share</td>
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['nature_impact'] == 'Contributory' ? 'V' : '' }}
+                        {{ isset($data['nature_impact']) && $data['nature_impact'] == 'Contributory' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Contributory</td>
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['nature_impact'] == 'Remote' ? 'V' : '' }}
+                        {{ isset($data['nature_impact']) && $data['nature_impact'] == 'Remote' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Remote</td>
@@ -405,10 +409,10 @@
                     <td style="width: 20%;">Jumlah Bawahan Langsung</td>
                     <td>:</td>
                     <td>
-                        @if (isset($data->jabatans) && count($data->jabatans) > 0)
+                        @if (isset($data['jabatans']) && count($data['jabatans']) > 0)
 
-                            @foreach ($data->jabatans as $key)
-                                - {{ $key->jabatan->bawahan_langsung ?? '0' }}
+                            @foreach ($data['jabatans'] as $key)
+                                - {{ $key->bawahan_langsung ?? '0' }} <br>
                             @endforeach
                         @else
                             <p>0</p>
@@ -419,14 +423,14 @@
                     <td>Total</td>
                     <td>:</td>
                     <td>
-                        @if (isset($data->jabatans) && count($data->jabatans) > 0)
+                        @if (isset($data['jabatans']) && count($data['jabatans']) > 0)
 
-                            @foreach ($data->jabatans as $key)
-                                - {{ $key->jabatan->total_bawahan ?? '0' }}
-                            @endforeach
-                        @else
-                            <p>0</p>
-                        @endif
+                                            @foreach ($data['jabatans'] as $key)
+                                                - {{ $key->total_bawahan ?? '0' }} <br>
+                                            @endforeach
+                                        @else
+                                            <p>0</p>
+                                        @endif
                     </td>
                 </tr>
             </table>
@@ -458,11 +462,12 @@
                         <tbody>
                             @php $no = 1; @endphp
                             @foreach ($data['hubunganKerja'] as $x => $v)
-                                @if ($v['jenis'] == 'internal')
+                                @if ($v['jenis'] == 'internal' || $v['lingkup_flag'] == 'internal')
                                     <tr>
-                                        <td style="text-align: center"> {{ $no++ }}</td>
-                                        <td>{{ $v['komunikasi'] }}</td>
-                                        <td>{{ $v['tujuan'] }}</td>
+                                        <td>{{ $no++ }}
+                                        </td>
+                                        <td style="text-align: justify">{{ isset($v['subjek']) ? $v['subjek'] : $v['komunikasi'] }}</td>
+                                        <td style="text-align: justify">{{ $v['tujuan'] }}</td>
                                     </tr>
                                 @endif
                             @endforeach
@@ -485,14 +490,14 @@
                         <tbody>
                             @php $no = 1; @endphp
                             @foreach ($data['hubunganKerja'] as $x => $v)
-                                @if ($v['jenis'] == 'eksternal')
-                                    <tr>
-                                        <td style="text-align: center"> {{ $no++ }}</td>
-
-                                        <td>{{ $v['komunikasi'] }}</td>
-                                        <td>{{ $v['tujuan'] }}</td>
-                                    </tr>
-                                @endif
+                            @if ($v['jenis'] == 'eksternal' || $v['lingkup_flag'] == 'external')
+                            <tr>
+                                <td>{{ $no++ }}
+                                </td>
+                                <td style="text-align: justify">{{ isset($v['subjek']) ? $v['subjek'] : $v['komunikasi'] }}</td>
+                                <td style="text-align: justify">{{ $v['tujuan'] }}</td>
+                            </tr>
+                            @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -517,11 +522,11 @@
                     </thead>
                     <tbody>
                         @foreach ($data['masalah_kompleksitas_kerja'] as $x => $v)
-                            <tr>
-                                <td style="text-align: center"> {{ $x + 1 }}</td>
-                                <td style="text-align: justify">{{ $v['definisi'] }}</td>
-                            </tr>
-                        @endforeach
+                        <tr>
+                            <td> {{ $x + 1 }}</td>
+                            <td style="text-align: center">{{ isset($v['tantangan'])  ? $v['tantangan'] : $v['definisi'] }}</td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -544,11 +549,11 @@
                     </thead>
                     <tbody>
                         @foreach ($data['wewenang_jabatan'] as $x => $v)
-                            <tr>
-                                <td style="text-align: center"> {{ $x + 1 }}</td>
-                                <td style="text-align: justify">{{ $v['definisi'] }}</td>
-                            </tr>
-                        @endforeach
+                                    <tr>
+                                        <td>{{ $x + 1 }}</td>
+                                        <td style="text-align: center">{{ isset($v['pengambilan_keputusan']) ? $v['pengambilan_keputusan'] : $v['definisi'] }}</td>
+                                    </tr>
+                                @endforeach
                     </tbody>
                 </table>
             </div>
@@ -573,37 +578,53 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data['spesifikasiPendidikan'] as $x => $v)
-                            <tr>
-                                <td style="text-align: center"> {{ $x + 1 }}</td>
-                                <td style=" text-align: center">{{ $v['pendidikan'] }}</td>
-                                <td style=" text-align: center">{{ $v['pengalaman'] == 0 ? 'Fresh Graduate' : $v['pengalaman'] }}</td>
-                                <td>
+                        @foreach ($data['spesifikasiPendidikan'] as $i => $item)
                                     @php
-                                        $pattern = '/\d+\.\s*/'; // Pola untuk memisahkan berdasarkan angka diikuti titik dan spasi
-                                        $bidangStudiList = preg_split(
-                                            $pattern,
-                                            $v['bidang_studi'],
-                                            -1,
-                                            PREG_SPLIT_NO_EMPTY,
-                                        );
-
-                                        foreach ($bidangStudiList as $index => $bidangStudi) {
-                                            echo $index + 1 . '. ' . trim($bidangStudi) . '<br>';
+                                        $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang($item->map_pendidikan_id);
+                                        $bidang = '';
+                                        if ($bidangQuery->count() == 1) {
+                                            foreach ($bidangQuery as $b) {
+                                                $bidang .= $b->bidang_studi;
+                                            }
+                                        } elseif ($bidangQuery->count() > 1) {
+                                            $bidang = '<ol>';
+                                            foreach ($bidangQuery as $b) {
+                                                $bidang .= "<li>$b->bidang_studi</li>";
+                                            }
+                                            $bidang .= '</ol>';
                                         }
+                
+                                        $pengalaman = $item->pengalaman == '' || $item->pengalaman == 'FG' || $item->pengalaman == 0 
+                                            ? '<i>fresh graduate</i>'
+                                            : "pengalaman minimal $item->pengalaman tahun";
+                
+                                        $jobdesc = $item->jobdesc != '' ? $item->jobdesc : '';
                                     @endphp
-                                </td>
-                            </tr>
-                        @endforeach
+                
+                                    <tr>
+                                        <td class="text-center">{{ $i + 1 }}</td>
+                                        <td class="text-center">{{ $item->pendidikan }}</td>
+                                        <td class="tex-left">  @if (isset($item->bidang_studi))
+                                                {{$item->bidang_studi}}
+                                            @else
+                                                {!! $bidang !!}
+                                            @endif 
+                                        </td>
+                                        <td class="text-center">{!! $pengalaman !!}</td>
+                                    </tr>
+                                @endforeach
                     </tbody>
                 </table>
             </div>
             <b>Kemampuan dan Pengalaman</b>
-            <ol type="a" style="padding-left: 0; margin-left: 2; list-style-position: inside;">
-                @foreach ($data['kemampuan_dan_pengalaman'] as $x)
-                    <li style="margin: 2; padding: ;">{{ $x['definisi'] }}</li>
+            <ol type="a"  style="padding-left: 0; margin-left: 2; list-style-position: inside;">
+                @if ($jobdesc)
+                <li> {{ $jobdesc ?? "" }} </li>
+                @endif
+                @foreach ($data['kemampuan_dan_pengalaman'] as $v)
+                    <li>{{ $v->definisi }}</li>
                 @endforeach
-            </ol>
+        </ol>
         </div>
         </div>
         </br>
@@ -613,11 +634,8 @@
             Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi jabatan atasan
             langsung, bawahan langsung serta rekan kerja (peers).
         </small>
-        
-            @if (isset($data->strukturOrganisasi))
-                {!! $data->strukturOrganisasi !!}
-                <div style="height: 20%; margin-bottom:20px; display:block;"></div>
-            @endif
+    
+                {!! $data['struktur_organisasi'] !!}
     </li>
     <br>
     <li>KEBUTUHAN KOMPETENSI JABATAN (KKJ)
@@ -642,7 +660,7 @@
                     </thead>
                     <tbody>
                         @php $no = 1; @endphp
-                        @foreach ($data['keterampilanNonteknis'] as $x => $v)
+                        @foreach ($data['keterampilan_non_teknis'] as $x => $v)
                             @if ($v['kategori'] == 'UTAMA')
                                 <tr style="text-align: center" class="text-center">
                                     <td> {{ $no++ }}</td>
@@ -675,7 +693,7 @@
                 </thead>
                 <tbody>
                     @php $no = 1; @endphp
-                    @foreach ($data['keterampilanNonteknis'] as $x => $v)
+                    @foreach ($data['keterampilan_non_teknis'] as $x => $v)
                         @if ($v['kategori'] == 'PERAN')
                             <tr style="text-align: center" class="text-center">
                                 <td> {{ $no++ }}</td>
@@ -707,7 +725,7 @@
                 </thead>
                 <tbody>
                     @php $no = 1; @endphp
-                    @foreach ($data['keterampilanNonteknis'] as $x => $v)
+                    @foreach ($data['keterampilan_non_teknis'] as $x => $v)
                         @if ($v['kategori'] == 'FUNGSI')
                             <tr>
                                 <td style="text-align: center;"> {{ $no++ }}</td>

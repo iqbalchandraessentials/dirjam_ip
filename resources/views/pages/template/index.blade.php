@@ -58,41 +58,60 @@
 
 
                     <div class="table-responsive">
-                        <table class="table table-striped dataTables">
-                            <thead>
-                                <tr>
-                                    <th class="text-Left">No.</th>
-                                    <th class="text-center">Master Jabatan</th>
-                                    <th class="text-center">Unit</th>
-                                    <th class="text-center">action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @foreach ($data as $x => $v)
+                        <div class="container mt-4">
+                            <h3>Data Template Jabatan</h3>
+                        
+                            <table class="table table-striped" id="datatable">
+                                <thead>
                                     <tr>
-                                        <td>{{ $x + 1 }}</td>
-                                        <td>
-                                            <a href="{{ route('template_jabatan.show', $v->uraianMasterJabatan->id) }}" title="View Detail">
-                                                {{ $v['nama'] }}
-                                            </a>
-                                        </td>
-                                        <td>
-                                            {{$v->unit_kode}}
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="{{ route('export.templateJabatanExcel', $v->uraianMasterJabatan->id) }}" class=""><i class="ti-layout"> </i></a>
-                                            <a href="{{ route('export.templateJabatanPdf', $v->uraianMasterJabatan->id) }}"><i class="ti-printer"></i></a>
-                                            <a href="{{route('template_jabatan.draft', $v->id)}}" class="ml-3"> <i class="ti-view-list-alt"></i></a>
-                                        </td>
+                                        <th class="text-left">No.</th>
+                                        <th class="text-center">Master Jabatan</th>
+                                        <th class="text-center">Unit</th>
+                                        <th class="text-center">Jenjang</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            
+                        </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+@endsection
+
+@section('script')
+    <script>
+     $(document).ready(function () {
+    let table = $('#datatable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('template_jabatan.index') }}",
+        columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'master_jabatan', name: 'master_jabatan' },
+            { data: 'unit_kd', name: 'unit_kd' },
+            { data: 'jen', name: 'jen' },
+            { data: 'action', name: 'action', orderable: false, searchable: false }
+        ],
+        createdRow: function (row, data) {
+            $(row).attr('data-href', "{{ url('template_jabatan') }}/" + data.master_jabatan);
+            $(row).css('cursor', 'pointer');
+        }
+    });
+
+    $('#datatable tbody').on('click', 'tr', function () {
+        let url = $(this).data('href');
+        if (url) {
+            window.location.href = url;
+        }
+    });
+});
+
+
+    </script>
 @endsection
