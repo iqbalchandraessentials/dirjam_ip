@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('filter-uraian_jabatan/', [UraianJabatanController::class, 'filterData'])->name('filterUraianJabatan');
     // template jabatan
     Route::resource('template_jabatan', TemplateJabatanController::class);
+    Route::get('filter-template_jabatan/', [TemplateJabatanController::class, 'filterData'])->name('template_jabatan.filter');    
     Route::get('template_jabatan/draft/{id}', [TemplateJabatanController::class, 'draft'])->name('template_jabatan.draft');
     // import data
     Route::prefix('import')->group(function () {

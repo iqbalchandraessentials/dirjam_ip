@@ -55,7 +55,33 @@
                         <button type="submit" class="btn border-t-orange-400 btn-sm">Import</button>
                     </form>
                 </div>
-
+                <form id="filterForm" method="GET" class="form-horizontal">
+                    <div class="d-flex justify-content-center">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group d-flex align-items-center">
+                                    <label for="unit" class="mr-3 mb-0">Unit:</label>
+                                    <select class="form-control select2" name="unit" id="unitFilter">
+                                        @if(isset($selectUnit))
+                                        <option selected disabled>{{$selectUnit}}</option>
+                                        @endif
+                                        @foreach ($unitOptions as $unit)
+                                            <option value="{{ $unit->unit_kd }}" 
+                                                {{ old('unit', request('unit')) == $unit->unit_kd ? 'selected' : '' }}>
+                                                {{ $unit->unit_nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary ml-2"><i class="ti-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
 
                     <div class="table-responsive">
                         <div class="container mt-4">
@@ -90,7 +116,12 @@
     let table = $('#datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('template_jabatan.index') }}",
+        ajax: {
+            url: "{{ route('template_jabatan.filter') }}",
+            data: function (d) {
+                d.unit = $('#unitFilter').val();
+            }
+        },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'master_jabatan', name: 'master_jabatan' },
@@ -104,6 +135,11 @@
         }
     });
 
+    $('#filterForm').on('submit', function(e) {
+        e.preventDefault();
+        table.ajax.reload();
+    });
+
     $('#datatable tbody').on('click', 'tr', function () {
         let url = $(this).data('href');
         if (url) {
@@ -111,7 +147,6 @@
         }
     });
 });
-
 
     </script>
 @endsection

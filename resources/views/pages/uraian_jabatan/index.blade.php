@@ -36,20 +36,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-4">
-                                    <div class="form-group d-flex align-items-center">
-                                        <label for="jenjang" class="mr-3 mb-0">Jenjang:</label>
-                                        <select class="form-control select2" name="jenjang" style="width: 500px;">
-                                            <option selected disabled>Select Jenjang</option>
-                                            @foreach ($jenjangOptions as $jenjang)
-                                                <option value="{{ $jenjang->kode }}" 
-                                                    {{ old('jenjang', request('jenjang')) == $jenjang->kode ? 'selected' : '' }}>
-                                                    {{ $jenjang->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div> --}}
                                 <div class="col-auto">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary ml-2"><i class="ti-search"></i></button>
@@ -67,8 +53,6 @@
                                 <tr>
                                     <th>Path</th>
                                     <th>Jabatan</th>
-                                    {{-- <th>Klaster</th>
-                                    <th>Direktorat</th> --}}
                                     <th>Unit</th>
                                     <th>Jenjang</th>
                                     <th>Opsi</th>
@@ -108,8 +92,6 @@
                                     <tr>
                                         <td><small style="display:none">{{ $key->path }}</small></td>
                                         <td><small><b>{!! $jab !!}</b><br />{!! $mj !!}</small></td>
-                                        {{-- <td>{{ $key->klaster }}</td>
-                                        <td>{{ $key->direktorat }}</td> --}}
                                         <td><small>{{ $key->siteid }}</small></td>
                                         <td><small>{{ $key->jen }}</small></td>
                                         <td>{!! $button !!}</td>

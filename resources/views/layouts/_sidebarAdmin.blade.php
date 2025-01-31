@@ -80,7 +80,7 @@
                     </li>
                     <li class="{{ Request::is('master_data/indikator') ? 'active' : '' }}">
                         <a href="{{ route('master.indikator') }}">
-                            <i class="ti-more"></i>Indikator
+                            <i class="ti-more"></i>Output Indikator
                         </a>
                     </li>
                     {{-- <li class="{{ Request::is('roles') ? 'active' : '' }}">
@@ -95,7 +95,7 @@
                     </li> --}}
                     <li class="{{ Request::is('master_data/users') ? 'active' : '' }}">
                         <a href="{{ url('master_data/users') }}">
-                            <i class="ti-more"></i>User Manajemen
+                            <i class="ti-more"></i>Hak Akses
                         </a>
                     </li>
                 </ul>

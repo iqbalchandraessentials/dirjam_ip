@@ -43,6 +43,13 @@
             text-align: justify;
         }
 
+        .struktur-organisasi {
+            page: struktur_organisasi; /* Gunakan halaman khusus STRUKTUR ORGANISASI */
+            page-break-before: always; /* Paksa halaman baru sebelum STRUKTUR ORGANISASI */
+            width: 100%;
+            text-align: center;
+        }
+
         @media print {
             .perkecil {
                 width: 300px Imp !important;
@@ -549,14 +556,15 @@
 
                             <tr>
                                 <td style="text-align: center;">{{ $i + 1 }}</td>
-                                <td class="tex-left">  @if(isset($item->bidang_studi))
+                                <td class="tex-left">{{ $item->pendidikan }}</td>
+                                <td style="text-align: center;">{!! $pengalaman !!}</td>
+                                <td class="tex-left">
+                                    @if(isset($item->bidang_studi))
                                     {{$item->bidang_studi}}
                                     @else
                                         {!! $bidang !!}
                                     @endif 
                                 </td>
-                                <td style="text-align: center;">{!! $pengalaman !!}</td>
-                                <td class="tex-left">{!! $bidang !!}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -575,18 +583,6 @@
         </div>
         </br>
     </li>
-
-    <li>STRUKTUR ORGANISASI
-        <small class="mini">
-            Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi jabatan atasan
-            langsung, bawahan langsung serta rekan kerja (peers).
-        </small>
-        @if (isset($data->struktur_organisasi))
-            {!! $data->struktur_organisasi !!}
-            <div style="height: 20%; margin-bottom:20px; display:block;"></div>
-        @endif
-    </li>
-    <br>
     <li>KEBUTUHAN KOMPETENSI JABATAN (KKJ)
         <small class="mini">
             Memberikan informasi mengenai kebutuhan kemahiran/kompetensi yang diharapkan dalam suatu jabatan.
@@ -734,20 +730,33 @@
             </table>
         </div>
         <br>
+        <small style="font-weight: normal" class="mini">
+            Keterangan :
+            <br>
+            - Kompetensi primer adalah Kompetensi yang wajib dimiliki oleh individu yang menduduki suatu Jabatan atau fungsi
+            agar individu dapat berhasil pada suatu posisi, fungsi, atau Jenjang Jabatan yang spesifik.
+            <br>
+            - Kompetensi sekunder adalah Kompetensi yang perlu dimiliki untuk mendukung individu yang menduduki suatu
+            Jabatan atau fungsi agar individu dapat berhasil pada suatu posisi, fungsi, atau Jenjang Jabatan yang spesifik.
+            <br>
+            - Kompetensi core adalah Kompetensi teknis yang wajib dimiliki berdasarkan tugas pokok sesuai fungsi utama
+            Jabatan agar individu dapat berhasil pada suatu posisi dalam fungsi bisnis
+            <br>
+            - Kompetensi enabler adalah Kompetensi teknis yang perlu dimiliki untuk mendukung tugas pokok sesuai fungsi
+            utama Jabatan agar individu dapat berhasil pada suatu posisi dalam fungsi bisnis.
+        </small>
     </li>
-    <small style="font-weight: normal" class="mini">
-        Keterangan :
+    <li class="struktur-organisasi">
+        <h3>STRUKTUR ORGANISASI</h3>
+        <small class="mini">
+            Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi jabatan atasan
+            langsung, bawahan langsung serta rekan kerja (peers).
+        </small>
         <br>
-        - Kompetensi primer adalah Kompetensi yang wajib dimiliki oleh individu yang menduduki suatu Jabatan atau fungsi
-        agar individu dapat berhasil pada suatu posisi, fungsi, atau Jenjang Jabatan yang spesifik.
-        <br>
-        - Kompetensi sekunder adalah Kompetensi yang perlu dimiliki untuk mendukung individu yang menduduki suatu
-        Jabatan atau fungsi agar individu dapat berhasil pada suatu posisi, fungsi, atau Jenjang Jabatan yang spesifik.
-        <br>
-        - Kompetensi core adalah Kompetensi teknis yang wajib dimiliki berdasarkan tugas pokok sesuai fungsi utama
-        Jabatan agar individu dapat berhasil pada suatu posisi dalam fungsi bisnis
-        <br>
-        - Kompetensi enabler adalah Kompetensi teknis yang perlu dimiliki untuk mendukung tugas pokok sesuai fungsi
-        utama Jabatan agar individu dapat berhasil pada suatu posisi dalam fungsi bisnis.
-    </small>
+        <div style="width: 100%; height: auto; display: flex; justify-content: center;">
+            <div style="transform: scale(0.7); transform-origin: top center;">
+                {!! $data['struktur_organisasi'] !!}
+            </div>
+        </div>
+    </li>
 </ol>

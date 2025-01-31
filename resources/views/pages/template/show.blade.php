@@ -696,7 +696,7 @@
             <div class="box-body pt-0 d-flex justify-content-center">
                 <div class="row" style="display: block;  margin-bottom:90px">
                     @if (isset($data['struktur_organisasi']))
-                        <div class="col-12" id="sto">
+                        <div class="col-12" id="sto" style="transform: scale(0.7); transform-origin: top center;">
                             {!! $data['struktur_organisasi'] !!}
                         </div>
                     @else

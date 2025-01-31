@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\JabatanLamaBaru;
-use App\Models\jenjang\M_JENJANG;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanNonteknis;
 use App\Models\KeterampilanTeknis;
 use App\Models\M_AKTIVITAS;
-use App\Models\M_AKTIVITAS_GENERIK;
 use App\Models\M_JABATAN;
 use App\Models\M_KEWENANGAN_JABATAN;
 use App\Models\M_KOMUNIKASI;
@@ -21,8 +19,6 @@ use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJabatan;
 use App\Models\MasterJenjangJabatan;
 use App\Models\MasterPendidikan;
-use App\Models\MasterUnit;
-use App\Models\MelengkapiData;
 use App\Models\TEMPLATE_ACUAN_V;
 use App\Models\TugasPokoUtamaGenerik;
 use App\Models\unit\M_UNIT;
@@ -31,9 +27,6 @@ use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
-use function PHPUnit\Framework\isNull;
-
 class UraianJabatanController extends Controller
 {
 
@@ -47,88 +40,27 @@ class UraianJabatanController extends Controller
 
     }
 
-    public function filterData(Request $request)
-    {
-            $unit = $request->input('unit');
-            $jenjang = $request->input('jenjang');
-            // Filter data berdasarkan unit dan jenjang (jika ada)
-            $query = ViewUraianJabatan::query();
-            if ($unit) {
-                $query->where('unit_kd', $unit);
-            }
-            // if ($jenjang) {
-            //     $query->where('jenjang_kd', $jenjang); // Sesuaikan dengan nama kolom di database
-            // }
-            $jabatans = $query->get();
-        
-            // Ambil data untuk dropdown
-            $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->get();
-            $jenjangOptions = MasterJenjangJabatan::select('kode', 'nama')->get();
-        
-            // Kirim input kembali ke view
-            return view('pages.uraian_jabatan.index', compact('jabatans', 'jenjangOptions', 'unitOptions'));
-        
-
-            // if (is_null($unit)) {
-            //     $results = ViewUraianJabatan::all(); // Get all records if unit is null
-            // } elseif (is_array($unit)) {
-            //     $results = ViewUraianJabatan::whereIn('UNIT_KD', $unit)->get();
-            // } else {
-            //     $results = ViewUraianJabatan::where('UNIT_KD', $unit)->get(); // If it's a single value
-            // }
-        
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $data = $this->getDatas($id);
         return view('pages.uraian_jabatan.show', ['data' => $data]);
 
     }
-   
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function filterData(Request $request)
     {
-        //
-    }
+            $unit = $request->input('unit');
+            $jenjang = $request->input('jenjang');
+            $query = ViewUraianJabatan::query();
+            if ($unit) {
+                $query->where('unit_kd', $unit);
+            }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            $jabatans = $query->get();
+            $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->get();
+            $jenjangOptions = MasterJenjangJabatan::select('kode', 'nama')->get();
+        
+            return view('pages.uraian_jabatan.index', compact('jabatans', 'jenjangOptions', 'unitOptions'));
     }
 
     public function kwn() {
@@ -142,6 +74,7 @@ class UraianJabatanController extends Controller
             "labarugi"             => "Laba Rugi",
         ];
     }
+
     public function getLatestDatas($data, $jenjang) {
         $test = [];
         $test['fungsi_utama'] = $data['uraianMasterJabatan']['fungsi_utama'];
@@ -212,8 +145,21 @@ class UraianJabatanController extends Controller
                 $data[$key] = $kewenanganData[$key] ?? "";
             }
         }
-        $data['pengambilan_keputusan'] = $data['pengambilan_keputusan'] ?? WewenangJabatan::where('jenis_jabatan', $type)->get();
-        $data['tantangan'] = $data['tantangan'] ?? MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();        
+
+        if (!empty($data['pengambilan_keputusan']) && 
+        (!empty($data['pengambilan_keputusan'][0]['definisi']) || $data['pengambilan_keputusan'][0]['pengambilan_keputusan'] !== "" )) {   
+            $data['pengambilan_keputusan'] = $data['pengambilan_keputusan'];
+        } else {
+            $data['pengambilan_keputusan'] = WewenangJabatan::where('jenis_jabatan', $type)->get();
+        }
+
+        if (!empty($data['tantangan']) && 
+            (!empty($data['tantangan'][0]['definisi']) || !empty($data['tantangan'][0]['tantangan']))) {   
+            $data['tantangan'] = $data['tantangan'];
+        } else {
+            $data['tantangan'] = MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();
+        }
+
         $data['aktivitas_generik'] = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan',$type)->get();
         $data['jabatan'] = $jabatan;
         $data['uraian_jabatan_id'] = $uraian_jabatan_id;

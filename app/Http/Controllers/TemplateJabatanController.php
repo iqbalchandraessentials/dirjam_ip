@@ -16,11 +16,13 @@ use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJabatan;
 use App\Models\MasterPendidikan;
 use App\Models\TugasPokoUtamaGenerik;
+use App\Models\unit\M_UNIT;
 use App\Models\URAIAN_JABATAN;
 use App\Models\UraianMasterJabatan;
 use App\Models\ViewUraianJabatan;
 use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PDF;
 use PhpParser\Node\Expr\Isset_;
@@ -31,8 +33,10 @@ class TemplateJabatanController extends Controller
 
     public function index(Request $request)
     {
+        $selectUnit = Auth::user()->unitKerja->unit_nama;
+        $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->get();
         if ($request->ajax()) {
-            $data = ViewUraianJabatan::select('URAIAN_JABATAN_ID', 'master_jabatan', 'unit_kd', 'jen')->where('unit_kd', 'KP');
+            $data = ViewUraianJabatan::select('URAIAN_JABATAN_ID', 'master_jabatan', 'unit_kd', 'jen')->where('unit_kd', Auth::user()->unit_kd);
             
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -43,8 +47,7 @@ class TemplateJabatanController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('pages.template.index');
-        // $data2 = MasterJabatan::select('id' as 'URAIAN_JABATAN_ID', 'nama' as master_jabatan, 'unit_kd', 'JENJANG_KODE' as 'jen')->has('uraianMasterJabatan')->get();
+        return view('pages.template.index', compact('unitOptions', 'selectUnit'));
     }
 
     public function draft($id)
@@ -61,6 +64,28 @@ class TemplateJabatanController extends Controller
             'data' => $data,
         ]);
     }
+
+    public function filterData(Request $request)
+    {
+        // Ambil nilai unit kerja dari request
+        $unit_kd = $request->input('unit', Auth::user()->unit_kd);
+
+        // Query data berdasarkan unit kerja yang dipilih
+        $data = ViewUraianJabatan::select('URAIAN_JABATAN_ID', 'master_jabatan', 'unit_kd', 'jen')
+            ->when($unit_kd, function ($query) use ($unit_kd) {
+                return $query->where('unit_kd', $unit_kd);
+            });
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                return '<a href="' . route('export.templateJabatanExcel', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="fa fa-table"></i></a>
+                        <a href="' . route('export.templateJabatanPdf', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
 
 
     public function getDatas($masterJabatan)

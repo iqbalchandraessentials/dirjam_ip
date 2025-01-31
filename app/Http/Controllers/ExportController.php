@@ -70,6 +70,7 @@ class ExportController extends Controller
     }
 
 
+
     public function exportUraianJabatanExcel($id)
     {
         $data = $this->UraianJabatanController->getDatas($id);
@@ -1033,7 +1034,7 @@ class ExportController extends Controller
         $spreadsheet = IOFactory::load($templatePath);    
         $objPHPExcel = $spreadsheet->getActiveSheet();
         // $objPHPExcel->setCellValue("A6", strtoupper($data["unit_id"]));
-        $objPHPExcel->setCellValue("G4", isset($data['created_at']) ?? date_format($data['created_at'],'d-m-Y') );
+        $objPHPExcel->setCellValue("G4", isset($data['created_at']) ? date_format($data['created_at'],'d-m-Y') : '-' );
         $objPHPExcel->setCellValue("G5", "-");
         $objPHPExcel->setCellValue("G6", "-");
         $objPHPExcel->setCellValue("G7", "SUDAH DI VALDASI");
@@ -1048,7 +1049,7 @@ class ExportController extends Controller
         $n = ceil(strlen($dataToInsert) / 25) * 16;
         $objPHPExcel->getRowDimension(12)->setRowHeight($n);
         // Jenis Jabatan
-        $objPHPExcel->setCellValue("E13", $data['masterJabatan']['type'] == "S" ? "STRUKTURAL" : 'FUNSIIONAL');
+        $objPHPExcel->setCellValue("E13", $data['type']);
         // Jenjang Jabatan
         $objPHPExcel->setCellValue("E14", strtoupper($data['masterJabatan']['jenjangJabatan']['nama']));
         // KELOMPOK PROFESI
@@ -1944,7 +1945,7 @@ class ExportController extends Controller
         $objPHPExcel->getRowDimension(1)->setRowHeight(-1);
         $objPHPExcel->getStyle('E')->getAlignment()->setWrapText(true);
         $objPHPExcel->getDefaultRowDimension()->setRowHeight(-1);
-        $exportPath = storage_path('/exports/Template_Jabatan' . $data->nama . date('d-m-Y H-i-s') .'.xlsx');
+        $exportPath = storage_path('/exports/Template_Jabatan' . $data['nama'] . date('d-m-Y H-i-s') .'.xlsx');
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save($exportPath);
         return response()->download($exportPath)->deleteFileAfterSend(true);
