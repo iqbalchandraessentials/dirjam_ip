@@ -252,14 +252,14 @@
             <table>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['anggaran'] == 'Investasi' ? 'V' : '' }}
+                        {{ isset($data['anggaran']) && $data['anggaran'] == 'Investasi' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Anggaran Investasi</td>
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['anggaran'] == 'Operasional' ? 'V' : '' }}
+                        {{ isset($data['anggaran']) && $data['anggaran'] == 'Operasional' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Anggaran Operasional</td>
@@ -269,7 +269,7 @@
             <table>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['kewenangan_pengadaan'] == null ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == null ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Non Quantifiable</td>
@@ -279,7 +279,7 @@
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['kewenangan_pengadaan'] == '650 juta < n ≤ 6.5 milyar' ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == 'Very Small' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Very Small</td>
@@ -288,7 +288,7 @@
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['kewenangan_pengadaan'] == '6.5 milyar < n ≤ 65 milyar' ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == 'Small' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Small</td>
@@ -297,7 +297,7 @@
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['kewenangan_pengadaan'] == '65 milyar < n ≤ 650 milyar' ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == 'Medium' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Medium</td>
@@ -306,7 +306,7 @@
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['kewenangan_pengadaan'] == '650 Milyar - 6,5 Trilyun' ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == 'Large' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Large</td>
@@ -315,7 +315,7 @@
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['kewenangan_pengadaan'] == '6,5 Trilyun - 65 Trilyun' ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == 'Very Large' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Very Large</td>
@@ -327,28 +327,28 @@
             <table>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['nature_of_impact'] == 'Prime' ? 'V' : '' }}
+                        {{ isset($data['nature_of_impact']) && $data['nature_of_impact'] == 'Prime' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Prime</td>
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['nature_of_impact'] == 'Share' ? 'V' : '' }}
+                        {{ isset($data['nature_of_impact']) && $data['nature_of_impact'] == 'Share' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Shared</td>
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['nature_of_impact'] == 'Contributory' ? 'V' : '' }}
+                        {{ isset($data['nature_of_impact']) && $data['nature_of_impact'] == 'Contributory' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Contributory</td>
                 </tr>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ $data['nature_of_impact'] == 'Remote' ? 'V' : '' }}
+                        {{ isset($data['nature_of_impact']) && $data['nature_of_impact'] == 'Remote' ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Remote</td>

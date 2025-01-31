@@ -17,8 +17,7 @@
 @endsection
 
 
-@section('title', 'Uraian Jabatan | Direktori Jabatan')
-
+@section('title', 'Uraian Jabatan | ' . $data['jabatan']['jabatan'] )
 
 @section('content')
     <div class="col-sm-12">

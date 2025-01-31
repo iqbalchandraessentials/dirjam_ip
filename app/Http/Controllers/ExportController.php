@@ -73,6 +73,7 @@ class ExportController extends Controller
     public function exportUraianJabatanExcel($id)
     {
         $data = $this->UraianJabatanController->getDatas($id);
+        // dd($data[]);
         // dd($data['fungsi_utama']);
         // dd($data['komunikasi_internal']->count());
         $templatePath = public_path('/template/Template_Urjab.xlsx');
@@ -215,7 +216,7 @@ class ExportController extends Controller
         $objPHPExcel->setCellValue("B$baris", "5.a. Dimensi Finansial");
         $objPHPExcel->getStyle("B$baris")->getFont()->setBold(true);
         $baris++;
-        $objPHPExcel->setCellValue("B$baris", $data['anggaran'] == 'Investasi' ? 'V' : '');
+        $objPHPExcel->setCellValue("B$baris", isset($data['anggaran']) && $data['anggaran'] == 'Investasi' ? 'V' : '');
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
             'borders' => [
@@ -230,7 +231,7 @@ class ExportController extends Controller
         $objPHPExcel->setCellValue("E$baris", "Anggaran Investasi");
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $baris++;
-        $objPHPExcel->setCellValue("B$baris", $data['anggaran'] == 'Operasional' ? 'V' : '');
+        $objPHPExcel->setCellValue("B$baris", isset($data['anggaran']) && $data['anggaran'] == 'Operasional' ? 'V' : '');
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
             'borders' => [
@@ -261,13 +262,13 @@ class ExportController extends Controller
         ]);
         $objPHPExcel->getStyle("B$baris:C$baris")->getAlignment()->setWrapText(true);
         $objPHPExcel->getStyle("B$baris:C$baris")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-        $input = $data['accountability'] == 'Non Quantifiable' ? 'V' : '';
+        $input = isset($data['accountability']) && $data['accountability'] == null ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->setCellValue("E$baris", "Non Quantifiable");
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $objPHPExcel->setCellValue("G$baris", "< 650 Juta");
         $baris++;
-        $input = $data['accountability'] == 'Very Small' ? 'V' : '';
+        $input = isset($data['accountability']) && $data['accountability'] == 'Very Small' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -286,7 +287,7 @@ class ExportController extends Controller
 
         $objPHPExcel->setCellValue("G$baris", "650 Juta - 6,5 Milyar");
         $baris++;
-        $input = $data['accountability'] == 'Small' ? 'V' : '';
+        $input = isset($data['accountability']) && $data['accountability'] == 'Small' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -303,7 +304,7 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $objPHPExcel->setCellValue("G$baris", "6,5 Milyar - 65 Milyar");
         $baris++;
-        $input = $data['accountability'] == 'Medium' ? 'V' : '';
+        $input = isset($data['accountability']) && $data['accountability'] == 'Medium' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -320,7 +321,7 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $objPHPExcel->setCellValue("G$baris", "65 Milyar - 650 Milyar");
         $baris++;
-        $input = $data['accountability'] == 'Large' ? 'V' : '';
+        $input = isset($data['accountability']) && $data['accountability'] == 'Large' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -337,7 +338,7 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $objPHPExcel->setCellValue("G$baris", "650 Milyar - 6,5 Trilyun");
         $baris++;
-        $input = $data['accountability'] == 'Very Large' ? 'V' : '';
+        $input = isset($data['accountability']) && $data['accountability'] == 'Very Large' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -359,7 +360,7 @@ class ExportController extends Controller
         $objPHPExcel->getStyle("E$baris")->getFont()->setBold(true);
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $baris++;
-        $input = $data['nature_impact'] == 'Prime' ? 'V' : '';
+        $input = isset($data['nature_impact']) && $data['nature_impact'] == 'Prime' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -375,7 +376,7 @@ class ExportController extends Controller
         $objPHPExcel->setCellValue("E$baris", "Prime");
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $baris++;
-        $input = $data['nature_impact'] == 'Share' ? 'V' : '';
+        $input = isset($data['nature_impact']) && $data['nature_impact'] == 'Share' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -391,7 +392,7 @@ class ExportController extends Controller
         $objPHPExcel->setCellValue("E$baris", "Share");
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $baris++;
-        $input = $data['nature_impact'] == 'Contributory' ? 'V' : '';
+        $input = isset($data['nature_impact']) && $data['nature_impact'] == 'Contributory' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -407,7 +408,7 @@ class ExportController extends Controller
         $objPHPExcel->setCellValue("E$baris", "Contributory");
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $baris++;
-        $input = $data['nature_impact'] == 'Remote' ? 'V' : '';
+        $input = isset($data['nature_impact']) && $data['nature_impact'] == 'Remote' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -628,60 +629,117 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("F$baris:H$baris");
         $baris++;
         $no = 1;
-        $rowsCount = $data['pendidikan']->count();
-        $input = $objPHPExcel->getStyle("B25:G25"); // kolom
-        foreach ($data['pendidikan'] as $i => $item) {
-            // Set nomor urut
-            $objPHPExcel->setCellValue("B$baris", $no);
-        
-            // Set pendidikan
-            $objPHPExcel->setCellValue("C$baris", $item->pendidikan);
-        
-            // Tentukan pengalaman
-            $pengalaman = ($item->pengalaman == '' || $item->pengalaman == 'FG' || $item->pengalaman == 0)
-                ? 'Fresh graduate'
-                : "Pengalaman minimal $item->pengalaman tahun";
-            $objPHPExcel->setCellValue("D$baris", $pengalaman);
-        
-            // Format bidang studi
-            $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang($item->map_pendidikan_id);
+
+
+        $no = 1;
+        $rowsCount = count($data['pendidikan']); // uraian jabatan urjab
+        $input = $objPHPExcel->getStyle("B27:G27");
+
+        foreach ($data['pendidikan'] as $key) {
+            // Mengambil bidang studi berdasarkan map_pendidikan_id
+            $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang($key->map_pendidikan_id);
             $bidangStudiFormatted = '';
+
             if ($bidangQuery->count() == 1) {
                 foreach ($bidangQuery as $b) {
                     $bidangStudiFormatted .= $b->bidang_studi;
                 }
             } elseif ($bidangQuery->count() > 1) {
-                $index = 1;
-                foreach ($bidangQuery as $b) {
-                    $bidangStudiFormatted .= "$index. " . trim($b->bidang_studi) . "\n";
-                    $index++;
+                $bidangStudiFormatted = '';
+                foreach ($bidangQuery as $index => $b) {
+                    $bidangStudiFormatted .= ($index + 1) . '. ' . trim($b->bidang_studi) . "\n";
                 }
             }
-        
-            // Set bidang studi ke kolom F
-            $objPHPExcel->setCellValue("F$baris", $bidangStudiFormatted);
-        
-            // Duplicate style and merge cells
+
+            // Menentukan pengalaman kerja
+            $pengalaman = ($key->pengalaman == '' || $key->pengalaman == 'FG' || $key->pengalaman == 0)
+                ? 'Fresh Graduate'
+                : "Pengalaman minimal $key->pengalaman tahun";
+
+            // Menulis ke dalam file Excel
+            $objPHPExcel->setCellValue("B$baris", $no);
+            $objPHPExcel->setCellValue("C$baris", $key->pendidikan);
+            $objPHPExcel->setCellValue("D$baris", $pengalaman);
+            $objPHPExcel->setCellValue("F$baris", isset($key->id) ? $key->bidang_studi : $bidangStudiFormatted);
+            
+            // Styling dan merging
             $objPHPExcel->duplicateStyle($input, "B$baris:H$baris");
             $objPHPExcel->mergeCells("D$baris:E$baris");
             $objPHPExcel->mergeCells("F$baris:H$baris");
-        
-            // Increment baris dan nomor urut
+
             $baris++;
             $no++;
         }
-        
-        // Tambahkan baris kosong jika diperlukan hingga baris ke-4
+
+        // Jika data kurang dari 4, tambahkan baris kosong
         for ($i = $rowsCount + 1; $i <= 4; $i++) {
             $objPHPExcel->setCellValue("B$baris", $i);
             $objPHPExcel->setCellValue("C$baris", "");
             $objPHPExcel->setCellValue("D$baris", "");
             $objPHPExcel->setCellValue("F$baris", "");
+            
             $objPHPExcel->duplicateStyle($input, "B$baris:H$baris");
             $objPHPExcel->mergeCells("D$baris:E$baris");
             $objPHPExcel->mergeCells("F$baris:H$baris");
+
             $baris++;
         }
+
+
+        // $rowsCount = $data['pendidikan']->count();
+        // $input = $objPHPExcel->getStyle("B25:G25"); // kolom
+        // foreach ($data['pendidikan'] as $i => $item) {
+        //     // Set nomor urut
+        //     $objPHPExcel->setCellValue("B$baris", $no);
+        
+        //     // Set pendidikan
+        //     $objPHPExcel->setCellValue("C$baris", $item->pendidikan);
+        
+        //     // Tentukan pengalaman
+        //     $pengalaman = ($item->pengalaman == '' || $item->pengalaman == 'FG' || $item->pengalaman == 0)
+        //         ? 'Fresh graduate'
+        //         : "Pengalaman minimal $item->pengalaman tahun";
+        //     $objPHPExcel->setCellValue("D$baris", $pengalaman);
+        
+        //     // Format bidang studi
+        //     $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang($item->map_pendidikan_id);
+        //     $bidangStudiFormatted = '';
+        //     if ($bidangQuery->count() == 1) {
+        //         foreach ($bidangQuery as $b) {
+        //             $bidangStudiFormatted .= $b->bidang_studi;
+        //         }
+        //     } elseif ($bidangQuery->count() > 1) {
+        //         $index = 1;
+        //         foreach ($bidangQuery as $b) {
+        //             $bidangStudiFormatted .= "$index. " . trim($b->bidang_studi) . "\n";
+        //             $index++;
+        //         }
+        //     }
+        
+        //     // Set bidang studi ke kolom F
+        //     $objPHPExcel->setCellValue("F$baris", $bidangStudiFormatted);
+        
+        //     // Duplicate style and merge cells
+        //     $objPHPExcel->duplicateStyle($input, "B$baris:H$baris");
+        //     $objPHPExcel->mergeCells("D$baris:E$baris");
+        //     $objPHPExcel->mergeCells("F$baris:H$baris");
+        
+        //     // Increment baris dan nomor urut
+        //     $baris++;
+        //     $no++;
+        // }
+        
+        // // Tambahkan baris kosong jika diperlukan hingga baris ke-4
+        // for ($i = $rowsCount + 1; $i <= 4; $i++) {
+        //     $objPHPExcel->setCellValue("B$baris", $i);
+        //     $objPHPExcel->setCellValue("C$baris", "");
+        //     $objPHPExcel->setCellValue("D$baris", "");
+        //     $objPHPExcel->setCellValue("F$baris", "");
+        //     $objPHPExcel->duplicateStyle($input, "B$baris:H$baris");
+        //     $objPHPExcel->mergeCells("D$baris:E$baris");
+        //     $objPHPExcel->mergeCells("F$baris:H$baris");
+        //     $baris++;
+        // }
         
         $baris++;
         $objPHPExcel->setCellValue("B$baris", "Kemampuan dan Pengalaman");
@@ -960,14 +1018,22 @@ class ExportController extends Controller
     }
 
     public function exportExcelTemplateJabatan($id)
+
     {
         $data = $this->templateJabatanController->getDatas($id);
+        if(!empty($data['hubunganKerja'][0]['jenis'])) {
+            $param = 'jenis';
+            $ex = 'eksternal';
+        }  else {
+            $param ='lingkup_flag';
+            $ex = 'external';
+        }
         $templatePath = public_path('/template/Template_Dirjab.xlsx');
         // Load file template Excel
         $spreadsheet = IOFactory::load($templatePath);    
         $objPHPExcel = $spreadsheet->getActiveSheet();
-        $objPHPExcel->setCellValue("A6", strtoupper($data["unit_id"]));
-        $objPHPExcel->setCellValue("G4", date_format($data['created_at'],'d-m-Y'));
+        // $objPHPExcel->setCellValue("A6", strtoupper($data["unit_id"]));
+        $objPHPExcel->setCellValue("G4", isset($data['created_at']) ?? date_format($data['created_at'],'d-m-Y') );
         $objPHPExcel->setCellValue("G5", "-");
         $objPHPExcel->setCellValue("G6", "-");
         $objPHPExcel->setCellValue("G7", "SUDAH DI VALDASI");
@@ -975,20 +1041,20 @@ class ExportController extends Controller
         // Sebutan Jabatan        
         $dataToInsert = "";
         foreach ($data['jabatans'] as $key) {
-            $dataToInsert .= "-" .$key['jabatan']['jabatan'] ."\n";
+            $dataToInsert .= "-" .$key['jabatan'] ."\n";
         }           
         $objPHPExcel->setCellValue("E12", $dataToInsert);
         $objPHPExcel->getStyle("E12")->getAlignment()->setWrapText(true);
         $n = ceil(strlen($dataToInsert) / 25) * 16;
         $objPHPExcel->getRowDimension(12)->setRowHeight($n);
         // Jenis Jabatan
-        $objPHPExcel->setCellValue("E13", strtoupper($data['masterJabatan']['jenis_jabatan']));
+        $objPHPExcel->setCellValue("E13", $data['masterJabatan']['type'] == "S" ? "STRUKTURAL" : 'FUNSIIONAL');
         // Jenjang Jabatan
-        $objPHPExcel->setCellValue("E14", strtoupper($data['MasterJabatan']['jenjangJabatan']['nama']));
+        $objPHPExcel->setCellValue("E14", strtoupper($data['masterJabatan']['jenjangJabatan']['nama']));
         // KELOMPOK PROFESI
         $dataToInsert = "";
         foreach ($data['jabatans'] as $key) {
-            $dataToInsert .= "-" .strtoupper($key['jabatan']['namaProfesi']['nama_profesi']) ."\n";
+            $dataToInsert .= "-" . strtoupper($key['namaProfesi']['nama_profesi']) ?? 'Tidak ada nama_profesi' ."\n";
         }           
         $objPHPExcel->setCellValue("E15", $dataToInsert);
         $objPHPExcel->getStyle("E15")->getAlignment()->setWrapText(true);
@@ -999,7 +1065,7 @@ class ExportController extends Controller
          // Unis Kerja
          $dataToInsert = "";
          foreach ($data['jabatans'] as $key) {
-             $dataToInsert .= "-" . strtoupper($key['jabatan']['description']) ."\n";
+             $dataToInsert .= "-" . strtoupper($key['description']) ."\n";
          }           
          $objPHPExcel->setCellValue("E17", $dataToInsert);
          $objPHPExcel->getStyle("E17")->getAlignment()->setWrapText(true);
@@ -1008,7 +1074,7 @@ class ExportController extends Controller
          // Atasan Langsung
          $dataToInsert = "";
          foreach ($data['jabatans'] as $key) {
-             $dataToInsert .= "-" .$key['jabatan']['atasan_langsung'] ."\n";
+             $dataToInsert .= "-" .$key['atasan_langsung'] ?? 'Tidak ada atasan_langsung' ."\n";
          }           
          $objPHPExcel->setCellValue("E18", $dataToInsert);
          $objPHPExcel->getStyle("E18")->getAlignment()->setWrapText(true);
@@ -1024,9 +1090,15 @@ class ExportController extends Controller
         $baris = 27;
         $no = 1;
         foreach ($data['tugasPokoUtamaGenerik'] as $key) {
-            $objPHPExcel->setCellValue("B$baris", $no);
-            $objPHPExcel->setCellValue("C$baris", $key->aktivitas);
-            $objPHPExcel->setCellValue("G$baris", $key->output);
+            if (isset($v['jenis']) == 'utama'){
+                $objPHPExcel->setCellValue("B$baris", $no);
+                $objPHPExcel->setCellValue("C$baris", $key->aktivitas);
+                $objPHPExcel->setCellValue("G$baris", $key->output);
+            } else {
+                $objPHPExcel->setCellValue("B$baris", $no);
+                $objPHPExcel->setCellValue("C$baris", $key->aktivitas);
+                $objPHPExcel->setCellValue("G$baris", '');
+            }
             $objPHPExcel->mergeCells("C$baris:F$baris");
             $objPHPExcel->mergeCells("G$baris:H$baris");
             $objPHPExcel->getStyle("C$baris:H$baris")
@@ -1133,7 +1205,7 @@ class ExportController extends Controller
         $objPHPExcel->setCellValue("B$baris", "5.a. Dimensi Finansial");
         $objPHPExcel->getStyle("B$baris")->getFont()->setBold(true);
         $baris++;
-        $objPHPExcel->setCellValue("B$baris", $data['anggaran'] == 'Investasi' ? 'V' : '');
+        $objPHPExcel->setCellValue("B$baris", isset($data['anggaran']) && $data['anggaran'] == 'Investasi' ? 'V' : '');
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
             'borders' => [
@@ -1148,7 +1220,7 @@ class ExportController extends Controller
         $objPHPExcel->setCellValue("E$baris", "Anggaran Investasi");
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $baris++;
-        $objPHPExcel->setCellValue("B$baris", $data['anggaran'] == 'Operasional' ? 'V' : '');
+        $objPHPExcel->setCellValue("B$baris", isset($data['anggaran']) && $data['anggaran'] == 'Operasional' ? 'V' : '');
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
             'borders' => [
@@ -1179,13 +1251,13 @@ class ExportController extends Controller
         ]);
         $objPHPExcel->getStyle("B$baris:C$baris")->getAlignment()->setWrapText(true);
         $objPHPExcel->getStyle("B$baris:C$baris")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-        $input = $data['accountability'] == 'Non Quantifiable' ? 'V' : '';
+        $input = isset($data['accountability']) && $data['accountability'] == 'Non Quantifiable' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->setCellValue("E$baris", "Non Quantifiable");
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $objPHPExcel->setCellValue("G$baris", "< 650 Juta");
         $baris++;
-        $input = $data['accountability'] == 'Very Small' ? 'V' : '';
+        $input = isset($data['accountability']) && $data['accountability'] == 'Very Small' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -1204,7 +1276,7 @@ class ExportController extends Controller
 
         $objPHPExcel->setCellValue("G$baris", "650 Juta - 6,5 Milyar");
         $baris++;
-        $input = $data['accountability'] == 'Small' ? 'V' : '';
+        $input = isset($data['accountability']) && $data['accountability'] == 'Small' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -1221,7 +1293,7 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $objPHPExcel->setCellValue("G$baris", "6,5 Milyar - 65 Milyar");
         $baris++;
-        $input = $data['accountability'] == 'Medium' ? 'V' : '';
+        $input = isset($data['accountability']) && $data['accountability'] == 'Medium' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -1238,7 +1310,7 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $objPHPExcel->setCellValue("G$baris", "65 Milyar - 650 Milyar");
         $baris++;
-        $input = $data['accountability'] == 'Large' ? 'V' : '';
+        $input = isset($data['accountability']) && $data['accountability'] == 'Large' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -1255,7 +1327,7 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $objPHPExcel->setCellValue("G$baris", "650 Milyar - 6,5 Trilyun");
         $baris++;
-        $input = $data['accountability'] == 'Very Large' ? 'V' : '';
+        $input = isset($data['accountability']) && $data['accountability'] == 'Very Large' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -1277,7 +1349,7 @@ class ExportController extends Controller
         $objPHPExcel->getStyle("E$baris")->getFont()->setBold(true);
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $baris++;
-        $input = $data['nature_impact'] == 'Prime' ? 'V' : '';
+        $input = isset($data['nature_impact']) && $data['nature_impact'] == 'Prime' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -1293,7 +1365,7 @@ class ExportController extends Controller
         $objPHPExcel->setCellValue("E$baris", "Prime");
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $baris++;
-        $input = $data['nature_impact'] == 'Share' ? 'V' : '';
+        $input = isset($data['nature_impact']) && $data['nature_impact'] == 'Share' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -1309,7 +1381,7 @@ class ExportController extends Controller
         $objPHPExcel->setCellValue("E$baris", "Share");
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $baris++;
-        $input = $data['nature_impact'] == 'Contributory' ? 'V' : '';
+        $input = isset($data['nature_impact']) && $data['nature_impact'] == 'Contributory' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -1325,7 +1397,7 @@ class ExportController extends Controller
         $objPHPExcel->setCellValue("E$baris", "Contributory");
         $objPHPExcel->mergeCells("E$baris:F$baris");
         $baris++;
-        $input = $data['nature_impact'] == 'Remote' ? 'V' : '';
+        $input = isset($data['nature_impact']) && $data['nature_impact'] == 'Remote' ? 'V' : '';
         $objPHPExcel->setCellValue("B$baris", $input); 
         $objPHPExcel->mergeCells("B$baris:C$baris");
         $objPHPExcel->getStyle("B$baris:C$baris")->applyFromArray([
@@ -1355,7 +1427,7 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("C$baris:D$baris");
         $input = '';        
         foreach ($data['jabatans'] as $key) {
-            $input .= "-  ".  $key['jabatan']['bawahan_langsung'] ?? '0' . "\n";
+            $input .= "-  ".  $key['bawahan_langsung'] ?? '0' . "\n";
         }
         $objPHPExcel->setCellValue("E$baris", $input);
         $baris++;
@@ -1363,7 +1435,7 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("C$baris:D$baris");
         $input = '';        
         foreach ($data['jabatans'] as $key) {
-            $input .= "-  ".  $key['jabatan']['total_bawahan'] ?? '0' . "\n";
+            $input .= "-  ".  $key['total_bawahan'] ?? '0' . "\n";
         }
         $objPHPExcel->setCellValue("E$baris", $input);
         $baris++;
@@ -1393,11 +1465,11 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("D$baris:H$baris");
         $baris++;
         $no = 1;
-            $rowsCount = count($data['hubunganKerja']->WHERE('jenis', 'internal')); 
+            $rowsCount = count($data['hubunganKerja']->WHERE($param, 'internal')); 
             $input = $objPHPExcel->getStyle("B27:G27");
-            foreach ($data['hubunganKerja']->WHERE('jenis', 'internal') as $key) {
+            foreach ($data['hubunganKerja']->WHERE($param, 'internal') as $key) {
                 $objPHPExcel->setCellValue("B$baris", $no);
-                $objPHPExcel->setCellValue("C$baris", $key->komunikasi);
+                $objPHPExcel->setCellValue("C$baris", isset($key['subjek']) ? $key['subjek'] : $key['komunikasi']);
                 $objPHPExcel->setCellValue("D$baris", $key->tujuan);
                 $objPHPExcel->duplicateStyle($input, "B$baris:H$baris");
                 $objPHPExcel->mergeCells("D$baris:H$baris");
@@ -1422,11 +1494,11 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("D$baris:H$baris");
         $baris++;
             $no = 1;
-            $rowsCount = count($data['hubunganKerja']->WHERE('jenis', 'internal')); 
+            $rowsCount = count($data['hubunganKerja']->WHERE($param, $ex));
             $input = $objPHPExcel->getStyle("B27:G27");
-            foreach ($data['hubunganKerja']->WHERE('jenis', 'internal') as $key) {
+            foreach ($data['hubunganKerja']->WHERE($param, $ex) as $key) {
                 $objPHPExcel->setCellValue("B$baris", $no);
-                $objPHPExcel->setCellValue("C$baris", $key->komunikasi);
+                $objPHPExcel->setCellValue("C$baris", isset($key['subjek']) ? $key['subjek'] : $key['komunikasi']);
                 $objPHPExcel->setCellValue("D$baris", $key->tujuan);
                 $objPHPExcel->duplicateStyle($input, "B$baris:H$baris");
                 $objPHPExcel->mergeCells("D$baris:H$baris");
@@ -1469,7 +1541,7 @@ class ExportController extends Controller
         $input = $objPHPExcel->getStyle("B27:G27");
         foreach ($data['masalah_kompleksitas_kerja'] as $key) {
             $objPHPExcel->setCellValue("B$baris", $no);
-            $objPHPExcel->setCellValue("C$baris", $key->definisi);
+            $objPHPExcel->setCellValue("C$baris", isset($key['tantangan'])  ? $key['tantangan'] : $key['definisi'] );
             $objPHPExcel->duplicateStyle($input, "B$baris:H$baris");
             $objPHPExcel->mergeCells("C$baris:H$baris");
             $no++;
@@ -1509,7 +1581,7 @@ class ExportController extends Controller
             $input = $objPHPExcel->getStyle("B27:G27");
             foreach ($data['wewenang_jabatan'] as $key) {
                 $objPHPExcel->setCellValue("B$baris", $no);
-                $objPHPExcel->setCellValue("C$baris", $key->definisi);
+                $objPHPExcel->setCellValue("C$baris", isset($key['pengambilan_keputusan']) ? $key['pengambilan_keputusan'] : $key['definisi']);
                 $objPHPExcel->duplicateStyle($input, "B$baris:H$baris");
                 $objPHPExcel->mergeCells("C$baris:H$baris");
                 $no++;
@@ -1551,33 +1623,57 @@ class ExportController extends Controller
         $no = 1;
         $rowsCount = count($data['spesifikasiPendidikan']); 
         $input = $objPHPExcel->getStyle("B27:G27");
+
         foreach ($data['spesifikasiPendidikan'] as $key) {
+            // Mengambil bidang studi berdasarkan map_pendidikan_id
+            $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang($key->map_pendidikan_id);
+            $bidangStudiFormatted = '';
+
+            if ($bidangQuery->count() == 1) {
+                foreach ($bidangQuery as $b) {
+                    $bidangStudiFormatted .= $b->bidang_studi;
+                }
+            } elseif ($bidangQuery->count() > 1) {
+                $bidangStudiFormatted = '';
+                foreach ($bidangQuery as $index => $b) {
+                    $bidangStudiFormatted .= ($index + 1) . '. ' . trim($b->bidang_studi) . "\n";
+                }
+            }
+
+            // Menentukan pengalaman kerja
+            $pengalaman = ($key->pengalaman == '' || $key->pengalaman == 'FG' || $key->pengalaman == 0)
+                ? 'Fresh Graduate'
+                : "Pengalaman minimal $key->pengalaman tahun";
+
+            // Menulis ke dalam file Excel
             $objPHPExcel->setCellValue("B$baris", $no);
             $objPHPExcel->setCellValue("C$baris", $key->pendidikan);
-            $objPHPExcel->setCellValue("D$baris", $key->pengalaman);
-            $pattern = '/\d+\.\s*/'; 
-            $bidangStudiList = preg_split($pattern, $key->bidang_studi, -1, PREG_SPLIT_NO_EMPTY);
-            $bidangStudiFormatted = '';
-            foreach ($bidangStudiList as $index => $bidangStudi) {
-                $bidangStudiFormatted .= ($index + 1) . '. ' . trim($bidangStudi) . "\n";
-            }
-            $objPHPExcel->setCellValue("F$baris", $bidangStudiFormatted);
+            $objPHPExcel->setCellValue("D$baris", $pengalaman);
+            $objPHPExcel->setCellValue("F$baris", isset($key->id) ? $key->bidang_studi : $bidangStudiFormatted);
+            
+            // Styling dan merging
             $objPHPExcel->duplicateStyle($input, "B$baris:H$baris");
             $objPHPExcel->mergeCells("D$baris:E$baris");
             $objPHPExcel->mergeCells("F$baris:H$baris");
+
             $baris++;
             $no++;
-        }       
+        }
+
+        // Jika data kurang dari 4, tambahkan baris kosong
         for ($i = $rowsCount + 1; $i <= 4; $i++) {
             $objPHPExcel->setCellValue("B$baris", $i);
             $objPHPExcel->setCellValue("C$baris", "");
             $objPHPExcel->setCellValue("D$baris", "");
             $objPHPExcel->setCellValue("F$baris", "");
+            
             $objPHPExcel->duplicateStyle($input, "B$baris:H$baris");
             $objPHPExcel->mergeCells("D$baris:E$baris");
             $objPHPExcel->mergeCells("F$baris:H$baris");
+
             $baris++;
         }
+
         $baris++;
         $objPHPExcel->setCellValue("B$baris", "Kemampuan dan Pengalaman");
         $objPHPExcel->getStyle("A$baris:B$baris")->getFont()->setBold(true);
@@ -1655,9 +1751,9 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("F$baris:H$baris");
         $baris++;
         $no = 1;
-        $rowsCount = count($data['keterampilanNonteknis']->WHERE('kategori', 'UTAMA')); 
+        $rowsCount = count($data['keterampilan_non_teknis']->WHERE('kategori', 'UTAMA')); 
         $input = $objPHPExcel->getStyle("B27:G27");
-        foreach ($data['keterampilanNonteknis']->WHERE('kategori', 'UTAMA') as $key) {
+        foreach ($data['keterampilan_non_teknis']->WHERE('kategori', 'UTAMA') as $key) {
             $objPHPExcel->setCellValue("B$baris", " $no.");
             $objPHPExcel->setCellValue("C$baris", $key->kode);
             $objPHPExcel->setCellValue("D$baris", $key->detail->nama);
@@ -1704,9 +1800,9 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("G$baris:H$baris");
         $baris++;
         $no = 1;
-        $rowsCount = count($data['keterampilanNonteknis']->WHERE('kategori', 'PERAN')); 
+        $rowsCount = count($data['keterampilan_non_teknis']->WHERE('kategori', 'PERAN')); 
         $input = $objPHPExcel->getStyle("B27:G27");
-        foreach ($data['keterampilanNonteknis']->WHERE('kategori', 'PERAN') as $key) {
+        foreach ($data['keterampilan_non_teknis']->WHERE('kategori', 'PERAN') as $key) {
                 $objPHPExcel->setCellValue("B$baris", " $no.");
                 $objPHPExcel->setCellValue("C$baris", $key['kode']);
                 $objPHPExcel->setCellValue("D$baris", $key['detail']['nama']);
@@ -1756,9 +1852,9 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("G$baris:H$baris");
         $baris++;
         $no = 1;
-        $rowsCount = count($data["keterampilanNonteknis"]->WHERE('kategori', 'FUNGSI')); 
+        $rowsCount = count($data["keterampilan_non_teknis"]->WHERE('kategori', 'FUNGSI')); 
         $input = $objPHPExcel->getStyle("B27:G27");
-        foreach ($data["keterampilanNonteknis"]->WHERE('kategori', 'FUNGSI') as $key) {
+        foreach ($data["keterampilan_non_teknis"]->WHERE('kategori', 'FUNGSI') as $key) {
                 $objPHPExcel->setCellValue("B$baris", " $no.");
                 $objPHPExcel->setCellValue("C$baris", $key->kode);
                 $objPHPExcel->setCellValue("D$baris", $key['detail']['nama']);

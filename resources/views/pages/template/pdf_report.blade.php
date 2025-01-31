@@ -93,7 +93,7 @@
             <br />
         </th>
         <td style="width:110px">Tanggal</td>
-        <td style="width:140px">{{ isset($data['created_at']) ?? date_format($data['created_at'],'d-m-Y') }}</td>
+        <td style="width:140px">{{ isset($data['created_at']) ? date_format($data['created_at'],'d-m-Y') : '-' }}</td>
     </tr>
     <tr>
         <td>No Record</td>
@@ -144,7 +144,7 @@
                     <td>Jenis Jabatan</td>
                     <td>:</td>
                     <td>
-                        {{ $data['masterJabatan']['type'] == "S" ? "STRUKTURAL" : 'FUNSIIONAL' }}
+                        {{ strtoupper($data['type']) }}
                     </td>
                 </tr>
                 <tr>
@@ -314,7 +314,7 @@
             <table>
                 <tr>
                     <td style="width: 20px; text-align: center; border: 1px solid #000;">
-                        {{ isset($data['accountability']) && $data['accountability'] == 'Non Quantifiable' ? 'V' : '' }}
+                        {{ isset($data['accountability']) && $data['accountability'] == null ? 'V' : '' }}
                     </td>
                     <td></td>
                     <td>Non Quantifiable</td>
@@ -573,8 +573,8 @@
                         <tr>
                             <th style="text-align: center; width:5%;">No</th>
                             <th style=" text-align: center">Pendidikan</th>
-                            <th style=" text-align: center">Pengalaman</th>
                             <th style=" text-align: center">Bidang Studi</th>
+                            <th style=" text-align: center">Pengalaman</th>
                         </tr>
                     </thead>
                     <tbody>

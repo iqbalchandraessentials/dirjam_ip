@@ -17,7 +17,7 @@
 @endsection
 
 
-@section('title', 'Uraian Jabatan | Direktori Jabatan')
+@section('title', 'Template Jabatan | ' . $data['nama'])
 
 
 @section('content')
@@ -31,9 +31,11 @@
                             <i class="ti-file"></i>
                             TEMPLATE
                         </h2>
+                        @if (isset($data['created_at']))
                         <p>
-                            {{ isset($data['created_at']) ?? date_format($data['created_at'],'d-m-Y') }}
+                            {{ date_format($data['created_at'],'d-m-Y') }}
                         </p>
+                        @endif
                     </div>
                     <div class="col text-right">
                         @if (isset($data['masterJabatan']['id']))
@@ -87,7 +89,7 @@
                                 <td><b> Jenis Jabatan</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase"> 
-                                    {{ $data['masterJabatan']['type'] == "S" ? "STRUKTURAL" : 'FUNSIIONAL' }}
+                                    {{ strtoupper($data['type']) }}
                                 </td>
                             </tr>
                             <tr>
@@ -609,8 +611,8 @@
                                 <tr>
                                     <th class="font-weight-bold text-center" width="5%">#</th>
                                     <th class="font-weight-bold text-center">Pendidikan</th>
-                                    <th class="font-weight-bold text-center">Pengalaman</th>
                                     <th class="font-weight-bold text-center" width="30%">Bidang Studi</th>
+                                    <th class="font-weight-bold text-center">Pengalaman</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center">
