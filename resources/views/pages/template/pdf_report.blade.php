@@ -17,7 +17,6 @@
             font-size: 85%;
             line-height: 1.3em;
         }
-
         #table,
         #table th,
         #table td {
@@ -25,16 +24,13 @@
             border: 1px #000 solid;
             padding: 3px;
         }
-
         #table {
             width: 100%;
             text-align: justify;
         }
-
         #table td {
             vertical-align: top;
         }
-
         .struktur-organisasi {
             page: struktur_organisasi;
             /* Gunakan halaman khusus STRUKTUR ORGANISASI */
@@ -51,25 +47,19 @@
             font-weight: normal;
             text-align: justify;
         }
-
-
-
         @media print {
             .perkecil {
                 width: 300px Imp !important;
             }
         }
-
         ul li {
             list-style-type: none;
         }
-
         ul li:before {
             content: "-";
             position: relative;
             left: -10px;
         }
-
         ul li {
             text-indent: -5px;
         }
@@ -479,7 +469,8 @@
                                 @endif
                             @empty
                                 <tr>
-                                    <td colspan="3" class="text-center text-muted">Tidak ada data</td>
+                                    <td>1</td>
+                                    <td colspan="2" style="text-align: center">Tidak ada data</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -512,7 +503,8 @@
                                 @endif
                             @empty
                                 <tr>
-                                    <td colspan="3" class="text-center text-muted">Tidak ada data</td>
+                                    <td>1</td>
+                                    <td colspan="2" style="text-align: center">Tidak ada data</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -679,13 +671,14 @@
                                 <tr style="text-align: center" class="text-center">
                                     <td> {{ $no++ }}</td>
                                     <td>{{ $v['kode'] }}</td>
-                                    <td>{{ $v['detail']['nama'] ?? '' }}</td>
+                                    <td style="text-align: justify">{{ $v['detail']['nama'] ?? '' }}</td>
                                     <td style="text-align: justify">{{ $v['detail']['definisi'] ?? '' }}</td>
                                 </tr>
                             @endif
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center text-muted">Tidak ada data</td>
+                                <td>1</td>
+                                <td colspan="3" style="text-align: center">Tidak ada data</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -716,14 +709,15 @@
                             <tr style="text-align: center" class="text-center">
                                 <td> {{ $no++ }}</td>
                                 <td>{{ $v['kode'] }}</td>
-                                <td>{{ $v['detail']['nama'] }}</td>
-                                <td style="text-transform: uppercase;">{{ $v['jenis'] }}</td>
+                                <td style="text-align: justify">{{ $v['detail']['nama'] }}</td>
+                                <td>{{ strtoupper($v['jenis']) }}</td>
                                 <td style="text-align: justify">{{ $v['detail']['definisi'] }}</td>
                             </tr>
                         @endif
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+                            <td>1</td>
+                            <td colspan="4" style="text-align: center">Tidak ada data</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -752,7 +746,7 @@
                             <tr>
                                 <td style="text-align: center;"> {{ $no++ }}</td>
                                 <td style="text-align: center;">{{ $v['kode'] }}</td>
-                                <td style="text-align: center;">{{ $v['detail']['nama'] ?? '' }}</td>
+                                <td style="text-align: justify;">{{ $v['detail']['nama'] ?? '' }}</td>
                                 <td style="text-align: center; text-transform: uppercase;">{{ $v['jenis'] ?? '' }}
                                 </td>
                                 <td style="text-align: justify">{{ $v['detail']['definisi'] ?? '' }}</td>
@@ -760,7 +754,8 @@
                         @endif
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+                            <td>1</td>
+                            <td colspan="4" style="text-align: center">Tidak ada data</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -788,19 +783,20 @@
                     @php $no = 1; @endphp
                     @forelse ($data['keterampilan_teknis'] as $x => $v)
                         @if (isset($v['master']['nama']))
-                            <tr>
-                                <td style="text-align: center"> {{ $no++ }}</td>
-                                <td style="text-align: center">{{ $v['kode'] }}</td>
-                                <td style="text-align: center">{{ $v['master']['nama'] }}</td>
-                                <td style="text-align: center">{{ $v['level'] }}</td>
-                                <td style="text-align: center">{{ $v['kategori'] }}</td>
+                            <tr style="text-align: center">
+                                <td> {{ $no++ }}</td>
+                                <td>{{ $v['kode'] }}</td>
+                                <td style="text-align: justify">{{ $v['master']['nama'] }}</td>
+                                <td>{{ $v['level'] }}</td>
+                                <td>{{ $v['kategori'] }}</td>
                                 <td style="text-align: justify">
                                     {{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
                             </tr>
                         @endif
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center text-muted">Tidak ada data</td>
+                            <td>1</td>
+                            <td colspan="5" style="text-align: center">Tidak ada data</td>
                         </tr>
                     @endforelse
                 </tbody>

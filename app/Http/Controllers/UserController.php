@@ -25,7 +25,6 @@ class UserController extends Controller
         $request->validate(['role' => 'required']);
         $role = Role::findByName($request->role);
         $user->assignRole($role);
-
         return redirect()->back()->with('success', 'Role assigned to user successfully.');
     }
 
@@ -48,30 +47,24 @@ class UserController extends Controller
                 'user_id' => $validated['user_id'],
             ]);
 
-            return response()->json(['success' => true, 'message' => 'User berhasil ditambahkan!']);
+            return redirect()->back()->with('success', 'Data berhasil ditambahkan.');;
         } catch (ValidationException $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+            return redirect()->back()->with('success', $e->errors());;
         }
     }
 
     public function updateRolesPermissions(Request $request, User $user)
-{
-    $validated = $request->validate([
-        'roles' => 'array',
-        'roles.*' => 'string|exists:roles,name',
-        'permissions' => 'array',
-        'permissions.*' => 'string|exists:permissions,name',
-    ]);
-
-    // Update roles
-    $user->syncRoles($validated['roles'] ?? []);
-
-    // Update permissions
-    $user->syncPermissions($validated['permissions'] ?? []);
-
-    return redirect()->back()->with('success', 'Roles and permissions updated successfully.');
-}
-
+    {
+        $validated = $request->validate([
+            'roles' => 'array',
+            'roles.*' => 'string|exists:roles,name',
+            'permissions' => 'array',
+            'permissions.*' => 'string|exists:permissions,name',
+        ]);
+        $user->syncRoles($validated['roles'] ?? []);
+        $user->syncPermissions($validated['permissions'] ?? []);
+        return redirect()->back()->with('success', 'Roles and permissions updated successfully.');
+    }
 
     public function assignPermission(Request $request, User $user)
     {

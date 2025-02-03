@@ -11,21 +11,17 @@ use App\Models\M_KOMUNIKASI;
 use App\Models\M_MAP_PENDIDIKAN;
 use App\Models\M_PENGAMBILAN_KEPUTUSAN;
 use App\Models\M_TANTANGAN;
-use App\Models\M_URAIAN_JABATAN;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJabatan;
 use App\Models\MasterPendidikan;
 use App\Models\TugasPokoUtamaGenerik;
 use App\Models\unit\M_UNIT;
-use App\Models\URAIAN_JABATAN;
 use App\Models\UraianMasterJabatan;
 use App\Models\ViewUraianJabatan;
 use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use PDF;
-use PhpParser\Node\Expr\Isset_;
 use Yajra\DataTables\Facades\DataTables;
 
 class TemplateJabatanController extends Controller
@@ -191,6 +187,9 @@ class TemplateJabatanController extends Controller
             $core = !$data_core ? $data_core : KeterampilanTeknis::where('kategori', 'CORE')->where('MASTER_JABATAN', $masterJabatan)->get();
             $enabler = KeterampilanTeknis::where('kategori', 'ENABLER')->where('MASTER_JABATAN', $masterJabatan)->get();
             $data['keterampilan_teknis'] =  $core->merge($enabler);
+            if($data['hubunganKerja'][0]['tujuan'] == null || $data['hubunganKerja'][0]['tujuan'] == ""){
+                $data['hubunganKerja'] = [];
+            }
             return $data;
     }
 
