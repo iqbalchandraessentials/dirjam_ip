@@ -50,24 +50,11 @@ class ExportController extends Controller
     {
         return Excel::download(new MasterDefaultDataExport, 'Master Default Data.'. date('d-m-Y H-i-s') .'.xlsx');
     }
-    // public function exportUraianJabatanPdf($id)
-    // {
-    //     $data = $data = $this->UraianJabatanController->getDatas($id);
-    //     $pdf = PDF::loadView('pages.uraian_jabatan.pdf_report', [
-    //         'data' => $data
-    //     ]);
-    //     $name = "URAIAN_JABATAN-" . $data['jabatan']['jabatan'] . date('d-m-Y H-i-s') . ".pdf";
-    //     return $pdf->download($name);
-    // }
-
-    
+       
 
     public function exportUraianJabatanPdf($id)
     {
         $data = $this->UraianJabatanController->getDatas($id);
-        // dd($data['struktur_organisasi']);
-        // dd($data['struktur_organisasi']);
-
         // 1. Generate PDF untuk bagian selain Struktur Organisasi
         $pdfPortrait = PDF::loadView('pages.uraian_jabatan.pdf_report', ['data' => $data]);
         $pathPortrait = storage_path('app/temp_portrait.pdf');
@@ -95,16 +82,44 @@ class ExportController extends Controller
             ->header('Content-Disposition', 'attachment; filename="' . $name . '"');
     }
 
-
     public function exportTemplateJabatanPdf($id)
     {
         $data = $data = $this->templateJabatanController->getDatas($id);
-        $pdf = PDF::loadView('pages.template.pdf_report', [
-            'data' => $data
-        ]);
+        // 1. Generate PDF untuk bagian selain Struktur Organisasi
+        $pdfPortrait = PDF::loadView('pages.template.pdf_report', [ 'data' => $data ]);
+        
+        $pathPortrait = storage_path('app/temp_portrait.pdf');
+        file_put_contents($pathPortrait, $pdfPortrait->output());
+
+        // 2. Generate PDF khusus untuk Struktur Organisasi (landscape)
+        $pdfLandscape = PDF::loadView('pages.uraian_jabatan.pdf_struktur_organisasi', ['data' => $data]);
+        $pdfLandscape->setPaper('A4', 'landscape');
+        $pathLandscape = storage_path('app/temp_landscape.pdf');
+        file_put_contents($pathLandscape, $pdfLandscape->output());
+
+        // 3. Gabungkan kedua PDF
+        $merger = new Merger();
+        $merger->addFile($pathPortrait);
+        $merger->addFile($pathLandscape);
+        $finalPdf = $merger->merge();
+
+        // 4. Hapus file sementara
+        unlink($pathPortrait);
+        unlink($pathLandscape);
         $name = "Template_Jabatan_" . $data['nama'] . date('d-m-Y H-i-s') . ".pdf";
-        return $pdf->download($name);
+        return response($finalPdf)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="' . $name . '"');
     }
+
+
+    // public function exportTemplateJabatanPdf($id)
+    // {
+    //     $data = $data = $this->templateJabatanController->getDatas($id);
+    //     $pdf = PDF::loadView('pages.template.pdf_report', [ 'data' => $data ]);
+    //     $name = "Template_Jabatan_" . $data['nama'] . date('d-m-Y H-i-s') . ".pdf";
+    //     return $pdf->download($name);
+    // }
 
 
 

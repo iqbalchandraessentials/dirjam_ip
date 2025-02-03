@@ -825,17 +825,4 @@
             utama Jabatan agar individu dapat berhasil pada suatu posisi dalam fungsi bisnis.
         </small>
         <br>
-    <li class="struktur-organisasi">
-        <h3>STRUKTUR ORGANISASI</h3>
-        <small class="mini">
-            Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi jabatan atasan
-            langsung, bawahan langsung serta rekan kerja (peers).
-        </small>
-        <br>
-        <div style="width: 100%; height: auto; display: flex; justify-content: center;">
-            <div style="transform: scale(0.7); transform-origin: top center;">
-                {!! $data['struktur_organisasi'] !!}
-            </div>
-        </div>
-    </li>
 </ol>
