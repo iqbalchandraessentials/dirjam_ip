@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\unit\M_UNIT;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -13,9 +16,8 @@ class UserController extends Controller
     {
         $users = User::all();
         $roles = Role::all();
-        // $permissions = Permission::all();
-
-        return view('pages.masterData.users.index', compact('users', 'roles'));
+        $unit = M_UNIT::all();
+        return view('pages.masterData.users.index', compact('users', 'roles', 'unit'));
     }
 
     public function assignRole(Request $request, User $user)
@@ -25,6 +27,31 @@ class UserController extends Controller
         $user->assignRole($role);
 
         return redirect()->back()->with('success', 'Role assigned to user successfully.');
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:6',
+                'unit_kd' => 'required|string|max:255',
+                'unit_id' => 'required|string|unique:users,unit_id',
+            ]);
+
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'unit_kd' => $validated['unit_kd'],
+                'user_id' => $validated['user_id'],
+            ]);
+
+            return response()->json(['success' => true, 'message' => 'User berhasil ditambahkan!']);
+        } catch (ValidationException $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
     }
 
     public function updateRolesPermissions(Request $request, User $user)

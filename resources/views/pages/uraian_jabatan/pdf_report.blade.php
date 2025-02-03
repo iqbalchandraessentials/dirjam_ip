@@ -43,13 +43,6 @@
             text-align: justify;
         }
 
-        .struktur-organisasi {
-            page: struktur_organisasi; /* Gunakan halaman khusus STRUKTUR ORGANISASI */
-            page-break-before: always; /* Paksa halaman baru sebelum STRUKTUR ORGANISASI */
-            width: 100%;
-            text-align: center;
-        }
-
         @media print {
             .perkecil {
                 width: 300px Imp !important;
@@ -68,9 +61,6 @@
 
         ul li {
             text-indent: -5px;
-        }
-        .sto table {
-            width: 100%;
         }
     </style>
 </head>
@@ -412,16 +402,14 @@
                             @forelse ($data['komunikasi_internal'] as $x => $v)
                                 @if ($v['subjek'] || $v['komunikasi'])
                                     <tr>
-                                        <td class="text-center">
-                                            <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
-                                        </td>
-                                        <td class="text-center">{{ $v['subjek'] ? $v['subjek'] : $v['komunikasi'] }}</td>
-                                        <td class="text-center">{{ $v['tujuan'] }}</td>
+                                        <td style="text-align: center">{{ $no++ }}</td>
+                                        <td style="text-align: justify">{{ $v['subjek'] ? $v['subjek'] : $v['komunikasi'] }}</td>
+                                        <td style="text-align: justify">{{ $v['tujuan'] }}</td>
                                     </tr>
                                 @endif
                             @empty
                                 <tr>
-                                    <td colspan="3" class="text-center text-muted">Tidak ada data</td>
+                                    <td colspan="3" style="text-align: center">Tidak ada data</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -445,16 +433,14 @@
                             @forelse ($data['komunikasi_external'] as $x => $v)
                                 @if ($v['subjek'] || $v['komunikasi'])
                                     <tr>
-                                        <td class="text-center">
-                                            <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
-                                        </td>
-                                        <td class="text-center">{{ $v['subjek'] ? $v['subjek'] : $v['komunikasi'] }}</td>
-                                        <td class="text-center">{{ $v['tujuan'] }}</td>
+                                        <td style="text-align: center">{{ $no++ }}</td>
+                                        <td style="text-align: justify">{{ $v['subjek'] ? $v['subjek'] : $v['komunikasi'] }}</td>
+                                        <td style="text-align: justify">{{ $v['tujuan'] }}</td>
                                     </tr>
                                 @endif
                             @empty
                                 <tr>
-                                    <td colspan="3" class="text-center text-muted">Tidak ada data</td>
+                                    <td colspan="3" style="text-align: center">Tidak ada data</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -480,12 +466,10 @@
                     </thead>
                     <tbody>
                         @foreach ($data['tantangan'] as $x => $v)
-                        @if ($v['tantangan'] || $v['definisi'])
                             <tr>
                                 <td style="text-align: center"> {{ $x + 1 }}</td>
                                     <td style="text-align: justify;">{{ isset($v['tantangan']) ? $v['tantangan']  : $v['definisi'] }}</td>
                             </tr>
-                        @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -568,9 +552,9 @@
 
                             <tr>
                                 <td style="text-align: center;">{{ $i + 1 }}</td>
-                                <td class="tex-left">{{ $item->pendidikan }}</td>
+                                <td style="text-align: center;">{{ $item->pendidikan }}</td>
                                 <td style="text-align: center;">{!! $pengalaman !!}</td>
-                                <td class="tex-left">
+                                <td>
                                     @if(isset($item->bidang_studi))
                                     {{$item->bidang_studi}}
                                     @else
@@ -619,18 +603,16 @@
                         @php $no = 1; @endphp
                         @forelse ($data['keterampilan_non_teknis'] as $x => $v)
                             @if ($v['kategori'] == 'UTAMA')
-                                <tr>
-                                    <td class="text-center">
-                                        <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
-                                    </td>
+                                <tr style="text-align: center">
+                                    <td>{{ $no++ }}</td>
                                     <td>{{ $v['kode'] }}</td>
-                                    <td class="text-justify">{{ $v['detail']['nama'] ?? '' }}</td>
-                                    <td class="text-justify">{{ $v['detail']['definisi'] ?? '' }}</td>
+                                    <td style="text-align: justify">{{ $v['detail']['nama'] ?? '' }}</td>
+                                    <td style="text-align: justify">{{ $v['detail']['definisi'] ?? '' }}</td>
                                 </tr>
                             @endif
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center text-muted">Tidak ada data</td>
+                                <td colspan="4" style="text-align: center">Tidak ada data</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -644,37 +626,43 @@
                 Kompetensi perilaku yang dipersyaratkan agar individu Pegawai dapat berhasil dalam suatu posisi, peran,
                 dan Jenjang Jabatan yang spesifik.
             </small>
-            <table class="table " id="table">
-                <thead>
+            @php 
+            $no = 1; 
+            $filteredData = $data['keterampilan_non_teknis']->filter(function ($item) {
+                return isset($item['kategori']) && $item['kategori'] == 'PERAN';
+            });
+        @endphp
+        
+        <table class="table" id="table">
+            <thead>
+                <tr>
+                    <th style="text-align: center; width:5%;">No</th>
+                    <th style="text-align: center;">Kode Kompetensi</th>
+                    <th style="text-align: center;">Kompetensi</th>
+                    <th style="text-align: center;">Kategori</th>
+                    <th style="text-align: center;">Penjelasan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if ($filteredData->isEmpty())
                     <tr>
-                        <th style="text-align: center; width:5%;">No</th>
-                        <th style="text-align: center">Kode Kompetensi</th>
-                        <th style="text-align: center">Kompetensi</th>
-                        <th style="text-align: center">Kategori</th>
-                        <th style="text-align: center">Penjelasan</th>
+                        <td colspan="5" style="text-align: center">Tidak ada data</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @php $no = 1; @endphp
-                    @forelse ($data['keterampilan_non_teknis'] as $v)
-                        @if ($v['kategori'] == 'PERAN')
-                            <tr>
-                                <td class="text-center">
-                                    <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
-                                </td>
-                                <td>{{ $v['kode'] }}</td>
-                                <td class="text-justify">{{ $v['detail']['nama'] ?? '' }}</td>
-                                <td class="text-uppercase">{{ $v['jenis'] ?? '' }}</td>
-                                <td class="text-justify">{{ $v['detail']['definisi'] ?? '' }}</td>
-                            </tr>
-                        @endif
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+                @else
+                    @foreach ($filteredData as $v)
+                        <tr style="text-align: center;">
+                            <td>{{ $no++ }}</td>
+                            <td>{{ e($v['kode'] ?? '') }}</td>
+                            <td style="text-align: justify;">{{ e($v['detail']['nama'] ?? '') }}</td>
+                            <td >{{ isset($v['jenis']) ? strtoupper($v['jenis']) : '' }}</td>
+                            <td style="text-align: justify;">{{ e($v['detail']['definisi'] ?? '') }}</td>
                         </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    @endforeach
+                @endif
+            </tbody>
+        </table>
+        
+
         </div>
         <br>
         <b>>> Kompetensi Fungsi</b>
@@ -696,19 +684,17 @@
                     @php $no = 1; @endphp
                     @forelse ($data['keterampilan_non_teknis'] as $x => $v)
                         @if ($v['kategori'] == 'FUNGSI')
-                            <tr>
-                                <td class="text-center">
-                                    <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
-                                </td>
+                            <tr style="text-align: center">
+                                <td>{{ $no++ }}</td>
                                 <td>{{ $v['kode'] }}</td>
-                                <td class="text-justify">{{ $v['detail']['nama'] ?? '' }}</td>
-                                <td class="text-uppercase">{{ $v['jenis'] ?? '' }}</td>
-                                <td class="text-justify">{{ $v['detail']['definisi'] ?? '' }}</td>
+                                <td style="text-align: justify">{{ $v['detail']['nama'] ?? '' }}</td>
+                                <td >{{  strtoupper($v['jenis']) ?? '' }}</td>
+                                <td style="text-align: justify">{{ $v['detail']['definisi'] ?? '' }}</td>
                             </tr>
                         @endif
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+                            <td colspan="5" style="text-align: center">Tidak ada data</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -736,20 +722,18 @@
                     @php $no = 1; @endphp
                     @forelse ($data['keterampilan_teknis'] as $x => $v)
                         @if (isset($v['master']['nama']))
-                            <tr>
-                                <td class="text-center">
-                                    <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
-                                </td>
+                            <tr style="text-align: center">
+                                <td class="text-center">{{ $no++ }}</td>
                                 <td>{{ $v['kode'] }}</td>
-                                <td>{{ $v['master']['nama'] }}</td>
+                                <td style="text-align: justify">{{ $v['master']['nama'] }}</td>
                                 <td>{{ $v['level'] ?? 'N/A' }}</td>
                                 <td>{{ $v['kategori'] ?? 'N/A' }}</td>
-                                <td>{{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
+                                <td style="text-align: justify">{{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
                             </tr>
                         @endif
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center text-muted">Tidak ada data</td>
+                            <td colspan="6" style="text-align: center">Tidak ada data</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -771,18 +755,5 @@
             - Kompetensi enabler adalah Kompetensi teknis yang perlu dimiliki untuk mendukung tugas pokok sesuai fungsi
             utama Jabatan agar individu dapat berhasil pada suatu posisi dalam fungsi bisnis.
         </small>
-    </li>
-    <li class="struktur-organisasi">
-        <h3>STRUKTUR ORGANISASI</h3>
-        <small class="mini">
-            Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi jabatan atasan
-            langsung, bawahan langsung serta rekan kerja (peers).
-        </small>
-        <br>
-        <div style="width: 100%; height: auto; display: flex; justify-content: center;">
-            <div style="transform: scale(0.7); transform-origin: top center;">
-                {!! $data['struktur_organisasi'] !!}
-            </div>
-        </div>
     </li>
 </ol>

@@ -146,19 +146,20 @@ class UraianJabatanController extends Controller
             }
         }
 
-        if (!empty($data['pengambilan_keputusan']) && 
-        (!empty($data['pengambilan_keputusan'][0]['definisi']) || $data['pengambilan_keputusan'][0]['pengambilan_keputusan'] !== "" )) {   
+        if (isset($data['pengambilan_keputusan'][0]) && ( !empty($data['pengambilan_keputusan'][0]['definisi']) || !empty($data['pengambilan_keputusan'][0]['pengambilan_keputusan']) )) {
             $data['pengambilan_keputusan'] = $data['pengambilan_keputusan'];
         } else {
             $data['pengambilan_keputusan'] = WewenangJabatan::where('jenis_jabatan', $type)->get();
         }
 
-        if (!empty($data['tantangan']) && 
-            (!empty($data['tantangan'][0]['definisi']) || !empty($data['tantangan'][0]['tantangan']))) {   
+        if (!empty($data['tantangan']) && collect($data['tantangan'])->filter(function ($item) {
+            return !empty($item['definisi']) || !empty($item['tantangan']);
+        })->isNotEmpty()) {
             $data['tantangan'] = $data['tantangan'];
         } else {
             $data['tantangan'] = MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();
         }
+        
 
         $data['aktivitas_generik'] = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan',$type)->get();
         $data['jabatan'] = $jabatan;
@@ -169,6 +170,12 @@ class UraianJabatanController extends Controller
         $core = !$data_core ? $data_core : KeterampilanTeknis::where('kategori','CORE')->where('MASTER_JABATAN', $data['jabatan']['master_jabatan'])->get()  ;
         $enabler = KeterampilanTeknis::where('kategori','ENABLER')->where('MASTER_JABATAN', $data['jabatan']['master_jabatan'])->get();
         $data['keterampilan_teknis'] =  $core->merge($enabler);
+        if($data['komunikasi_internal'][0]['tujuan'] == null || $data['komunikasi_internal'][0]['tujuan'] == ""){
+            $data['komunikasi_internal'] = [];
+        }
+        if($data['komunikasi_external'][0]['tujuan'] == null || $data['komunikasi_external'][0]['tujuan'] == ""){
+            $data['komunikasi_external'] = [];
+        }
      
         // dd($data);
         return $data;

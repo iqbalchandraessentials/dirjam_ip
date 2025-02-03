@@ -86,9 +86,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('unit', [MasterDataController::class, 'unit'])->name('master.unit');
         Route::get('users', [UserController::class, 'index'])->name('users.index');
     });
-
+    
     // User Management Routes
     Route::post('users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
     
     Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission');
     Route::post('users/{user}/updateRolesPermissions', [UserController::class, 'updateRolesPermissions'])->name('users.updateRolesPermissions');

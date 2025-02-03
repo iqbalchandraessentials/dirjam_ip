@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'User Management | Direktori Jabatan')
+@section('title', 'Hak Akses | Direktori Jabatan')
 
 @section('content')
     <div class="container">
@@ -8,21 +8,23 @@
             <div class="box-header">
                 <div class="row">
                     <div class="col-6 text-left">
-                        <h4 class="box-title">User Management</h4>
+                        <h4 class="box-title">Hak Akses</h4>
                     </div>
                     <div class="col-6 text-right">
-                        <button type="button" class="btn btn-success mb-3">
-                            <i class="ti-plus" style="margin-right: 5px;"></i> Add
-                        </button>
+                        <!-- Button trigger modal -->
+                        <a class="btn btn-success text-white mb-3" data-toggle="modal" data-target="#addModal"
+                            rel="noopener noreferrer">
+                            <i class="ti-plus me-1"></i><span class="ml-1"> Add</span>
+                        </a>
                     </div>
                 </div>
             </div>
             <div class="box-body">
                 @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                 @endif
@@ -54,7 +56,7 @@
                                             <div class="input-group">
                                                 <!-- Tambahkan kelas w-100 untuk lebar penuh -->
                                                 <select name="role" class="form-select" style="width: 250px" required>
-                                                    <option value="" disabled selected >Select Role</option>
+                                                    <option value="" disabled selected>Select Role</option>
                                                     @foreach ($roles as $role)
                                                         <option value="{{ $role->name }}">{{ $role->name }}</option>
                                                     @endforeach
@@ -67,7 +69,57 @@
                             </tr>
                         @endforeach
                     </tbody>
-                </table>                
+                </table>
+                <!-- Modal Tambah Data -->
+                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addUserModalLabel">Tambah User Baru</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('users.store') }}" method="POST">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="user_id" class="form-label">User Id</label>
+                                        <input type="text" class="form-control" id="user_id" name="user_id" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name" class="form-label">Nama</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="unit">Unit</label>
+                                        <select style="width: 100%;" class="form-control select2" name="unit">
+                                            @foreach ($unit as $unit)
+                                                <option value="{{ $unit->unit_kd }}">
+                                                    {{ $unit->unit_nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -93,4 +145,6 @@
             });
         });
     </script>
+
+
 @endsection
