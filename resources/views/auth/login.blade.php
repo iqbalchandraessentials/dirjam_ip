@@ -23,7 +23,7 @@
                 <div class="row no-gutters">
                     <div class="col-lg-4 col-md-5 col-12">
                         <div class="p-30 content-bottom rounded bg-img box-shadowed" style="" data-overlay="9">
-                            <form method="POST" action="{{ route('login') }}">
+                            <form method="POST" action="{{ route('login.dirjab') }}">
                                 @csrf
                                 <div class="mb-4">
                                     <img src="{{ asset('img/dirjab_logo2.png') }}" alt="Logo">
@@ -33,17 +33,34 @@
                                         <div class="input-group-prepend">
                                             <span
                                                 class="input-group-text bg-transparent bt-0 bl-0 br-0 no-radius text-white"><i
-                                                    class="ti-email"></i></span>
+                                                    class="ti-user"></i></span>
                                         </div>
-                                        <input type="text" id="email"
+                                        {{-- <input type="text" id="email"
                                             class="form-control pl-15 bg-transparent bt-0 bl-0 br-0 text-white @error('email') is-invalid @enderror"
                                             name="email" value="{{ old('email') }}" required autocomplete="email"
-                                            autofocus placeholder="Email address">
-                                        @error('email')
+                                            autofocus placeholder="Email address"> --}}
+                                            <input type="text" id="user_id"
+                                            class="form-control pl-15 bg-transparent bt-0 bl-0 br-0 text-white @error('user_id') is-invalid @enderror"
+                                            name="user_id" value="{{ old('user_id') }}" required autocomplete="username"
+                                            autofocus placeholder="Masukkan Username">
+                                        {{-- @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror --}}
+                                        @error('user_id') 
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    
+
+                                        @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
+                                    
                                     </div>
                                 </div>
                                 <div class="form-group">

@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/sweetalert2/sweetalert2.css') }}">
 @endsection
 
-@section('title', 'Uraian Jabatan | Direktori Jabatan')
+@section('title', 'Dashboard | Direktori Jabatan')
 
 @section('content')
 <div class="">

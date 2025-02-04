@@ -23,7 +23,7 @@
         <div class="navbar-custom-menu r-side">
             <ul class="nav navbar-nav">
                 <!-- Messages -->
-                <li class="dropdown messages-menu">
+                {{-- <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="mdi mdi-email"></i>
                     </a>
@@ -121,9 +121,9 @@
                             <a href="#" class="bg-light">See all Messages</a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 <!-- Notifications -->
-                <li class="dropdown notifications-menu">
+                {{-- <li class="dropdown notifications-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="mdi mdi-bell"></i>
                     </a>
@@ -184,7 +184,8 @@
                             <a href="#" class="bg-light">View all</a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
+
                 <!-- Tasks-->
                 {{-- <li class="dropdown tasks-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -299,16 +300,16 @@
                 <!-- User Account-->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <img src="{{ asset('img/avatar/7.jpeg') }}" class="user-image rounded-circle" alt="User Image">
+                    <img src="{{ asset('img/logo.png') }}" class="user-image rounded-circle" alt="User Image">
                     </a>
                     <ul class="dropdown-menu animated flipInX">
                         <!-- User image -->
-                        <li class="user-header bg-img" style="background-image: url({{ asset('img/user-info.jpeg') }})" data-overlay="3">
+                        <li class="user-header bg-img" data-overlay="3">
                             <div class="flexbox align-self-center">
-                                <img src="{{ asset('img/avatar/7.jpeg') }}" class="float-left rounded-circle" alt="User Image">
+                                <img src="{{ asset('img/logo.png') }}" class="float-left rounded-circle" alt="User Image">
                                 <h4 class="user-name align-self-center">
-                                    <span>Administrator</span>
-                                    <small>admin.smart@gmail.com</small>
+                                    <span>{{Auth::user()->name}}</span>
+                                    <small>{{ Auth::user()->email }}</small>
                                 </h4>
                             </div>
                         </li>
@@ -320,9 +321,13 @@
                             {{-- <div class="dropdown-divider"></div> --}}
                             {{-- <a class="dropdown-item" href="javascript:void(0)"><i class="ion ion-settings"></i> Account Setting</a> --}}
                             {{-- <div class="dropdown-divider"></div> --}}
-                            <div class="p-10"><a href="javascript:void(0)" class="btn btn-sm btn-rounded btn-success">View Profile</a></div>
+                            {{-- <div class="p-10"><a href="javascript:void(0)" class="btn btn-sm btn-rounded btn-success">View Profile</a></div> --}}
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ url('/') }}"><i class="ion-log-out"></i> Logout</a>
+                            {{-- <a class="dropdown-item" href="{{ url('/') }}"><i class="ion-log-out"></i> Logout</a> --}}
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                            <a  class="dropdown-item" style="cursor: pointer"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="ti-power-off"></i>Log Out</a>
                         </li>
                     </ul>
                 </li>

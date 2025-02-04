@@ -60,6 +60,7 @@
                         <button type="submit" class="btn border-t-orange-400 btn-sm">Import</button>
                     </form>
                 </div>
+              <div style="margin-top: 40px;">
                 <form id="filterForm" method="GET" class="form-horizontal">
                     <div class="d-flex justify-content-center">
                         <div class="row">
@@ -87,6 +88,7 @@
                         </div>
                     </div>
                 </form>
+              </div>
 
                     <div class="table-responsive">
                         <div class="container mt-4">

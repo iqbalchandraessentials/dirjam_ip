@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\MasterDataController;
@@ -10,6 +11,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\TemplateJabatanController;
 use App\Http\Controllers\UraianJabatanController;
+
+Route::post('/login-dirjab', [LoginController::class, 'login'])->name('login.dirjab');
 
 Route::get('/', function () {
     return view('pages.dashboard');
