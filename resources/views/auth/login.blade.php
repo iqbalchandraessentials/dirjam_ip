@@ -72,7 +72,7 @@
                                         </div>
                                     </div>
                                     <!-- /.col -->
-                                    @if (Route::has('password.request'))
+                                    {{-- @if (Route::has('password.request'))
                                         <div class="col-6">
                                             <div class="fog-pwd text-right">
                                                 <a class="text-white hover-info" href="{{ route('password.request') }}">
@@ -81,7 +81,7 @@
                                                 <br>
                                             </div>
                                         </div>
-                                    @endif
+                                    @endif --}}
                                     <!-- /.col -->
                                     <div class="col-12 text-center mt-4">
                                         <button type="submit" class="btn btn-info btn-block margin-top-10">
