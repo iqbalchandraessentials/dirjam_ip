@@ -93,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
     // User Management Routes
     Route::post('users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
     
     Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission');
     Route::post('users/{user}/updateRolesPermissions', [UserController::class, 'updateRolesPermissions'])->name('users.updateRolesPermissions');

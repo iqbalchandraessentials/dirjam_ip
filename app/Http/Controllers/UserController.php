@@ -74,4 +74,25 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'Permission assigned to user successfully.');
     }
+
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $request->user_id,
+            'password' => 'nullable|min:6',
+            // 'unit_kp' => 'required|string|max:255',
+        ]);
+        $user = User::findOrFail($request->user_id);
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
+        $user->unit_kp = $validated['unit_kp'];
+        $user->save();
+
+        return redirect()->back()->with('success', 'User updated successfully.');
+    }
 }

@@ -40,7 +40,10 @@
                     <tbody>
                         @foreach ($users as $user)
                             <tr>
-                                <td>{{ $user->name }}</td>
+                                <td class="text-uppercase"> 
+                                    <a href="#" class="edit-user-btn"
+                                        data-user="{{ json_encode($user) }}">{{ $user->name }}</a>
+                                </td>
                                 <td>{{ $user->unit_kd }}</td>
                                 <td>
                                     @foreach ($user->roles as $role)
@@ -70,6 +73,59 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{-- modal edit data --}}
+                <!-- Modal Edit User -->
+                <!-- Modal Edit User -->
+                <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog"
+                    aria-labelledby="editUserModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form id="editUserForm" method="POST" action="{{ route('users.update') }}">
+                                @csrf
+                                <div class="modal-body">
+                                    <input type="hidden" id="edit_user_id" name="user_id">
+
+                                    <div class="form-group">
+                                        <label for="edit_name">Name</label>
+                                        <input type="text" class="form-control" id="edit_name" name="name" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="edit_email">Email</label>
+                                        <input type="email" class="form-control" id="edit_email" name="email" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="edit_password">New Password (optional)</label>
+                                        <input type="password" class="form-control" id="edit_password" name="password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit_unit_kp">Unit</label>
+                                        <select style="width: 100%;" class="form-control select2" id="edit_unit_kp" name="unit_kp">
+                                            <option selected>--- Select Unit ---</option>
+                                            @foreach ($unit as $u)
+                                                <option value="{{ $u->unit_kd }}">{{ $u->unit_nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                {{--  --}}
                 <!-- Modal Tambah Data -->
                 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
                     aria-hidden="true">
@@ -85,15 +141,18 @@
                                     @csrf
                                     <div class="form-group">
                                         <label for="user_id" class="form-label">User Id</label>
-                                        <input type="text" class="form-control" id="user_id" name="user_id" required>
+                                        <input type="text" class="form-control" id="user_id" name="user_id"
+                                            required>
                                     </div>
                                     <div class="form-group">
                                         <label for="name" class="form-label">Nama</label>
-                                        <input type="text" class="form-control" id="name" name="name" required>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            required>
                                     </div>
                                     <div class="form-group">
                                         <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email" required>
+                                        <input type="email" class="form-control" id="email" name="email"
+                                            required>
                                     </div>
                                     <div class="form-group">
                                         <label for="unit">Unit</label>
@@ -107,11 +166,12 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="password" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="password" name="password" required>
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            required>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                        data-dismiss="modal">Batal</button>
+                                            data-dismiss="modal">Batal</button>
                                         <button type="submit" class="btn btn-primary">Simpan</button>
                                     </div>
                                 </form>
@@ -143,8 +203,18 @@
                     this.submit();
                 }
             });
+
+            // edit
+            $('.edit-user-btn').click(function() {
+                let user = $(this).data('user');
+
+                $('#edit_user_id').val(user.id);
+                $('#edit_name').val(user.name);
+                $('#edit_email').val(user.email);
+                $('#edit_unit_kp').val(user.unit_kp);
+
+                $('#editUserModal').modal('show');
+            });
         });
     </script>
-
-
 @endsection

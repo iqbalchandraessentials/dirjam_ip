@@ -6,6 +6,7 @@ use App\Models\HubunganKerja;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanTeknis;
 use App\Models\MasalahKompleksitasKerja;
+use App\Models\MASTER_JABTAN;
 use App\Models\MasterJabatan;
 use App\Models\MasterPendidikan;
 use App\Models\SpesifikasiPendidikan;
@@ -38,7 +39,7 @@ class UraianMasterJabatanImport implements ToCollection
         try {
             $data = [];
             $data['nama'] =   $rows[10][4];
-            $viewUraianJabatan = ViewUraianJabatan::select(['MASTER_JABATAN','DESCRIPTION','jen','TYPE','SITEID'])->where('MASTER_JABATAN', $data['nama'])->first();
+            $viewUraianJabatan = MASTER_JABTAN::select(['MASTER_JABATAN','DESCRIPTION','jen','TYPE','SITEID'])->where('MASTER_JABATAN', $data['nama'])->first();
             // dd($viewUraianJabatan);
             if (!$viewUraianJabatan) {
                 return redirect()->back()->with('error', 'Nama Master jabatan tidak ditemukan');
