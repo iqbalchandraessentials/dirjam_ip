@@ -31,20 +31,21 @@ class TemplateJabatanController extends Controller
     {
         $selectUnit = Auth::user()->unitKerja->unit_nama;
         $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->get();
-        if ($request->ajax()) {
-            $data = ViewUraianJabatan::select('master_jabatan', 'unit_kd', 'jen')
-                ->where('unit_kd', Auth::user()->unit_kd)
-                ->groupBy('master_jabatan', 'unit_kd', 'jen')
-                ->get();
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    return '<a href="' . route('export.templateJabatanExcel', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="fa fa-table"></i></a>
-                            <a href="' . route('export.templateJabatanPdf', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
+        // if ($request->ajax()) {
+        //     $data = ViewUraianJabatan::select('uraian_jabatan_id', 'master_jabatan', 'unit_kd', 'jen')
+        //         ->where('unit_kd', Auth::user()->unit_kd)
+        //         ->groupBy('master_jabatan', 'unit_kd', 'jen')
+        //         ->orderBy('uraian_jabatan_id')
+        //         ->get();
+        //     return DataTables::of($data)
+        //         ->addIndexColumn()
+        //         ->addColumn('action', function ($row) {
+        //             return '<a href="' . route('export.templateJabatanExcel', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="fa fa-table"></i></a>
+        //                     <a href="' . route('export.templateJabatanPdf', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
+        //         })
+        //         ->rawColumns(['action'])
+        //         ->make(true);
+        // }
         return view('pages.template.index', compact('unitOptions', 'selectUnit'));
     }
 
@@ -71,10 +72,11 @@ class TemplateJabatanController extends Controller
 
         // Query data berdasarkan unit kerja yang dipilih
         $data = ViewUraianJabatan::select('master_jabatan', 'unit_kd', 'jen')
-            ->groupBy('master_jabatan', 'unit_kd', 'jen')
-            ->when(!empty($unit_kd), function ($query) use ($unit_kd) {
-                return $query->where('unit_kd', $unit_kd);
-            });
+        ->groupBy('master_jabatan', 'unit_kd', 'jen') 
+        ->when(!empty($unit_kd), function ($query) use ($unit_kd) {
+            return $query->where('unit_kd', $unit_kd);
+        })
+        ->get();
 
         return DataTables::of($data)
             ->addIndexColumn()

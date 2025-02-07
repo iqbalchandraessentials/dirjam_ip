@@ -38,8 +38,10 @@
         <br>
         <div style="width: 100%; height: auto;">
             <div style="transform: scale(0.7); transform-origin: top center">
-                {{-- {!! $data['struktur_organisasi'] !!} --}}
-                {!! preg_replace('/<tr>\s*<\/tr>/', '', $data['struktur_organisasi']) !!}
+                {!! $data['struktur_organisasi'] !!}
+                {{-- {!! preg_replace('/<tr>\s*<\/tr>/', '', $data['struktur_organisasi']) !!} --}}
+                {{-- <pre>{{ htmlspecialchars($data['struktur_organisasi']) }}</pre> --}}
+
 
             </div>
         </div>

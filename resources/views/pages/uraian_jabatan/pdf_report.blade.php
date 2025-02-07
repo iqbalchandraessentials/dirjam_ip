@@ -203,9 +203,9 @@
                             <td style="text-align: justify">{{ $v['output'] }}</td>
                         </tr>
                         @empty
-                    <tr>
+                    <tr style="text-align: center">
                         <td>1</td>
-                        <td colspan="2" style="text-align: center">Tidak ada data</td>
+                        <td colspan="2">Tidak ada data</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -382,7 +382,7 @@
         </div>
     </li>
     <br />
-
+    
     <li>HUBUNGAN KERJA
         <small class="mini">
             Menggambarkan hubungan kedinasan antara pemegang jabatan dengan jabatan lain dalam
@@ -413,9 +413,9 @@
                                     </tr>
                                 @endif
                             @empty
-                                <tr>
+                                <tr style="text-align: center">
                                     <td>1</td>
-                                    <td colspan="2" style="text-align: center">Tidak ada data</td>
+                                    <td >Tidak ada data</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -445,9 +445,9 @@
                                     </tr>
                                 @endif
                             @empty
-                                <tr>
+                                <tr style="text-align: center">
                                     <td>1</td>
-                                    <td colspan="2" style="text-align: center">Tidak ada data</td>
+                                    <td>Tidak ada data</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -475,7 +475,7 @@
                         @foreach ($data['tantangan'] as $x => $v)
                             <tr>
                                 <td style="text-align: center"> {{ $x + 1 }}</td>
-                                    <td style="text-align: justify;">{{ isset($v['tantangan']) ? $v['tantangan']  : $v['definisi'] }}</td>
+                                    <td style="text-align: center;">{{ isset($v['tantangan']) ? $v['tantangan']  : $v['definisi'] }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -503,7 +503,7 @@
                         @if ($v['pengambilan_keputusan'] || $v['definisi'])
                             <tr>
                                 <td style="text-align: center"> {{ $x + 1 }}</td>
-                                    <td style="text-align: justify;">{{ isset($v['pengambilan_keputusan']) ? $v['pengambilan_keputusan'] : $v['definisi']  }}</td>
+                                    <td style="text-align: center;">{{ isset($v['pengambilan_keputusan']) ? $v['pengambilan_keputusan'] : $v['definisi']  }}</td>
                             </tr>
                         @endif
                         @endforeach
@@ -570,9 +570,9 @@
                                 </tr>
                             @endforeach
                         @else
-                            <tr>
+                            <tr style="text-align: center">
                                 <td>1</td>
-                                <td colspan="3" style="text-align: center">Tidak ada data</td>
+                                <td colspan="3">Tidak ada data</td>
                             </tr>
                         @endif
                     </tbody>
@@ -619,9 +619,9 @@
                         @endphp
                     
                         @if ($filteredData->isEmpty())
-                            <tr>
-                                <td>1</td>
-                                <td colspan="3" style="text-align: center">Tidak ada data</td>
+                            <tr style="text-align: center">
+                                <td >1</td>
+                                <td colspan="3">Tidak ada data</td>
                             </tr>
                         @else
                             @foreach ($filteredData as $x => $v)
@@ -663,9 +663,9 @@
             </thead>
             <tbody>
                 @if ($filteredData->isEmpty())
-                    <tr>
+                    <tr style="text-align: center">
                         <td>1</td>
-                        <td colspan="4" style="text-align: center">Tidak ada data</td>
+                        <td colspan="4">Tidak ada data</td>
                     </tr>
                 @else
                     @foreach ($filteredData as $v)
@@ -706,9 +706,9 @@
                     @endphp
                 
                     @if ($filteredData->isEmpty())
-                        <tr>
+                        <tr style="text-align: center">
                             <td>1</td>
-                            <td colspan="4" style="text-align: center">Tidak ada data</td>
+                            <td colspan="4">Tidak ada data</td>
                         </tr>
                     @else
                         @foreach ($filteredData as $x => $v)
@@ -756,9 +756,9 @@
                             </tr>
                         @endif
                     @empty
-                        <tr>
+                        <tr style="text-align: center">
                             <td>1</td>
-                            <td colspan="5" style="text-align: center">Tidak ada data</td>
+                            <td colspan="5">Tidak ada data</td>
                         </tr>
                     @endforelse
                 </tbody>

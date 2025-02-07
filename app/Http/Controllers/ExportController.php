@@ -522,7 +522,7 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("D$baris:H$baris");
         $baris++;
         $no = 1;
-            $rowsCount = $data['komunikasi_internal']->count(); 
+        $rowsCount = count($data['komunikasi_internal']);
             $input = $objPHPExcel->getStyle("B25:G25"); // kolom
             foreach ($data['komunikasi_internal'] as $key) {
                 if ($key['subjek'] || $key['komunikasi']){
@@ -553,7 +553,7 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("D$baris:H$baris");
         $baris++;
             $no = 1;
-            $rowsCount = $data['komunikasi_external']->count(); 
+            $rowsCount = count($data['komunikasi_external']);
             $input = $objPHPExcel->getStyle("B25:G25"); // kolom
             foreach ($data['komunikasi_external'] as $key) {
                 if ($key['subjek'] || $key['komunikasi']){

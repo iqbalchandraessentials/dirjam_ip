@@ -637,7 +637,7 @@
                         </thead>
                         <tbody>
                             <ol type="a" style="padding-left: 0; margin-left: 2; list-style-position: inside;">
-                                @if (!empety($jobdesc))
+                                @if (!empty($jobdesc))
                                     <li> {{ $jobdesc ?? '' }} </li>
                                 @endif
                                 @foreach ($data['kemampuan_dan_pengalaman'] as $v)
