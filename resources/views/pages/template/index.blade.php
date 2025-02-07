@@ -118,15 +118,15 @@
 @endsection
 
 @section('script')
-    <script>
-     $(document).ready(function () {
+   <script>
+    $(document).ready(function () {
     let table = $('#datatable').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
             url: "{{ route('template_jabatan.filter') }}",
             data: function (d) {
-                d.unit = $('#unitFilter').val();
+                d.unit = $('#unitFilter').val() || "{{ Auth::user()->unit_kd }}";
             }
         },
         columns: [
@@ -142,11 +142,18 @@
         }
     });
 
+    // Reload tabel ketika filter unit berubah
+    $('#unitFilter').on('change', function() {
+        table.ajax.reload();
+    });
+
+    // Submit form filter
     $('#filterForm').on('submit', function(e) {
         e.preventDefault();
         table.ajax.reload();
     });
 
+    // Redirect ketika klik baris
     $('#datatable tbody').on('click', 'tr', function () {
         let url = $(this).data('href');
         if (url) {
@@ -155,5 +162,5 @@
     });
 });
 
-    </script>
+   </script>
 @endsection

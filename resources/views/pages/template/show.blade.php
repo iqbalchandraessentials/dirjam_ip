@@ -161,7 +161,7 @@
                 </div>
                 <div class="col-sm-12 col-12">
                     <p class="blockquote">
-                        {{ $data['fungsi_utama'] }}
+                        {!! $data['fungsi_utama'] !!}
                     </p>
                 </div>
             </div>
@@ -190,7 +190,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data['tugasPokoUtamaGenerik'] as $x => $v)
+                                @forelse ($data['tugasPokoUtamaGenerik'] as $x => $v)
                                     @if (isset($v['jenis']) == 'utama')
                                         <tr>
                                             <td><span class="badge bg-dark"
@@ -206,7 +206,11 @@
                                             <td style="text-align: justify"></td>
                                         </tr>
                                     @endif
-                                @endforeach
+                                    @empty
+                                    <tr>
+                                        <td class="text-center" colspan="3">Tidak ada data</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -443,7 +447,7 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="text-center font-weight-bold" width="5%">#</th>
@@ -467,20 +471,18 @@
                                     @endif
                                 @empty
                                     <tr>
-                                        <td>1</td>
-                                        <td colspan="2" style="text-align: center">Tidak ada data</td>
+                                        <td colspan="3" style="text-align: center">Tidak ada data</td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
                 </div>
-
             </div>
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="font-weight-bold text-center" width="5%">#</th>
@@ -505,8 +507,7 @@
                                     @endif
                                 @empty
                                     <tr>
-                                        <td>1</td>
-                                        <td colspan="2" style="text-align: center">Tidak ada data</td>
+                                        <td colspan="3" style="text-align: center">Tidak ada data</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -530,7 +531,7 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="font-weight-bold text-center" width="5%">#</th>
@@ -568,7 +569,7 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="font-weight-bold text-center" width="5%">#</th>
@@ -607,7 +608,7 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="font-weight-bold text-center" width="5%">#</th>
@@ -617,52 +618,53 @@
                                 </tr>
                             </thead>
                             <tbody class="text-center">
-                                @foreach ($data['spesifikasiPendidikan'] as $i => $item)
-                                    @php
-                                        $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang(
-                                            $item->map_pendidikan_id,
-                                        );
-                                        $bidang = '';
-                                        if ($bidangQuery->count() == 1) {
-                                            foreach ($bidangQuery as $b) {
-                                                $bidang .= $b->bidang_studi;
+                                @if (!empty($data['spesifikasiPendidikan']) && count($data['spesifikasiPendidikan']) > 0)
+                                    @foreach ($data['spesifikasiPendidikan'] as $i => $item)
+                                        @php
+                                            $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang($item->map_pendidikan_id);
+                                            $bidang = '';
+                            
+                                            if ($bidangQuery->count() == 1) {
+                                                foreach ($bidangQuery as $b) {
+                                                    $bidang .= e($b->bidang_studi);
+                                                }
+                                            } elseif ($bidangQuery->count() > 1) {
+                                                $bidang = '<ol>';
+                                                foreach ($bidangQuery as $b) {
+                                                    $bidang .= "<li>" . e($b->bidang_studi) . "</li>";
+                                                }
+                                                $bidang .= '</ol>';
                                             }
-                                        } elseif ($bidangQuery->count() > 1) {
-                                            $bidang = '<ol>';
-                                            foreach ($bidangQuery as $b) {
-                                                $bidang .= "<li>$b->bidang_studi</li>";
-                                            }
-                                            $bidang .= '</ol>';
-                                        }
-
-                                        $pengalaman =
-                                            $item->pengalaman == '' ||
-                                            $item->pengalaman == 'FG' ||
-                                            $item->pengalaman == 0
+                            
+                                            $pengalaman = ($item->pengalaman == '' || $item->pengalaman == 'FG' || $item->pengalaman == 0)
                                                 ? '<i>fresh graduate</i>'
-                                                : "pengalaman minimal $item->pengalaman tahun";
-
-                                        $jobdesc = $item->jobdesc != '' ? $item->jobdesc : '';
-                                    @endphp
-
+                                                : "pengalaman minimal " . e($item->pengalaman) . " tahun";
+                            
+                                            $jobdesc = !empty($item->jobdesc) ? e($item->jobdesc) : '';
+                                        @endphp
+                            
+                                        <tr>
+                                            <td class="text-center">{{ $i + 1 }}</td>
+                                            <td class="text-center">{{ e($item->pendidikan) }}</td>
+                                            <td class="text-left">
+                                                @if (!empty($item->bidang_studi))
+                                                    {{ e($item->bidang_studi) }}
+                                                @else
+                                                    {!! $bidang !!}
+                                                @endif
+                                            </td>
+                                            <td class="text-center">{!! $pengalaman !!}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <td class="text-center">{{ $i + 1 }}</td>
-                                        <td class="text-center">{{ $item->pendidikan }}</td>
-                                        <td class="tex-left">
-                                            @if (isset($item->bidang_studi))
-                                                {{ $item->bidang_studi }}
-                                            @else
-                                                {!! $bidang !!}
-                                            @endif
-                                        </td>
-                                        <td class="text-center">{!! $pengalaman !!}</td>
+                                        <td colspan="4" style="text-align: center">Tidak ada data</td>
                                     </tr>
-                                @endforeach
-                            </tbody>
+                                @endif
+                            </tbody>                            
                         </table>
                     </div>
                 </div>
-
             </div>
             <div class="box-body">
                 <h4><b> Kemampuan dan Pengalaman</b></h4>
@@ -672,7 +674,7 @@
                         </thead>
                         <tbody>
                             <ol type="a" style="padding-left: 0; margin-left: 2; list-style-position: inside;">
-                                @if ($jobdesc)
+                                @if (!empty($jobdesc))
                                     <li> {{ $jobdesc ?? '' }} </li>
                                 @endif
                                 @foreach ($data['kemampuan_dan_pengalaman'] as $v)
@@ -689,7 +691,7 @@
             <div class="box-header">
                 <div class="row">
                     <div class="col-12 text-left">
-                        <h3 class="box-title">9. STRUKTUR ORGANISASI</h3>
+                        <h3 class="box-title">10. STRUKTUR ORGANISASI</h3>
                         <div>
                             <p class="font-italic">
                                 Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi
@@ -757,8 +759,7 @@
                                     @endif
                                 @empty
                                     <tr>
-                                        <td>1</td>
-                                        <td colspan="3" style="text-align: center">Tidak ada data</td>
+                                        <td colspan="4" style="text-align: center">Tidak ada data</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -799,8 +800,7 @@
                                 @endif
                             @empty
                                 <tr>
-                                    <td>1</td>
-                                    <td colspan="4" style="text-align: center">Tidak ada data</td>
+                                    <td colspan="5" style="text-align: center">Tidak ada data</td>
                                 </tr>
                             @endforelse
                             </tbody>
@@ -843,8 +843,7 @@
                                     @endif
                                 @empty
                                     <tr>
-                                        <td>1</td>
-                                        <td colspan="4" style="text-align: center">Tidak ada data</td>
+                                        <td colspan="5" style="text-align: center">Tidak ada data</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -892,8 +891,7 @@
                                     @endif
                                 @empty
                                     <tr>
-                                        <td>1</td>
-                                        <td colspan="5" style="text-align: center">Tidak ada data</td>
+                                        <td colspan="6" style="text-align: center">Tidak ada data</td>
                                     </tr>
                                 @endforelse
                             </tbody>

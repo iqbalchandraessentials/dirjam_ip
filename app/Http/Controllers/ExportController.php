@@ -1106,10 +1106,15 @@ class ExportController extends Controller
         $objPHPExcel->setCellValue("E14", strtoupper($data['masterJabatan']['jenjangJabatan']['nama']));
         // KELOMPOK PROFESI
         $dataToInsert = "";
-        foreach ($data['jabatans'] as $key) {
-            $dataToInsert .= "-" . strtoupper($key['namaProfesi']['nama_profesi']) ?? 'Tidak ada nama_profesi' ."\n";
-        }           
-        $objPHPExcel->setCellValue("E15", $dataToInsert);
+        if (!empty($data['jabatans'])) {
+            foreach ($data['jabatans'] as $key) {
+                $namaProfesi = $key['namaProfesi']['nama_profesi'] ?? 'Tidak ada nama_profesi';
+                $dataToInsert .= "- " . strtoupper($namaProfesi) . "\n";
+            }
+        } else {
+            $dataToInsert = "Tidak ada data";
+        }
+        $objPHPExcel->setCellValue("E15", trim($dataToInsert));        
         $objPHPExcel->getStyle("E15")->getAlignment()->setWrapText(true);
         $n = ceil(strlen($dataToInsert) / 25) * 16;
         $objPHPExcel->getRowDimension(12)->setRowHeight($n);
@@ -1141,6 +1146,7 @@ class ExportController extends Controller
         // 
         /* TANGGUNG JAWAB UTAMA */
         $baris = 27;
+        $input = $objPHPExcel->getStyle("B26:G26");
         $no = 1;
         foreach ($data['tugasPokoUtamaGenerik'] as $key) {
             if (isset($v['jenis']) == 'utama'){
@@ -1481,7 +1487,7 @@ class ExportController extends Controller
         $input = '';   
         if (isset($data['jabatans']) && count($data['jabatans']) > 0) {     
         foreach ($data['jabatans'] as $key) {
-            $input .= "-  ".  $key['bawahan_langsung'] ?? '0' . "\n";
+            $input .= "- " . ($key['bawahan_langsung'] ?? '0') . "\n";
             }
         } else {
             $input = "0";

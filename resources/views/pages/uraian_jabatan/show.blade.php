@@ -129,7 +129,7 @@
                 </div>
                 <div class="col-sm-12 col-12">
                     <p class="blockquote text-justify">
-                        {{ $data['fungsi_utama'] }}
+                        {!! $data['fungsi_utama'] !!}
                     </p>
                 </div>
 
@@ -162,14 +162,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data['aktivitas'] as $x => $v)
+                                @forelse ($data['aktivitas'] as $x => $v)
                                     <tr>
                                         <td> <span class="badge bg-dark" style="min-width: 32px">{{ $x + 1 }}</span>
                                         </td>
                                         <td class="text-justify">{{ $v['aktivitas'] }}</td>
                                         <td class="text-justify">{{ $v['output'] }}</td>
                                     </tr>
-                                @endforeach
+                                    @empty
+                                    <tr>
+                                        <td class="text-center" colspan="3">Tidak ada data</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -398,7 +402,7 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="text-center font-weight-bold" width="5%">#</th>
@@ -434,7 +438,7 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="font-weight-bold text-center" width="5%">#</th>
@@ -482,7 +486,7 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="font-weight-bold text-center" width="5%">#</th>
@@ -525,7 +529,7 @@
             <div class="box-body">
                 <div class="form-group mb-0">
                     <div class="table-resposive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="font-weight-bold text-center" width="5%">#</th>
@@ -577,48 +581,49 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data['pendidikan'] as $i => $item)
-                                    @php
-                                        $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang(
-                                            $item->map_pendidikan_id,
-                                        );
-                                        $bidang = '';
-                                        if ($bidangQuery->count() == 1) {
-                                            foreach ($bidangQuery as $b) {
-                                                $bidang .= $b->bidang_studi;
+                                @if (!empty($data['pendidikan']) && count($data['pendidikan']) > 0)
+                                    @foreach ($data['pendidikan'] as $i => $item)
+                                        @php
+                                            $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang($item->map_pendidikan_id);
+                                            $bidang = '';
+                            
+                                            if ($bidangQuery->count() == 1) {
+                                                foreach ($bidangQuery as $b) {
+                                                    $bidang .= e($b->bidang_studi);
+                                                }
+                                            } elseif ($bidangQuery->count() > 1) {
+                                                $bidang = '<ol>';
+                                                foreach ($bidangQuery as $b) {
+                                                    $bidang .= "<li>" . e($b->bidang_studi) . "</li>";
+                                                }
+                                                $bidang .= '</ol>';
                                             }
-                                        } elseif ($bidangQuery->count() > 1) {
-                                            $bidang = '<ol>';
-                                            foreach ($bidangQuery as $b) {
-                                                $bidang .= "<li>$b->bidang_studi</li>";
-                                            }
-                                            $bidang .= '</ol>';
-                                        }
-
-                                        $pengalaman =
-                                            $item->pengalaman == '' ||
-                                            $item->pengalaman == 'FG' ||
-                                            $item->pengalaman == 0
+                            
+                                            $pengalaman = ($item->pengalaman == '' || $item->pengalaman == 'FG' || $item->pengalaman == 0)
                                                 ? '<i>fresh graduate</i>'
-                                                : "pengalaman minimal $item->pengalaman tahun";
-
-                                        $jobdesc = $item->jobdesc != '' ? $item->jobdesc : '';
-                                    @endphp
-
+                                                : "pengalaman minimal " . e($item->pengalaman) . " tahun";
+                            
+                                        @endphp
+                            
+                                        <tr>
+                                            <td class="text-center">{{ $i + 1 }}</td>
+                                            <td class="text-center">{{ e($item->pendidikan) }}</td>
+                                            <td class="text-left">
+                                                @if (!empty($item->bidang_studi))
+                                                    {{ e($item->bidang_studi) }}
+                                                @else
+                                                    {!! $bidang !!}
+                                                @endif
+                                            </td>
+                                            <td class="text-center">{!! $pengalaman !!}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <td class="text-center">{{ $i + 1 }}</td>
-                                        <td class="text-center">{{ $item->pendidikan }}</td>
-                                        <td class="tex-left">
-                                            @if (isset($item->bidang_studi))
-                                                {{ $item->bidang_studi }}
-                                            @else
-                                                {!! $bidang !!}
-                                            @endif
-                                        </td>
-                                        <td class="text-center">{!! $pengalaman !!}</td>
+                                        <td colspan="4" style="text-align: center">Tidak ada data</td>
                                     </tr>
-                                @endforeach
-                            </tbody>
+                                @endif
+                            </tbody>                            
                         </table>
                     </div>
                 </div>
@@ -632,7 +637,7 @@
                         </thead>
                         <tbody>
                             <ol type="a" style="padding-left: 0; margin-left: 2; list-style-position: inside;">
-                                @if ($jobdesc)
+                                @if (!empety($jobdesc))
                                     <li> {{ $jobdesc ?? '' }} </li>
                                 @endif
                                 @foreach ($data['kemampuan_dan_pengalaman'] as $v)

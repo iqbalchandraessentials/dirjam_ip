@@ -27,60 +27,25 @@ use Yajra\DataTables\Facades\DataTables;
 class TemplateJabatanController extends Controller
 {
 
-
     public function index(Request $request)
     {
-        $selectUnit = Auth::user()->unitKerja->unit_nama ?? '';
+        $selectUnit = Auth::user()->unitKerja->unit_nama;
         $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->get();
-
         if ($request->ajax()) {
-            $data = ViewUraianJabatan::select(
-                DB::raw('MIN(URAIAN_JABATAN_ID) as URAIAN_JABATAN_ID'),
-                'master_jabatan',
-                'unit_kd',
-                'jen'
-            )
+            $data = ViewUraianJabatan::select('master_jabatan', 'unit_kd', 'jen')
                 ->where('unit_kd', Auth::user()->unit_kd)
                 ->groupBy('master_jabatan', 'unit_kd', 'jen')
                 ->get();
-
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     return '<a href="' . route('export.templateJabatanExcel', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="fa fa-table"></i></a>
-                        <a href="' . route('export.templateJabatanPdf', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
+                            <a href="' . route('export.templateJabatanPdf', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
         return view('pages.template.index', compact('unitOptions', 'selectUnit'));
-    }
-
-    public function filterData(Request $request)
-    {
-        $unit_kd = $request->input('unit', Auth::user()->unit_kd);
-
-        $data = ViewUraianJabatan::select(
-            DB::raw('MIN(URAIAN_JABATAN_ID) as URAIAN_JABATAN_ID'),
-            'master_jabatan',
-            'unit_kd',
-            'jen'
-        )
-            ->when($unit_kd, function ($query) use ($unit_kd) {
-                return $query->where('unit_kd', $unit_kd);
-            })
-            ->groupBy('master_jabatan', 'unit_kd', 'jen')
-            ->get();
-
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('action', function ($row) {
-                return '<a href="' . route('export.templateJabatanExcel', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="fa fa-table"></i></a>
-                    <a href="' . route('export.templateJabatanPdf', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
     }
 
     public function draft($id)
@@ -99,6 +64,29 @@ class TemplateJabatanController extends Controller
     }
 
 
+    public function filterData(Request $request)
+    {
+        // Gunakan nilai dari request atau default ke Auth::user()->unit_kd
+        $unit_kd = $request->input('unit', Auth::user()->unit_kd);
+
+        // Query data berdasarkan unit kerja yang dipilih
+        $data = ViewUraianJabatan::select('master_jabatan', 'unit_kd', 'jen')
+            ->groupBy('master_jabatan', 'unit_kd', 'jen')
+            ->when(!empty($unit_kd), function ($query) use ($unit_kd) {
+                return $query->where('unit_kd', $unit_kd);
+            });
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                return '<a href="' . route('export.templateJabatanExcel', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="fa fa-table"></i></a>
+                    <a href="' . route('export.templateJabatanPdf', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+
 
 
 
@@ -113,7 +101,6 @@ class TemplateJabatanController extends Controller
             'spesifikasiPendidikan',
             'kemampuandanPengalaman'
         ])->where('nama', $masterJabatan)->first();
-
         if ($data) {
             // Ambil daftar jabatan
             $data['jabatans'] = ViewUraianJabatan::select(
@@ -129,7 +116,6 @@ class TemplateJabatanController extends Controller
                 'BAWAHAN_LANGSUNG',
                 'TOTAL_BAWAHAN'
             )->where('MASTER_JABATAN', $data['nama'])->get();
-
             // Tentukan jenis jabatan
             $data['type'] = $data->jenis_jabatan == 'F' ? 'fungsional' : 'struktural';
             $type = $data->jenis_jabatan == 'F' ? 'fungsional' : 'struktural';
@@ -201,6 +187,7 @@ class TemplateJabatanController extends Controller
             $data['masalah_kompleksitas_kerja'] = MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();
         }
 
+
         if (
             !empty($wewenang_jabatan) &&
             (!empty($wewenang_jabatan[0]['definisi']) || !empty($wewenang_jabatan[0]['pengambilan_keputusan']))
@@ -212,14 +199,16 @@ class TemplateJabatanController extends Controller
         $data['kemampuan_dan_pengalaman'] = isset($kemampuandanPengalaman)
             ? $kemampuandanPengalaman
             : KemampuandanPengalaman::where('jenis_jabatan', $type)->get();
+
         $data['keterampilan_non_teknis'] = KeterampilanNonteknis::where('MASTER_JABATAN', $masterJabatan)->get();
         $data_core = KeterampilanTeknis::where('MASTER_JABATAN', $masterJabatan)->get();
         $core = !$data_core ? $data_core : KeterampilanTeknis::where('kategori', 'CORE')->where('MASTER_JABATAN', $masterJabatan)->get();
         $enabler = KeterampilanTeknis::where('kategori', 'ENABLER')->where('MASTER_JABATAN', $masterJabatan)->get();
         $data['keterampilan_teknis'] =  $core->merge($enabler);
-        if ($data['hubunganKerja'][0]['tujuan'] == null || $data['hubunganKerja'][0]['tujuan'] == "") {
+        if (!empty($data['hubunganKerja']) && isset($data['hubunganKerja'][0]['tujuan']) && ($data['hubunganKerja'][0]['tujuan'] === null || $data['hubunganKerja'][0]['tujuan'] === "")) {
             $data['hubunganKerja'] = [];
         }
+
         return $data;
     }
 
