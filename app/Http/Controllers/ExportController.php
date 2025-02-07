@@ -1085,7 +1085,7 @@ class ExportController extends Controller
         // Load file template Excel
         $spreadsheet = IOFactory::load($templatePath);    
         $objPHPExcel = $spreadsheet->getActiveSheet();
-        // $objPHPExcel->setCellValue("A6", strtoupper($data["unit_id"]));
+        $objPHPExcel->setCellValue("A6", strtoupper($data['jabatans'][0]['description']));
         $objPHPExcel->setCellValue("G4", isset($data['created_at']) ? date_format($data['created_at'],'d-m-Y') : '-' );
         $objPHPExcel->setCellValue("G5", "-");
         $objPHPExcel->setCellValue("G6", "-");
@@ -1101,7 +1101,7 @@ class ExportController extends Controller
         $n = ceil(strlen($dataToInsert) / 25) * 16;
         $objPHPExcel->getRowDimension(12)->setRowHeight($n);
         // Jenis Jabatan
-        $objPHPExcel->setCellValue("E13", $data['type']);
+        $objPHPExcel->setCellValue("E13", strtoupper($data['type']) );
         // Jenjang Jabatan
         $objPHPExcel->setCellValue("E14", strtoupper($data['masterJabatan']['jenjangJabatan']['nama']));
         // KELOMPOK PROFESI
@@ -1478,17 +1478,25 @@ class ExportController extends Controller
         $baris++;
         $objPHPExcel->setCellValue("C$baris", "    Langsung :");
         $objPHPExcel->mergeCells("C$baris:D$baris");
-        $input = '';        
+        $input = '';   
+        if (isset($data['jabatans']) && count($data['jabatans']) > 0) {     
         foreach ($data['jabatans'] as $key) {
             $input .= "-  ".  $key['bawahan_langsung'] ?? '0' . "\n";
+            }
+        } else {
+            $input = "0";
         }
         $objPHPExcel->setCellValue("E$baris", $input);
         $baris++;
         $objPHPExcel->setCellValue("C$baris", "    Total :");
         $objPHPExcel->mergeCells("C$baris:D$baris");
-        $input = '';        
-        foreach ($data['jabatans'] as $key) {
-            $input .= "-  ".  $key['total_bawahan'] ?? '0' . "\n";
+        $input = '';
+        if (isset($data['jabatans']) && count($data['jabatans']) > 0) {
+            foreach ($data['jabatans'] as $key) {
+                $input .= "- " . ($key['total_bawahan'] ?? '0') . "\n";
+            }
+        } else {
+            $input = "0";
         }
         $objPHPExcel->setCellValue("E$baris", $input);
         $baris++;

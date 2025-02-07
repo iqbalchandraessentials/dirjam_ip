@@ -788,24 +788,21 @@
                             <tbody>
                                 @php $no = 1; @endphp
                                 @forelse ($data['keterampilan_non_teknis'] as $x => $v)
-                                    @if ($v['kategori'] == 'PERAN')
-                                        <tr>
-                                            <td>
-                                                <span class="badge bg-dark"
-                                                    style="min-width: 32px">{{ $no++ }}</span>
-                                            </td>
-                                            <td>{{ $v['kode'] }}</td>
-                                            <td>{{ $v['detail']['nama'] }}</td>
-                                            <td class="text-uppercase">{{ $v['jenis'] }}</td>
-                                            <td style="text-align: justify">{{ $v['detail']['definisi'] }}</td>
-                                        </tr>
-                                    @endif
-                                @empty
-                                    <tr>
-                                        <td>1</td>
-                                        <td colspan="4" style="text-align: center">Tidak ada data</td>
+                                @if ($v['kategori'] == 'PERAN')
+                                    <tr style="text-align: center" class="text-center">
+                                        <td> {{ $no++ }}</td>
+                                        <td>{{ $v['kode'] }}</td>
+                                        <td style="text-align: justify">{{ $v['detail']['nama'] }}</td>
+                                        <td>{{ strtoupper($v['jenis']) }}</td>
+                                        <td style="text-align: justify">{{ $v['detail']['definisi'] }}</td>
                                     </tr>
-                                @endforelse
+                                @endif
+                            @empty
+                                <tr>
+                                    <td>1</td>
+                                    <td colspan="4" style="text-align: center">Tidak ada data</td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -832,23 +829,22 @@
                             </thead>
                             <tbody>
                                 @php $no = 1; @endphp
-                                @forelse ($data['keterampilan_teknis'] as $x => $v)
-                                    @if (isset($v['master']['nama']))
+                                @forelse ($data['keterampilan_non_teknis'] as $x => $v)
+                                    @if ($v['kategori'] == 'FUNGSI')
                                         <tr>
-                                            <td>
-                                                <span class="badge bg-dark"
-                                                    style="min-width: 32px">{{ $no++ }}</span>
+                                            <td style="text-align: center;"> {{ $no++ }}</td>
+                                            <td style="text-align: center;">{{ $v['kode'] }}</td>
+                                            <td style="text-align: justify;">{{ $v['detail']['nama'] ?? '' }}</td>
+                                            <td style="text-align: center; text-transform: uppercase;">
+                                                {{ $v['jenis'] ?? '' }}
                                             </td>
-                                            <td>{{ $v['kode'] }}</td>
-                                            <td>{{ $v['detail']['nama'] ?? '' }}</td>
-                                            <td class="text-uppercase">{{ $v['jenis'] ?? '' }}</td>
                                             <td style="text-align: justify">{{ $v['detail']['definisi'] ?? '' }}</td>
                                         </tr>
                                     @endif
                                 @empty
                                     <tr>
                                         <td>1</td>
-                                        <td colspan="5" style="text-align: center">Tidak ada data</td>
+                                        <td colspan="4" style="text-align: center">Tidak ada data</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -880,7 +876,7 @@
                             <tbody>
                                 @php $no = 1; @endphp
                                 @forelse ($data['keterampilan_teknis'] as $x => $v)
-                        @if (isset($v['master']['nama']))
+                                    @if (isset($v['master']['nama']))
                                         <tr>
                                             <td>
                                                 <span class="badge bg-dark"
@@ -893,13 +889,13 @@
                                             <td style="text-align: justify">
                                                 {{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
                                         </tr>
-                                        @endif
-                                        @empty
-                                            <tr>
-                                                <td>1</td>
-                                                <td colspan="5" style="text-align: center">Tidak ada data</td>
-                                            </tr>
-                                        @endforelse
+                                    @endif
+                                @empty
+                                    <tr>
+                                        <td>1</td>
+                                        <td colspan="5" style="text-align: center">Tidak ada data</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

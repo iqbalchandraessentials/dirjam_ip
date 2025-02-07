@@ -665,22 +665,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php $no = 1; @endphp
-                        @forelse ($data['keterampilan_non_teknis'] as $x => $v)
-                            @if ($v['kategori'] == 'UTAMA')
-                                <tr style="text-align: center" class="text-center">
-                                    <td> {{ $no++ }}</td>
-                                    <td>{{ $v['kode'] }}</td>
-                                    <td style="text-align: justify">{{ $v['detail']['nama'] ?? '' }}</td>
-                                    <td style="text-align: justify">{{ $v['detail']['definisi'] ?? '' }}</td>
-                                </tr>
-                            @endif
-                        @empty
+                        @php 
+                            $no = 1; 
+                            $filteredData = $data['keterampilan_non_teknis']->filter(fn($item) => isset($item['kategori']) && $item['kategori'] == 'UTAMA');
+                        @endphp
+                    
+                        @if ($filteredData->isEmpty())
                             <tr>
                                 <td>1</td>
                                 <td colspan="3" style="text-align: center">Tidak ada data</td>
                             </tr>
-                        @endforelse
+                        @else
+                            @foreach ($filteredData as $x => $v)
+                                <tr style="text-align: center" class="text-center">
+                                    <td>{{ $no++ }}</td>
+                                    <td>{{ e($v['kode'] ?? '') }}</td>
+                                    <td style="text-align: justify">{{ e($v['detail']['nama'] ?? '') }}</td>
+                                    <td style="text-align: justify">{{ e($v['detail']['definisi'] ?? '') }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -703,24 +707,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php $no = 1; @endphp
-                    @forelse ($data['keterampilan_non_teknis'] as $x => $v)
-                        @if ($v['kategori'] == 'PERAN')
-                            <tr style="text-align: center" class="text-center">
-                                <td> {{ $no++ }}</td>
-                                <td>{{ $v['kode'] }}</td>
-                                <td style="text-align: justify">{{ $v['detail']['nama'] }}</td>
-                                <td>{{ strtoupper($v['jenis']) }}</td>
-                                <td style="text-align: justify">{{ $v['detail']['definisi'] }}</td>
-                            </tr>
-                        @endif
-                    @empty
+                    @php 
+                        $no = 1; 
+                        $filteredData = $data['keterampilan_non_teknis']->filter(function ($item) {
+                            return isset($item['kategori']) && $item['kategori'] == 'PERAN';
+                        });
+                    @endphp
+                
+                    @if ($filteredData->isEmpty())
                         <tr>
-                            <td>1</td>
+                            <td style="text-align: center">1</td>
                             <td colspan="4" style="text-align: center">Tidak ada data</td>
                         </tr>
-                    @endforelse
+                    @else
+                        @foreach ($filteredData as $x => $v)
+                            <tr style="text-align: center;" class="text-center">
+                                <td>{{ $no++ }}</td>
+                                <td>{{ e($v['kode'] ?? '') }}</td>
+                                <td style="text-align: justify;">{{ e($v['detail']['nama'] ?? '') }}</td>
+                                <td>{{ isset($v['jenis']) ? strtoupper($v['jenis']) : '' }}</td>
+                                <td style="text-align: justify;">{{ e($v['detail']['definisi'] ?? '') }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
+                
             </table>
         </div>
         <br>
@@ -740,24 +751,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php $no = 1; @endphp
-                    @forelse ($data['keterampilan_non_teknis'] as $x => $v)
-                        @if ($v['kategori'] == 'FUNGSI')
-                            <tr>
-                                <td style="text-align: center;"> {{ $no++ }}</td>
-                                <td style="text-align: center;">{{ $v['kode'] }}</td>
-                                <td style="text-align: justify;">{{ $v['detail']['nama'] ?? '' }}</td>
-                                <td style="text-align: center; text-transform: uppercase;">{{ $v['jenis'] ?? '' }}
-                                </td>
-                                <td style="text-align: justify">{{ $v['detail']['definisi'] ?? '' }}</td>
-                            </tr>
-                        @endif
-                    @empty
+                    @php 
+                        $no = 1; 
+                        $filteredData = $data['keterampilan_non_teknis']->filter(fn($item) => isset($item['kategori']) && $item['kategori'] == 'FUNGSI');
+                    @endphp
+                
+                    @if ($filteredData->isEmpty())
                         <tr>
-                            <td>1</td>
+                            <td style="text-align: center">1</td>
                             <td colspan="4" style="text-align: center">Tidak ada data</td>
                         </tr>
-                    @endforelse
+                    @else
+                        @foreach ($filteredData as $x => $v)
+                            <tr style="text-align: center;">
+                                <td>{{ $no++ }}</td>
+                                <td>{{ e($v['kode'] ?? '') }}</td>
+                                <td style="text-align: justify;">{{ e($v['detail']['nama'] ?? '') }}</td>
+                                <td style="text-align: center; text-transform: uppercase;">{{ e($v['jenis'] ?? '') }}</td>
+                                <td style="text-align: justify">{{ e($v['detail']['definisi'] ?? '') }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
