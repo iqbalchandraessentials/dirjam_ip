@@ -39,8 +39,7 @@ class UraianMasterJabatanImport implements ToCollection
         try {
             $data = [];
             $data['nama'] =   $rows[10][4];
-            $viewUraianJabatan = MASTER_JABTAN::select(['MASTER_JABATAN','DESCRIPTION','jen','TYPE','SITEID'])->where('MASTER_JABATAN', $data['nama'])->first();
-            // dd($viewUraianJabatan);
+            $viewUraianJabatan = ViewUraianJabatan::select(['master_jabatan','DESCRIPTION','jen','TYPE','SITEID'])->where('master_jabatan', $data['nama'])->first();
             if (!$viewUraianJabatan) {
                 return redirect()->back()->with('error', 'Nama Master jabatan tidak ditemukan');
             }
@@ -308,9 +307,9 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             };
-            return $uraian_jabatan_id;
+            return $data['nama'];
         } catch (\Exception $e) {
-            Log::error('Error saat membuat uraian jabatan: ' . $e->getMessage());
+            Log::error('Error saat membuat Template jabatan: ' . $e->getMessage());
             return redirect()->back()->with('error',  $e->getMessage());
         }
     }

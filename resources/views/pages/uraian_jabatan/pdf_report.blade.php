@@ -562,10 +562,22 @@
                                     <td style="text-align: center;">{!! $pengalaman !!}</td>
                                     <td>
                                         @if (!empty($item->bidang_studi))
-                                            {{ e($item->bidang_studi) }}
-                                        @else
-                                            {!! $bidang !!}
-                                        @endif
+                                        @php
+                                            $pattern = '/\d+\.\s*/'; // Pola untuk memisahkan berdasarkan angka diikuti titik dan spasi
+                                            $bidangStudiList = preg_split(
+                                                $pattern,
+                                                $item['bidang_studi'],
+                                                -1,
+                                                PREG_SPLIT_NO_EMPTY,
+                                            );
+
+                                            foreach ($bidangStudiList as $index => $bidangStudi) {
+                                                echo $index + 1 . '. ' . trim($bidangStudi) . '<br>';
+                                            }
+                                        @endphp
+                                    @else
+                                        {!! $bidang !!}
+                                    @endif
                                     </td>
                                 </tr>
                             @endforeach

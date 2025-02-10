@@ -12,7 +12,7 @@
                             <h4 class="box-title">List Template Jabatan </h4>
                         </div>
                         <div class="col-6 text-right">
-                            <a href="{{ asset('template/TEMPLATE_IMPORT.xlsx') }}" class="btn btn-success text-white mb-3" download>
+                            <a href="{{ asset('template/Template_import_dirjab.xlsx') }}" class="btn btn-success text-white mb-3" download>
                                 <i class="ti-eye me-1"></i><span class="ml-2">Download Template</span>
                             </a>                            
                         </div>

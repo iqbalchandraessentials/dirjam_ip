@@ -72,16 +72,16 @@ class TemplateJabatanController extends Controller
 
         // Query data berdasarkan unit kerja yang dipilih
         $data = ViewUraianJabatan::select('master_jabatan', 'unit_kd', 'jen')
-        ->groupBy('master_jabatan', 'unit_kd', 'jen') 
-        ->when(!empty($unit_kd), function ($query) use ($unit_kd) {
-            return $query->where('unit_kd', $unit_kd);
-        })
-        ->get();
+            ->groupBy('master_jabatan', 'unit_kd', 'jen')
+            ->when(!empty($unit_kd), function ($query) use ($unit_kd) {
+                return $query->where('unit_kd', $unit_kd);
+            })
+            ->get();
 
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
-                return '<a href="' . route('export.templateJabatanExcel', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="fa fa-table"></i></a>
+                return '<a href="' . route('export.templateJabatanExcel', $row->master_jabatan) . '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>
                     <a href="' . route('export.templateJabatanPdf', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
             })
             ->rawColumns(['action'])
@@ -125,15 +125,15 @@ class TemplateJabatanController extends Controller
             $position_id =  $data['jabatans'][0]['position_id'];
 
             // Ambil jenjang jabatan pertama jika ada
-            $jenjangJabatan = optional($data['jabatans']->first())->JEN ?? null;
+
+            $jenjangJabatan = $data['jabatans'][0]['jen'] ?? null;
 
             // Perbaiki spesifikasi pendidikan dengan pengalaman dari MasterPendidikan
             foreach ($data['spesifikasiPendidikan'] as $key => $item) {
                 $masterPendidikan = MasterPendidikan::where('nama', $item['pendidikan'])
                     ->where('jenjang_jabatan', $jenjangJabatan)
                     ->first();
-
-                $data['spesifikasiPendidikan'][$key]['pengalaman'] = optional($masterPendidikan)->pengalaman ?? '-';
+                $data['spesifikasiPendidikan'][$key]['pengalaman'] = $masterPendidikan ? $masterPendidikan->pengalaman : '-';
             }
 
             $masalah_kompleksitas_kerja = $data['masalahKompleksitasKerja'];
@@ -210,7 +210,6 @@ class TemplateJabatanController extends Controller
         if (!empty($data['hubunganKerja']) && isset($data['hubunganKerja'][0]['tujuan']) && ($data['hubunganKerja'][0]['tujuan'] === null || $data['hubunganKerja'][0]['tujuan'] === "")) {
             $data['hubunganKerja'] = [];
         }
-
         return $data;
     }
 
@@ -226,6 +225,7 @@ class TemplateJabatanController extends Controller
             "labarugi"             => "Laba Rugi",
         ];
     }
+
 
     public function sto($id = "", $now = "")
     {
@@ -270,7 +270,6 @@ class TemplateJabatanController extends Controller
                     $html .= "</div></td>";
                     $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
                     $html .= "</tr>";
-
                     $html .= "<tr>";
                     $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
                     $html .= "<td $head><div><div style='height:30px; width:1px; margin:0 auto; background:#ccc'></div></div></td>";
@@ -351,142 +350,127 @@ class TemplateJabatanController extends Controller
                 $html .= "</tr>";
                 $html .= "</table>";
             }
-
-            return $html;
-        } else
-            // Ambil data jabatan berdasarkan parent_position_id
+        } else {
             $q = DB::table('IP_URJAB_ATASAN_LANGSUNG')->where('parent_position_id', $id)->get();
 
-        $jabatans = [];
-
-        // Loop untuk menentukan jabatan struktural
-        foreach ($q as $key) {
-            if ($key->jenis_jabatan == 'Struktural') {
-                $jabatans[$key->position_id] = $key->child_name;
-            }
-        }
-
-        // Ambil data berdasarkan position_id
-        $q2 = DB::table('IP_URJAB_ATASAN_LANGSUNG')->where('position_id', $now)->first();
-
-        // Tentukan nilai n dan m untuk pengaturan tabel
-        $n = count($jabatans);
-        $m = floor($n / 2);
-
-        $jns = ($n % 2 == 0) ? 'genap' : 'ganjil';
-        $m = ($jns == 'genap') ? $m - 1 : $m;
-        $head = ($jns == 'genap') ? "colspan='2'" : ($n == 2 ? "colspan='3'" : "");
-
-        $max = 1000;
-        $width = $n > 0 ? ceil(100 / $n) : 100;
-        $s = $n == 2 ? "colspan='2'" : '';
-
-        $html = "";
-
-        if ($q2) {
-            $html .= "<table style='text-align:center;' cellspacing='0' cellpadding='0'>";
-
-            // Tampilan posisi PARENT
-            if ($q2->parent_position_id != "") {
-                $html .= "<tr>";
-                $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
-                $html .= "<td $head width='$width%'>";
-                $html .= "<div style='padding:5px; margin:0 5px; border:1px #ccc solid; display:inline-block; font-size:7px; '>";
-                $html .= $q2->parent_name;
-                $html .= "</div>";
-                $html .= "</td>";
-                $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
-                $html .= "</tr>";
-
-                $html .= "<tr>";
-                $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
-                $html .= "<td $head><div><div style='height:10px; width:1px; margin:0 auto; background:#ccc'></div></div></td>";
-                $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
-                $html .= "</tr>";
-            }
-
-            $html .= "<tr>";
-            $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
-
-            // Menginisiasi fungsi untuk posisi fungsional
-            $x = 0;
-            $posz = [];
-
-            foreach ($q as $key) {
-                if ($key->jenis_jabatan != 'Struktural') {
-                    $html2 = $key->position_id == $now
-                        ? "<li style='text-align:left; font-weight:bold; font-size:7px; text-decoration:underline'>"
-                        : "<li style='text-align:left; font-size:7px'>";
-
-                    $html2 .= $key->child_name;
-                    $html2 .= "</li>";
-                    $posz[] = $html2;
-                    $x++;
-                }
-            }
-
-            $wid = $x > 3 ? (($x - 3) * 8) + 30 : 30;
-
-            $html .= "<td $head><div><div style='height:{$wid}px; width:1px; margin:0 auto; background:#ccc;'>";
-
-            if ($n == 0) {
-                if (is_array($posz)) {
-                    $html .= "<div style='position:absolute;width:300px'><ol style='margin-left:-20px;'>";
-                    foreach ($posz as $p) {
-                        $html .= $p;
-                    }
-                    $html .= "</ol></div>";
-                }
-            }
-
-            $html .= "</div></div></div></td>";
-
-            if ($n > 1) {
-                $html .= "<td colspan='$m'><div><ol style='margin-left:-80px;'>";
-                if (is_array($posz)) {
-                    foreach ($posz as $p) {
-                        $html .= $p;
-                    }
-                }
-                $html .= "</ol></div></td>";
-            }
-
-            $html .= "</tr>";
-
-            $html .= "<tr>";
-            $i = 1;
+            $jabatans = [];
+    
             foreach ($q as $key) {
                 if ($key->jenis_jabatan == 'Struktural') {
-                    $html .= "<td $s width='$width%' valign='top'>";
-                    $html .= "<table cellspacing='0' cellpadding='0' style='height:30px; width:100%;'>";
+                    $jabatans[$key->position_id] = $key->child_name;
+                }
+            }
+    
+            $q2 = DB::table('IP_URJAB_ATASAN_LANGSUNG')->where('position_id', $now)->first();
+    
+            $n = count($jabatans);
+            $m = floor($n / 2);
+    
+            $jns = ($n % 2 == 0) ? 'genap' : 'ganjil';
+            $m = ($jns == 'genap') ? $m - 1 : $m;
+            $head = ($jns == 'genap') ? "colspan='2'" : ($n == 2 ? "colspan='3'" : "");
+    
+            $max = 1000;
+            $width = $n > 0 ? ceil(100 / $n) : 100;
+            $s = $n == 2 ? "colspan='2'" : '';
+    
+            $html = "";
+    
+            if ($q2) {
+                $html .= "<table style='text-align:center;' cellspacing='0' cellpadding='0'>";
+    
+                if ($q2->parent_position_id != "") {
                     $html .= "<tr>";
-                    $html .= $i == 1 ? "<td width='50%'>&nbsp;</td>" : "<td width='50%' style='border-top: 1px #ccc solid; text-align:right'>&nbsp;</td>";
-                    $html .= $i == $n ? "<td width='50%' style='border-left: 1px #ccc solid;'>&nbsp;</td>" : "<td width='50%' style='border-top: 1px #ccc solid;border-left: 1px #ccc solid'>&nbsp;</td>";
-                    $html .= "</tr>";
-                    $html .= "</table>";
-                    $html .= "</td>";
-                    $i++;
-                }
-            }
-            $html .= "</tr>";
-
-            $html .= "<tr>";
-            foreach ($q as $key) {
-                if ($key->jenis_jabatan == 'Struktural') {
-                    $html .= "<td $s width='$width%' valign='top'>";
-                    $html .= $key->position_id == $now
-                        ? "<div style='width:100px;padding:5px; margin:0 5px; border:1px #ccc solid; display:inline-block; font-size:7px;background:#c4f5ff'>"
-                        : "<div style='width:100px;padding:5px; margin:0 5px; border:1px #ccc solid; display:inline-block; font-size:7px'>";
-                    $html .= $key->child_name;
+                    $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
+                    $html .= "<td $head width='$width%'>";
+                    $html .= "<div style='padding:5px; margin:0 5px; border:1px #ccc solid; display:inline-block; font-size:7px;'>";
+                    $html .= $q2->parent_name;
                     $html .= "</div>";
                     $html .= "</td>";
+                    $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
+                    $html .= "</tr>";
+    
+                    $html .= "<tr>";
+                    $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
+                    $html .= "<td $head><div><div style='height:10px; width:1px; margin:0 auto; background:#ccc'></div></div></td>";
+                    $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
+                    $html .= "</tr>";
                 }
+    
+                $html .= "<tr>";
+                $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
+    
+                $x = 0;
+                $posz = [];
+    
+                foreach ($q as $key) {
+                    if ($key->jenis_jabatan != 'Struktural') {
+                        $html2 = $key->position_id == $now
+                            ? "<li style='text-align:left; font-weight:bold; font-size:7px; text-decoration:underline'>"
+                            : "<li style='text-align:left; font-size:7px'>";
+                        $html2 .= $key->child_name;
+                        $html2 .= "</li>";
+                        $posz[] = $html2;
+                        $x++;
+                    }
+                }
+    
+                $wid = $x > 3 ? (($x - 3) * 8) + 30 : 30;
+    
+                $html .= "<td $head><div style='height:{$wid}px; width:1px; margin:0 auto; background:#ccc;'>";
+    
+                if ($n == 0) {
+                    if (is_array($posz)) {
+                        $html .= "<div style='position:absolute;width:300px'><ol style='margin-left:-20px;'>";
+                        foreach ($posz as $p) {
+                            $html .= $p;
+                        }
+                        $html .= "</ol></div>";
+                    }
+                }
+    
+                $html .= "</div></td>";
+    
+                if ($n > 1) {
+                    $html .= "<td colspan='$m'><div><ol style='margin-left:-80px;'>";
+                    if (is_array($posz)) {
+                        foreach ($posz as $p) {
+                            $html .= $p;
+                        }
+                    }
+                    $html .= "</ol></div></td>";
+                }
+    
+                $html .= "</tr>";
+                $html .= "<tr>";
+    
+                $i = 1;
+                foreach ($q as $key) {
+                    if ($key->jenis_jabatan == 'Struktural') {
+                        $html .= "<td $s width='$width%' valign='top'>";
+                        $html .= "<table cellspacing='0' cellpadding='0' style='height:30px; width:100%;'>";
+                        $html .= "<tr>";
+                        $html .= $i == 1 ? "<td width='50%'>&nbsp;</td>" : "<td width='50%' style='border-top: 1px #ccc solid; text-align:right'>&nbsp;</td>";
+                        $html .= $i == $n ? "<td width='50%' style='border-left: 1px #ccc solid;'>&nbsp;</td>" : "<td width='50%' style='border-top: 1px #ccc solid;border-left: 1px #ccc solid'>&nbsp;</td>";
+                        $html .= "</tr></table></td>";
+                        $i++;
+                    }
+                }
+    
+                $html .= "</tr><tr>";
+                foreach ($q as $key) {
+                    if ($key->jenis_jabatan == 'Struktural') {
+                        $html .= "<td $s width='$width%' valign='top'>";
+                        $html .= $key->position_id == $now
+                            ? "<div style='width:100px;padding:5px; margin:0 5px; border:1px #ccc solid; display:inline-block; font-size:7px;background:#c4f5ff'>"
+                            : "<div style='width:100px;padding:5px; margin:0 5px; border:1px #ccc solid; display:inline-block; font-size:7px'>";
+                        $html .= $key->child_name;
+                        $html .= "</div></td>";
+                    }
+                }
+                $html .= "</tr></table>";
             }
-            $html .= "</tr>";
-
-            $html .= "</table>";
         }
-
         return $html;
     }
 }

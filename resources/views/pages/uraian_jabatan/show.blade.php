@@ -406,7 +406,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center font-weight-bold" width="5%">#</th>
-                                    <th class="text-center font-weight-bold">Komunikasi Internal</th>
+                                    <th class="text-center font-weight-bold" width="30%">Komunikasi Internal</th>
                                     <th class="text-center font-weight-bold">Tujuan</th>
                                 </tr>
                             </thead>
@@ -442,15 +442,15 @@
                             <thead>
                                 <tr>
                                     <th class="font-weight-bold text-center" width="5%">#</th>
-                                    <th class="font-weight-bold text-center">Komunikasi Eksternal
+                                    <th class="font-weight-bold text-center" width="30%">Komunikasi Eksternal
                                     </th>
                                     <th class="font-weight-bold text-center">Tujuan</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $no = 1; @endphp
+                                @php $no = 1; 
+                                @endphp
                                 @forelse ($data['komunikasi_external'] as $x => $v)
-                                    @if ($v['subjek'] || $v['komunikasi'])
                                         <tr>
                                             <td class="text-center">
                                                 <span class="badge bg-dark"
@@ -460,7 +460,6 @@
                                             </td>
                                             <td class="text-center">{{ $v['tujuan'] }}</td>
                                         </tr>
-                                    @endif
                                 @empty
                                     <tr>
                                         <td colspan="3" class="text-center text-muted">Tidak ada data</td>
@@ -606,14 +605,26 @@
                                         @endphp
                             
                                         <tr>
-                                            <td class="text-center">{{ $i + 1 }}</td>
+                                            <td> <span class="badge bg-dark" style="min-width: 32px">{{ $i + 1 }}</span> </td>
                                             <td class="text-center">{{ e($item->pendidikan) }}</td>
                                             <td class="text-left">
                                                 @if (!empty($item->bidang_studi))
-                                                    {{ e($item->bidang_studi) }}
-                                                @else
-                                                    {!! $bidang !!}
-                                                @endif
+                                                @php
+                                                    $pattern = '/\d+\.\s*/'; // Pola untuk memisahkan berdasarkan angka diikuti titik dan spasi
+                                                    $bidangStudiList = preg_split(
+                                                        $pattern,
+                                                        $item['bidang_studi'],
+                                                        -1,
+                                                        PREG_SPLIT_NO_EMPTY,
+                                                    );
+
+                                                    foreach ($bidangStudiList as $index => $bidangStudi) {
+                                                        echo $index + 1 . '. ' . trim($bidangStudi) . '<br>';
+                                                    }
+                                                @endphp
+                                            @else
+                                                {!! $bidang !!}
+                                            @endif
                                             </td>
                                             <td class="text-center">{!! $pengalaman !!}</td>
                                         </tr>
@@ -745,24 +756,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $no = 1; @endphp
-                                @forelse ($data['keterampilan_non_teknis'] as $v)
-                                    @if ($v['kategori'] == 'PERAN')
-                                        <tr>
-                                            <td class="text-center">
-                                                <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
-                                            </td>
-                                            <td>{{ $v['kode'] }}</td>
-                                            <td class="text-justify">{{ $v['detail']['nama'] ?? '' }}</td>
-                                            <td class="text-uppercase">{{ $v['jenis'] ?? '' }}</td>
-                                            <td class="text-justify">{{ $v['detail']['definisi'] ?? '' }}</td>
-                                        </tr>
-                                    @endif
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center text-muted">Tidak ada data</td>
-                                    </tr>
-                                @endforelse
+                                @php 
+                                $no = 1; 
+                                $filteredData = $data['keterampilan_non_teknis']->filter(function ($item) {
+                                    return isset($item['kategori']) && $item['kategori'] == 'PERAN';
+                                });
+                                @endphp
+                                 @if ($filteredData->isEmpty())
+                                 <tr>
+                                     <td colspan="5" style="text-align: center">Tidak ada data</td>
+                                 </tr>
+                             @else
+                                 @foreach ($filteredData as $x => $v)
+                                     <tr style="text-align: center;" class="text-center">
+                                        <td class="text-center"><span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span></td>
+                                         <td>{{ e($v['kode'] ?? '') }}</td>
+                                         <td style="text-align: justify;">{{ e($v['detail']['nama'] ?? '') }}</td>
+                                         <td>{{ isset($v['jenis']) ? strtoupper($v['jenis']) : '' }}</td>
+                                         <td style="text-align: justify;">{{ e($v['detail']['definisi'] ?? '') }}</td>
+                                     </tr>
+                                 @endforeach
+                             @endif
                             </tbody>
                         </table>
                     </div>
@@ -787,24 +801,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $no = 1; @endphp
-                                @forelse ($data['keterampilan_non_teknis'] as $x => $v)
-                                    @if ($v['kategori'] == 'FUNGSI')
-                                        <tr>
-                                            <td class="text-center">
-                                                <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
-                                            </td>
-                                            <td>{{ $v['kode'] }}</td>
-                                            <td class="text-justify">{{ $v['detail']['nama'] ?? '' }}</td>
-                                            <td class="text-uppercase">{{ $v['jenis'] ?? '' }}</td>
-                                            <td class="text-justify">{{ $v['detail']['definisi'] ?? '' }}</td>
-                                        </tr>
-                                    @endif
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+                                @php 
+                                $no = 1; 
+                                $filteredData = $data['keterampilan_non_teknis']->filter(fn($item) => isset($item['kategori']) && $item['kategori'] == 'FUNGSI');
+                            @endphp
+                        
+                            @if ($filteredData->isEmpty())
+                                <tr>
+                                    <td colspan="5" style="text-align: center">Tidak ada data</td>
+                                </tr>
+                            @else
+                                @foreach ($filteredData as $x => $v)
+                                    <tr style="text-align: center;">
+                                        <td class="text-center">
+                                            <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
+                                        <td>{{ e($v['kode'] ?? '') }}</td>
+                                        <td style="text-align: justify;">{{ e($v['detail']['nama'] ?? '') }}</td>
+                                        <td style="text-align: center; text-transform: uppercase;">{{ e($v['jenis'] ?? '') }}</td>
+                                        <td style="text-align: justify">{{ e($v['detail']['definisi'] ?? '') }}</td>
                                     </tr>
-                                @endforelse
+                                @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>
