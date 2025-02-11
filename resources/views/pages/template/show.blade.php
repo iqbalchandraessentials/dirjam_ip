@@ -44,12 +44,17 @@
                                 <i class="ti-view-list-alt"></i><span> Draft</span>
                             </a>
                         @endif
-                        <a href="{{ route('export.templateJabatanPdf', $data['nama']) }}" class="btn btn-secondary">
+                        @php
+                            $encodedName = base64_encode($data['nama']);
+                        @endphp
+                        
+                        <a href="{{ route('export.templateJabatanPdf', ['encoded_name' => $encodedName]) }}" class="btn btn-secondary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
-                        <a href="{{ route('export.templateJabatanExcel', $data['nama']) }}" class="btn btn-secondary">
-                            <i class="ti-layout-grid4"></i><span>Excell</span>
-                        </a>
+                        
+                        <a href="{{ route('export.templateJabatanExcel', ['encoded_name' => $encodedName]) }}" class="btn btn-secondary">
+                            <i class="ti-layout-grid4"></i><span>Excel</span>
+                        </a>                    
                     </div>
                 </div>
             </div>
@@ -106,7 +111,7 @@
                                     @if (isset($data['jabatans']) && count($data['jabatans']) > 0)
 
                                         @foreach ($data['jabatans'] as $key)
-                                            - {{ $key['namaProfesi']['nama_profesi'] ?? 'Tidak ada nama_profesi' }} <br>
+                                            - {{ $key['namaProfesi']['nama_profesi'] ?? $key['kode_nama_profesi'] }} <br>
                                         @endforeach
                                     @else
                                         <p>Tidak ada data nama_profesi.</p>
@@ -455,18 +460,24 @@
                             </thead>
                             <tbody>
                                 @php $no = 1; @endphp
-                                @forelse ($data['hubunganKerja'] as $x => $v)
+                                @forelse ($data['hubunganKerja'] as $v)  
                                     @if ($v['jenis'] == 'internal' || $v['lingkup_flag'] == 'internal')
+                                        @if (!empty($v['tujuan'])) 
+                                            <tr>
+                                                <td>
+                                                    <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    {{ $v['subjek'] ?? $v['komunikasi'] }} 
+                                                </td>
+                                                <td style="text-align: center">{{ $v['tujuan'] }}</td>
+                                            </tr>
+                                        @else
                                         <tr>
-                                            <td>
-                                                <span class="badge bg-dark"
-                                                    style="min-width: 32px">{{ $no++ }}</span>
-                                            </td>
-                                            <td style="text-align: center">
-                                                {{ isset($v['subjek']) ? $v['subjek'] : $v['komunikasi'] }}</td>
-                                            <td style="text-align: center">{{ $v['tujuan'] }}</td>
+                                            <td colspan="3" style="text-align: center">Tidak ada data</td>
                                         </tr>
-                                    @endif
+                                        @endif
+                                    @endif 
                                 @empty
                                     <tr>
                                         <td colspan="3" style="text-align: center">Tidak ada data</td>
@@ -491,23 +502,29 @@
                             </thead>
                             <tbody>
                                 @php $no = 1; @endphp
-                                @forelse ($data['hubunganKerja'] as $x => $v)
-                                    @if ($v['jenis'] == 'eksternal' || $v['lingkup_flag'] == 'external')
+                                @forelse ($data['hubunganKerja'] as $v)  {{-- Looping langsung, tidak perlu $x --}}
+                                @if ($v['jenis'] == 'eksternal' || $v['lingkup_flag'] == 'external')
+                                    @if (!empty($v['tujuan'])) {{-- Gunakan !empty() untuk memeriksa keberadaan dan nilai --}}
                                         <tr>
                                             <td>
-                                                <span class="badge bg-dark"
-                                                    style="min-width: 32px">{{ $no++ }}</span>
+                                                <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
                                             </td>
                                             <td style="text-align: center">
-                                                {{ isset($v['subjek']) ? $v['subjek'] : $v['komunikasi'] }}</td>
+                                                {{ $v['subjek'] ?? $v['komunikasi'] }} {{-- Gunakan null coalescing operator (??) --}}
+                                            </td>
                                             <td style="text-align: center">{{ $v['tujuan'] }}</td>
                                         </tr>
-                                    @endif
-                                @empty
+                                    @else
                                     <tr>
                                         <td colspan="3" style="text-align: center">Tidak ada data</td>
                                     </tr>
-                                @endforelse
+                                    @endif
+                                @endif {{-- Tidak perlu else di sini, lewati jika bukan internal --}}
+                            @empty
+                                <tr>
+                                    <td colspan="3" style="text-align: center">Tidak ada data</td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -716,7 +733,7 @@
             </div>
 
             <div class="box-body pt-0 d-flex justify-content-center">
-                <div class="row" style="display: block;  margin-bottom:90px">
+                <div class="row" style="display: block; margin-bottom:40%">
                     @if (isset($data['struktur_organisasi']))
                         <div class="col-12" id="sto" style="transform: scale(0.7); transform-origin: top center;">
                             {!! $data['struktur_organisasi'] !!}

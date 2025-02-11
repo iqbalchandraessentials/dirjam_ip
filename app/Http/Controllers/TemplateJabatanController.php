@@ -69,7 +69,7 @@ class TemplateJabatanController extends Controller
     {
         // Gunakan nilai dari request atau default ke Auth::user()->unit_kd
         $unit_kd = $request->input('unit', Auth::user()->unit_kd);
-
+    
         // Query data berdasarkan unit kerja yang dipilih
         $data = ViewUraianJabatan::select('master_jabatan', 'unit_kd', 'jen')
             ->groupBy('master_jabatan', 'unit_kd', 'jen')
@@ -77,23 +77,26 @@ class TemplateJabatanController extends Controller
                 return $query->where('unit_kd', $unit_kd);
             })
             ->get();
-
+    
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
-                return '<a href="' . route('export.templateJabatanExcel', $row->master_jabatan) . '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>
-                    <a href="' . route('export.templateJabatanPdf', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
+                $encodedName = base64_encode($row->master_jabatan); // Encode sebelum dimasukkan ke URL
+                
+                return '
+                        <a href="' . route('template_jabatan.show',  $encodedName) . '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                        <a href="' . route('export.templateJabatanExcel', ['encoded_name' => $encodedName]) . '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>
+                        <a href="' . route('export.templateJabatanPdf', ['encoded_name' => $encodedName]) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>
+                        '; 
             })
             ->rawColumns(['action'])
             ->make(true);
     }
-
-
-
-
+    
 
     public function getDatas($masterJabatan)
-    {
+    {       
+        $masterJabatan = base64_decode($masterJabatan);
         $data = UraianMasterJabatan::with([
             'masterJabatan',
             'tugasPokoUtamaGenerik',

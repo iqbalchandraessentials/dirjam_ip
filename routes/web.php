@@ -60,8 +60,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('MasterDefaultData', [ExportController::class, 'exportMasterDefaultData'])->name('export.MasterDefaultData');
         Route::get('uraianJabatanPdf/{id}', [ExportController::class, 'exportUraianJabatanPdf'])->name('export.uraianJabatanPDF');
         Route::get('uraianJabatanExcel/{id}', [ExportController::class, 'exportUraianJabatanExcel'])->name('export.uraianJabatanExcel');
-        Route::get('templateJabatanExcel/{id}', [ExportController::class, 'exportExcelTemplateJabatan'])->name('export.templateJabatanExcel');
-        Route::get('templateJabatanPdf/{id}', [ExportController::class, 'exportTemplateJabatanPdf'])->name('export.templateJabatanPdf');
+        Route::get('templateJabatanExcel/{encoded_name}', [ExportController::class, 'exportExcelTemplateJabatan'])->name('export.templateJabatanExcel');
+        Route::get('templateJabatanPdf/{encoded_name}', [ExportController::class, 'exportTemplateJabatanPdf'])->name('export.templateJabatanPdf');
+
     });
 
     // Master Data Routes

@@ -17,6 +17,7 @@
             font-size: 85%;
             line-height: 1.3em;
         }
+
         #table,
         #table th,
         #table td {
@@ -24,13 +25,16 @@
             border: 1px #000 solid;
             padding: 3px;
         }
+
         #table {
             width: 100%;
             text-align: justify;
         }
+
         #table td {
             vertical-align: top;
         }
+
         .struktur-organisasi {
             page: struktur_organisasi;
             /* Gunakan halaman khusus STRUKTUR ORGANISASI */
@@ -47,19 +51,23 @@
             font-weight: normal;
             text-align: justify;
         }
+
         @media print {
             .perkecil {
                 width: 300px Imp !important;
             }
         }
+
         ul li {
             list-style-type: none;
         }
+
         ul li:before {
             content: "-";
             position: relative;
             left: -10px;
         }
+
         ul li {
             text-indent: -5px;
         }
@@ -161,14 +169,15 @@
                     <td>
                         @if (!empty($data['jabatans']))
                             @foreach ($data['jabatans'] as $key)
-                                - {{ isset($key['namaProfesi']['nama_profesi']) ? strtoupper($key['namaProfesi']['nama_profesi']) : 'Tidak ada nama_profesi' }}
+                                -
+                                {{ isset($key['namaProfesi']['nama_profesi']) ? strtoupper($key['namaProfesi']['nama_profesi']) : $key['kode_nama_profesi'] }}
                                 <br>
                             @endforeach
                         @else
                             <p>Tidak ada data.</p>
                         @endif
                     </td>
-                    
+
                 </tr>
                 <tr>
                     <td>Unit Kerja</td>
@@ -245,11 +254,11 @@
                             </tr>
                         @endif
                     @empty
-                    <tr>
-                        <td>1</td>
-                        <td colspan="2" style="text-align: center">Tidak ada data</td>
-                    </tr>
-                @endforelse
+                        <tr>
+                            <td>1</td>
+                            <td colspan="2" style="text-align: center">Tidak ada data</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -464,13 +473,19 @@
                             @php $no = 1; @endphp
                             @forelse ($data['hubunganKerja'] as $x => $v)
                                 @if ($v['jenis'] == 'internal' || $v['lingkup_flag'] == 'internal')
-                                    <tr>
-                                        <td>{{ $no++ }}
-                                        </td>
-                                        <td style="text-align: justify">
-                                            {{ isset($v['subjek']) ? $v['subjek'] : $v['komunikasi'] }}</td>
-                                        <td style="text-align: justify">{{ $v['tujuan'] }}</td>
-                                    </tr>
+                                    @if (!empty($v['tujuan']))
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td style="text-align: justify">
+                                                {{ isset($v['subjek']) ? $v['subjek'] : $v['komunikasi'] }}</td>
+                                            <td style="text-align: justify">{{ $v['tujuan'] }}</td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td>1</td>
+                                            <td colspan="2" style="text-align: center">Tidak ada data</td>
+                                        </tr>
+                                    @endif
                                 @endif
                             @empty
                                 <tr>
@@ -498,6 +513,7 @@
                             @php $no = 1; @endphp
                             @forelse ($data['hubunganKerja'] as $x => $v)
                                 @if ($v['jenis'] == 'eksternal' || $v['lingkup_flag'] == 'external')
+                                @if (!empty($v['tujuan']))
                                     <tr>
                                         <td>{{ $no++ }}
                                         </td>
@@ -505,6 +521,12 @@
                                             {{ isset($v['subjek']) ? $v['subjek'] : $v['komunikasi'] }}</td>
                                         <td style="text-align: justify">{{ $v['tujuan'] }}</td>
                                     </tr>
+                                    @else
+                                        <tr>
+                                            <td>1</td>
+                                            <td colspan="2" style="text-align: center">Tidak ada data</td>
+                                        </tr>
+                                    @endif
                                 @endif
                             @empty
                                 <tr>
@@ -597,9 +619,11 @@
                         @if (!empty($data['spesifikasiPendidikan']) && count($data['spesifikasiPendidikan']) > 0)
                             @foreach ($data['spesifikasiPendidikan'] as $i => $item)
                                 @php
-                                    $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang($item->map_pendidikan_id);
+                                    $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang(
+                                        $item->map_pendidikan_id,
+                                    );
                                     $bidang = '';
-                    
+
                                     if ($bidangQuery->count() == 1) {
                                         foreach ($bidangQuery as $b) {
                                             $bidang .= e($b->bidang_studi);
@@ -607,39 +631,40 @@
                                     } elseif ($bidangQuery->count() > 1) {
                                         $bidang = '<ol>';
                                         foreach ($bidangQuery as $b) {
-                                            $bidang .= "<li>" . e($b->bidang_studi) . "</li>";
+                                            $bidang .= '<li>' . e($b->bidang_studi) . '</li>';
                                         }
                                         $bidang .= '</ol>';
                                     }
-                    
-                                    $pengalaman = ($item->pengalaman == '' || $item->pengalaman == 'FG' || $item->pengalaman == 0)
-                                        ? '<i>fresh graduate</i>'
-                                        : "pengalaman minimal " . e($item->pengalaman) . " tahun";
-                    
+
+                                    $pengalaman =
+                                        $item->pengalaman == '' || $item->pengalaman == 'FG' || $item->pengalaman == 0
+                                            ? '<i>fresh graduate</i>'
+                                            : 'pengalaman minimal ' . e($item->pengalaman) . ' tahun';
+
                                     $jobdesc = !empty($item->jobdesc) ? e($item->jobdesc) : '';
                                 @endphp
-                    
+
                                 <tr>
                                     <td class="text-center">{{ $i + 1 }}</td>
                                     <td class="text-center">{{ e($item->pendidikan) }}</td>
                                     <td class="text-left">
                                         @if (!empty($item->bidang_studi))
-                                                    @php
-                                                        $pattern = '/\d+\.\s*/'; // Pola untuk memisahkan berdasarkan angka diikuti titik dan spasi
-                                                        $bidangStudiList = preg_split(
-                                                            $pattern,
-                                                            $item['bidang_studi'],
-                                                            -1,
-                                                            PREG_SPLIT_NO_EMPTY,
-                                                        );
+                                            @php
+                                                $pattern = '/\d+\.\s*/'; // Pola untuk memisahkan berdasarkan angka diikuti titik dan spasi
+                                                $bidangStudiList = preg_split(
+                                                    $pattern,
+                                                    $item['bidang_studi'],
+                                                    -1,
+                                                    PREG_SPLIT_NO_EMPTY,
+                                                );
 
-                                                        foreach ($bidangStudiList as $index => $bidangStudi) {
-                                                            echo $index + 1 . '. ' . trim($bidangStudi) . '<br>';
-                                                        }
-                                                    @endphp
-                                                @else
-                                                    {!! $bidang !!}
-                                                @endif
+                                                foreach ($bidangStudiList as $index => $bidangStudi) {
+                                                    echo $index + 1 . '. ' . trim($bidangStudi) . '<br>';
+                                                }
+                                            @endphp
+                                        @else
+                                            {!! $bidang !!}
+                                        @endif
                                     </td>
                                     <td class="text-center">{!! $pengalaman !!}</td>
                                 </tr>
@@ -650,7 +675,7 @@
                                 <td colspan="3" style="text-align: center">Tidak ada data</td>
                             </tr>
                         @endif
-                    </tbody>                    
+                    </tbody>
                 </table>
             </div>
             <b>Kemampuan dan Pengalaman</b>
@@ -687,11 +712,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php 
-                            $no = 1; 
-                            $filteredData = $data['keterampilan_non_teknis']->filter(fn($item) => isset($item['kategori']) && $item['kategori'] == 'UTAMA');
+                        @php
+                            $no = 1;
+                            $filteredData = $data['keterampilan_non_teknis']->filter(
+                                fn($item) => isset($item['kategori']) && $item['kategori'] == 'UTAMA',
+                            );
                         @endphp
-                    
+
                         @if ($filteredData->isEmpty())
                             <tr>
                                 <td>1</td>
@@ -729,13 +756,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php 
-                        $no = 1; 
+                    @php
+                        $no = 1;
                         $filteredData = $data['keterampilan_non_teknis']->filter(function ($item) {
                             return isset($item['kategori']) && $item['kategori'] == 'PERAN';
                         });
                     @endphp
-                
+
                     @if ($filteredData->isEmpty())
                         <tr>
                             <td style="text-align: center">1</td>
@@ -753,7 +780,7 @@
                         @endforeach
                     @endif
                 </tbody>
-                
+
             </table>
         </div>
         <br>
@@ -773,11 +800,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php 
-                        $no = 1; 
-                        $filteredData = $data['keterampilan_non_teknis']->filter(fn($item) => isset($item['kategori']) && $item['kategori'] == 'FUNGSI');
+                    @php
+                        $no = 1;
+                        $filteredData = $data['keterampilan_non_teknis']->filter(
+                            fn($item) => isset($item['kategori']) && $item['kategori'] == 'FUNGSI',
+                        );
                     @endphp
-                
+
                     @if ($filteredData->isEmpty())
                         <tr>
                             <td style="text-align: center">1</td>
@@ -789,7 +818,8 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ e($v['kode'] ?? '') }}</td>
                                 <td style="text-align: justify;">{{ e($v['detail']['nama'] ?? '') }}</td>
-                                <td style="text-align: center; text-transform: uppercase;">{{ e($v['jenis'] ?? '') }}</td>
+                                <td style="text-align: center; text-transform: uppercase;">{{ e($v['jenis'] ?? '') }}
+                                </td>
                                 <td style="text-align: justify">{{ e($v['detail']['definisi'] ?? '') }}</td>
                             </tr>
                         @endforeach

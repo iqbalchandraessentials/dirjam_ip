@@ -136,10 +136,11 @@
             { data: 'jen', name: 'jen' },
             { data: 'action', name: 'action', orderable: false, searchable: false }
         ],
-        createdRow: function (row, data) {
-            $(row).attr('data-href', "{{ url('template_jabatan') }}/" + data.master_jabatan);
-            $(row).css('cursor', 'pointer');
-        }
+        // createdRow: function (row, data) {
+        //     let encodedJabatan = btoa(data.master_jabatan); // Encode ke Base64
+        //     $(row).attr('data-href', "{{ url('template_jabatan') }}/" + encodedJabatan);
+        //     $(row).css('cursor', 'pointer');
+        // }
     });
 
     // Reload tabel ketika filter unit berubah
