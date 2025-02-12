@@ -16,7 +16,7 @@
 
                 <div class="box-body">
 
-                    <form action="{{ route('filterUraianJabatan') }}" method="POST" class="form-horizontal">
+                    <form action="{{ route('uraian_jabatan.filter') }}" method="POST" class="form-horizontal">
                         @csrf
                         <div class="d-flex justify-content-center">
                             <div class="row">
@@ -78,11 +78,11 @@
                                     // Buat tombol export Excel (jika status tidak '-')
                                     $link2 = $key->status === '-'
                                         ? ''
-                                        : '<a href="' . route('export.uraianJabatanExcel', $key->uraian_jabatan_id) . '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>';
+                                        : '<a href="' . route('export.uraian_jabatan_Excel', $key->uraian_jabatan_id) . '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>';
                                 
                                     // Buat tombol edit dan print
                                     $edit = '<a href="' . $link . '" class="btn btn-xs btn-success"><i class="fa fa-search"></i></a>';
-                                    $print = '<a href="' . route('export.uraianJabatanPDF', $key->uraian_jabatan_id) . '" class="btn btn-xs btn-primary"><i class="fa fa-print"></i></a>';
+                                    $print = '<a href="' . route('export.uraian_jabatan_PDF', $key->uraian_jabatan_id) . '" class="btn btn-xs btn-primary"><i class="fa fa-print"></i></a>';
                                 
                                     // Gabungkan tombol menjadi satu
                                     $button = "$link2 $print";

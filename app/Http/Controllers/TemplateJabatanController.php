@@ -40,8 +40,8 @@ class TemplateJabatanController extends Controller
         //     return DataTables::of($data)
         //         ->addIndexColumn()
         //         ->addColumn('action', function ($row) {
-        //             return '<a href="' . route('export.templateJabatanExcel', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="fa fa-table"></i></a>
-        //                     <a href="' . route('export.templateJabatanPdf', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
+        //             return '<a href="' . route('export.template_jabatan_Excel', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="fa fa-table"></i></a>
+        //                     <a href="' . route('export.template_jabatan_PDF', $row->master_jabatan) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
         //         })
         //         ->rawColumns(['action'])
         //         ->make(true);
@@ -85,8 +85,8 @@ class TemplateJabatanController extends Controller
                 
                 return '
                         <a href="' . route('template_jabatan.show',  $encodedName) . '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
-                        <a href="' . route('export.templateJabatanExcel', ['encoded_name' => $encodedName]) . '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>
-                        <a href="' . route('export.templateJabatanPdf', ['encoded_name' => $encodedName]) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>
+                        <a href="' . route('export.template_jabatan_Excel', ['encoded_name' => $encodedName]) . '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>
+                        <a href="' . route('export.template_jabatan_PDF', ['encoded_name' => $encodedName]) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>
                         '; 
             })
             ->rawColumns(['action'])

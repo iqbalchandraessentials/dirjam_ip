@@ -2,7 +2,7 @@
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog"
 aria-labelledby="addModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
-    <form action="{{ route('master.TugasPokokGenerikStore') }}" method="POST">
+    <form action="{{ route('master.tugas_pokok_generik.store') }}" method="POST">
         @csrf
         <div class="modal-content">
             <div class="modal-header">
@@ -45,7 +45,7 @@ aria-labelledby="addModalLabel" aria-hidden="true">
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
 aria-labelledby="editModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
-    <form action="{{ route('master.TugasPokokGenerikUpdate') }}" method="POST">
+    <form action="{{ route('master.tugas_pokok_generik.update') }}" method="POST">
         @csrf
         <input type="hidden" id="edit-id" name="id">
         <div class="modal-content">
@@ -89,7 +89,7 @@ aria-labelledby="editModalLabel" aria-hidden="true">
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
 aria-labelledby="deleteModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
-    <form action="{{ route('master.TugasPokokGenerikDestroy') }}" method="POST">
+    <form action="{{ route('master.tugas_pokok_generik.delete') }}" method="POST">
         @csrf
         <input type="hidden" id="delete-id" name="id">
         <div class="modal-content">

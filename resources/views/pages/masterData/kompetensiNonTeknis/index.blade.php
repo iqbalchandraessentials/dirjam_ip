@@ -12,10 +12,10 @@
                             <h4 class="box-title">Master Kompetnsi Non Teknis</h4>
                         </div>
                         <div class="col-6 text-right">
-                            <a href="{{ route('master.mappingkomptensiNonTeknis') }}" class="btn btn-success mb-3" rel="noopener noreferrer">
+                            <a href="{{ route('master.mapping-komptensi-non-teknis') }}" class="btn btn-success mb-3" rel="noopener noreferrer">
                                 <i class="ti-eye me-1"></i> <span class="ml-1">Mapping</span>
                             </a>
-                            <a href="{{ route('export.MappingKompetensiNonTeknis') }}" class="btn btn-secondary">
+                            <a href="{{ route('export.kompetensi_non_teknis') }}" class="btn btn-secondary">
                                 <i class="ti-layout-grid4"></i><span class="ml-1">Excell</span>
                             </a>
                         </div>
@@ -58,7 +58,7 @@
 
 
                     <div style="margin-bottom: 15px">
-                        <form action="{{ route('import.masterKompetensiNonTeknis') }}" method="POST"
+                        <form action="{{ route('import.kompetensi_non_teknis') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             <label for="file">Upload Excel File:</label>
@@ -71,7 +71,7 @@
                         <div class="col">
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped dataTables">
+                                    <table id="kompetensiTable" class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th class="text-center">Kode</th>
@@ -79,22 +79,9 @@
                                                 <th class="text-center">Singkatan</th>
                                                 <th class="text-center">Jenis</th>
                                                 <th class="text-center">Definisi</th>
-
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                            @foreach ($data as $x => $v)
-                                                <tr>
-                                                    <td class="text-center">{{ $v['kode'] }}</td>
-                                                    <td class="text-center">{{ $v['nama'] }}</td>
-                                                    <td class="">{{ $v['singkatan'] }}</td>
-                                                    <td class="">{{ $v['jenis'] }}</td>
-                                                    <td class="">{{ $v['definisi'] }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                    </table>                                    
                                 </div>
                             </div>
                         </div>
@@ -105,4 +92,23 @@
         </div>
     </div>
 
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function() {
+        $('#kompetensiTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('master.kompetensi-non-teknis') }}",
+            columns: [
+                { data: 'kode', name: 'kode', className: 'text-center' },
+                { data: 'nama', name: 'nama', className: 'text-center' },
+                { data: 'singkatan', name: 'singkatan' },
+                { data: 'jenis', name: 'jenis' },
+                { data: 'definisi', name: 'definisi' }
+            ]
+        });
+    });
+    </script>
 @endsection

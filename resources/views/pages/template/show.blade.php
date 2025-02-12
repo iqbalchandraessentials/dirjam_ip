@@ -48,11 +48,11 @@
                             $encodedName = base64_encode($data['nama']);
                         @endphp
                         
-                        <a href="{{ route('export.templateJabatanPdf', ['encoded_name' => $encodedName]) }}" class="btn btn-secondary">
+                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName]) }}" class="btn btn-secondary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
                         
-                        <a href="{{ route('export.templateJabatanExcel', ['encoded_name' => $encodedName]) }}" class="btn btn-secondary">
+                        <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName]) }}" class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span>Excel</span>
                         </a>                    
                     </div>
@@ -502,15 +502,15 @@
                             </thead>
                             <tbody>
                                 @php $no = 1; @endphp
-                                @forelse ($data['hubunganKerja'] as $v)  {{-- Looping langsung, tidak perlu $x --}}
+                                @forelse ($data['hubunganKerja'] as $v) 
                                 @if ($v['jenis'] == 'eksternal' || $v['lingkup_flag'] == 'external')
-                                    @if (!empty($v['tujuan'])) {{-- Gunakan !empty() untuk memeriksa keberadaan dan nilai --}}
+                                    @if (!empty($v['tujuan'] || $v['tujuan'] !== '' )) 
                                         <tr>
                                             <td>
                                                 <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
                                             </td>
                                             <td style="text-align: center">
-                                                {{ $v['subjek'] ?? $v['komunikasi'] }} {{-- Gunakan null coalescing operator (??) --}}
+                                                {{ $v['subjek'] ?? $v['komunikasi'] }} 
                                             </td>
                                             <td style="text-align: center">{{ $v['tujuan'] }}</td>
                                         </tr>
@@ -519,7 +519,7 @@
                                         <td colspan="3" style="text-align: center">Tidak ada data</td>
                                     </tr>
                                     @endif
-                                @endif {{-- Tidak perlu else di sini, lewati jika bukan internal --}}
+                                @endif 
                             @empty
                                 <tr>
                                     <td colspan="3" style="text-align: center">Tidak ada data</td>

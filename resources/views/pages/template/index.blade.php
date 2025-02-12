@@ -13,7 +13,7 @@
                         </div>
                         <div class="col-6 text-right">
                             <a href="{{ asset('template/Template_import_dirjab.xlsx') }}" class="btn btn-success text-white mb-3" download>
-                                <i class="ti-eye me-1"></i><span class="ml-2">Download Template</span>
+                                <i class="ti-eye me-1"></i><span class="ml-2">Template</span>
                             </a>                            
                         </div>
                     </div>
@@ -28,7 +28,6 @@
                             </button>
                         </div>
                     @endif
-
                     @if (session('error'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             {{ session('error') }}
@@ -37,7 +36,6 @@
                             </button>
                         </div>
                     @endif
-
                     @if ($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <ul>
@@ -80,11 +78,11 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-auto">
+                            {{-- <div class="col-auto">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary ml-2"><i class="ti-search"></i></button>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </form>
@@ -136,11 +134,6 @@
             { data: 'jen', name: 'jen' },
             { data: 'action', name: 'action', orderable: false, searchable: false }
         ],
-        // createdRow: function (row, data) {
-        //     let encodedJabatan = btoa(data.master_jabatan); // Encode ke Base64
-        //     $(row).attr('data-href', "{{ url('template_jabatan') }}/" + encodedJabatan);
-        //     $(row).css('cursor', 'pointer');
-        // }
     });
 
     // Reload tabel ketika filter unit berubah

@@ -37,11 +37,11 @@
                         </p>
                     </div>
                     <div class="col text-right">
-                        <a href="{{ route('export.uraianJabatanPDF', $data['uraian_jabatan_id']) }}"
+                        <a href="{{ route('export.uraian_jabatan_PDF', $data['uraian_jabatan_id']) }}"
                             class="btn btn-secondary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
-                        <a href="{{ route('export.uraianJabatanExcel', $data['uraian_jabatan_id']) }}"
+                        <a href="{{ route('export.uraian_jabatan_Excel', $data['uraian_jabatan_id']) }}"
                             class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span>Excell</span>
                         </a>
@@ -455,7 +455,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php$no = 1;
+                                @php
+                                $no = 1;
                                 @endphp
                                 @forelse ($data['komunikasi_external'] as $x => $v)
                                     @if (!empty($v['tujuan']))

@@ -17,6 +17,14 @@
                     </div>
                 </div>
                 <div class="box-body">
+                    @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
                     <div class="table-responsive">
                         <table class="table table-striped dataTables">
                             <thead>
@@ -33,7 +41,7 @@
                                         <td class="text-center">{{ $v->nama }}</td>
                                         <td class="text-center">
                                             <button class="btn btn-secondary btn-xs btnEdit"  data-id="{{ $v->id }}"  data-nama="{{ $v->nama }}"><i class="ti-pencil"></i></button>
-                                            <button class="btn btn-danger btn-xs" id="btnDelete"><i class="ti-trash"></i></button>
+                                            <button class="btn btn-danger btn-xs btnDelete" data-id="{{ $v->id }}"><i class="ti-trash"></i></button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -72,9 +80,9 @@
                         <!-- Modal Delete -->
                         <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
-                                <form action="" method="POST" id="formDelete">
+                                <form action="{{ route('master.indikator.delete') }}" method="POST" id="formDelete">
                                     @csrf
-                                    @method('DELETE')
+                                    <input type="hidden" name="id" id="deleteId">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="modalDeleteLabel">Hapus Data</h5>
@@ -95,7 +103,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 @endsection
 
@@ -106,7 +113,7 @@
         $('#btnAdd').click(function () {
             $('#formSave')[0].reset(); // Reset form
             $('#indikatorId').val(''); // Reset ID indikator
-            $('#formSave').attr('action', `{{ route('master.storeIndikator') }}`); // Set action untuk tambah
+            $('#formSave').attr('action', `{{ route('master.indikator.store') }}`); // Set action untuk tambah
             $('#modalFormLabel').text('Tambah Indikator'); // Set judul modal
             $('#modalForm').modal('show'); // Tampilkan modal
         });
@@ -120,18 +127,15 @@
             // Isi data ke form
             $('#indikatorId').val(id); // Isi input hidden dengan ID indikator
             $('#nama').val(nama); // Isi input nama dengan data dari atribut
-            $('#formSave').attr('action', `{{ route('master.updateIndikator') }}`); // Set action untuk update
+            $('#formSave').attr('action', `{{ route('master.indikator.update') }}`); // Set action untuk update
             $('#modalFormLabel').text('Edit Indikator'); // Set judul modal
             $('#modalForm').modal('show'); // Tampilkan modal
         });
-
-        
-
-
-        // Delete Data
-        $('#btnDelete').click(function () {
-            let id = $(this).closest('tr').data('id');
-            $('#formDelete').attr('action', `{{ url('master_data/indikator') }}/${id}`);
+       // Delete Data
+       $(document).on('click', '.btnDelete', function () {
+            let id = $(this).data('id');
+            console.log('ID yang dikirim:', id); // Debugging
+            $('#deleteId').val(id); // Isi input hidden dengan ID
             $('#modalDelete').modal('show');
         });
     });

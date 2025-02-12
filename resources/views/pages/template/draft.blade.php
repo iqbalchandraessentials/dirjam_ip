@@ -35,8 +35,8 @@
                                                             href="{{ route('template_jabatan.show', $v->id) }}">{{ $v['nama'] }}</a>
                                                     </td>
                                                     <td class="text-center">
-                                                        <a href="{{ route('export.templateJabatanExcel', $v->id) }}"><i class="ti-layout-grid4"></i></a>
-                                                        <a href="{{ route('export.templateJabatanPdf', $v->id) }}"><i class="ti-printer"></i></a>
+                                                        <a href="{{ route('export.template_jabatan_Excel', $v->id) }}"><i class="ti-layout-grid4"></i></a>
+                                                        <a href="{{ route('export.template_jabatan_PDF', $v->id) }}"><i class="ti-printer"></i></a>
                                                     </td>
                                                 </tr>
                                             @endforeach

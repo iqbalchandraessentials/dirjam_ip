@@ -73,10 +73,12 @@ class MasterDataController extends Controller
     }
 
     public function deleteIndikator(Request $request)
-    {
-        MasterIndikatorOutput::findOrFail($request->id)->delete();
-        return redirect()->route('master.indikator')->with('success', 'Data berhasil dihapus');
-    }
+{
+    $indikator = MasterIndikatorOutput::findOrFail($request->id);
+    $indikator->delete();
+    return redirect()->route('master.indikator')->with('success', 'Data berhasil dihapus');
+}
+
 
 
     public function jenjangJabatan() {
@@ -90,7 +92,6 @@ class MasterDataController extends Controller
     
     public function tugasPokokGenerik() {
         $data = TugasPokoUtamaGenerik::where('jenis','generik')->get();
-        // dd($data);
         return view('pages.masterData.tugasPokokGenerik.index', ['data' => $data]);
     }
     public function TugasPokokGenerikStore(Request $request) {
@@ -108,7 +109,7 @@ class MasterDataController extends Controller
             'jenis' => $request->jenis,
             'created_by' => Auth::user()->nama,
         ]);
-        return redirect()->route('master.tugasPokokGenerik')->with('success', 'Data berhasil ditambahkan.');
+        return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil ditambahkan.');
     }
     public function TugasPokokGenerikUpdate(Request $request)
     {
@@ -126,13 +127,13 @@ class MasterDataController extends Controller
             'jenis' => $request->jenis,
             'created_by' => Auth::user()->nama,
         ]);
-        return redirect()->route('master.tugasPokokGenerik')->with('success', 'Data berhasil diperbarui.');
+        return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil diperbarui.');
     }
     public function TugasPokokGenerikDestroy(Request $request)
     {
         $data = TugasPokoUtamaGenerik::findOrFail($request->id);;
         $data->delete();
-        return redirect()->route('master.tugasPokokGenerik')->with('success', 'Data berhasil dihapus.');
+        return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil dihapus.');
     }
     
     public function defaultMasterData() {
@@ -153,10 +154,10 @@ class MasterDataController extends Controller
             $data = MasterKompetensiTeknis::get();
             return DataTables::of($data)
             ->addColumn('kode', function ($row) {
-                return '<a href="' . route('master.detailMasterKompetensiTeknis', $row->id) . '">' . $row->kode . '</a>';
+                return '<a href="' . route('master.kompetensi-detail-teknis', $row->id) . '">' . $row->kode . '</a>';
             })
             ->addColumn('nama', function ($row) {
-                return '<a href="' . route('master.detailMasterKompetensiTeknis', $row->id) . '">' . $row->nama . '</a>';
+                return '<a href="' . route('master.kompetensi-detail-teknis', $row->id) . '">' . $row->nama . '</a>';
             })
             ->rawColumns(['kode', 'nama']) // Untuk mendukung HTML di kolom
             ->make(true);
@@ -165,12 +166,14 @@ class MasterDataController extends Controller
     }
     public function detailMasterKompetensiTeknis($id) {
         $data = MasterKompetensiTeknis::with('level')->find($id);
-        // dd($data);
         return view('pages.masterData.kompetensiTeknis.show', ['data' => $data]);
     }
-    public function masterKompetensiNonTeknis() {
-        $data = MasterKompetensiNonteknis::get();
-        return view('pages.masterData.kompetensiNonTeknis.index', ['data' => $data]);
+    public function masterKompetensiNonTeknis(Request $request) {
+        if ($request->ajax()) {
+            $data = MasterKompetensiNonteknis::select(['kode', 'nama', 'singkatan', 'jenis', 'definisi']);
+            return DataTables::of($data)->make(true);
+        }
+        return view('pages.masterData.kompetensiNonTeknis.index');
     }
    
     public function mappingkomptensiNonTeknis(Request $request)

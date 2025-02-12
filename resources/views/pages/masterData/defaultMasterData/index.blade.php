@@ -15,7 +15,7 @@
                         </h2>
                     </div>
                     <div class="col text-right">
-                        <a href="{{ route('export.MasterDefaultData') }}" class="btn btn-secondary">
+                        <a href="{{ route('export.default_data') }}" class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span>Excell</span>
                         </a>
                     </div>
@@ -52,7 +52,7 @@
                     </div>
                 @endif
                 <div style="margin-bottom: 15px">
-                    <form action="{{ route('import.masterDefaultData') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('import.default_data') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <label for="file">Upload Excel File:</label>
                         <input type="file" name="file" id="file" required>

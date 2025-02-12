@@ -11,7 +11,7 @@
                         <h4 class="box-title">Mapping Kompetensi Teknis</h4>
                     </div>
                     <div class="col-6 text-right">
-                        <a href="{{ route('export.MappingKompetensiTeknis') }}" class="btn btn-secondary">
+                        <a href="{{ route('export.mapping_kompetensi_teknis') }}" class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span class="ml-1">Excell</span>
                         </a>
                     </div>
@@ -48,7 +48,7 @@
                         </div>
                     @endif
                     <div style="margin-bottom: 15px">
-                        <form action="{{ route('import.mappingKeterampilanTeknis') }}" method="POST"
+                        <form action="{{ route('import.mapping_kompetensi_teknis') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             <label for="file">Upload Excel File:</label>
@@ -91,7 +91,7 @@
     $('#datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('master.mappingkomptensiTeknis') }}",
+        ajax: "{{ route('master.mapping-komptensi-teknis') }}",
         columns: [
             // { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false }, // Kolom index
             { data: 'master_jabatan', name: 'master_jabatan' },

@@ -37,65 +37,61 @@ Route::get('/approval_list', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('uraian_jabatan', UraianJabatanController::class);
-    Route::post('filter-uraian_jabatan/', [UraianJabatanController::class, 'filterData'])->name('filterUraianJabatan');
+    Route::post('filter-uraian_jabatan/', [UraianJabatanController::class, 'filterData'])->name('uraian_jabatan.filter');
     // template jabatan
     Route::resource('template_jabatan', TemplateJabatanController::class);
     Route::get('filter-template_jabatan/', [TemplateJabatanController::class, 'filterData'])->name('template_jabatan.filter');    
     Route::get('template_jabatan/draft/{id}', [TemplateJabatanController::class, 'draft'])->name('template_jabatan.draft');
     // import data
     Route::prefix('import')->group(function () {
-        Route::post('templateJabatan', [ImportController::class, 'import'])->name('import.templateJabatan');
-        Route::post('masterKompetensiTeknis', [ImportController::class, 'masterKompetensiTeknis'])->name('import.masterKompetensiTeknis');
-        Route::post('masterKompetensiNonTeknis', [ImportController::class, 'masterKompetensiNonTeknis'])->name('import.masterKompetensiNonTeknis');
-        Route::post('mappingKompetensiNonTeknis', [ImportController::class, 'mappingKompetensiNonTeknis'])->name('import.mappingKompetensiNonTeknis');
-        Route::post('mappingKeterampilanTeknis', [ImportController::class, 'mappingKeterampilanTeknis'])->name('import.mappingKeterampilanTeknis');
-        Route::post('masterDefaultData', [ImportController::class, 'masterDefaultData'])->name('import.masterDefaultData');
+        Route::post('template_jabatan', [ImportController::class, 'import'])->name('import.templateJabatan');
+        Route::post('kompetensi_teknis', [ImportController::class, 'masterKompetensiTeknis'])->name('import.kompetensi_teknis');
+        Route::post('kompetensi_non_teknis', [ImportController::class, 'masterKompetensiNonTeknis'])->name('import.kompetensi_non_teknis');
+        Route::post('mapping_kompetensi_non_teknis', [ImportController::class, 'mappingKompetensiNonTeknis'])->name('import.mapping_kompetensi_non_teknis');
+        Route::post('mapping_kompetensi_teknis', [ImportController::class, 'mappingKeterampilanTeknis'])->name('import.mapping_kompetensi_teknis');
+        Route::post('default_data', [ImportController::class, 'masterDefaultData'])->name('import.default_data');
     });
     Route::prefix('export')->group(function () {
-        Route::get('masterKompetensiNonTeknis', [ExportController::class, 'exportMasterKompetensiNonTeknis'])->name('export.MasterKompetensiNonTeknis');
-        Route::get('masterKompetensiTeknis', [ExportController::class, 'exportMasterKompetensiTeknis'])->name('export.MasterKompetensiTeknis');
-        Route::get('MappingKompetensiNonTeknis', [ExportController::class, 'exportMappingKompetensiNonTeknis'])->name('export.MappingKompetensiNonTeknis');
-        Route::get('MappingKompetensiTeknis', [ExportController::class, 'exportMappingKompetensiTeknis'])->name('export.MappingKompetensiTeknis');
-        Route::get('MasterJabatanUnit', [ExportController::class, 'exportMasterJabatanUnit'])->name('export.MasterJabatanUnit');
-        Route::get('MasterDefaultData', [ExportController::class, 'exportMasterDefaultData'])->name('export.MasterDefaultData');
-        Route::get('uraianJabatanPdf/{id}', [ExportController::class, 'exportUraianJabatanPdf'])->name('export.uraianJabatanPDF');
-        Route::get('uraianJabatanExcel/{id}', [ExportController::class, 'exportUraianJabatanExcel'])->name('export.uraianJabatanExcel');
-        Route::get('templateJabatanExcel/{encoded_name}', [ExportController::class, 'exportExcelTemplateJabatan'])->name('export.templateJabatanExcel');
-        Route::get('templateJabatanPdf/{encoded_name}', [ExportController::class, 'exportTemplateJabatanPdf'])->name('export.templateJabatanPdf');
-
+        Route::get('kompetensi-non-teknis', [ExportController::class, 'exportMasterKompetensiNonTeknis'])->name('export.kompetensi_non_teknis');
+        Route::get('kompetensi-teknis', [ExportController::class, 'exportMasterKompetensiTeknis'])->name('export.kompetensi_teknis');
+        Route::get('mapping-kompetensi-non-teknis', [ExportController::class, 'exportMappingKompetensiNonTeknis'])->name('export.mapping_kompetensi_non_teknis');
+        Route::get('mapping-kompetensi-teknis', [ExportController::class, 'exportMappingKompetensiTeknis'])->name('export.mapping_kompetensi_teknis');
+        Route::get('jabatan-unit', [ExportController::class, 'exportMasterJabatanUnit'])->name('export.jabatan_unit');
+        Route::get('default-data', [ExportController::class, 'exportMasterDefaultData'])->name('export.default_data');
+        Route::get('uraian-jabatan_PDF/{id}', [ExportController::class, 'exportUraianJabatanPdf'])->name('export.uraian_jabatan_PDF');
+        Route::get('uraian-jabatan_Excel/{id}', [ExportController::class, 'exportUraianJabatanExcel'])->name('export.uraian_jabatan_Excel');
+        Route::get('template-jabatan_Excel/{encoded_name}', [ExportController::class, 'exportExcelTemplateJabatan'])->name('export.template_jabatan_Excel');
+        Route::get('template-jabatan_PDF/{encoded_name}', [ExportController::class, 'exportTemplateJabatanPdf'])->name('export.template_jabatan_PDF');
     });
-
     // Master Data Routes
     Route::prefix('master_data')->group(function () {
         Route::get('indikator', [MasterDataController::class, 'indikator'])->name('master.indikator');
-        Route::post('indikator/create', [MasterDataController::class, 'storeIndikator'])->name('master.storeIndikator');
-        Route::post('indikator/edit', [MasterDataController::class, 'updateIndikator'])->name('master.updateIndikator');
-        Route::post('indikator/delete', [MasterDataController::class, 'deleteIndikator'])->name('master.deleteIndikator');
+        Route::post('indikator/create', [MasterDataController::class, 'storeIndikator'])->name('master.indikator.store');
+        Route::post('indikator/edit', [MasterDataController::class, 'updateIndikator'])->name('master.indikator.update');
+        Route::post('indikator/delete', [MasterDataController::class, 'deleteIndikator'])->name('master.indikator.delete');
         Route::get('pendidikan', [MasterDataController::class, 'pendidikan'])->name('master.pendidikan');
         Route::post('pendidikan/create', [MasterDataController::class, 'createPendidikan'])->name('master.pendidikan.create');
         Route::post('pendidikan/update', [MasterDataController::class, 'updatePendidikan'])->name('master.pendidikan.update');
         Route::post('pendidikan/delete', [MasterDataController::class, 'deletePendidikan'])->name('master.pendidikan.delete');
-        Route::get('tugasPokokGenerik', [MasterDataController::class, 'tugasPokokGenerik'])->name('master.tugasPokokGenerik');
-        Route::post('TugasPokokGenerikStore', [MasterDataController::class, 'TugasPokokGenerikStore'])->name('master.TugasPokokGenerikStore');
-        Route::post('TugasPokokGenerikUpdate', [MasterDataController::class, 'TugasPokokGenerikUpdate'])->name('master.TugasPokokGenerikUpdate');
-        Route::post('TugasPokokGenerikDestroy', [MasterDataController::class, 'TugasPokokGenerikDestroy'])->name('master.TugasPokokGenerikDestroy');
-        Route::get('defaultMasterData', [MasterDataController::class, 'defaultMasterData'])->name('master.defaultMasterData');
-        Route::get('komptensiTeknis', [MasterDataController::class, 'masterKompetensiTeknis'])->name('master.masterKompetensiTeknis');
-        Route::get('komptensiTeknis/{id}', [MasterDataController::class, 'detailMasterKompetensiTeknis'])->name('master.detailMasterKompetensiTeknis');
-        Route::get('mappingkomptensiNonTeknis', [MasterDataController::class, 'mappingkomptensiNonTeknis'])->name('master.mappingkomptensiNonTeknis');
-        Route::get('mappingkomptensiTeknis', [MasterDataController::class, 'mappingkomptensiTeknis'])->name('master.mappingkomptensiTeknis');
-        Route::get('komptensiNonTeknis', [MasterDataController::class, 'masterKompetensiNonTeknis'])->name('master.masterKompetensiNonTeknis');
-        Route::get('masterJabatan', [MasterDataController::class, 'masterJabatan'])->name('master.masterJabatan');
-        Route::get('jenjangJabatan', [MasterDataController::class, 'jenjangJabatan'])->name('master.jenjangJabatan');
+        Route::get('tugas-pokok-generik', [MasterDataController::class, 'tugasPokokGenerik'])->name('master.tugas_pokok_generik.index');
+        Route::post('tugas-pokok-generik/store', [MasterDataController::class, 'TugasPokokGenerikStore'])->name('master.tugas_pokok_generik.store');
+        Route::post('tugas-pokok-generik/update', [MasterDataController::class, 'TugasPokokGenerikUpdate'])->name('master.tugas_pokok_generik.update');
+        Route::post('tugas-pokok-generik/delete', [MasterDataController::class, 'TugasPokokGenerikDestroy'])->name('master.tugas_pokok_generik.delete');
+        Route::get('default-master-data', [MasterDataController::class, 'defaultMasterData'])->name('master.defaultData');
+        Route::get('kompetensi-teknis', [MasterDataController::class, 'masterKompetensiTeknis'])->name('master.kompetensi-teknis');
+        Route::get('kompetensi-teknis/{id}', [MasterDataController::class, 'detailMasterKompetensiTeknis'])->name('master.kompetensi-detail-teknis');
+        Route::get('mapping-komptensi-non-teknis', [MasterDataController::class, 'mappingkomptensiNonTeknis'])->name('master.mapping-komptensi-non-teknis');
+        Route::get('mapping-komptensi-teknis', [MasterDataController::class, 'mappingkomptensiTeknis'])->name('master.mapping-komptensi-teknis');
+        Route::get('kompetensi-non-teknis', [MasterDataController::class, 'masterKompetensiNonTeknis'])->name('master.kompetensi-non-teknis');
+        Route::get('jabatan', [MasterDataController::class, 'masterJabatan'])->name('master.jabatan');
+        Route::get('jenjang-jabatan', [MasterDataController::class, 'jenjangJabatan'])->name('master.jenjang-jabatan');
         Route::get('unit', [MasterDataController::class, 'unit'])->name('master.unit');
         Route::get('users', [UserController::class, 'index'])->name('users.index');
     });
-    
     // User Management Routes
     Route::post('users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::post('users/store', [UserController::class, 'store'])->name('users.store');
     Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
-    
     Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission');
     Route::post('users/{user}/updateRolesPermissions', [UserController::class, 'updateRolesPermissions'])->name('users.updateRolesPermissions');
     Route::resource('roles', RoleController::class);

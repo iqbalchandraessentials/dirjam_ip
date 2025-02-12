@@ -11,7 +11,7 @@
                         <h4 class="box-title">Master Jabatan</h4>
                     </div>
                     <div class="col-6 text-right">
-                        <a href="{{ route('export.MasterKompetensiTeknis') }}" class="btn btn-secondary">
+                        <a href="{{ route('export.jabatan_unit') }}" class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span class="ml-1"> Excell</span>
                         </a>
                     </div>
@@ -51,7 +51,7 @@
             $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('master.masterJabatan') }}", // Ganti dengan route ke fungsi `masterJabatan`
+                ajax: "{{ route('master.jabatan') }}", // Ganti dengan route ke fungsi `masterJabatan`
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false }, // Kolom nomor urut
                     { data: 'master_jabatan', name: 'master_jabatan' }, // Kolom nama master jabatan

@@ -28,27 +28,27 @@ class ExportController extends Controller
 
     public function exportMasterKompetensiTeknis()
     {
-        return Excel::download(new MasterKompetensiTeknisExport, 'Master Kompentensi Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
+        return Excel::download(new MasterKompetensiTeknisExport, 'Master_Kompentensi_Teknis-.'. date('d-m-Y H-i-s') .'.xlsx');
     }
     public function exportMappingKompetensiTeknis()
     {
-        return Excel::download(new MappingKompetensiTeknisExport, 'Mapping Kompentensi Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
+        return Excel::download(new MappingKompetensiTeknisExport, 'Mapping_Kompentensi_Teknis-.'. date('d-m-Y H-i-s') .'.xlsx');
     }
     public function exportMasterJabatanUnit()
     {
-        return Excel::download(new MasterJabatanUnitExport, 'Master Jabatan Unit.'. date('d-m-Y H-i-s') .'.xlsx');
+        return Excel::download(new MasterJabatanUnitExport, 'Master_Jabatan_Unit-'. date('d-m-Y H-i-s') .'.xlsx');
     }
     public function exportMasterKompetensiNonTeknis()
     {
-        return Excel::download(new MasterKompetensiNonTeknisExport, 'Master Kompentensi Non Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
+        return Excel::download(new MasterKompetensiNonTeknisExport, 'Master_Kompentensi_Non_Teknis-.'. date('d-m-Y H-i-s') .'.xlsx');
     }
     public function exportMappingKompetensiNonTeknis()
     {
-        return Excel::download(new MappingKompetensiNonTeknisExport, 'Mapping Kompentensi Non Teknis.'. date('d-m-Y H-i-s') .'.xlsx');
+        return Excel::download(new MappingKompetensiNonTeknisExport, 'Mapping_Kompentensi_Non_Teknis-.'. date('d-m-Y H-i-s') .'.xlsx');
     }
     public function exportMasterDefaultData()
     {
-        return Excel::download(new MasterDefaultDataExport, 'Master Default Data.'. date('d-m-Y H-i-s') .'.xlsx');
+        return Excel::download(new MasterDefaultDataExport, 'Master_Default_Data-.'. date('d-m-Y H-i-s') .'.xlsx');
     }
        
 

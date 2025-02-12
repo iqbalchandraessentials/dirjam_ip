@@ -12,7 +12,7 @@ class MasterJabatanUnitExport implements FromCollection
     */
     public function collection()
     {
-        return ViewUraianJabatan::all();
+        return ViewUraianJabatan::select('master_jabatan', 'siteid')->get();
     }
     public function headings(): array
     {

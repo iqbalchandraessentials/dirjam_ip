@@ -85,7 +85,7 @@
             });
 
             // Handle Edit Button
-            $('.edit-btn').click(function() {
+            $(document).on('click', '.edit-btn', function() {
                 const id = $(this).data('id');
                 const nama = $(this).data('nama');
                 const pengalaman = $(this).data('pengalaman');
@@ -101,10 +101,9 @@
             });
 
             // Handle Delete Button
-            $('.delete-btn').click(function() {
+            $(document).on('click', '.delete-btn', function() {
                 const id = $(this).data('id');
                 const nama = $(this).data('nama');
-
                 $('#deleteNama').text(nama);
                 $('#deleteId').val(id);
                 $('#modalDelete').modal('show');

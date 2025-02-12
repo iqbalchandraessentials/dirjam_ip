@@ -28,38 +28,28 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    {{-- <li class="{{ Request::is('master_data/mappingkomptensiTeknis') ? 'active' : '' }}">
-                        <a href="{{ route('master.mappingkomptensiTeknis') }}">
-                            <i class="ti-more"></i>Mapping Kompetensi Teknis
-                        </a>
-                    </li> --}}
-                    <li class="{{ Request::is('master_data/masterJabatan') ? 'active' : '' }}">
-                        <a href="{{ route('master.masterJabatan') }}">
+                    <li class="{{ Request::is('master_data/jabatan') ? 'active' : '' }}">
+                        <a href="{{ route('master.jabatan') }}">
                             <i class="ti-more"></i>Master Jabatan
                         </a>
                     </li>
-                    <li class="{{ Request::is('master_data/komptensiTeknis', 'master_data/mappingkomptensiTeknis', 'master_data/komptensiTeknis/*') ? 'active' : '' }}">
-                        <a href="{{ route('master.masterKompetensiTeknis') }}">
+                    <li class="{{ Request::is('master_data/kompetensi-teknis', 'master_data/mapping-komptensi-teknis', 'master_data/kompetensi-teknis/*') ? 'active' : '' }}">
+                        <a href="{{ route('master.kompetensi-teknis') }}">
                             <i class="ti-more"></i>Kompetensi Teknis
                         </a>
                     </li>
-                    {{-- <li class="{{ Request::is('master_data/mappingkomptensiNonTeknis') ? 'active' : '' }}">
-                        <a href="{{ route('master.mappingkomptensiNonTeknis') }}">
-                            <i class="ti-more"></i>Mapping Kompetensi Non Teknis
-                        </a>
-                    </li> --}}
-                    <li class="{{ Request::is('master_data/komptensiNonTeknis', 'master_data/mappingkomptensiNonTeknis') ? 'active' : '' }}">
-                        <a href="{{ route('master.masterKompetensiNonTeknis') }}">
+                    <li class="{{ Request::is('master_data/kompetensi-non-teknis', 'master_data/mapping-komptensi-non-teknis') ? 'active' : '' }}">
+                        <a href="{{ route('master.kompetensi-non-teknis') }}">
                             <i class="ti-more"></i>Kompetensi Non Teknis
                         </a>
                     </li>
-                    <li class="{{ Request::is('master_data/tugasPokokGenerik') ? 'active' : '' }}">
-                        <a href="{{ route('master.tugasPokokGenerik') }}">
+                    <li class="{{ Request::is('master_data/tugas-pokok-generik') ? 'active' : '' }}">
+                        <a href="{{ route('master.tugas_pokok_generik.index') }}">
                             <i class="ti-more"></i>Tugas Pokok Generik
                         </a>
                     </li>
-                    <li class="{{ Request::is('master_data/defaultMasterData') ? 'active' : '' }}">
-                        <a href="{{ route('master.defaultMasterData') }}">
+                    <li class="{{ Request::is('master_data/default-master-data') ? 'active' : '' }}">
+                        <a href="{{ route('master.defaultData') }}">
                             <i class="ti-more"></i>Default Master Data
                         </a>
                     </li>
@@ -68,8 +58,8 @@
                             <i class="ti-more"></i>Pendidikan
                         </a>
                     </li>
-                    <li class="{{ Request::is('master_data/jenjangJabatan') ? 'active' : '' }}">
-                        <a href="{{ route('master.jenjangJabatan') }}">
+                    <li class="{{ Request::is('master_data/jenjang-jabatan') ? 'active' : '' }}">
+                        <a href="{{ route('master.jenjang-jabatan') }}">
                             <i class="ti-more"></i>Jenjang Jabatan
                         </a>
                     </li>

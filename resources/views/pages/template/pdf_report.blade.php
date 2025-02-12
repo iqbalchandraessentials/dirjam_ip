@@ -242,13 +242,13 @@
                     @forelse ($data['tugasPokoUtamaGenerik'] as $x => $v)
                         @if (isset($v['jenis']) == 'utama')
                             <tr>
-                                <td>{{ $x + 1 }}</td>
+                                <td style="text-align: center">{{ $x + 1 }}</td>
                                 <td style="text-align: justify">{{ $v['aktivitas'] }}</td>
                                 <td style="text-align: justify">{{ $v['output'] }}</td>
                             </tr>
                         @else
                             <tr>
-                                <td>{{ $x + 1 }}</td>
+                                <td style="text-align: center">{{ $x + 1 }}</td>
                                 <td style="text-align: justify">{{ $v['aktivitas'] }}</td>
                                 <td style="text-align: justify"></td>
                             </tr>
@@ -285,8 +285,8 @@
                         @if ($v['jenis'] == 'generik')
                             <tr>
                                 <td style="text-align: center"> {{ $x + 1 }}</td>
-                                <td>{{ $v['aktivitas'] }}</td>
-                                <td>{{ $v['output'] }}</td>
+                                <td style="text-align: justify">{{ $v['aktivitas'] }}</td>
+                                <td style="text-align: justify">{{ $v['output'] }}</td>
                             </tr>
                         @endif
                     @endforeach
@@ -475,14 +475,14 @@
                                 @if ($v['jenis'] == 'internal' || $v['lingkup_flag'] == 'internal')
                                     @if (!empty($v['tujuan']))
                                         <tr>
-                                            <td>{{ $no++ }}</td>
+                                            <td style="text-align: center">{{ $no++ }}</td>
                                             <td style="text-align: justify">
                                                 {{ isset($v['subjek']) ? $v['subjek'] : $v['komunikasi'] }}</td>
                                             <td style="text-align: justify">{{ $v['tujuan'] }}</td>
                                         </tr>
                                     @else
                                         <tr>
-                                            <td>1</td>
+                                            <td style="text-align: center">1</td>
                                             <td colspan="2" style="text-align: center">Tidak ada data</td>
                                         </tr>
                                     @endif
@@ -515,22 +515,21 @@
                                 @if ($v['jenis'] == 'eksternal' || $v['lingkup_flag'] == 'external')
                                 @if (!empty($v['tujuan']))
                                     <tr>
-                                        <td>{{ $no++ }}
-                                        </td>
+                                        <td style="text-align: center">{{ $no++ }} </td>
                                         <td style="text-align: justify">
                                             {{ isset($v['subjek']) ? $v['subjek'] : $v['komunikasi'] }}</td>
                                         <td style="text-align: justify">{{ $v['tujuan'] }}</td>
                                     </tr>
                                     @else
                                         <tr>
-                                            <td>1</td>
+                                            <td style="text-align: center">1</td>
                                             <td colspan="2" style="text-align: center">Tidak ada data</td>
                                         </tr>
                                     @endif
                                 @endif
                             @empty
                                 <tr>
-                                    <td>1</td>
+                                    <td style="text-align: center">1</td>
                                     <td colspan="2" style="text-align: center">Tidak ada data</td>
                                 </tr>
                             @endforelse
@@ -557,10 +556,9 @@
                     </thead>
                     <tbody>
                         @foreach ($data['masalah_kompleksitas_kerja'] as $x => $v)
-                            <tr>
+                            <tr style="text-align: center">
                                 <td> {{ $x + 1 }}</td>
-                                <td style="text-align: center">
-                                    {{ isset($v['tantangan']) ? $v['tantangan'] : $v['definisi'] }}</td>
+                                <td >{{ isset($v['tantangan']) ? $v['tantangan'] : $v['definisi'] }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -585,9 +583,9 @@
                     </thead>
                     <tbody>
                         @foreach ($data['wewenang_jabatan'] as $x => $v)
-                            <tr>
+                            <tr style="text-align: center">
                                 <td>{{ $x + 1 }}</td>
-                                <td style="text-align: center">
+                                <td >
                                     {{ isset($v['pengambilan_keputusan']) ? $v['pengambilan_keputusan'] : $v['definisi'] }}
                                 </td>
                             </tr>
@@ -644,10 +642,10 @@
                                     $jobdesc = !empty($item->jobdesc) ? e($item->jobdesc) : '';
                                 @endphp
 
-                                <tr>
-                                    <td class="text-center">{{ $i + 1 }}</td>
-                                    <td class="text-center">{{ e($item->pendidikan) }}</td>
-                                    <td class="text-left">
+                                <tr style="text-align: center">
+                                    <td >{{ $i + 1 }}</td>
+                                    <td >{{ e($item->pendidikan) }}</td>
+                                    <td style="text-align: left">
                                         @if (!empty($item->bidang_studi))
                                             @php
                                                 $pattern = '/\d+\.\s*/'; // Pola untuk memisahkan berdasarkan angka diikuti titik dan spasi
@@ -666,12 +664,12 @@
                                             {!! $bidang !!}
                                         @endif
                                     </td>
-                                    <td class="text-center">{!! $pengalaman !!}</td>
+                                    <td >{!! $pengalaman !!}</td>
                                 </tr>
                             @endforeach
                         @else
                             <tr>
-                                <td>1</td>
+                                <td style="text-align: center">1</td>
                                 <td colspan="3" style="text-align: center">Tidak ada data</td>
                             </tr>
                         @endif

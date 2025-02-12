@@ -74,8 +74,7 @@
                     </tbody>
                 </table>
                 {{-- modal edit data --}}
-                <!-- Modal Edit User -->
-                <!-- Modal Edit User -->
+
                 <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog"
                     aria-labelledby="editUserModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -156,7 +155,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="unit">Unit</label>
-                                        <select style="width: 100%;" class="form-control select2" name="unit">
+                                        <select style="width: 100%;" class="form-control select2" name="unit_kd">
                                             @foreach ($unit as $unit)
                                                 <option value="{{ $unit->unit_kd }}">
                                                     {{ $unit->unit_nama }}

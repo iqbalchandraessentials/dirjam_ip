@@ -21,7 +21,7 @@ class ImportController extends Controller
             ]);
             Excel::import(new KompetensiTeknisImport, $request->file('file'));
             session()->flash('success', 'Master Keterampilan Teknis berhasil diupload, mohon periksa kembali.');
-            return redirect()->route('master.masterKompetensiTeknis');
+            return redirect()->route('master.kompetensi-teknis');
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();
 
@@ -40,7 +40,7 @@ class ImportController extends Controller
             ]);
             Excel::import(new MasterKompetensiNonTeknisImport, $request->file('file'));
             session()->flash('success', 'Master Keterampilan Non Teknis berhasil diupload, mohon periksa kembali.');
-            return redirect()->route('master.masterKompetensiNonTeknis');
+            return redirect()->route('master.kompetensi-non-teknis');
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();
 
@@ -61,7 +61,7 @@ class ImportController extends Controller
             ]);
             Excel::import(new KeterampilanNonteknisImport, $request->file('file'));
             session()->flash('success', 'Mapping Keterampilan Non Teknis berhasil diupload, mohon periksa kembali.');
-            return redirect()->route('master.mappingkomptensiNonTeknis');
+            return redirect()->route('master.mapping-komptensi-non-teknis');
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();
 
@@ -81,7 +81,7 @@ class ImportController extends Controller
             ]);
             Excel::import(new MasterDefaultDataImport, $request->file('file'));
             session()->flash('success', 'Master Default Data berhasil diupload, mohon periksa kembali.');
-            return redirect()->route('master.defaultMasterData');
+            return redirect()->route('master.defaultData');
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();
 
@@ -120,7 +120,7 @@ class ImportController extends Controller
     
             // Jika berhasil
             session()->flash('success', 'Mapping Keterampilan Teknis berhasil diupload, mohon periksa kembali.');
-            return redirect()->route('master.mappingkomptensiTeknis');
+            return redirect()->route('master.mapping-komptensi-teknis');
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             // Tangkap error validasi pada import
             $failures = $e->failures();
