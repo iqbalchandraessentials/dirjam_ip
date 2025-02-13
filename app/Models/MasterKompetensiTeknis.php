@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MasterKompetensiTeknis extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     
     protected $fillable = [
         'kode',

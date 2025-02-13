@@ -11,8 +11,11 @@ class KompetensiTeknisImport implements WithMultipleSheets
     public function __construct()
     {
         // Hapus semua data di tabel MasterKompetensiTeknis dan MasterDetailKompetensiTeknis
-        MasterKompetensiTeknis::query()->delete();
-        MasterDetailKomptensiTeknis::query()->delete();
+        // MasterKompetensiTeknis::query()->delete();
+        // MasterDetailKomptensiTeknis::query()->delete();
+        MasterKompetensiTeknis::truncate();
+        MasterDetailKomptensiTeknis::truncate();
+        
     }
 
     public function sheets(): array

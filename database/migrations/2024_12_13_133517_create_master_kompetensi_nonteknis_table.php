@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('nama');
             $table->string('singkatan');
             $table->string('jenis');
-            $table->longText('definisi');
-            $table->softDeletes();
+            $table->string('definisi', 4000);
+            $table->string('created_by')->nullable();
             $table->timestamps();
         });
     }

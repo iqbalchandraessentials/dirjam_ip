@@ -5,15 +5,23 @@
         letter-spacing: 0px;
     }
 
-    body {
-        font-size: 125%;
-        letter-spacing: 0.05em;
-        line-height: 1.3em;
-    }
-
     body>* {
         font-size: 85%;
         line-height: 1.3em;
+    }
+
+    .mini {
+            font-size: 10px;
+            font-style: italic;
+            display: block;
+            font-weight: normal;
+            text-align: justify;
+        }
+
+        @media print {
+            .perkecil {
+                width: 300px Imp !important;
+            }
     }
 
     ul li {
@@ -41,7 +49,5 @@
 <div style="width: 100%; height: auto;">
     <div style="transform: scale(0.7); transform-origin: top center">
         {!! $data['struktur_organisasi'] !!}
-        {{-- {!! preg_replace('/<tr>\s*<\/tr>/', '', $data['struktur_organisasi']) !!} --}}
-        {{-- <pre>{{ htmlspecialchars($data['struktur_organisasi']) }}</pre> --}}
 </div>
 </div>
