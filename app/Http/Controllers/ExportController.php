@@ -28,11 +28,11 @@ class ExportController extends Controller
 
     public function exportMasterKompetensiTeknis()
     {
-        return Excel::download(new MasterKompetensiTeknisExport, 'Master_Kompentensi_Teknis-.' . date('d-m-Y H-i-s') . '.xlsx');
+        return Excel::download(new MasterKompetensiTeknisExport, 'Master_Kompentensi_Teknis-' . date('d-m-Y H-i-s') . '.xlsx');
     }
     public function exportMappingKompetensiTeknis()
     {
-        return Excel::download(new MappingKompetensiTeknisExport, 'Mapping_Kompentensi_Teknis-.' . date('d-m-Y H-i-s') . '.xlsx');
+        return Excel::download(new MappingKompetensiTeknisExport, 'Mapping_Kompentensi_Teknis-' . date('d-m-Y H-i-s') . '.xlsx');
     }
     public function exportMasterJabatanUnit()
     {
@@ -40,15 +40,15 @@ class ExportController extends Controller
     }
     public function exportMasterKompetensiNonTeknis()
     {
-        return Excel::download(new MasterKompetensiNonTeknisExport, 'Master_Kompentensi_Non_Teknis-.' . date('d-m-Y H-i-s') . '.xlsx');
+        return Excel::download(new MasterKompetensiNonTeknisExport, 'Master_Kompentensi_Non_Teknis-' . date('d-m-Y H-i-s') . '.xlsx');
     }
     public function exportMappingKompetensiNonTeknis()
     {
-        return Excel::download(new MappingKompetensiNonTeknisExport, 'Mapping_Kompentensi_Non_Teknis-.' . date('d-m-Y H-i-s') . '.xlsx');
+        return Excel::download(new MappingKompetensiNonTeknisExport, 'Mapping_Kompentensi_Non_Teknis-' . date('d-m-Y H-i-s') . '.xlsx');
     }
     public function exportMasterDefaultData()
     {
-        return Excel::download(new MasterDefaultDataExport, 'Master_Default_Data-.' . date('d-m-Y H-i-s') . '.xlsx');
+        return Excel::download(new MasterDefaultDataExport, 'Master_Default_Data-' . date('d-m-Y H-i-s') . '.xlsx');
     }
 
 
@@ -75,7 +75,7 @@ class ExportController extends Controller
         // 4. Hapus file sementara
         unlink($pathPortrait);
         unlink($pathLandscape);
-        $name = "URAIAN_JABATAN-" . str_replace(' ', '-', $data['jabatan']['jabatan']) . "-" . date('d-m-Y_H-i-s') . ".pdf";
+        $name = "Uraian_Jabatan-" . str_replace(' ', '-', $data['jabatan']['jabatan']) . "-" . date('d-m-Y_H-i-s') . ".pdf";
 
         return response($finalPdf)
             ->header('Content-Type', 'application/pdf')
@@ -106,7 +106,7 @@ class ExportController extends Controller
         // 4. Hapus file sementara
         unlink($pathPortrait);
         unlink($pathLandscape);
-        $name = "Template_Jabatan_" . $data['nama'] . date('d-m-Y H-i-s') . ".pdf";
+        $name = "Template_Jabatan-" . $data['nama'] . '-'. date('d-m-Y H-i-s') . ".pdf";
         return response($finalPdf)
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'attachment; filename="' . $name . '"');
@@ -1054,7 +1054,7 @@ class ExportController extends Controller
         $objPHPExcel->getRowDimension(1)->setRowHeight(-1);
         $objPHPExcel->getStyle('E')->getAlignment()->setWrapText(true);
         $objPHPExcel->getDefaultRowDimension()->setRowHeight(-1);
-        $exportPath = storage_path('/exports/URAIAN_JABATAN_' . $data['jabatan']['jabatan'] . date('d-m-Y H-i-s') . '.xlsx');
+        $exportPath = storage_path('/exports/Uraian_Jabatan-' . $data['jabatan']['jabatan'] .'-'. date('d-m-Y H-i-s') . '.xlsx');
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save($exportPath);
         return response()->download($exportPath)->deleteFileAfterSend(true);
@@ -1139,13 +1139,13 @@ class ExportController extends Controller
         $input = $objPHPExcel->getStyle("B26:G26");
         $no = 1;
         foreach ($data['tugasPokoUtamaGenerik'] as $key) {
-            if (isset($v['jenis']) == 'utama') {
+            if (isset($key['jenis']) && $key['jenis'] == 'utama') {
                 $objPHPExcel->setCellValue("B$baris", $no);
-                $objPHPExcel->setCellValue("C$baris", $key->aktivitas);
-                $objPHPExcel->setCellValue("G$baris", $key->output);
+                $objPHPExcel->setCellValue("C$baris", $key['aktivitas']);
+                $objPHPExcel->setCellValue("G$baris", $key['output']);
             } else {
                 $objPHPExcel->setCellValue("B$baris", $no);
-                $objPHPExcel->setCellValue("C$baris", $key->aktivitas);
+                $objPHPExcel->setCellValue("C$baris", $key['aktivitas']);
                 $objPHPExcel->setCellValue("G$baris", '');
             }
             $objPHPExcel->mergeCells("C$baris:F$baris");
@@ -2002,7 +2002,7 @@ class ExportController extends Controller
         $objPHPExcel->getRowDimension(1)->setRowHeight(-1);
         $objPHPExcel->getStyle('E')->getAlignment()->setWrapText(true);
         $objPHPExcel->getDefaultRowDimension()->setRowHeight(-1);
-        $exportPath = storage_path('/exports/Template_Jabatan' . $data['nama'] . date('d-m-Y H-i-s') . '.xlsx');
+        $exportPath = storage_path('/exports/Template_Jabatan-' . $data['nama'] . '-' . date('d-m-Y H-i-s') . '.xlsx');
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save($exportPath);
         return response()->download($exportPath)->deleteFileAfterSend(true);

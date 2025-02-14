@@ -205,14 +205,15 @@ class TemplateJabatanController extends Controller
             ? $kemampuandanPengalaman
             : KemampuandanPengalaman::where('jenis_jabatan', $type)->get();
 
-        $data['keterampilan_non_teknis'] = KeterampilanNonteknis::where('MASTER_JABATAN', $masterJabatan)->get();
-        $data_core = KeterampilanTeknis::where('MASTER_JABATAN', $masterJabatan)->get();
-        $core = !$data_core ? $data_core : KeterampilanTeknis::where('kategori', 'CORE')->where('MASTER_JABATAN', $masterJabatan)->get();
-        $enabler = KeterampilanTeknis::where('kategori', 'ENABLER')->where('MASTER_JABATAN', $masterJabatan)->get();
+        $data['keterampilan_non_teknis'] = KeterampilanNonteknis::where('master_jabatan', $masterJabatan)->get();
+        $data_core = KeterampilanTeknis::where('master_jabatan', $masterJabatan)->get();
+        $core = !$data_core ? $data_core : KeterampilanTeknis::where('kategori', 'CORE')->where('master_jabatan', $masterJabatan)->get();
+        $enabler = KeterampilanTeknis::where('kategori', 'ENABLER')->where('master_jabatan', $masterJabatan)->get();
         $data['keterampilan_teknis'] =  $core->merge($enabler);
         if (!empty($data['hubunganKerja']) && isset($data['hubunganKerja'][0]['tujuan']) && ($data['hubunganKerja'][0]['tujuan'] === null || $data['hubunganKerja'][0]['tujuan'] === "")) {
             $data['hubunganKerja'] = [];
         }
+        // dd($data['keterampilan_teknis']);
         return $data;
     }
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class KeterampilanTeknis extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     
     protected $fillable = [
         'uraian_master_jabatan_id',

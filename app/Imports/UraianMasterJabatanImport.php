@@ -239,7 +239,7 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
-            KeterampilanTeknis::where('master_jabatan', $data['nama'] )->delete();
+            KeterampilanTeknis::where('master_jabatan', $data['nama'] )->where('kategori', 'CORE')->delete();
             foreach ($data['kompetensi_teknis'] as $x) {
                 if (!empty($x['kode_kompetensi']) && !empty($x['level'])) {
                     $master_detail_kompetensi = $x['kode_kompetensi'].'.'.$x['level'];

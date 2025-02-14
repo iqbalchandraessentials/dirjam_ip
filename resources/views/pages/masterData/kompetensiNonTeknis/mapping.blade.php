@@ -95,7 +95,7 @@
                 columns: [
                     { data: 'master_jabatan', name: 'master_jabatan' },
                     { data: 'kode', name: 'kode', className: 'text-center' },
-                    { data: 'nama_kompetensi', name: 'detail.nama', className: 'text-center' },
+                    { data: 'nama_kompetensi', name: 'detail.nama' },
                     { data: 'kategori', name: 'kategori', className: 'text-center' },
                     { data: 'jenis', name: 'jenis', className: 'text-center' },
                 ],
