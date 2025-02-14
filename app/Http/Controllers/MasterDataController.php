@@ -73,12 +73,11 @@ class MasterDataController extends Controller
     }
 
     public function deleteIndikator(Request $request)
-{
-    $indikator = MasterIndikatorOutput::findOrFail($request->id);
-    $indikator->delete();
-    return redirect()->route('master.indikator')->with('success', 'Data berhasil dihapus');
-}
-
+    {
+        $indikator = MasterIndikatorOutput::findOrFail($request->id);
+        $indikator->delete();
+        return redirect()->route('master.indikator')->with('success', 'Data berhasil dihapus');
+    }
 
 
     public function jenjangJabatan() {
@@ -107,7 +106,7 @@ class MasterDataController extends Controller
             'output' => $request->output,
             'jenis_jabatan' => $request->jenis_jabatan,
             'jenis' => $request->jenis,
-            'created_by' => Auth::user()->nama,
+            'created_by' => Auth::user()->name,
         ]);
         return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil ditambahkan.');
     }
@@ -125,7 +124,7 @@ class MasterDataController extends Controller
             'output' => $request->output,
             'jenis_jabatan' => $request->jenis_jabatan,
             'jenis' => $request->jenis,
-            'created_by' => Auth::user()->nama,
+            'created_by' => Auth::user()->name,
         ]);
         return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil diperbarui.');
     }
@@ -241,7 +240,7 @@ class MasterDataController extends Controller
              'nama' => $request->nama,
              'pengalaman' => $request->pengalaman,
              'jenjang_jabatan' => $request->jenjang_jabatan,
-             'created_by' => Auth::user()->nama,
+             'created_by' => Auth::user()->name,
          ]);
  
          return redirect()->route('master.pendidikan')->with('success', 'Data pendidikan berhasil ditambahkan.');
@@ -261,7 +260,7 @@ class MasterDataController extends Controller
              'nama' => $request->nama,
              'pengalaman' => $request->pengalaman,
              'jenjang_jabatan' => $request->jenjang_jabatan,
-             'created_by' => Auth::user()->nama,
+             'created_by' => Auth::user()->name,
          ]);
  
          return redirect()->route('master.pendidikan')->with('success', 'Data pendidikan berhasil diupadate.');

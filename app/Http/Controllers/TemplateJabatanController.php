@@ -56,9 +56,9 @@ class TemplateJabatanController extends Controller
     }
 
 
-    public function show($masterJabatan)
+    public function show($masterJabatan, $unit_kd = null)
     {
-        $data = $this->getDatas($masterJabatan);
+        $data = $this->getDatas($masterJabatan, $unit_kd);
         return view('pages.template.show', [
             'data' => $data,
         ]);
@@ -66,11 +66,9 @@ class TemplateJabatanController extends Controller
 
 
     public function filterData(Request $request)
-    {
-        // Gunakan nilai dari request atau default ke Auth::user()->unit_kd
+    {    
         $unit_kd = $request->input('unit', Auth::user()->unit_kd);
     
-        // Query data berdasarkan unit kerja yang dipilih
         $data = ViewUraianJabatan::select('master_jabatan', 'unit_kd', 'jen')
             ->groupBy('master_jabatan', 'unit_kd', 'jen')
             ->when(!empty($unit_kd), function ($query) use ($unit_kd) {
@@ -80,21 +78,19 @@ class TemplateJabatanController extends Controller
     
         return DataTables::of($data)
             ->addIndexColumn()
-            ->addColumn('action', function ($row) {
-                $encodedName = base64_encode($row->master_jabatan); // Encode sebelum dimasukkan ke URL
+            ->addColumn('action', function ($row) use ($unit_kd) {
+                $encodedName = base64_encode($row->master_jabatan); 
                 
                 return '
-                        <a href="' . route('template_jabatan.show',  $encodedName) . '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
-                        <a href="' . route('export.template_jabatan_Excel', ['encoded_name' => $encodedName]) . '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>
-                        <a href="' . route('export.template_jabatan_PDF', ['encoded_name' => $encodedName]) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>
-                        '; 
+                    <a href="' . route('template_jabatan.show', ['encoded_name' => $encodedName, 'unit_kd' => $unit_kd]) . '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                    <a href="' . route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $unit_kd]) . '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>
+                    <a href="' . route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $unit_kd]) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
             })
             ->rawColumns(['action'])
             ->make(true);
     }
     
-
-    public function getDatas($masterJabatan)
+    public function getDatas($masterJabatan, $unit_kd = '')
     {       
         $masterJabatan = base64_decode($masterJabatan);
         $data = UraianMasterJabatan::with([
@@ -107,30 +103,18 @@ class TemplateJabatanController extends Controller
             'kemampuandanPengalaman'
         ])->where('nama', $masterJabatan)->first();
         if ($data) {
+            $data['jabatans'] = ViewUraianJabatan::with(['jenjangJabatan', 'namaProfesi'])->select('uraian_jabatan_id','jabatan','position_id','NAMA_PROFESI','DESCRIPTION','JEN','ATASAN_LANGSUNG')->where('MASTER_JABATAN', $data['nama'])->where('SITEID', $unit_kd)->distinct()->get();
+            // 
             // Ambil daftar jabatan
-            $data['jabatans'] = ViewUraianJabatan::select(
-                'uraian_jabatan_id',
-                'parent_position_id',
-                'type',
-                'jabatan',
-                'position_id',
-                'NAMA_PROFESI',
-                'DESCRIPTION',
-                'JEN',
-                'ATASAN_LANGSUNG',
-                'BAWAHAN_LANGSUNG',
-                'TOTAL_BAWAHAN'
-            )->where('MASTER_JABATAN', $data['nama'])->get();
+            // $data['jabatans'] = ViewUraianJabatan::select('uraian_jabatan_id','parent_position_id','type','jabatan','position_id','NAMA_PROFESI','DESCRIPTION','JEN','ATASAN_LANGSUNG','BAWAHAN_LANGSUNG','TOTAL_BAWAHAN')->where('MASTER_JABATAN', $data['nama'])->get();
+            // 
             // Tentukan jenis jabatan
             $data['type'] = $data->jenis_jabatan == 'F' ? 'fungsional' : 'struktural';
             $type = $data->jenis_jabatan == 'F' ? 'fungsional' : 'struktural';
             $parent_position_id =  $data['jabatans'][0]['parent_position_id'];
             $position_id =  $data['jabatans'][0]['position_id'];
-
             // Ambil jenjang jabatan pertama jika ada
-
             $jenjangJabatan = $data['jabatans'][0]['jen'] ?? null;
-
             // Perbaiki spesifikasi pendidikan dengan pengalaman dari MasterPendidikan
             foreach ($data['spesifikasiPendidikan'] as $key => $item) {
                 $masterPendidikan = MasterPendidikan::where('nama', $item['pendidikan'])
@@ -138,7 +122,6 @@ class TemplateJabatanController extends Controller
                     ->first();
                 $data['spesifikasiPendidikan'][$key]['pengalaman'] = $masterPendidikan ? $masterPendidikan->pengalaman : '-';
             }
-
             $masalah_kompleksitas_kerja = $data['masalahKompleksitasKerja'];
             $wewenang_jabatan = $data['wewenangJabatan'];
             $kemampuandanPengalaman = $data['kemampuandanPengalaman'];
@@ -151,7 +134,20 @@ class TemplateJabatanController extends Controller
             $parent_position_id =  $x->parent_position_id;
             $position_id =  $x->position_id;
             $data = [
-                'jabatans' => ViewUraianJabatan::with(['jenjangJabatan', 'namaProfesi'])->select(['MASTER_JABATAN', 'fungsi_utama', 'jabatan', 'type', 'jen', 'DESCRIPTION', 'BAWAHAN_LANGSUNG', 'TOTAL_BAWAHAN', 'NAMA_PROFESI', 'ATASAN_LANGSUNG', 'BAWAHAN_LANGSUNG', 'TOTAL_BAWAHAN'])->with('namaProfesi', 'jenjangJabatan')->where('MASTER_JABATAN', $masterJabatan)->get(),
+                'jabatans' =>  $data['jabatans'] = ViewUraianJabatan::with(['jenjangJabatan', 'namaProfesi'])->select(
+                    'uraian_jabatan_id',
+                    'jabatan',
+                    'position_id',
+                    'NAMA_PROFESI',
+                    'DESCRIPTION',
+                    'JEN',
+                    'ATASAN_LANGSUNG'
+                )
+                ->where('MASTER_JABATAN', $data['nama'])
+                ->where('SITEID', $unit_kd)
+                ->distinct()
+                ->get(),
+                // 'jabatans' => ViewUraianJabatan::with(['jenjangJabatan', 'namaProfesi'])->select(['MASTER_JABATAN', 'fungsi_utama', 'jabatan', 'type', 'jen', 'DESCRIPTION', 'BAWAHAN_LANGSUNG', 'TOTAL_BAWAHAN', 'NAMA_PROFESI', 'ATASAN_LANGSUNG', 'BAWAHAN_LANGSUNG', 'TOTAL_BAWAHAN'])->with('namaProfesi', 'jenjangJabatan')->where('MASTER_JABATAN', $masterJabatan)->get(),
                 'fungsi_utama' => $x->fungsi_utama,
                 'nama' => $x->master_jabatan,
                 'unit_kd' => $x->unit_kd,
@@ -191,8 +187,6 @@ class TemplateJabatanController extends Controller
         } else {
             $data['masalah_kompleksitas_kerja'] = MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();
         }
-
-
         if (
             !empty($wewenang_jabatan) &&
             (!empty($wewenang_jabatan[0]['definisi']) || !empty($wewenang_jabatan[0]['pengambilan_keputusan']))

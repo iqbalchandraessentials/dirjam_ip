@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('keterampilan_teknis', function (Blueprint $table) {
             $table->id();
+            $table->string('master_jabatan');
             $table->unsignedBigInteger('uraian_master_jabatan_id');
             $table->string('kode');
             $table->enum('kategori',['CORE','ENABLER']);
             $table->integer('level');
+            $table->string('created_by')->nullable();
             $table->timestamps();
         });
     }

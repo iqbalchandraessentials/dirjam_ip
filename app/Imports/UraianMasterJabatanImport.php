@@ -224,7 +224,7 @@ class UraianMasterJabatanImport implements ToCollection
                 'anggaran' => $data['anggaran'],
                 'accountability' => $data['accountability'],
                 'nature_impact' => $data['nature_impact'],
-                'created_by' => Auth::id(),
+                'created_by' => Auth::user()->name,
                 'status' => 'APPROVE',
              ]);
             $uraian_jabatan_id = $uraian_jabatan_id->id;

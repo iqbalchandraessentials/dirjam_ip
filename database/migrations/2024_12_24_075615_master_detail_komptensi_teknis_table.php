@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('kode_master');
             $table->string('level');
+            $table->string('kode_master_level');
             $table->string('perilaku',4000);
+            $table->string('created_by')->nullable();
             $table->timestamps();
         });
     }

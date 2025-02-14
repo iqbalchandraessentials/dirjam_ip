@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('keterampilan_nonteknis', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('uraian_master_jabatan_id');
             $table->string('kode');
             $table->enum('kategori',['UTAMA','PERAN','FUNGSI']);
             $table->string('jenis')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('master_jabatan');
             $table->timestamps();
         });
     }

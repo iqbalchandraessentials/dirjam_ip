@@ -39,17 +39,18 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('uraian_jabatan', UraianJabatanController::class);
     Route::post('filter-uraian_jabatan/', [UraianJabatanController::class, 'filterData'])->name('uraian_jabatan.filter');
     // template jabatan
-    Route::resource('template_jabatan', TemplateJabatanController::class);
-    Route::get('filter-template_jabatan/', [TemplateJabatanController::class, 'filterData'])->name('template_jabatan.filter');    
-    Route::get('template_jabatan/draft/{id}', [TemplateJabatanController::class, 'draft'])->name('template_jabatan.draft');
+    Route::resource('template-jabatan', TemplateJabatanController::class);
+    Route::get('template-jabatan/{encoded_name}/{unit_kd?}', [TemplateJabatanController::class, 'show'])->name('template_jabatan.show');
+    Route::get('filter-template-jabatan/', [TemplateJabatanController::class, 'filterData'])->name('template_jabatan.filter');    
+    Route::get('template-jabatan/draft/{id}', [TemplateJabatanController::class, 'draft'])->name('template_jabatan.draft');
     // import data
     Route::prefix('import')->group(function () {
-        Route::post('template_jabatan', [ImportController::class, 'import'])->name('import.templateJabatan');
-        Route::post('kompetensi_teknis', [ImportController::class, 'masterKompetensiTeknis'])->name('import.kompetensi_teknis');
-        Route::post('kompetensi_non_teknis', [ImportController::class, 'masterKompetensiNonTeknis'])->name('import.kompetensi_non_teknis');
-        Route::post('mapping_kompetensi_non_teknis', [ImportController::class, 'mappingKompetensiNonTeknis'])->name('import.mapping_kompetensi_non_teknis');
-        Route::post('mapping_kompetensi_teknis', [ImportController::class, 'mappingKeterampilanTeknis'])->name('import.mapping_kompetensi_teknis');
-        Route::post('default_data', [ImportController::class, 'masterDefaultData'])->name('import.default_data');
+        Route::post('template-jabatan', [ImportController::class, 'import'])->name('import.templateJabatan');
+        Route::post('kompetensi-teknis', [ImportController::class, 'masterKompetensiTeknis'])->name('import.kompetensi_teknis');
+        Route::post('kompetensi-non-teknis', [ImportController::class, 'masterKompetensiNonTeknis'])->name('import.kompetensi_non_teknis');
+        Route::post('mapping-kompetensi-non-teknis', [ImportController::class, 'mappingKompetensiNonTeknis'])->name('import.mapping_kompetensi_non_teknis');
+        Route::post('mapping-kompetensi-teknis', [ImportController::class, 'mappingKeterampilanTeknis'])->name('import.mapping_kompetensi_teknis');
+        Route::post('default-data', [ImportController::class, 'masterDefaultData'])->name('import.default_data');
     });
     Route::prefix('export')->group(function () {
         Route::get('kompetensi-non-teknis', [ExportController::class, 'exportMasterKompetensiNonTeknis'])->name('export.kompetensi_non_teknis');
@@ -58,10 +59,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('mapping-kompetensi-teknis', [ExportController::class, 'exportMappingKompetensiTeknis'])->name('export.mapping_kompetensi_teknis');
         Route::get('jabatan-unit', [ExportController::class, 'exportMasterJabatanUnit'])->name('export.jabatan_unit');
         Route::get('default-data', [ExportController::class, 'exportMasterDefaultData'])->name('export.default_data');
-        Route::get('uraian-jabatan_PDF/{id}', [ExportController::class, 'exportUraianJabatanPdf'])->name('export.uraian_jabatan_PDF');
-        Route::get('uraian-jabatan_Excel/{id}', [ExportController::class, 'exportUraianJabatanExcel'])->name('export.uraian_jabatan_Excel');
-        Route::get('template-jabatan_Excel/{encoded_name}', [ExportController::class, 'exportExcelTemplateJabatan'])->name('export.template_jabatan_Excel');
-        Route::get('template-jabatan_PDF/{encoded_name}', [ExportController::class, 'exportTemplateJabatanPdf'])->name('export.template_jabatan_PDF');
+        Route::get('uraian-jabatan-PDF/{id}', [ExportController::class, 'exportUraianJabatanPdf'])->name('export.uraian_jabatan_PDF');
+        Route::get('uraian-jabatan-Excel/{id}', [ExportController::class, 'exportUraianJabatanExcel'])->name('export.uraian_jabatan_Excel');
+        Route::get('template-jabatan-Excel/{encoded_name}/{unit_kd?}', [ExportController::class, 'exportExcelTemplateJabatan'])->name('export.template_jabatan_Excel');    
+        Route::get('template-jabatan-PDF/{encoded_name}/{unit_kd?}', [ExportController::class, 'exportTemplateJabatanPdf'])->name('export.template_jabatan_PDF');
     });
     // Master Data Routes
     Route::prefix('master_data')->group(function () {

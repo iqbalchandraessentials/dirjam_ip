@@ -14,12 +14,9 @@ return new class extends Migration
         Schema::create('master_pendidikans', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('pengalaman_g1')->nullable();
-            $table->string('pengalaman_g2')->nullable();
-            $table->string('pengalaman_g3')->nullable();
-            $table->string('penglaman_md')->nullable();
-            $table->string('pengalaman_mm')->nullable();
-            $table->string('pengalaman_ma')->nullable();
+            $table->string('pengalaman');
+            $table->string('jenjang_jabatan');
+            $table->string('created_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

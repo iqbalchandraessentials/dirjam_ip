@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('nature_impact')->nullable();
             $table->softDeletes();
             $table->timestamps();
-            $table->unsignedBigInteger('created_by');
+            $table->string('created_by')->nullable();
         });
     }
 
