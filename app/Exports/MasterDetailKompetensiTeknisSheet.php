@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\MasterDetailKomptensiTeknis;
+use App\Models\DetailKomptensiTeknis;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -11,7 +11,7 @@ class MasterDetailKompetensiTeknisSheet implements FromCollection, WithHeadings,
 {
     public function collection()
     {
-        return MasterDetailKomptensiTeknis::all(['kode_master','level','perilaku','kode_master_level']);
+        return DetailKomptensiTeknis::all(['kode_master','level','perilaku','kode_master_level']);
     }
 
     public function headings(): array

@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('master_detail_komptensi_teknis', function (Blueprint $table) {
+        Schema::create('pokok_utama_generiks', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_master');
-            $table->string('level');
-            $table->string('kode_master_level');
-            $table->string('perilaku',4000);
+            $table->unsignedBigInteger('uraian_master_jabatan_id')->nullable();
+            $table->enum('jenis_jabatan',['fungsional','struktural'])->nullable();
+            $table->string('aktivitas', 2000);
+            $table->string('output');
+            $table->enum('jenis',['utama','generik']);
             $table->string('created_by')->nullable();
             $table->timestamps();
         });
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('detail_master_komptensi_teknis');
+        Schema::dropIfExists('poko_utama_generiks');
     }
 };

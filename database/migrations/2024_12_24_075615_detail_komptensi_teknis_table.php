@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('keterampilan_teknis', function (Blueprint $table) {
-            $table->id();
-            $table->string('master_jabatan');
-            $table->string('kode');
-            $table->enum('kategori',['CORE','ENABLER']);
-            $table->integer('level');
-            $table->string('master_detail_kompetensi_id');
+        Schema::create('detail_komptensi_teknis', function (Blueprint $table) {
+            $table->bigInteger('id'); // Tidak pakai auto-increment
+            $table->string('kode_master');
+            $table->string('level');
+            $table->string('kode_master_level');
+            $table->string('perilaku', 4000);
             $table->string('created_by')->nullable();
             $table->timestamps();
         });
+        
     }
 
     /**
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('keterampilan_teknis');
+        Schema::dropIfExists('detail_komptensi_teknis');
     }
 };

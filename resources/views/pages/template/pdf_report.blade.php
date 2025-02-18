@@ -170,7 +170,7 @@
                         @if (!empty($data['jabatans']))
                             @foreach ($data['jabatans'] as $key)
                                 -
-                                {{ isset($key['namaProfesi']['nama_profesi']) ? strtoupper($key['namaProfesi']['nama_profesi']) : $key['kode_nama_profesi'] }}
+                                {{ strtoupper($key['namaProfesi']['nama_profesi'] ?? $key['nama_profesi']) }}
                                 <br>
                             @endforeach
                         @else
@@ -239,7 +239,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($data['tugasPokoUtamaGenerik'] as $x => $v)
+                    @forelse ($data['PokoUtamaGenerik'] as $x => $v)
                         @if (isset($v['jenis']) == 'utama')
                             <tr>
                                 <td style="text-align: center">{{ $x + 1 }}</td>

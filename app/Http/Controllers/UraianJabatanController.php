@@ -20,7 +20,7 @@ use App\Models\MasterJabatan;
 use App\Models\MasterJenjangJabatan;
 use App\Models\MasterPendidikan;
 use App\Models\TEMPLATE_ACUAN_V;
-use App\Models\TugasPokoUtamaGenerik;
+use App\Models\PokoUtamaGenerik;
 use App\Models\unit\M_UNIT;
 use App\Models\ViewUraianJabatan;
 use App\Models\WewenangJabatan;
@@ -82,7 +82,7 @@ class UraianJabatanController extends Controller
         $test['nature_of_impact'] = $data['uraianMasterJabatan']['nature_impact'] ?? '';
         $test['anggaran'] = $data['uraianMasterJabatan']['anggaran'];
         $test['kewenangan_pengadaan'] = $data['uraianMasterJabatan']['kewenangan_pengadaan'];
-        $test['aktivitas'] = $data['uraianMasterJabatan']['tugasPokoUtamaGenerik'];
+        $test['aktivitas'] = $data['uraianMasterJabatan']['PokoUtamaGenerik'];
         $test['kemampuan_dan_pengalaman'] = $data['uraianMasterJabatan']['kemampuandanPengalaman'];
         $test['komunikasi_internal'] = collect($data['uraianMasterJabatan']['hubunganKerja'])->where('jenis', 'internal');
         $test['komunikasi_external'] = collect($data['uraianMasterJabatan']['hubunganKerja'])->where('jenis', 'eksternal');
@@ -108,14 +108,15 @@ class UraianJabatanController extends Controller
         if ($check) {
             $data = $this->getLatestDatas($check, $jabatan->jen);
         } else {
-            $data['nature_of_impact'] = MappingNatureOfImpact::select('kategori')->where('KODE_PROFESI', $jabatan->nama_profesi)->first();
+            // $data['nature_of_impact'] = MappingNatureOfImpact::select('kategori')->where('KODE_PROFESI', $jabatan->nama_profesi)->first();
             $jabatanText = $jabatan->jabatan;
             $words = explode(' ', $jabatanText);
             $jabatanTrimmed = implode(' ', array_slice($words, 0, count($words) - 2));
-            $melengkapiData = JabatanLamaBaru::whereRaw('LOWER(jabatan) LIKE ?', ['%' . strtolower($jabatanTrimmed) . '%'])->first();
-            $templateAcuan = optional($melengkapiData)->master_jabatan
-                ? TEMPLATE_ACUAN_V::where('NAMA_TEMPLATE', $melengkapiData->master_jabatan)->first()
-                : null;
+            // $melengkapiData = JabatanLamaBaru::whereRaw('LOWER(jabatan) LIKE ?', ['%' . strtolower($jabatanTrimmed) . '%'])->first();
+            // $templateAcuan = optional($melengkapiData)->master_jabatan
+            //     ? TEMPLATE_ACUAN_V::where('NAMA_TEMPLATE', $melengkapiData->master_jabatan)->first()
+            //     : null;
+            $templateAcuan = null;
             $aktivitas = M_AKTIVITAS::where('uraian_jabatan_id', $jabatan->template_id)->get();
             $id = $jabatan->template_id;
             if ($aktivitas->isEmpty()) {
@@ -160,12 +161,12 @@ class UraianJabatanController extends Controller
         } else {
             $data['tantangan'] = MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();
         }
-        $data['aktivitas_generik'] = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $type)->get();
+        $data['aktivitas_generik'] = PokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $type)->get();
         $data['jabatan'] = $jabatan;
         $data['uraian_jabatan_id'] = $uraian_jabatan_id;
         $data['struktur_organisasi'] = $this->sto($jabatan['parent_position_id'], $jabatan['position_id']);
         $data['keterampilan_non_teknis'] = KeterampilanNonteknis::where('MASTER_JABATAN', $data['jabatan']['master_jabatan'])->get();
-        $data_core = KeterampilanTeknis::where('URAIAN_MASTER_JABATAN_ID', $data['jabatan']['template_id'])->get();
+        $data_core = KeterampilanTeknis::where('MASTER_JABATAN', $data['jabatan']['master_jabatan'])->get();
         $core = !$data_core ? $data_core : KeterampilanTeknis::where('kategori', 'CORE')->where('MASTER_JABATAN', $data['jabatan']['master_jabatan'])->get();
         $enabler = KeterampilanTeknis::where('kategori', 'ENABLER')->where('MASTER_JABATAN', $data['jabatan']['master_jabatan'])->get();
         $data['keterampilan_teknis'] =  $core->merge($enabler);

@@ -33,18 +33,18 @@
                         <table class="table table-striped dataTables">
                             <thead>
                                 <tr>
+                                    <th class="text-center">Jenjang Jabatan</th>
                                     <th class="text-center">Pendidikan</th>
                                     <th class="text-center">Pengalaman</th>
-                                    <th class="text-center">Jenjang Jabatan</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($data as $index => $data)
                                     <tr>
+                                        <td class="text-center">{{ $data->jenjang_jabatan }}</td>
                                         <td class="text-center">{{ $data->nama }}</td>
                                         <td class="text-center">{{ $data->pengalaman }}</td>
-                                        <td class="text-center">{{ $data->jenjang_jabatan }}</td>
                                         <td class="text-center">
                                             <!-- Edit Button -->
                                             <button type="button" class="btn btn-secondary btn-circle btn-xs edit-btn"

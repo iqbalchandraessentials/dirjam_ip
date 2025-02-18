@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('spesifikasi_bidang_studis', function (Blueprint $table) {
+        Schema::create('master_jenjang_jabatans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('spesifikasi_pendidikan_id');
-            $table->string('konsentrasi_id');
+            $table->string('kode')->unique();
+            $table->string('nama');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('spesifikasi_bidang_studis');
+        Schema::dropIfExists('master_jenjang_jabatans');
     }
 };

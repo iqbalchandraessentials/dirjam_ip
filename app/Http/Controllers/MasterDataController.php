@@ -13,7 +13,7 @@ use App\Models\MasterIndikatorOutput;
 use App\Models\MasterKompetensiNonteknis;
 use App\Models\MasterKompetensiTeknis;
 use App\Models\MasterPendidikan;
-use App\Models\TugasPokoUtamaGenerik;
+use App\Models\PokoUtamaGenerik;
 use App\Models\unit\M_UNIT;
 use App\Models\ViewUraianJabatan;
 use App\Models\WewenangJabatan;
@@ -90,7 +90,7 @@ class MasterDataController extends Controller
     }
     
     public function tugasPokokGenerik() {
-        $data = TugasPokoUtamaGenerik::where('jenis','generik')->get();
+        $data = PokoUtamaGenerik::where('jenis','generik')->get();
         return view('pages.masterData.tugasPokokGenerik.index', ['data' => $data]);
     }
     public function TugasPokokGenerikStore(Request $request) {
@@ -101,7 +101,7 @@ class MasterDataController extends Controller
             'jenis_jabatan' => 'required|string',
             
         ]);
-        TugasPokoUtamaGenerik::create([
+        PokoUtamaGenerik::create([
             'aktivitas' => $request->aktivitas,
             'output' => $request->output,
             'jenis_jabatan' => $request->jenis_jabatan,
@@ -118,7 +118,7 @@ class MasterDataController extends Controller
             'jenis_jabatan' => 'required|string',
         ]);
 
-        $data = TugasPokoUtamaGenerik::findOrFail($request->id);
+        $data = PokoUtamaGenerik::findOrFail($request->id);
         $data->update([
             'aktivitas' => $request->aktivitas,
             'output' => $request->output,
@@ -130,7 +130,7 @@ class MasterDataController extends Controller
     }
     public function TugasPokokGenerikDestroy(Request $request)
     {
-        $data = TugasPokoUtamaGenerik::findOrFail($request->id);;
+        $data = PokoUtamaGenerik::findOrFail($request->id);;
         $data->delete();
         return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil dihapus.');
     }
@@ -220,11 +220,11 @@ class MasterDataController extends Controller
     public function pendidikan() {
         $data = MasterPendidikan::get();
         $jenjang = M_JENJANG::select(['jenjang_kd', 'jenjang_nama'])->get();
-        $bidangStudi = MasterBidangStudi::get();
+        // $bidangStudi = MasterBidangStudi::get();
         return view('pages.masterData.pendidikan.index', [
             'data' => $data,
             'jenjang' => $jenjang,
-            'bidangStudi' => $bidangStudi
+            // 'bidangStudi' => $bidangStudi
         ]);
     }
      // Menyimpan data baru

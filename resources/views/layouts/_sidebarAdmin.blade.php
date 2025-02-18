@@ -119,8 +119,8 @@
                 </ul>
             </li> --}}
             {{-- <li class="header nav-small-cap text-uppercase">Others</li> --}}
-            <li class="{{ Request::is('template_jabatan/*','template_jabatan') ? 'active' : '' }}">
-                <a href="{{ url('template_jabatan') }}">
+            <li class="{{ Request::is('template-jabatan/*','template-jabatan') ? 'active' : '' }}">
+                <a href="{{ route('template_jabatan.index') }}">
                     <i class="ti-medall"></i>
                     <span>Template Jabatan</span>
                 </a>

@@ -132,7 +132,7 @@ class ExportController extends Controller
         // Jenjang Jabatan
         $objPHPExcel->setCellValue("E12", strtoupper($data['jabatan']['jenjangJabatan']['nama']));
         // KELOMPOK PROFESI        
-        $objPHPExcel->setCellValue("E13", strtoupper($data['jabatan']['namaProfesi']['nama_profesi'] ?? $data['jabatan']['namaProfesi']));
+        $objPHPExcel->setCellValue("E13", strtoupper($data['jabatan']['namaProfesi']['nama_profesi'] ?? $data['jabatan']['nama_profesi']));
         // Divisi/Departemen/Bidang/Bagian
         $objPHPExcel->setCellValue("E14", $data['jabatan']['divisi']);
         // Unis Kerja
@@ -1059,9 +1059,8 @@ class ExportController extends Controller
         $writer->save($exportPath);
         return response()->download($exportPath)->deleteFileAfterSend(true);
     }
-
+    // excel template export .xls
     public function exportExcelTemplateJabatan($id, $unit_kd)
-
     {
         $data = $this->templateJabatanController->getDatas($id, $unit_kd);
         if (!empty($data['hubunganKerja'][0]['jenis'])) {
@@ -1098,7 +1097,7 @@ class ExportController extends Controller
         $dataToInsert = "";
         if (!empty($data['jabatans'])) {
             foreach ($data['jabatans'] as $key) {
-                $namaProfesi = $key['namaProfesi']['nama_profesi'] ?? 'Tidak ada nama_profesi';
+                $namaProfesi = $key['namaProfesi']['nama_profesi'] ?? $key['nama_profesi'];
                 $dataToInsert .= "- " . strtoupper($namaProfesi) . "\n";
             }
         } else {
@@ -1138,7 +1137,7 @@ class ExportController extends Controller
         $baris = 27;
         $input = $objPHPExcel->getStyle("B26:G26");
         $no = 1;
-        foreach ($data['tugasPokoUtamaGenerik'] as $key) {
+        foreach ($data['PokoUtamaGenerik'] as $key) {
             if (isset($key['jenis']) && $key['jenis'] == 'utama') {
                 $objPHPExcel->setCellValue("B$baris", $no);
                 $objPHPExcel->setCellValue("C$baris", $key['aktivitas']);

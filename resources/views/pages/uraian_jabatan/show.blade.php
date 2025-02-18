@@ -77,13 +77,13 @@
                             <tr>
                                 <td><b> Jenjang Jabatan</b></td>
                                 <td>:</td>
-                                <td class="text-left text-uppercase"> {{ $data['jabatan']['jenjangJabatan']['nama'] }} </td>
+                                <td class="text-left text-uppercase"> {{ $data['jabatan']['jenjangJabatan']['nama'] ?? $data['jen'] }} </td>
                             </tr>
                             <tr>
                                 <td><b> Kelompok Bisnis</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase">
-                                    {{ $data['jabatan']['namaProfesi']['nama_profesi'] ?? $data['jabatan']['namaProfesi'] }}
+                                    {{ $data['jabatan']['namaProfesi']['nama_profesi'] ?? $data['jabatan']['nama_profesi'] }}
                                 </td>
                             </tr>
                             <tr>

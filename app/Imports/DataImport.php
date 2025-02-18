@@ -7,7 +7,7 @@ use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanTeknis;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\SpesifikasiPendidikan;
-use App\Models\TugasPokoUtamaGenerik;
+use App\Models\PokoUtamaGenerik;
 use App\Models\UraianMasterJabatan;
 use App\Models\WewenangJabatan;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -29,7 +29,7 @@ class DataImport implements ToCollection
      // Buat data UraianMasterJabatan
      $uraian_jabatan = UraianMasterJabatan::create([
          'nama' => $data['nama'],
-         'unit_id' => 1,
+         'unit_kd' => 1,
          'fungsi_utama' => 'fungsi_utama fungsi_utama fungsi_utama fungsi_utama',
         //  'fungsi_utama' => $data['fungsi_utama'],
          'anggaran' => $data['anggaran'],
@@ -156,7 +156,7 @@ class DataImport implements ToCollection
 
         // // $uraianJabatan = new UraianMasterJabatan();
         // // $uraianJabatan->nama = "MANAGER ORGANIZATION AND WORKFORCE EFFECTIVENESS";
-        // // $uraianJabatan->unit_id = 1;
+        // // $uraianJabatan->unit_kd = 1;
         // // $uraianJabatan->fungsi_utama = "Merupakan kalimat singkat yang menjelaskan tujuan diciptakannya jabatan tersebut di suatu organisasi, menggambarkan hasil akhir yang hendak dicapai, cara mencapainya, bagaimana fungsi jabatan dilaksanakan, apa saja yang dipengaruhi oleh jabatan, dan untuk apa fungsi tersebut dijalankan.";
         // // $uraianJabatan->anggaran = null;
         // // $uraianJabatan->accountability = null;
@@ -166,7 +166,7 @@ class DataImport implements ToCollection
         // $uraian_jabatan_id = UraianMasterJabatan::create(
         //     [
         //         'nama' => "MANAGER ORGANIZATION AND WORKFORCE EFFECTIVENESS",
-        //         'unit_id' => 1,
+        //         'unit_kd' => 1,
         //         'fungsi_utama' => "Merupakan kalimat singkat yang menjelaskan tujuan diciptakannya jabatan tersebut di suatu organisasi, menggambarkan hasil akhir yang hendak dicapai, cara mencapainya, bagaimana fungsi jabatan dilaksanakan, apa saja yang dipengaruhi oleh jabatan, dan untuk apa fungsi tersebut dijalankan.",
         //         'anggaran' => null,
         //         'accountability' => null,
@@ -175,7 +175,7 @@ class DataImport implements ToCollection
         // );
         // // dd($uraianJabatan);
         // foreach ($data['tugas_pokok_utama'] as $x) {
-        //     TugasPokoUtamaGenerik::create([
+        //     PokoUtamaGenerik::create([
         //         'uraian_jabatan_id' => $uraian_jabatan_id->id,
         //         'aktivitas' => $x['aktifitas'],
         //         'output' => $x['output'],

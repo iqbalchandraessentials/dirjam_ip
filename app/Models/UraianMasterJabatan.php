@@ -10,23 +10,22 @@ class UraianMasterJabatan extends Model
     protected $fillable = [
         'master_jabatan_id',
         'nama',
-        'unit_id',
+        'unit_kd',
         'jenis_jabatan',
         'fungsi_utama',
         'anggaran',
         'accountability',
         'nature_impact',
         'created_by',
-        'status'
     ];
     protected $guarded = ['id'];
     function masterJabatan() {
         return $this->belongsTo(MasterJabatan::class, 'master_jabatan_id', 'id');
     }
 
-    public function tugasPokoUtamaGenerik()
+    public function PokoUtamaGenerik()
     {
-        return $this->hasMany(TugasPokoUtamaGenerik::class, 'uraian_master_jabatan_id', 'id');
+        return $this->hasMany(PokoUtamaGenerik::class, 'uraian_master_jabatan_id', 'id');
     }
     public function hubunganKerja()
     {

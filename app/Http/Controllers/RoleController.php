@@ -13,14 +13,14 @@ class RoleController extends Controller
     {
         $roles = Role::all();
         $permissions = Permission::all();
-        $users = User::all();
-        return view('pages.roles.index', compact('roles', 'permissions', 'users'));
+        // $users = User::all();
+        return view('pages.roles.index', compact('roles'));
     }
 
-    public function create()
-    {
-        return view('pages.roles.create');
-    }
+    // public function create()
+    // {
+    //     return view('pages.roles.create');
+    // }
 
 
     public function edit(Role $role)
@@ -53,17 +53,17 @@ class RoleController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:roles,name',
-            'permissions' => 'array',
-            'permissions.*' => 'string|exists:permissions,name',
+            // 'permissions' => 'array',
+            // 'permissions.*' => 'string|exists:permissions,name',
         ]);
 
         $role = Role::create(['name' => $validated['name']]);
 
-        if (!empty($validated['permissions'])) {
-            $role->givePermissionTo($validated['permissions']);
-        }
+        // if (!empty($validated['permissions'])) {
+        //     $role->givePermissionTo($validated['permissions']);
+        // }
 
-        return redirect()->route('roles.create')->with('success', 'Role created successfully.');
+        return redirect()->route('roles')->with('success', 'Role created successfully.');
     }
 
 

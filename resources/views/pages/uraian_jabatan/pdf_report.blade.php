@@ -120,33 +120,34 @@
             dijalankan.
         </small>
 
+        
         <div style="font-weight: normal">
             <table>
                 <tr>
                     <td>Sebutan Jabatan</td>
                     <td>:</td>
                     <td>
-                        {{ $data['jabatan']['jabatan'] }}
+                        {{ $data['jabatan']['jabatan'] ?? '' }}
                     </td>
                 <tr>
                     <td>Jenjang Jabatan</td>
                     <td>:</td>
                     <td>
-                        <?= strtoupper($data['jabatan']['jenjangJabatan']['nama']) ?>
+                        <?= strtoupper($data['jabatan']['jenjangJabatan']['nama'] ?? '' ) ?>
                     </td>
                 </tr>
                 <tr>
                     <td>Kelompok Bisnis</td>
                     <td>:</td>
                     <td>
-                        <?= strtoupper($data['jabatan']['namaProfesi']['nama_profesi'] ?? $data['jabatan']['namaProfesi']) ?>
+                        <?= strtoupper($data['jabatan']['namaProfesi']['nama_profesi'] ?? $data['jabatan']['nama_profesi']) ?>
                     </td>
                 </tr>
                 <tr>
                     <td>Divisi/Departemen/Bidang/Bagian</td>
                     <td>:</td>
                     <td>
-                        {{ $data['jabatan']->divisi }}
+                        {{ $data['jabatan']['divisi'] }}
                     </td>
                 </tr>
                 <tr>

@@ -114,7 +114,7 @@
 
 
 
-    <div class="box">
+    {{-- <div class="box">
         <div class="box-header">
             <div class="row">
                 <div class="col-6 text-left">
@@ -178,7 +178,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 
      <div class="row">
@@ -202,7 +202,7 @@
                             <thead>
                                 <tr>
                                     <th>Role Name</th>
-                                    <th>Permissions</th>
+                                    {{-- <th>Permissions</th> --}}
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -210,12 +210,11 @@
                                 @foreach ($roles as $role)
                                     <tr>
                                         <td>{{ $role->name }}</td>
-                                        <td>
-                                            <!-- Display each permission for the role -->
+                                        {{-- <td>
                                             @foreach ($role->permissions as $permission)
                                                 <span class="badge badge-primary">{{ $permission->name }}</span>
                                             @endforeach
-                                        </td>
+                                        </td> --}}
                                         <td>
                                             <!-- Edit button to add/remove permissions -->
                                             <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editPermissionsModal{{ $role->id }}">
@@ -234,7 +233,7 @@
                                     </tr>
                         
                                     <!-- Modal for editing permissions -->
-                                    <div class="modal fade" id="editPermissionsModal{{ $role->id }}" tabindex="-1" role="dialog" aria-labelledby="editPermissionsLabel{{ $role->id }}" aria-hidden="true">
+                                    {{-- <div class="modal fade" id="editPermissionsModal{{ $role->id }}" tabindex="-1" role="dialog" aria-labelledby="editPermissionsLabel{{ $role->id }}" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -270,7 +269,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     
                                 @endforeach
                             </tbody>
@@ -327,7 +326,7 @@
             </div>
         </div>
         {{--  --}}
-        <div class="col-sm-12 col-lg-12">
+        {{-- <div class="col-sm-12 col-lg-12">
             <div class="box">
                 <div class="box-header">
                     <div class="row">
@@ -379,8 +378,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal fade" id="createPermissionModal" tabindex="-1" role="dialog" aria-labelledby="createPermissionLabel" aria-hidden="true">
+        </div> --}}
+        {{-- <div class="modal fade" id="createPermissionModal" tabindex="-1" role="dialog" aria-labelledby="createPermissionLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -404,7 +403,7 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div> --}}
         
     </div>
 

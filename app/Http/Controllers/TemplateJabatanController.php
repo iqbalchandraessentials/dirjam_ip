@@ -14,7 +14,7 @@ use App\Models\M_TANTANGAN;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJabatan;
 use App\Models\MasterPendidikan;
-use App\Models\TugasPokoUtamaGenerik;
+use App\Models\PokoUtamaGenerik;
 use App\Models\unit\M_UNIT;
 use App\Models\UraianMasterJabatan;
 use App\Models\ViewUraianJabatan;
@@ -95,7 +95,7 @@ class TemplateJabatanController extends Controller
         $masterJabatan = base64_decode($masterJabatan);
         $data = UraianMasterJabatan::with([
             'masterJabatan',
-            'tugasPokoUtamaGenerik',
+            'PokoUtamaGenerik',
             'hubunganKerja',
             'masalahKompleksitasKerja',
             'wewenangJabatan',
@@ -126,7 +126,7 @@ class TemplateJabatanController extends Controller
             $wewenang_jabatan = $data['wewenangJabatan'];
             $kemampuandanPengalaman = $data['kemampuandanPengalaman'];
         } else {
-            $x = ViewUraianJabatan::select(['MASTER_JABATAN', 'unit_kd', 'fungsi_utama', 'parent_position_id', 'position_id', 'jabatan', 'jen', 'type', 'NAMA_PROFESI', 'template_id', 'uraian_jabatan_id'])->where('MASTER_JABATAN', $masterJabatan)->first();
+            $x = ViewUraianJabatan::select(['MASTER_JABATAN', 'unit_kd', 'fungsi_utama', 'parent_position_id', 'position_id', 'jabatan', 'jen', 'type', 'NAMA_PROFESI', 'template_id', 'uraian_jabatan_id'])->where('MASTER_JABATAN', $masterJabatan)->where('SITEID', $unit_kd)->first();
             if (!$x) {
                 return response()->json(['error' => 'Data tidak ditemukan'], 404);
             }
@@ -135,7 +135,7 @@ class TemplateJabatanController extends Controller
             $position_id =  $x->position_id;
             $data = [
                 'jabatans' =>  $data['jabatans'] = ViewUraianJabatan::with(['jenjangJabatan', 'namaProfesi'])->select(
-                    'uraian_jabatan_id',
+                    // 'uraian_jabatan_id',
                     'jabatan',
                     'position_id',
                     'NAMA_PROFESI',
@@ -143,7 +143,7 @@ class TemplateJabatanController extends Controller
                     'JEN',
                     'ATASAN_LANGSUNG'
                 )
-                ->where('MASTER_JABATAN', $data['nama'])
+                ->where('MASTER_JABATAN', $x['master_jabatan'])
                 ->where('SITEID', $unit_kd)
                 ->distinct()
                 ->get(),
@@ -157,7 +157,7 @@ class TemplateJabatanController extends Controller
                         'nama' => $x->jenjangJabatan->nama ?? $x->jen
                     ]
                 ],
-                'tugasPokoUtamaGenerik' => M_AKTIVITAS::where('uraian_jabatan_id', $x->template_id)->get()
+                'PokoUtamaGenerik' => M_AKTIVITAS::where('uraian_jabatan_id', $x->template_id)->get()
             ];
             $mapPendidikan = new M_MAP_PENDIDIKAN();
             $data['spesifikasiPendidikan'] = $mapPendidikan->getByJabatan($x->template_id);
@@ -177,7 +177,7 @@ class TemplateJabatanController extends Controller
             }
         }
         $data['struktur_organisasi'] = $this->sto($parent_position_id, $position_id);
-        $data['tugas_pokok_generik'] = TugasPokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $type)->get();
+        $data['tugas_pokok_generik'] = PokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $type)->get();
 
         if (
             !empty($masalah_kompleksitas_kerja) &&
@@ -207,7 +207,7 @@ class TemplateJabatanController extends Controller
         if (!empty($data['hubunganKerja']) && isset($data['hubunganKerja'][0]['tujuan']) && ($data['hubunganKerja'][0]['tujuan'] === null || $data['hubunganKerja'][0]['tujuan'] === "")) {
             $data['hubunganKerja'] = [];
         }
-        // dd($data['keterampilan_teknis']);
+        // dd($data);
         return $data;
     }
 

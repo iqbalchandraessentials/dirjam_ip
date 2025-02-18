@@ -10,7 +10,7 @@ use App\Models\MASTER_JABTAN;
 use App\Models\MasterJabatan;
 use App\Models\MasterPendidikan;
 use App\Models\SpesifikasiPendidikan;
-use App\Models\TugasPokoUtamaGenerik;
+use App\Models\PokoUtamaGenerik;
 use App\Models\WewenangJabatan;
 use App\Models\UraianMasterJabatan;
 use App\Models\ViewUraianJabatan;
@@ -219,23 +219,23 @@ class UraianMasterJabatanImport implements ToCollection
              $uraian_jabatan_id = UraianMasterJabatan::create([
                 'master_jabatan_id' => $master_jabatan->id,
                 'nama' => $data['nama'],
-                'unit_id' => $viewUraianJabatan['siteid'],
+                'unit_kd' => $viewUraianJabatan['siteid'],
                 'fungsi_utama' => $data['fungsi_utama'],
                 'anggaran' => $data['anggaran'],
                 'accountability' => $data['accountability'],
                 'nature_impact' => $data['nature_impact'],
                 'created_by' => Auth::user()->name,
-                'status' => 'APPROVE',
              ]);
             $uraian_jabatan_id = $uraian_jabatan_id->id;
             foreach ($data['tugas_pokok_utama'] as $x) {
                 // Cek jika 'aktivitas' dan 'output' tidak kosong
                 if (!empty($x['aktivitas']) && !empty($x['output'])) {
-                    TugasPokoUtamaGenerik::create([
+                    PokoUtamaGenerik::create([
                         'uraian_master_jabatan_id' => $uraian_jabatan_id,
                         'aktivitas' => $x['aktivitas'],
                         'output' => $x['output'],
                         'jenis' => 'utama',
+                        'created_by' => Auth::user()->name,
                     ]);
                 }
             }
@@ -245,7 +245,6 @@ class UraianMasterJabatanImport implements ToCollection
                     $master_detail_kompetensi = $x['kode_kompetensi'].'.'.$x['level'];
                     KeterampilanTeknis::create([
                         'master_jabatan' => $data['nama'],
-                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
                         'kode' => $x['kode_kompetensi'],
                         'master_detail_kompetensi_id' => $master_detail_kompetensi,
                         'kategori' => "CORE",

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TugasPokoUtamaGenerik;
+use App\Models\PokoUtamaGenerik;
 use Illuminate\Http\Request;
 
-class TugasPokoUtamaGenerikController extends Controller
+class PokoUtamaGenerikController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class TugasPokoUtamaGenerikController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TugasPokoUtamaGenerik $tugasPokoUtamaGenerik)
+    public function show(PokoUtamaGenerik $PokoUtamaGenerik)
     {
         //
     }
@@ -42,7 +42,7 @@ class TugasPokoUtamaGenerikController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TugasPokoUtamaGenerik $tugasPokoUtamaGenerik)
+    public function edit(PokoUtamaGenerik $PokoUtamaGenerik)
     {
         //
     }
@@ -50,7 +50,7 @@ class TugasPokoUtamaGenerikController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TugasPokoUtamaGenerik $tugasPokoUtamaGenerik)
+    public function update(Request $request, PokoUtamaGenerik $PokoUtamaGenerik)
     {
         //
     }
@@ -58,7 +58,7 @@ class TugasPokoUtamaGenerikController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TugasPokoUtamaGenerik $tugasPokoUtamaGenerik)
+    public function destroy(PokoUtamaGenerik $PokoUtamaGenerik)
     {
         //
     }

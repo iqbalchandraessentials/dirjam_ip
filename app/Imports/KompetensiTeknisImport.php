@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\MasterDetailKomptensiTeknis;
+use App\Models\DetailKomptensiTeknis;
 use App\Models\MasterKompetensiTeknis;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
@@ -12,9 +12,9 @@ class KompetensiTeknisImport implements WithMultipleSheets
     {
         // Hapus semua data di tabel MasterKompetensiTeknis dan MasterDetailKompetensiTeknis
         // MasterKompetensiTeknis::query()->delete();
-        // MasterDetailKomptensiTeknis::query()->delete();
+        // DetailKomptensiTeknis::query()->delete();
         MasterKompetensiTeknis::truncate();
-        MasterDetailKomptensiTeknis::truncate();
+        DetailKomptensiTeknis::truncate();
         
     }
 
@@ -25,7 +25,7 @@ class KompetensiTeknisImport implements WithMultipleSheets
             0 => new MasterKompetensiTeknisImport(),
 
             // Sheet kedua di-handle oleh MasterDetailKompetensiTeknisImport
-            1 => new MasterDetailKomptensiTeknisImport(),
+            1 => new DetailKomptensiTeknisImport(),
         ];
     }
 }

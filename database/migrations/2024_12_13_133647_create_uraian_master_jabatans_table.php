@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('master_jabatan_id');
             $table->string('nama');
-            $table->integer('unit_id');
+            $table->integer('unit_kd');
             $table->string('fungsi_utama',4000);
             $table->string('anggaran')->nullable();
             $table->string('accountability')->nullable();
             $table->string('nature_impact')->nullable();
+            $table->string('created_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
-            $table->string('created_by')->nullable();
         });
     }
 

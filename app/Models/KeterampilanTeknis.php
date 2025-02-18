@@ -10,7 +10,6 @@ class KeterampilanTeknis extends Model
     // use SoftDeletes;
     
     protected $fillable = [
-        'uraian_master_jabatan_id',
         'kode',
         'master_detail_kompetensi_id',
         'level',
@@ -28,7 +27,7 @@ class KeterampilanTeknis extends Model
 
     public function detailMasterKompetensiTeknis()
     {
-        return $this->hasOne(MasterDetailKomptensiTeknis::class, 'kode_master_level', 'master_detail_kompetensi_id');
+        return $this->hasOne(DetailKomptensiTeknis::class, 'kode_master_level', 'master_detail_kompetensi_id');
     }
     public function uraianJabatan()
     {

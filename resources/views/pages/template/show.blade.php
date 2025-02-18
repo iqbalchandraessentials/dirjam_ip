@@ -48,13 +48,14 @@
                             $encodedName = base64_encode($data['nama']);
                         @endphp
                         
-                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName]) }}" class="btn btn-secondary">
+                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null]) }}" class="btn btn-secondary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
                         
-                        <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName]) }}" class="btn btn-secondary">
+                        <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null]) }}" class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span>Excel</span>
-                        </a>                    
+                        </a>
+                                         
                     </div>
                 </div>
             </div>
@@ -111,7 +112,7 @@
                                     @if (isset($data['jabatans']) && count($data['jabatans']) > 0)
 
                                         @foreach ($data['jabatans'] as $key)
-                                            - {{ $key['namaProfesi']['nama_profesi'] ?? $key['kode_nama_profesi'] }} <br>
+                                            - {{ $key['namaProfesi']['nama_profesi'] ?? $key['nama_profesi'] }} <br>
                                         @endforeach
                                     @else
                                         <p>Tidak ada data nama_profesi.</p>
@@ -193,7 +194,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($data['tugasPokoUtamaGenerik'] as $x => $v)
+                                @forelse ($data['PokoUtamaGenerik'] as $x => $v)
                                     @if (isset($v['jenis']) == 'utama')
                                         <tr>
                                             <td><span class="badge bg-dark"

@@ -2,13 +2,13 @@
 
 namespace App\Imports;
 
-use App\Models\MasterDetailKomptensiTeknis;
+use App\Models\DetailKomptensiTeknis;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class MasterDetailKomptensiTeknisImport implements ToModel, WithValidation, WithHeadingRow
+class DetailKomptensiTeknisImport implements ToModel, WithValidation, WithHeadingRow
 {
     /**
     * @param array $row
@@ -17,7 +17,7 @@ class MasterDetailKomptensiTeknisImport implements ToModel, WithValidation, With
     */
     public function model(array $row)
     {
-        return new MasterDetailKomptensiTeknis([
+        return new DetailKomptensiTeknis([
             'kode_master'=> $row['kode_master'],
             'level'=> $row['level'],
             'perilaku'=> $row['perilaku'],

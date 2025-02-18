@@ -39,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('uraian_jabatan', UraianJabatanController::class);
     Route::post('filter-uraian_jabatan/', [UraianJabatanController::class, 'filterData'])->name('uraian_jabatan.filter');
     // template jabatan
-    Route::resource('template-jabatan', TemplateJabatanController::class);
+    Route::get('template-jabatan', [TemplateJabatanController::class, 'index'])->name('template_jabatan.index');
     Route::get('template-jabatan/{encoded_name}/{unit_kd?}', [TemplateJabatanController::class, 'show'])->name('template_jabatan.show');
     Route::get('filter-template-jabatan/', [TemplateJabatanController::class, 'filterData'])->name('template_jabatan.filter');    
     Route::get('template-jabatan/draft/{id}', [TemplateJabatanController::class, 'draft'])->name('template_jabatan.draft');
@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('mapping-kompetensi-teknis', [ImportController::class, 'mappingKeterampilanTeknis'])->name('import.mapping_kompetensi_teknis');
         Route::post('default-data', [ImportController::class, 'masterDefaultData'])->name('import.default_data');
     });
+    // export
     Route::prefix('export')->group(function () {
         Route::get('kompetensi-non-teknis', [ExportController::class, 'exportMasterKompetensiNonTeknis'])->name('export.kompetensi_non_teknis');
         Route::get('kompetensi-teknis', [ExportController::class, 'exportMasterKompetensiTeknis'])->name('export.kompetensi_teknis');
