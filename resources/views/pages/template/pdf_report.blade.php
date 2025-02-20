@@ -153,7 +153,7 @@
                     <td>Jenis Jabatan</td>
                     <td>:</td>
                     <td>
-                        {{ strtoupper($data['type']) }}
+                        {{ strtoupper($data['masterJabatan']['jenis_jabatan']) }}
                     </td>
                 </tr>
                 <tr>
@@ -167,15 +167,7 @@
                     <td>Kelompok Bisnis</td>
                     <td>:</td>
                     <td>
-                        @if (!empty($data['jabatans']))
-                            @foreach ($data['jabatans'] as $key)
-                                -
-                                {{ strtoupper($key['namaProfesi']['nama_profesi'] ?? $key['nama_profesi']) }}
-                                <br>
-                            @endforeach
-                        @else
-                            <p>Tidak ada data.</p>
-                        @endif
+                        {{ strtoupper($data['jabatans'][0]['namaProfesi']['nama_profesi'] ?? $data['jabatans'][0]['nama_profesi']) }}
                     </td>
 
                 </tr>
@@ -183,14 +175,7 @@
                     <td>Unit Kerja</td>
                     <td>:</td>
                     <td>
-                        @if (isset($data['jabatans']) && count($data['jabatans']) > 0)
-
-                            @foreach ($data['jabatans'] as $key)
-                                - {{ strtoupper($key->description) ?? 'Tidak ada Unit Kerja' }} <br>
-                            @endforeach
-                        @else
-                            <p>Tidak ada data Unit Kerja.</p>
-                        @endif
+                        {{ strtoupper($data['masterJabatan']['unit_kode'] ?? 'Tidak ada Unit Kerja') }}
                     </td>
                 </tr>
                 <tr>

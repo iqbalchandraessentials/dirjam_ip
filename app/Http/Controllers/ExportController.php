@@ -119,7 +119,6 @@ class ExportController extends Controller
         // dd($data['fungsi_utama']);
         // dd($data['komunikasi_internal']->count());
         $templatePath = public_path('/template/Template_Urjab.xlsx');
-        // Load file template Excel
         $spreadsheet = IOFactory::load($templatePath);
         $objPHPExcel = $spreadsheet->getActiveSheet();
         $objPHPExcel->setCellValue("A6", strtoupper($data['jabatan']['jabatan']));
@@ -1059,7 +1058,7 @@ class ExportController extends Controller
         $writer->save($exportPath);
         return response()->download($exportPath)->deleteFileAfterSend(true);
     }
-    // excel template export .xls
+    // excel template excel export .xls
     public function exportExcelTemplateJabatan($id, $unit_kd)
     {
         $data = $this->templateJabatanController->getDatas($id, $unit_kd);
@@ -1070,8 +1069,8 @@ class ExportController extends Controller
             $param = 'lingkup_flag';
             $ex = 'external';
         }
+        
         $templatePath = public_path('/template/Template_Dirjab.xlsx');
-        // Load file template Excel
         $spreadsheet = IOFactory::load($templatePath);
         $objPHPExcel = $spreadsheet->getActiveSheet();
         $objPHPExcel->setCellValue("A6", strtoupper($data['jabatans'][0]['description']));
@@ -1090,52 +1089,39 @@ class ExportController extends Controller
         $n = ceil(strlen($dataToInsert) / 25) * 16;
         $objPHPExcel->getRowDimension(12)->setRowHeight($n);
         // Jenis Jabatan
-        $objPHPExcel->setCellValue("E13", strtoupper($data['type']));
+        $objPHPExcel->setCellValue("E13", strtoupper($data['masterJabatan']['jenis_jabatan']));
         // Jenjang Jabatan
         $objPHPExcel->setCellValue("E14", strtoupper($data['masterJabatan']['jenjangJabatan']['nama']));
         // KELOMPOK PROFESI
-        $dataToInsert = "";
-        if (!empty($data['jabatans'])) {
-            foreach ($data['jabatans'] as $key) {
-                $namaProfesi = $key['namaProfesi']['nama_profesi'] ?? $key['nama_profesi'];
-                $dataToInsert .= "- " . strtoupper($namaProfesi) . "\n";
-            }
-        } else {
-            $dataToInsert = "Tidak ada data";
-        }
-        $objPHPExcel->setCellValue("E15", trim($dataToInsert));
+        $objPHPExcel->setCellValue("E15", strtoupper($data['jabatans'][0]['namaProfesi']['nama_profesi'] ?? $data['jabatans'][0]['nama_profesi']));
         $objPHPExcel->getStyle("E15")->getAlignment()->setWrapText(true);
         $n = ceil(strlen($dataToInsert) / 25) * 16;
         $objPHPExcel->getRowDimension(12)->setRowHeight($n);
         // stream Bisnis
         $objPHPExcel->setCellValue("E16", "");
         // Unis Kerja
-        $dataToInsert = "";
-        foreach ($data['jabatans'] as $key) {
-            $dataToInsert .= "-" . strtoupper($key['description']) . "\n";
-        }
-        $objPHPExcel->setCellValue("E17", $dataToInsert);
+        $objPHPExcel->setCellValue("E17", strtoupper($data['masterJabatan']['unit_kode'] ?? 'Tidak ada Unit Kerja'));
         $objPHPExcel->getStyle("E17")->getAlignment()->setWrapText(true);
         $n = ceil(strlen($dataToInsert) / 25) * 16;
         $objPHPExcel->getRowDimension(12)->setRowHeight($n);
         // Atasan Langsung
         $dataToInsert = "";
         foreach ($data['jabatans'] as $key) {
-            $dataToInsert .= "-" . $key['atasan_langsung'] ?? 'Tidak ada atasan_langsung' . "\n";
+            $dataToInsert .= "-" . ($key['atasan_langsung'] ?? 'Tidak ada atasan_langsung') . "\n";
         }
         $objPHPExcel->setCellValue("E18", $dataToInsert);
         $objPHPExcel->getStyle("E18")->getAlignment()->setWrapText(true);
         $n = ceil(strlen($dataToInsert) / 25) * 16;
         $objPHPExcel->getRowDimension(12)->setRowHeight($n);
         //  Fungsi Utama
-        $objPHPExcel->setCellValue("B22", $data["fungsi_utama"]);
+        $objPHPExcel->setCellValue("B22", $data["fungsi_utama"] ?? 'Tidak ada data' );
         $objPHPExcel->getStyle("B22")->getAlignment()->setWrapText(true);
-        $n = ceil(strlen($data["fungsi_utama"]) / 86) * 16;
+        $n = ceil(strlen($data["fungsi_utama"] ?? 'Tidak ada data') / 86) * 16;
         $objPHPExcel->getRowDimension(22)->setRowHeight($n);
         // 
         /* TANGGUNG JAWAB UTAMA */
         $baris = 27;
-        $input = $objPHPExcel->getStyle("B26:G26");
+        $input = $objPHPExcel->getStyle("B27:G27");
         $no = 1;
         foreach ($data['PokoUtamaGenerik'] as $key) {
             if (isset($key['jenis']) && $key['jenis'] == 'utama') {
@@ -1521,9 +1507,9 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("D$baris:H$baris");
         $baris++;
         $no = 1;
-        $rowsCount = count($data['hubunganKerja']->WHERE($param, 'internal'));
+        $rowsCount = count(collect($data['hubunganKerja'])->WHERE($param, 'internal'));
         $input = $objPHPExcel->getStyle("B27:G27");
-        foreach ($data['hubunganKerja']->WHERE($param, 'internal') as $key) {
+        foreach (collect($data['hubunganKerja'])->WHERE($param, 'internal') as $key) {
             $objPHPExcel->setCellValue("B$baris", $no);
             $objPHPExcel->setCellValue("C$baris", isset($key['subjek']) ? $key['subjek'] : $key['komunikasi']);
             $objPHPExcel->setCellValue("D$baris", $key->tujuan);
@@ -1550,9 +1536,9 @@ class ExportController extends Controller
         $objPHPExcel->mergeCells("D$baris:H$baris");
         $baris++;
         $no = 1;
-        $rowsCount = count($data['hubunganKerja']->WHERE($param, $ex));
+        $rowsCount = count(collect($data['hubunganKerja'])->WHERE($param, $ex));
         $input = $objPHPExcel->getStyle("B27:G27");
-        foreach ($data['hubunganKerja']->WHERE($param, $ex) as $key) {
+        foreach (collect($data['hubunganKerja'])->WHERE($param, $ex) as $key) {
             $objPHPExcel->setCellValue("B$baris", $no);
             $objPHPExcel->setCellValue("C$baris", isset($key['subjek']) ? $key['subjek'] : $key['komunikasi']);
             $objPHPExcel->setCellValue("D$baris", $key->tujuan);

@@ -67,7 +67,7 @@
                                     <label for="unit" class="mr-3 mb-0">Unit:</label>
                                     <select class="form-control select2" name="unit" id="unitFilter">
                                         @if(isset($selectUnit))
-                                        <option selected disabled>{{$selectUnit}}</option>
+                                            <option selected disabled>{{$selectUnit}}</option>
                                         @endif
                                         @foreach ($unitOptions as $unit)
                                             <option value="{{ $unit->unit_kd }}" 
@@ -78,11 +78,6 @@
                                     </select>
                                 </div>
                             </div>
-                            {{-- <div class="col-auto">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary ml-2"><i class="ti-search"></i></button>
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
                 </form>

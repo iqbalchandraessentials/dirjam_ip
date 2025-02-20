@@ -62,19 +62,6 @@ class UraianJabatanController extends Controller
         return view('pages.uraian_jabatan.index', compact('jabatans', 'jenjangOptions', 'unitOptions'));
     }
 
-    public function kwn()
-    {
-        return [
-            "kewenangan_pengadaan" => "Kewenangan Pengadaan",
-            "jumlah_anggaran"      => "Kewenangan Anggaran",
-            "nilai_aset"           => "Kewenangan Nilai Asset",
-            "ang_op"               => "Kewenangan Anggaran Operasi",
-            "ang_cp"               => "Kewenangan Anggaran Investasi",
-            "pendapatan"           => "Nilai Pendapatan",
-            "labarugi"             => "Laba Rugi",
-        ];
-    }
-
     public function getLatestDatas($data, $jenjang)
     {
         $test = [];
@@ -135,17 +122,7 @@ class UraianJabatanController extends Controller
             $data['komunikasi_external'] = M_KOMUNIKASI::where('LINGKUP_FLAG', 'external')->where('URAIAN_JABATAN_ID', $id)->orderBy('URUTAN')->get();
             $data["tantangan"] = M_TANTANGAN::where('URAIAN_JABATAN_ID', $id)->get();
             $data['pengambilan_keputusan'] = M_PENGAMBILAN_KEPUTUSAN::where('URAIAN_JABATAN_ID', $id)->orderBy('URUTAN')->get();
-            $kwn = $this->kwn();
-            $results = M_KEWENANGAN_JABATAN::with('kewenangan')
-                ->where('URAIAN_JABATAN_ID', $id)
-                ->get();
-            $kewenanganData = [];
-            foreach ($results as $result) {
-                $kewenanganData[$result->TIPE_KEWENANGAN] = $result->kewenangan->JUMLAH_KEWENANGAN ?? "";
-            }
-            foreach ($kwn as $key => $value) {
-                $data[$key] = $kewenanganData[$key] ?? "";
-            }
+            
         }
 
         if (isset($data['pengambilan_keputusan'][0]) && (!empty($data['pengambilan_keputusan'][0]['definisi']) || !empty($data['pengambilan_keputusan'][0]['pengambilan_keputusan']))) {
@@ -173,10 +150,6 @@ class UraianJabatanController extends Controller
         if (($data['komunikasi_internal'][0]['tujuan'] ?? null) == null || ($data['komunikasi_internal'][0]['tujuan'] ?? null) == "") {
             $data['komunikasi_internal'] = [];
         }
-        // if (($data['komunikasi_external'][0]['tujuan'] ?? null) == null || ($data['komunikasi_external'][0]['tujuan'] ?? null) == "") {
-        //     $data['komunikasi_external'] = [];
-        // }
-
         // dd($data);
         return $data;
     }

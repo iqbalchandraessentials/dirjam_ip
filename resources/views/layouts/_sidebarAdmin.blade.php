@@ -83,7 +83,7 @@
                             <i class="ti-more"></i>Permission
                         </a>
                     </li> --}}
-                    <li class="{{ Request::is('master_data/users') ? 'active' : '' }}">
+                    <li class="{{ Request::is('master_data/users', 'master_data/roles') ? 'active' : '' }}">
                         <a href="{{ url('master_data/users') }}">
                             <i class="ti-more"></i>Hak Akses
                         </a>

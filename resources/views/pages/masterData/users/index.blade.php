@@ -16,6 +16,10 @@
                             rel="noopener noreferrer">
                             <i class="ti-plus me-1"></i><span class="ml-1"> Add</span>
                         </a>
+                        {{-- roles user --}}
+                        <a class="btn btn-success text-white mb-3" href="{{route('roles.index')}}">
+                            <i class="ti-eye me-1"></i><span class="ml-1">Roles</span>
+                        </a>
                     </div>
                 </div>
             </div>

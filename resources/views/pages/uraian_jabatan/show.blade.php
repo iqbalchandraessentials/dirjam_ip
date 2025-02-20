@@ -680,37 +680,9 @@
                 </div>
             </div>
         </div>
-
         <div class="box">
             <div class="box-header">
-                <div class="row">
-                    <div class="col-12 text-left">
-                        <h3 class="box-title">10. STRUKTUR ORGANISASI</h3>
-                        <div>
-                            <p class="font-italic">
-                                Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi
-                                jabatan atasan langsung, bawahan langsung serta rekan kerja (peers).
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="box-body pt-0 d-flex justify-content-center">
-                <div class="row" style="display: block;  margin-bottom:90px">
-                    @if (isset($data['struktur_organisasi']))
-                        <div class="col-12" id="sto">
-                            {!! $data['struktur_organisasi'] !!}
-                        </div>
-                    @else
-                        <p>Tidak ada data</p>
-                    @endif
-                </div>
-            </div>
-        </div>
-        <div class="box">
-            <div class="box-header">
-                <h4 class="box-title">11. KEBUTUHAN KOMPETENSI JABATAN (KKJ)</h4>
+                <h4 class="box-title">10. KEBUTUHAN KOMPETENSI JABATAN (KKJ)</h4>
                 <div>
                     <p class="font-italic">
                         Memberikan informasi mengenai kebutuhan kemahiran/kompetensi yang diharapkan dalam suatu jabatan.
@@ -897,6 +869,33 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-header">
+                <div class="row">
+                    <div class="col-12 text-left">
+                        <h3 class="box-title">11. STRUKTUR ORGANISASI</h3>
+                        <div>
+                            <p class="font-italic">
+                                Memberikan gambaran posisi jabatan tersebut di dalam organisasi, yang memperlihatkan posisi
+                                jabatan atasan langsung, bawahan langsung serta rekan kerja (peers).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-body pt-0 d-flex justify-content-center">
+                <div class="row" style="display: block;  margin-bottom:90px">
+                    @if (isset($data['struktur_organisasi']))
+                        <div class="col-12" id="sto">
+                            {!! $data['struktur_organisasi'] !!}
+                        </div>
+                    @else
+                        <p>Tidak ada data</p>
+                    @endif
                 </div>
             </div>
         </div>

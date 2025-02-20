@@ -416,7 +416,7 @@
                             @empty
                                 <tr style="text-align: center">
                                     <td>1</td>
-                                    <td >Tidak ada data</td>
+                                    <td colspan="2">Tidak ada data</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -448,7 +448,7 @@
                             @empty
                                 <tr style="text-align: center">
                                     <td>1</td>
-                                    <td>Tidak ada data</td>
+                                    <td colspan="2">Tidak ada data</td>
                                 </tr>
                             @endforelse
                         </tbody>

@@ -89,6 +89,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('jenjang-jabatan', [MasterDataController::class, 'jenjangJabatan'])->name('master.jenjang-jabatan');
         Route::get('unit', [MasterDataController::class, 'unit'])->name('master.unit');
         Route::get('users', [UserController::class, 'index'])->name('users.index');
+        Route::resource('roles', RoleController::class);
     });
     // User Management Routes
     Route::post('users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
@@ -96,14 +97,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
     Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission');
     Route::post('users/{user}/updateRolesPermissions', [UserController::class, 'updateRolesPermissions'])->name('users.updateRolesPermissions');
-    Route::resource('roles', RoleController::class);
 });
 
 Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.updatePermissions');
 Route::middleware(['auth'])->group(function () {
     Route::resource('permissions', PermissionController::class);
     Route::post('permissions/assign/{user}', [PermissionController::class, 'assignPermission'])->name('permissions.assign');
-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

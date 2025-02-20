@@ -95,7 +95,7 @@
                                 <td><b> Jenis Jabatan</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase">
-                                    {{ strtoupper($data['type']) }}
+                                    {{ strtoupper($data['masterJabatan']['jenis_jabatan']) }}
                                 </td>
                             </tr>
                             <tr>
@@ -109,28 +109,14 @@
                                 <td><b> Kelompok Bisnis</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase">
-                                    @if (isset($data['jabatans']) && count($data['jabatans']) > 0)
-
-                                        @foreach ($data['jabatans'] as $key)
-                                            - {{ $key['namaProfesi']['nama_profesi'] ?? $key['nama_profesi'] }} <br>
-                                        @endforeach
-                                    @else
-                                        <p>Tidak ada data nama_profesi.</p>
-                                    @endif
+                                    {{$data['jabatans'][0]['namaProfesi']['nama_profesi'] ?? $data['jabatans'][0]['nama_profesi'] }}
                                 </td>
                             </tr>
                             <tr>
                                 <td><b> Unit Kerja</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase">
-                                    @if (isset($data['jabatans']) && count($data['jabatans']) > 0)
-
-                                        @foreach ($data['jabatans'] as $key)
-                                            - {{ $key->description ?? 'Tidak ada Unit Kerja' }} <br>
-                                        @endforeach
-                                    @else
-                                        <p>Tidak ada data Unit Kerja.</p>
-                                    @endif
+                                    {{ $data['masterJabatan']['unit_kode'] ?? 'Tidak ada Unit Kerja' }}
                                 </td>
                             </tr>
                             <tr>
@@ -164,8 +150,8 @@
                     </p>
                 </div>
                 <div class="col-sm-12 col-12">
-                    <p class="blockquote">
-                        {!! $data['fungsi_utama'] !!}
+                    <p class="blockquote" style="text-align: justify">
+                        {!! $data['fungsi_utama'] ?? 'Tidak ada Data' !!}
                     </p>
                 </div>
             </div>
@@ -505,7 +491,7 @@
                                 @php $no = 1; @endphp
                                 @forelse ($data['hubunganKerja'] as $v) 
                                 @if ($v['jenis'] == 'eksternal' || $v['lingkup_flag'] == 'external')
-                                    @if (!empty($v['tujuan'] || $v['tujuan'] !== '' )) 
+                                    @if (!empty($v['tujuan'] )) 
                                         <tr>
                                             <td>
                                                 <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
@@ -568,7 +554,6 @@
                         </table>
                     </div>
                 </div>
-
             </div>
         </div>
 

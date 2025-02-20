@@ -56,14 +56,11 @@ class RoleController extends Controller
             // 'permissions' => 'array',
             // 'permissions.*' => 'string|exists:permissions,name',
         ]);
-
         $role = Role::create(['name' => $validated['name']]);
-
         // if (!empty($validated['permissions'])) {
         //     $role->givePermissionTo($validated['permissions']);
         // }
-
-        return redirect()->route('roles')->with('success', 'Role created successfully.');
+        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
     }
 
 

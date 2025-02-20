@@ -201,9 +201,9 @@ class UraianMasterJabatanImport implements ToCollection
                 return redirect()->back()->with('error', implode(', ', $errors));
             }
             // end of get data
-            // dd($data);   
             // dd($viewUraianJabatan);
             // +=+
+
             $viewUraianJabatan['jenis_jabatan'] = $viewUraianJabatan['type'] == 'S' ? 'struktural' : 'fungsional';
             $master_jabatan = MasterJabatan::updateOrCreate(
                 [
@@ -226,7 +226,9 @@ class UraianMasterJabatanImport implements ToCollection
                 'nature_impact' => $data['nature_impact'],
                 'created_by' => Auth::user()->name,
              ]);
+             
             $uraian_jabatan_id = $uraian_jabatan_id->id;
+            //  tugas pokok utama 
             foreach ($data['tugas_pokok_utama'] as $x) {
                 // Cek jika 'aktivitas' dan 'output' tidak kosong
                 if (!empty($x['aktivitas']) && !empty($x['output'])) {
@@ -239,6 +241,7 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
+
             KeterampilanTeknis::where('master_jabatan', $data['nama'] )->where('kategori', 'CORE')->delete();
             foreach ($data['kompetensi_teknis'] as $x) {
                 if (!empty($x['kode_kompetensi']) && !empty($x['level'])) {

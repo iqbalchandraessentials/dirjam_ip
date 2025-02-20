@@ -295,7 +295,7 @@
                                     </div>
                 
                                     <!-- Checkbox list for Permissions -->
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label for="permissions">Assign Permissions</label>
                                         @foreach ($permissions as $permission)
                                             <div class="form-check">
@@ -312,7 +312,7 @@
                                                 </label>
                                             </div>
                                         @endforeach
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
