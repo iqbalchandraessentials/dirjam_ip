@@ -4,7 +4,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\MasterDataController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -40,9 +39,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('filter-uraian_jabatan/', [UraianJabatanController::class, 'filterData'])->name('uraian_jabatan.filter');
     // template jabatan
     Route::get('template-jabatan', [TemplateJabatanController::class, 'index'])->name('template_jabatan.index');
-    Route::get('template-jabatan/{encoded_name}/{unit_kd?}', [TemplateJabatanController::class, 'show'])->name('template_jabatan.show');
-    Route::get('filter-template-jabatan/', [TemplateJabatanController::class, 'filterData'])->name('template_jabatan.filter');    
-    Route::get('template-jabatan/draft/{id}', [TemplateJabatanController::class, 'draft'])->name('template_jabatan.draft');
+    Route::get('template-jabatan/{encoded_name}/{unit_kd?}/{id?}', [TemplateJabatanController::class, 'show'])->name('template_jabatan.show');
+    Route::get('template-draft/{id}', [TemplateJabatanController::class, 'draft'])->name('template_jabatan.draft');
+    Route::get('filter-template-jabatan/', [TemplateJabatanController::class, 'filterData'])->name('template_jabatan.filter');
     // import data
     Route::prefix('import')->group(function () {
         Route::post('template-jabatan', [ImportController::class, 'import'])->name('import.templateJabatan');
@@ -68,16 +67,16 @@ Route::middleware(['auth'])->group(function () {
     // Master Data Routes
     Route::prefix('master_data')->group(function () {
         Route::get('indikator', [MasterDataController::class, 'indikator'])->name('master.indikator');
-        Route::post('indikator/create', [MasterDataController::class, 'storeIndikator'])->name('master.indikator.store');
-        Route::post('indikator/edit', [MasterDataController::class, 'updateIndikator'])->name('master.indikator.update');
-        Route::post('indikator/delete', [MasterDataController::class, 'deleteIndikator'])->name('master.indikator.delete');
+        Route::post('indikator/create', [MasterDataController::class, 'storeIndikator'])->name('master.indikator.store')->middleware(['role:SuperAdmin,sdmHoManager']);
+        Route::post('indikator/edit', [MasterDataController::class, 'updateIndikator'])->name('master.indikator.update')->middleware(['role:SuperAdmin,sdmHoManager']);
+        Route::post('indikator/delete', [MasterDataController::class, 'deleteIndikator'])->name('master.indikator.delete')->middleware(['role:SuperAdmin,sdmHoManager']);
         Route::get('pendidikan', [MasterDataController::class, 'pendidikan'])->name('master.pendidikan');
-        Route::post('pendidikan/create', [MasterDataController::class, 'createPendidikan'])->name('master.pendidikan.create');
-        Route::post('pendidikan/update', [MasterDataController::class, 'updatePendidikan'])->name('master.pendidikan.update');
-        Route::post('pendidikan/delete', [MasterDataController::class, 'deletePendidikan'])->name('master.pendidikan.delete');
+        Route::post('pendidikan/create', [MasterDataController::class, 'createPendidikan'])->name('master.pendidikan.create')->middleware(['role:SuperAdmin,sdmHoManager']);
+        Route::post('pendidikan/update', [MasterDataController::class, 'updatePendidikan'])->name('master.pendidikan.update')->middleware(['role:SuperAdmin,sdmHoManager']);
+        Route::post('pendidikan/delete', [MasterDataController::class, 'deletePendidikan'])->name('master.pendidikan.delete')->middleware(['role:SuperAdmin,sdmHoManager']);
         Route::get('tugas-pokok-generik', [MasterDataController::class, 'tugasPokokGenerik'])->name('master.tugas_pokok_generik.index');
-        Route::post('tugas-pokok-generik/store', [MasterDataController::class, 'TugasPokokGenerikStore'])->name('master.tugas_pokok_generik.store');
-        Route::post('tugas-pokok-generik/update', [MasterDataController::class, 'TugasPokokGenerikUpdate'])->name('master.tugas_pokok_generik.update');
+        Route::post('tugas-pokok-generik/store', [MasterDataController::class, 'TugasPokokGenerikStore'])->name('master.tugas_pokok_generik.store')->middleware(['role:SuperAdmin,sdmHoManager']);
+        Route::post('tugas-pokok-generik/update', [MasterDataController::class, 'TugasPokokGenerikUpdate'])->name('master.tugas_pokok_generik.update')->middleware(['role:SuperAdmin,sdmHoManager']);
         Route::post('tugas-pokok-generik/delete', [MasterDataController::class, 'TugasPokokGenerikDestroy'])->name('master.tugas_pokok_generik.delete');
         Route::get('default-master-data', [MasterDataController::class, 'defaultMasterData'])->name('master.defaultData');
         Route::get('kompetensi-teknis', [MasterDataController::class, 'masterKompetensiTeknis'])->name('master.kompetensi-teknis');
@@ -88,24 +87,26 @@ Route::middleware(['auth'])->group(function () {
         Route::get('jabatan', [MasterDataController::class, 'masterJabatan'])->name('master.jabatan');
         Route::get('jenjang-jabatan', [MasterDataController::class, 'jenjangJabatan'])->name('master.jenjang-jabatan');
         Route::get('unit', [MasterDataController::class, 'unit'])->name('master.unit');
-        Route::get('users', [UserController::class, 'index'])->name('users.index');
-        Route::resource('roles', RoleController::class);
+        Route::get('users', [UserController::class, 'index'])->name('users.index')->middleware(['role:SuperAdmin']);
+        Route::resource('roles', RoleController::class)->middleware(['role:SuperAdmin']);
     });
     // User Management Routes
-    Route::post('users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
-    Route::post('users/store', [UserController::class, 'store'])->name('users.store');
-    Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
-    Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission');
-    Route::post('users/{user}/updateRolesPermissions', [UserController::class, 'updateRolesPermissions'])->name('users.updateRolesPermissions');
+    Route::post('users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole')->middleware(['role:SuperAdmin']);
+    Route::post('users/store', [UserController::class, 'store'])->name('users.store')->middleware(['role:SuperAdmin']);
+    Route::post('/users/update', [UserController::class, 'update'])->name('users.update')->middleware(['role:SuperAdmin']);
+    Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission')->middleware(['role:SuperAdmin']);
+    Route::post('users/{user}/updateRolesPermissions', [UserController::class, 'updateRolesPermissions'])->name('users.updateRolesPermissions')->middleware(['role:SuperAdmin']);
 });
 
-Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.updatePermissions');
+Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.updatePermissions')->middleware(['role:SuperAdmin']);
 Route::middleware(['auth'])->group(function () {
     Route::resource('permissions', PermissionController::class);
     Route::post('permissions/assign/{user}', [PermissionController::class, 'assignPermission'])->name('permissions.assign');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});
+
 
 require __DIR__ . '/auth.php';

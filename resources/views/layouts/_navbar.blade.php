@@ -309,7 +309,7 @@
                                 <img src="{{ asset('img/logo.png') }}" class="float-left rounded-circle" alt="User Image">
                                 <h4 class="user-name align-self-center">
                                     <span>{{Auth::user()->name}}</span>
-                                    <small>{{ Auth::user()->email }}</small>
+                                    <small>{{ Auth::user()->unitKerja->unit_nama }}</small>
                                 </h4>
                             </div>
                         </li>

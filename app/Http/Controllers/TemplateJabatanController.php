@@ -31,22 +31,16 @@ class TemplateJabatanController extends Controller
         return view('pages.template.index', compact('unitOptions', 'selectUnit'));
     }
 
-    public function draft($id)
+    public function show($masterJabatan, $unit_kd, $id = null)
     {
-        $data =  MasterJabatan::find($id);
-        return view('pages.template.draft',  ['data' => $data]);
-    }
-
-    public function show($masterJabatan, $unit_kd = null)
-    {
-        $data = $this->getDatas($masterJabatan, $unit_kd);
+        $data = $this->getDatas($masterJabatan, $unit_kd, $id);
         return view('pages.template.show', [
             'data' => $data,
         ]);
     }
 
     public function filterData(Request $request)
-    {    
+    {  
         $unit_kd = $request->input('unit', Auth::user()->unit_kd);
     
         $data = ViewUraianJabatan::select('master_jabatan', 'unit_kd', 'jen')
@@ -68,8 +62,29 @@ class TemplateJabatanController extends Controller
             ->make(true);
     }
     
-    public function getDatas($masterJabatan, $unit_kd = '')
+    public function draft($id)
     {
+        $data =  MasterJabatan::find($id);
+        $unit = M_UNIT::select('unit_kd')->where('unit_nama', $data->unit_kode)->first();
+        $encodedName = base64_encode($data->nama);
+        return view('pages.template.draft',  ['data' => $data, 'unit' => $unit, 'encodedName' => $encodedName]);
+    }
+
+    public function getDatas($masterJabatan, $unit_kd = '', $id = null)
+    {
+
+        dd($id);
+
+        if($id){
+            $data = UraianMasterJabatan::with([
+                'masterJabatan', 'PokoUtamaGenerik', 'hubunganKerja',
+                'masalahKompleksitasKerja', 'wewenangJabatan',
+                'spesifikasiPendidikan', 'kemampuandanPengalaman'
+            ])->findOrFail($id);
+            return $this->processExistingData($data, $unit_kd);
+        }
+
+
         $masterJabatan = base64_decode($masterJabatan);
         $data = UraianMasterJabatan::with([
             'masterJabatan', 'PokoUtamaGenerik', 'hubunganKerja',
@@ -88,7 +103,7 @@ class TemplateJabatanController extends Controller
     private function processExistingData($data, $unit_kd)
     {
         $data['jabatans'] = ViewUraianJabatan::with(['jenjangJabatan', 'namaProfesi'])
-        ->select('jabatan', 'position_id', 'NAMA_PROFESI', 'DESCRIPTION', 'JEN', 'ATASAN_LANGSUNG')
+        ->select('jabatan', 'position_id', 'NAMA_PROFESI', 'bawahan_langsung', 'total_bawahan', 'DESCRIPTION', 'JEN', 'ATASAN_LANGSUNG')
         ->where('MASTER_JABATAN', $data['nama'])
         ->where('SITEID', $unit_kd)
         ->distinct()
@@ -126,7 +141,7 @@ class TemplateJabatanController extends Controller
                 'unit_kode' => $x->description,
             ],
             'jabatans' => ViewUraianJabatan::with(['jenjangJabatan', 'namaProfesi'])
-            ->select('jabatan', 'position_id', 'NAMA_PROFESI', 'DESCRIPTION', 'JEN', 'ATASAN_LANGSUNG')
+            ->select('jabatan', 'position_id', 'bawahan_langsung', 'total_bawahan', 'NAMA_PROFESI', 'DESCRIPTION', 'JEN', 'ATASAN_LANGSUNG')
             ->where('MASTER_JABATAN', $x['master_jabatan'])
             ->where('SITEID', $unit_kd)
             ->distinct()

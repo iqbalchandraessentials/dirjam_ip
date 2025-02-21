@@ -13,9 +13,8 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="box-body">
-
+                    @if (auth()->user()->hasRole(['SuperAdmin']))
                     <form action="{{ route('uraian_jabatan.filter') }}" method="POST" class="form-horizontal">
                         @csrf
                         <div class="d-flex justify-content-center">
@@ -44,9 +43,7 @@
                             </div>
                         </div>
                     </form>
-                    
-
-
+                    @endif
                     <div class="table-responsive">
                         <table class="table table-striped dataTables">
                             <thead>
@@ -61,34 +58,20 @@
                             <tbody id="tableBody">
                                 @foreach ($jabatans as $key)
                                 @php
-
-                                
-                                    // Tambahkan indentasi sesuai dengan leveling
                                     $a = str_repeat('&nbsp;', $key->leveling * 10);
-                                
-                                    // Buat informasi tambahan master jabatan dan position ID
                                     $mj = "$a&nbsp;($key->master_jabatan <small>$key->position_id</small>)";
-                                
-                                    // Buat URL untuk tautan utama
                                     $link = $key->status === '-'
                                         ? url('uraian_jabatan', $key->position_id)
                                         : url('uraian_jabatan', $key->uraian_jabatan_id);
-                                    // Buat string hierarchy dengan mengganti spasi menjadi HTML entity
                                     $jab = '<a href="' . $link . '">' . str_replace(' ', '&nbsp;', $key->hierarchy) . '</a>';
-                                    // Buat tombol export Excel (jika status tidak '-')
                                     $link2 = $key->status === '-'
                                         ? ''
                                         : '<a href="' . route('export.uraian_jabatan_Excel', $key->uraian_jabatan_id) . '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>';
                                 
-                                    // Buat tombol edit dan print
                                     $edit = '<a href="' . $link . '" class="btn btn-xs btn-success"><i class="fa fa-search"></i></a>';
                                     $print = '<a href="' . route('export.uraian_jabatan_PDF', $key->uraian_jabatan_id) . '" class="btn btn-xs btn-primary"><i class="fa fa-print"></i></a>';
-                                
-                                    // Gabungkan tombol menjadi satu
                                     $button = "$link2 $print";
                                 @endphp
-                            
-
                                     <tr>
                                         <td><small style="display:none">{{ $key->path }}</small></td>
                                         <td><small><b>{!! $jab !!}</b><br />{!! $mj !!}</small></td>
@@ -99,11 +82,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection

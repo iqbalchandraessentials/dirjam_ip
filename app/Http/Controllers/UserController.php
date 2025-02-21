@@ -78,21 +78,25 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'id' => 'required|exists:users,id', // Gunakan id, bukan user_id
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $request->user_id,
+            'email' => 'required|email|unique:users,email,' . $request->id,
             'password' => 'nullable|min:6',
-            // 'unit_kp' => 'required|string|max:255',
+            'unit_kd' => 'nullable|string|max:255',
+            'user_id' => 'string|max:255',
         ]);
-        $user = User::findOrFail($request->user_id);
+    
+        $user = User::findOrFail($request->id); // Gunakan id untuk mencari user
         $user->name = $validated['name'];
         $user->email = $validated['email'];
+        $user->user_id = $validated['user_id'];
         if ($request->password) {
             $user->password = Hash::make($request->password);
         }
-        $user->unit_kp = $validated['unit_kp'];
+        $user->unit_kd = $validated['unit_kd'] ?? null;
         $user->save();
-
+    
         return redirect()->back()->with('success', 'User updated successfully.');
     }
+    
 }

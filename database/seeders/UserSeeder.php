@@ -17,9 +17,9 @@ class UserSeeder extends Seeder
         User::insert([
             'name' => 'Timur Sahadewa',
             'email' => 'timur.sahadewa@indonesiapower.co.id',
-            'password' => Hash::make('Admin123'),
+            'password' => Hash::make('admin123'),
             'unit_kd' => 'KP',
-            'user_id' => 'Timur.Sahadewa',
+            'user_id' => 'timur.sahadewa',
         ]);
     }
 }

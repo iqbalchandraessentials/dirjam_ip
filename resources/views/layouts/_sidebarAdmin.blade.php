@@ -18,7 +18,7 @@
                     <span>Home</span>
                 </a>
             </li>
-        
+        @if(auth()->user()->hasRole('SuperAdmin'))
             <li class="treeview {{ Request::segment(1) === 'master_data' ? 'active' : '' }}">
                 <a href="#">
                     <i class="ti-settings"></i>
@@ -90,7 +90,7 @@
                     </li>
                 </ul>
             </li>
-            
+        @endif
                     
             {{-- <li class="treeview {{ Request::is('revisi_uraian_jabatan') ? 'active' : '' }}">
                 <a href="#">

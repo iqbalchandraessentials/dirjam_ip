@@ -21,6 +21,7 @@
 @section('title', 'Template Jabatan | ' . $data['nama'])
 
 @section('content')
+
     <div class="col-sm-12">
         <div class="box">
             <div class="box-header">

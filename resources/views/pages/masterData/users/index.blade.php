@@ -92,25 +92,29 @@
                             <form id="editUserForm" method="POST" action="{{ route('users.update') }}">
                                 @csrf
                                 <div class="modal-body">
-                                    <input type="hidden" id="edit_user_id" name="user_id">
-
+                                    <input type="hidden" id="edit_user_id" name="id"> <!-- Ganti user_id menjadi id -->
+                            
                                     <div class="form-group">
                                         <label for="edit_name">Name</label>
                                         <input type="text" class="form-control" id="edit_name" name="name" required>
                                     </div>
-
+                                    <div class="form-group">
+                                        <label for="edit_userId">User ID</label> <!-- user_id digunakan untuk username -->
+                                        <input type="text" class="form-control" id="edit_userId" name="user_id" required>
+                                    </div>
+                            
                                     <div class="form-group">
                                         <label for="edit_email">Email</label>
                                         <input type="email" class="form-control" id="edit_email" name="email" required>
                                     </div>
-
+                            
                                     <div class="form-group">
                                         <label for="edit_password">New Password (optional)</label>
                                         <input type="password" class="form-control" id="edit_password" name="password">
                                     </div>
                                     <div class="form-group">
-                                        <label for="edit_unit_kp">Unit</label>
-                                        <select style="width: 100%;" class="form-control select2" id="edit_unit_kp" name="unit_kp">
+                                        <label for="edit_unit_kd">Unit</label>
+                                        <select style="width: 100%;" class="form-control select2" id="edit_unit_kd" name="unit_kd">
                                             <option selected>--- Select Unit ---</option>
                                             @foreach ($unit as $u)
                                                 <option value="{{ $u->unit_kd }}">{{ $u->unit_nama }}</option>
@@ -122,12 +126,10 @@
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Save Changes</button>
                                 </div>
-                            </form>
+                            </form>                            
                         </div>
                     </div>
                 </div>
-
-
                 {{--  --}}
                 <!-- Modal Tambah Data -->
                 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
@@ -211,10 +213,11 @@
             $('.edit-user-btn').click(function() {
                 let user = $(this).data('user');
 
-                $('#edit_user_id').val(user.id);
+                $('#edit_user_id').val(user.id); // Menggunakan ID asli user untuk update
                 $('#edit_name').val(user.name);
+                $('#edit_userId').val(user.user_id); // User ID tetap sebagai username
                 $('#edit_email').val(user.email);
-                $('#edit_unit_kp').val(user.unit_kp);
+                $('#edit_unit_kd').val(user.unit_kd);
 
                 $('#editUserModal').modal('show');
             });
