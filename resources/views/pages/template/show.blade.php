@@ -21,6 +21,11 @@
 @section('title', 'Template Jabatan | ' . $data['nama'])
 
 @section('content')
+{{-- @php
+dd($data);
+    
+@endphp --}}
+
 
     <div class="col-sm-12">
         <div class="box">
@@ -49,11 +54,11 @@
                             $encodedName = base64_encode($data['nama']);
                         @endphp
                         
-                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null]) }}" class="btn btn-secondary">
+                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['id'] ?? 'old']) }}" class="btn btn-secondary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
                         
-                        <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null]) }}" class="btn btn-secondary">
+                        <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['id'] ?? 'old']) }}" class="btn btn-secondary">
                             <i class="ti-layout-grid4"></i><span>Excel</span>
                         </a>
                                          
@@ -911,8 +916,8 @@
                 </div>
             </div>
 
-            <div class="box-body pt-0 d-flex justify-content-center">
-                <div class="row" style="display: block; margin-bottom:40%">
+            <div class="box-body pt-0">
+                <div class="row" style=" margin-bottom:40%">
                     @if (isset($data['struktur_organisasi']))
                         <div class="col-12" id="sto" style="transform: scale(0.7); transform-origin: top center;">
                             {!! $data['struktur_organisasi'] !!}

@@ -29,7 +29,7 @@
                     <select class="form-control" style="width: 100%;"  name="jenjang_jabatan" id="jenjang_jabatan" required>
                         <option selected disabled>Pilih</option>
                         @foreach ($jenjang as $v)
-                        <option value="{{$v->jenjang_kd}}">( {{$v->jenjang_kd}} ) {{$v->jenjang_nama}}</option>
+                        <option value="{{$v->kode}}">( {{$v->kode}} ) {{$v->nama}}</option>
                         @endforeach
                     </select>
                 </div> 

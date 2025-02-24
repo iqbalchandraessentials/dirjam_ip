@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('master_jenjang_jabatans', function (Blueprint $table) {
             $table->id();
             $table->string('kode')->unique();
+            $table->string('status', 20)->default(1);
             $table->string('nama');
             $table->timestamps();
         });

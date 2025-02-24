@@ -82,9 +82,9 @@ class ExportController extends Controller
             ->header('Content-Disposition', 'attachment; filename="' . $name . '"');
     }
 
-    public function exportTemplateJabatanPdf($id, $unit_kd)
+    public function exportTemplateJabatanPdf($masterJabatan, $unit_kd = '', $id = null)
     {
-        $data = $data = $this->templateJabatanController->getDatas($id, $unit_kd);
+        $data = $data = $this->templateJabatanController->getDatas($masterJabatan, $unit_kd, $id);
         // 1. Generate PDF untuk bagian selain Struktur Organisasi
         $pdfPortrait = PDF::loadView('pages.template.pdf_report', [ 'data' => $data ]);
 
@@ -1059,9 +1059,9 @@ class ExportController extends Controller
         return response()->download($exportPath)->deleteFileAfterSend(true);
     }
     // excel template excel export .xls
-    public function exportExcelTemplateJabatan($id, $unit_kd)
+    public function exportExcelTemplateJabatan($masterJabatan, $unit_kd = '', $id = null)
     {
-        $data = $this->templateJabatanController->getDatas($id, $unit_kd);
+        $data = $this->templateJabatanController->getDatas($masterJabatan, $unit_kd, $id);
         if (!empty($data['hubunganKerja'][0]['jenis'])) {
             $param = 'jenis';
             $ex = 'eksternal';

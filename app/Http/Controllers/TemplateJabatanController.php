@@ -72,33 +72,56 @@ class TemplateJabatanController extends Controller
 
     public function getDatas($masterJabatan, $unit_kd = '', $id = null)
     {
-
-        dd($id);
-
-        if($id){
-            $data = UraianMasterJabatan::with([
-                'masterJabatan', 'PokoUtamaGenerik', 'hubunganKerja',
-                'masalahKompleksitasKerja', 'wewenangJabatan',
-                'spesifikasiPendidikan', 'kemampuandanPengalaman'
-            ])->findOrFail($id);
-            return $this->processExistingData($data, $unit_kd);
-        }
-
-
         $masterJabatan = base64_decode($masterJabatan);
-        $data = UraianMasterJabatan::with([
+    
+        // Jika ID adalah angka, ambil data berdasarkan ID
+        if (is_numeric($id) && $id !== 'old') {
+            return $this->processExistingData(
+                $this->getUraianMasterJabatanById($id),
+                $unit_kd
+            );
+        }
+    
+        // Jika ID adalah "old", panggil processNewData
+        if ($id == 'old') {    
+            return $this->processNewData($masterJabatan, $unit_kd);
+        }
+        
+        // Jika tidak ada ID, cari berdasarkan nama master jabatan
+        $data = $this->getUraianMasterJabatanByName($masterJabatan);
+    
+        return $data 
+            ? $this->processExistingData($data, $unit_kd)
+            : $this->processNewData($masterJabatan, $unit_kd);
+    }
+    
+    /**
+     * Mengambil data UraianMasterJabatan berdasarkan ID.
+     */
+    private function getUraianMasterJabatanById($id)
+    {
+        return UraianMasterJabatan::with([
+            'masterJabatan', 'PokoUtamaGenerik', 'hubunganKerja',
+            'masalahKompleksitasKerja', 'wewenangJabatan',
+            'spesifikasiPendidikan', 'kemampuandanPengalaman'
+        ])->findOrFail($id);
+    }
+    
+    /**
+     * Mengambil data UraianMasterJabatan berdasarkan nama.
+     */
+    private function getUraianMasterJabatanByName($name)
+    {
+        return UraianMasterJabatan::with([
             'masterJabatan', 'PokoUtamaGenerik', 'hubunganKerja',
             'masalahKompleksitasKerja', 'wewenangJabatan',
             'spesifikasiPendidikan', 'kemampuandanPengalaman'
         ])
-        ->where('nama', $masterJabatan)
+        ->where('nama', $name)
         ->orderByDesc('id')
         ->first();
-        if ($data) {
-            return $this->processExistingData($data, $unit_kd);
-        }
-        return $this->processNewData($masterJabatan, $unit_kd);
     }
+    
     
     private function processExistingData($data, $unit_kd)
     {

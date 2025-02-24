@@ -11,6 +11,7 @@ use App\Models\MasalahKompleksitasKerja;
 use App\Models\MASTER_JABATAN_UNIT;
 use App\Models\MasterBidangStudi;
 use App\Models\MasterIndikatorOutput;
+use App\Models\MasterJenjangJabatan;
 use App\Models\MasterKompetensiNonteknis;
 use App\Models\MasterKompetensiTeknis;
 use App\Models\MasterPendidikan;
@@ -80,11 +81,32 @@ class MasterDataController extends Controller
         return redirect()->route('master.indikator')->with('success', 'Data berhasil dihapus');
     }
 
-
     public function jenjangJabatan() {
-        $data = M_JENJANG::get();
+        $data = MasterJenjangJabatan::get();
         return view('pages.masterData.jenjang.index', ['data' => $data]);
     }
+
+    public function updateStatus(Request $request)
+    {
+        try {
+            $jenjang = MasterJenjangJabatan::findOrFail($request->id);
+            $jenjang->status = $request->status;
+            $jenjang->save();
+            // $jenjang->update(['status' => $request->status]);
+            
+
+            return redirect()->back()->with('success', 'Status berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui status.');
+        }
+    }
+    
+    
+    
+    
+    
+
+
     public function unit() {
         $data = M_UNIT::get();
         return view('pages.masterData.unit.index', ['data' => $data]);
@@ -264,12 +286,10 @@ class MasterDataController extends Controller
     
     public function pendidikan() {
         $data = MasterPendidikan::get();
-        $jenjang = M_JENJANG::select(['jenjang_kd', 'jenjang_nama'])->get();
-        // $bidangStudi = MasterBidangStudi::get();
+        $jenjang = MasterJenjangJabatan::select(['kode', 'nama'])->where('status', '1')->get();
         return view('pages.masterData.pendidikan.index', [
             'data' => $data,
             'jenjang' => $jenjang,
-            // 'bidangStudi' => $bidangStudi
         ]);
     }
      // Menyimpan data baru

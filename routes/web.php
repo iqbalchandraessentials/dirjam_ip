@@ -61,8 +61,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('default-data', [ExportController::class, 'exportMasterDefaultData'])->name('export.default_data');
         Route::get('uraian-jabatan-PDF/{id}', [ExportController::class, 'exportUraianJabatanPdf'])->name('export.uraian_jabatan_PDF');
         Route::get('uraian-jabatan-Excel/{id}', [ExportController::class, 'exportUraianJabatanExcel'])->name('export.uraian_jabatan_Excel');
-        Route::get('template-jabatan-Excel/{encoded_name}/{unit_kd?}', [ExportController::class, 'exportExcelTemplateJabatan'])->name('export.template_jabatan_Excel');    
-        Route::get('template-jabatan-PDF/{encoded_name}/{unit_kd?}', [ExportController::class, 'exportTemplateJabatanPdf'])->name('export.template_jabatan_PDF');
+        Route::get('template-jabatan-Excel/{encoded_name}/{unit_kd?}/{id?}', [ExportController::class, 'exportExcelTemplateJabatan'])->name('export.template_jabatan_Excel');    
+        Route::get('template-jabatan-PDF/{encoded_name}/{unit_kd?}/{id?}', [ExportController::class, 'exportTemplateJabatanPdf'])->name('export.template_jabatan_PDF');
     });
     // Master Data Routes
     Route::prefix('master_data')->group(function () {
@@ -89,6 +89,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('kompetensi-non-teknis', [MasterDataController::class, 'masterKompetensiNonTeknis'])->name('master.kompetensi-non-teknis');
         Route::get('jabatan', [MasterDataController::class, 'masterJabatan'])->name('master.jabatan');
         Route::get('jenjang-jabatan', [MasterDataController::class, 'jenjangJabatan'])->name('master.jenjang-jabatan');
+        Route::post('jenjang-jabatan/update-status', [MasterDataController::class, 'updateStatus'])->name('master.jenjang-jabatan.update-status');
         Route::get('unit', [MasterDataController::class, 'unit'])->name('master.unit');
         Route::get('users', [UserController::class, 'index'])->name('users.index')->middleware(['role:SuperAdmin']);
         Route::resource('roles', RoleController::class)->middleware(['role:SuperAdmin']);

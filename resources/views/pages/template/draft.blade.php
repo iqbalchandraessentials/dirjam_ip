@@ -34,13 +34,13 @@
                                                 <td>1</td>
                                                 <td></td>
                                                 <td>
-                                                    <a href="{{ route('template_jabatan.show', ['encoded_name' => $encodedName, 'unit_kd' => $unit])}}">
+                                                    <a href="{{ route('template_jabatan.show', ['encoded_name' => $encodedName, 'unit_kd' => $unit->unit_kd, 'id' => 'old'])}}">
                                                         {{$data->nama}}
                                                     </a>
                                                 </td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $unit]) }}"><i class="ti-layout-grid4"></i></a>
-                                                    <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $unit]) }}"><i class="ti-printer"></i></a>
+                                                    <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $unit->unit_kd, 'id' => 'old']) }}"><i class="ti-layout-grid4"></i></a>
+                                                    <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $unit->unit_kd, 'id' => 'old']) }}"><i class="ti-printer"></i></a>
                                                 </td>
                                             </tr>
                                             @foreach ($data->draftUraianMasterJabatan as $v)
@@ -48,13 +48,13 @@
                                                     <td>{{ $no + 1 }}</td>
                                                     <td>{{ $v['created_at'] ?? '' }}</td>
                                                     <td>
-                                                         <a href="{{ route('template_jabatan.show', ['encoded_name' => $encodedName, 'unit_kd' => $unit, 'id' => $v->id]) }}"> 
+                                                         <a href="{{ route('template_jabatan.show', ['encoded_name' => $encodedName, 'unit_kd' => $unit->unit_kd, 'id' => $v->id]) }}"> 
                                                         {{ $v['nama'] }}
                                                          </a> 
                                                     </td>
                                                     <td class="text-center">
-                                                         <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $unit, 'id' => $v->id]) }}"><i class="ti-layout-grid4"></i></a>
-                                                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $unit, 'id' => $v->id]) }}"><i class="ti-printer"></i></a> 
+                                                         <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $unit->unit_kd, 'id' => $v->id]) }}"><i class="ti-layout-grid4"></i></a>
+                                                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $unit->unit_kd, 'id' => $v->id]) }}"><i class="ti-printer"></i></a> 
                                                     </td>
                                                 </tr>
                                             @endforeach
