@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailKomptensiTeknis;
 use App\Models\jenjang\M_JENJANG;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanNonteknis;
@@ -174,6 +175,50 @@ class MasterDataController extends Controller
         }
         return view('pages.masterData.kompetensiNonTeknis.index');
     }
+
+    public function storeKompetensi(Request $request)
+    {
+        $request->validate([
+            'kode_master_level' => 'required|string|unique:DetailKomptensiTeknis,kode_master_level',
+            'kode_master' => 'required|string',
+            'level' => 'required',
+            'perilaku' => 'required|string',
+        ]);
+        DetailKomptensiTeknis::create([
+            'kode_master' => $request->kode_master,
+            'level' => $request->level,
+            'perilaku' => $request->perilaku,
+            'kode_master_level' => $request->kode_master . $request->level,
+            'created_by' => Auth::user()->name
+        ]);
+
+        return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
+    }
+    // Mampu mengetahui dan memahami prosedur pelaksanaan analisis data lanskap dan lingkungan bisnis sesuai ketentuan yang berlaku 
+
+    public function updateKompetensi(Request $request)
+    {
+        // Debugging untuk memastikan data dikirim dengan benar
+        // dd($request->all());
+    
+        $kompetensi = DetailKomptensiTeknis::where('kode_master_level', $request->kode_master_level)->firstOrFail();
+    
+        $kompetensi->update([
+            'level' => $request->level,
+            'perilaku' => $request->perilaku,
+            'kode_master_level' => $request->kode_master_level
+        ]);
+    
+        return redirect()->back()->with('success', 'Data berhasil diperbarui.');
+    }
+    
+    public function deleteKompetensi($id)
+    {
+        $kompetensi = DetailKomptensiTeknis::findOrFail($id);
+        $kompetensi->delete();
+        return redirect()->back()->with('success', 'Data berhasil dihapus.');
+    }
+
    
     public function mappingkomptensiNonTeknis(Request $request)
     {

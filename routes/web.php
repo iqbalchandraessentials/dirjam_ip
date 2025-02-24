@@ -81,6 +81,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('default-master-data', [MasterDataController::class, 'defaultMasterData'])->name('master.defaultData');
         Route::get('kompetensi-teknis', [MasterDataController::class, 'masterKompetensiTeknis'])->name('master.kompetensi-teknis');
         Route::get('kompetensi-teknis/{id}', [MasterDataController::class, 'detailMasterKompetensiTeknis'])->name('master.kompetensi-detail-teknis');
+        Route::post('kompetensi-teknis/store', [MasterDataController::class, 'storeKompetensi'])->name('master.kompetensi.store');
+        Route::post('kompetensi-teknis/update', [MasterDataController::class, 'updateKompetensi'])->name('master.kompetensi.update');
+        Route::get('kompetensi-teknis/delete/{id}', [MasterDataController::class, 'deleteKompetensi'])->name('master.kompetensi.delete');
         Route::get('mapping-komptensi-non-teknis', [MasterDataController::class, 'mappingkomptensiNonTeknis'])->name('master.mapping-komptensi-non-teknis');
         Route::get('mapping-komptensi-teknis', [MasterDataController::class, 'mappingkomptensiTeknis'])->name('master.mapping-komptensi-teknis');
         Route::get('kompetensi-non-teknis', [MasterDataController::class, 'masterKompetensiNonTeknis'])->name('master.kompetensi-non-teknis');
