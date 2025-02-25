@@ -18,11 +18,12 @@ class UraianMasterJabatan extends Model
         'nature_impact',
         'created_by',
     ];
+    
     protected $guarded = ['id'];
+
     function masterJabatan() {
         return $this->belongsTo(MasterJabatan::class, 'master_jabatan_id', 'id');
     }
-
     public function PokoUtamaGenerik()
     {
         return $this->hasMany(PokoUtamaGenerik::class, 'uraian_master_jabatan_id', 'id');
@@ -59,12 +60,10 @@ class UraianMasterJabatan extends Model
     {
         return $this->hasMany(KeterampilanTeknis::class, 'uraian_master_jabatan_id', 'id');
     }
-
     public function keterampilanTeknis()
     {
         $core = $this->hasMany(KeterampilanTeknis::class, 'uraian_master_jabatan_id', 'id');
         $enabler = $this->hasMany(KeterampilanTeknis::class, 'master_jabatan', 'nama')->where('kategori','ENABLER');
-        
         return $core->union($enabler);
     }
 }

@@ -7,11 +7,9 @@
         #sto table td div {
             font-size: 15px !important;
         }
-
         #sto {
             margin-bottom: 25px;
         }
-
         #sto table tbody tr td ol li {
             font-size: 12px !important;
         }
@@ -659,7 +657,7 @@ dd($data);
                                             <td class="text-left">
                                                 @if (!empty($item->bidang_studi))
                                                     @php
-                                                        $pattern = '/\d+\.\s*/'; // Pola untuk memisahkan berdasarkan angka diikuti titik dan spasi
+                                                        $pattern = '/\d+\.\s*/'; 
                                                         $bidangStudiList = preg_split(
                                                             $pattern,
                                                             $item['bidang_studi'],

@@ -18,107 +18,74 @@
                     <span>Home</span>
                 </a>
             </li>
-        @if(auth()->user()->hasRole('SuperAdmin'))
-            <li class="treeview {{ Request::segment(1) === 'master_data' ? 'active' : '' }}">
-                <a href="#">
-                    <i class="ti-settings"></i>
-                    <span>Master Data</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-right pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="{{ Request::is('master_data/jabatan') ? 'active' : '' }}">
-                        <a href="{{ route('master.jabatan') }}">
-                            <i class="ti-more"></i>Master Jabatan
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('master_data/kompetensi-teknis', 'master_data/mapping-komptensi-teknis', 'master_data/kompetensi-teknis/*') ? 'active' : '' }}">
-                        <a href="{{ route('master.kompetensi-teknis') }}">
-                            <i class="ti-more"></i>Kompetensi Teknis
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('master_data/kompetensi-non-teknis', 'master_data/mapping-komptensi-non-teknis') ? 'active' : '' }}">
-                        <a href="{{ route('master.kompetensi-non-teknis') }}">
-                            <i class="ti-more"></i>Kompetensi Non Teknis
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('master_data/tugas-pokok-generik') ? 'active' : '' }}">
-                        <a href="{{ route('master.tugas_pokok_generik.index') }}">
-                            <i class="ti-more"></i>Tugas Pokok Generik
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('master_data/default-master-data') ? 'active' : '' }}">
-                        <a href="{{ route('master.defaultData') }}">
-                            <i class="ti-more"></i>Default Master Data
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('master_data/pendidikan') ? 'active' : '' }}">
-                        <a href="{{ route('master.pendidikan') }}">
-                            <i class="ti-more"></i>Pendidikan
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('master_data/jenjang-jabatan') ? 'active' : '' }}">
-                        <a href="{{ route('master.jenjang-jabatan') }}">
-                            <i class="ti-more"></i>Jenjang Jabatan
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('master_data/unit') ? 'active' : '' }}">
-                        <a href="{{ route('master.unit') }}">
-                            <i class="ti-more"></i>Unit
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('master_data/indikator') ? 'active' : '' }}">
-                        <a href="{{ route('master.indikator') }}">
-                            <i class="ti-more"></i>Output Indikator
-                        </a>
-                    </li>
-                    {{-- <li class="{{ Request::is('roles') ? 'active' : '' }}">
-                        <a href="{{ route('roles.index') }}">
-                            <i class="ti-more"></i>Hak Akses
-                        </a>
-                    </li> --}}
-                    {{-- <li class="{{ Request::is('permissions') ? 'active' : '' }}">
-                        <a href="{{ route('permissions.index') }}">
-                            <i class="ti-more"></i>Permission
-                        </a>
-                    </li> --}}
-                    <li class="{{ Request::is('master_data/users', 'master_data/roles') ? 'active' : '' }}">
-                        <a href="{{ url('master_data/users') }}">
-                            <i class="ti-more"></i>Hak Akses
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        @endif
-                    
-            {{-- <li class="treeview {{ Request::is('revisi_uraian_jabatan') ? 'active' : '' }}">
-                <a href="#">
-                    <i class="ti-medall-alt"></i>
-                    <span>Kompetensi</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-right pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="{{ Request::is('revisi_uraian_jabatan/facilities') ? 'active' : '' }}">
-                        <a href="{{ url('/revisi_uraian_jabatan/facilities') }}">
-                            <i class="ti-more"></i>Evaluasi Kompetensi
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('revisi_uraian_jabatan/job-profession') ? 'active' : '' }}">
-                        <a href="{{ url('/revisi_uraian_jabatan/job-profession') }}">
-                            <i class="ti-more"></i>Jabatan - Profesi
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('revisi_uraian_jabatan/profession-competency') ? 'active' : '' }}">
-                        <a href="{{ url('/revisi_uraian_jabatan/profession-competency') }}">
-                            <i class="ti-more"></i>Profesi - Kompetensi
-                        </a>
-                    </li>
-                </ul>
-            </li> --}}
-            {{-- <li class="header nav-small-cap text-uppercase">Others</li> --}}
+            @if(auth()->user()->hasRole('SuperAdmin'))
+                <li class="treeview {{ Request::segment(1) === 'master_data' ? 'active' : '' }}">
+                    <a href="#">
+                        <i class="ti-settings"></i>
+                        <span>Master Data</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-right pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="{{ Request::is('master_data/jabatan') ? 'active' : '' }}">
+                            <a href="{{ route('master.jabatan') }}">
+                                <i class="ti-more"></i>Master Jabatan
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/kompetensi-teknis', 'master_data/mapping-komptensi-teknis', 'master_data/kompetensi-teknis/*') ? 'active' : '' }}">
+                            <a href="{{ route('master.kompetensi-teknis') }}">
+                                <i class="ti-more"></i>Kompetensi Teknis
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/kompetensi-non-teknis', 'master_data/mapping-komptensi-non-teknis') ? 'active' : '' }}">
+                            <a href="{{ route('master.kompetensi-non-teknis') }}">
+                                <i class="ti-more"></i>Kompetensi Non Teknis
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/tugas-pokok-generik') ? 'active' : '' }}">
+                            <a href="{{ route('master.tugas_pokok_generik.index') }}">
+                                <i class="ti-more"></i>Tugas Pokok Generik
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/default-master-data') ? 'active' : '' }}">
+                            <a href="{{ route('master.defaultData') }}">
+                                <i class="ti-more"></i>Default Master Data
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/pendidikan') ? 'active' : '' }}">
+                            <a href="{{ route('master.pendidikan') }}">
+                                <i class="ti-more"></i>Pendidikan
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/jenjang-jabatan') ? 'active' : '' }}">
+                            <a href="{{ route('master.jenjang-jabatan') }}">
+                                <i class="ti-more"></i>Jenjang Jabatan
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/nature-of-impact' ,'master_data/nature-of-impact/*') ? 'active' : '' }}">
+                            <a href="{{ route('master.natureOfImpact') }}">
+                                <i class="ti-more"></i>Dimensi Finansial
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/unit') ? 'active' : '' }}">
+                            <a href="{{ route('master.unit') }}">
+                                <i class="ti-more"></i>Unit
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/indikator') ? 'active' : '' }}">
+                            <a href="{{ route('master.indikator') }}">
+                                <i class="ti-more"></i>Output Indikator
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/users', 'master_data/roles') ? 'active' : '' }}">
+                            <a href="{{ url('master_data/users') }}">
+                                <i class="ti-more"></i>Hak Akses
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
             <li class="{{ Request::is('template-jabatan/*','template-jabatan', 'template-draft/*') ? 'active' : '' }}">
                 <a href="{{ route('template_jabatan.index') }}">
                     <i class="ti-medall"></i>
@@ -132,28 +99,6 @@
                     <span>Uraian Jabatan</span>
                 </a>
             </li>       
-        
-            {{-- <li class="treeview {{ Request::is('loader') ? 'active' : '' }}">
-                <a href="#">
-                    <i class="ti-calendar"></i>
-                    <span>Loader</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-right pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="{{ Request::is('loader/facilities') ? 'active' : '' }}">
-                        <a href="{{ url('/loader/facilities') }}">
-                            <i class="ti-more"></i>Loader Template
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('loader/categories') ? 'active' : '' }}">
-                        <a href="{{ url('/loader/categories') }}">
-                            <i class="ti-more"></i>Loader Uraian Jabatan
-                        </a>
-                    </li>
-                </ul>
-            </li> --}}
         
             <li class="{{ Request::is('faq') ? 'active' : '' }}">
                 <a href="{{ url('faq') }}">

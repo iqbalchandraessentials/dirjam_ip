@@ -94,7 +94,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-left">No.</th>
-                                        <th class="text-center">Master Jabatan</th>
+                                        <th class="text-left">Master Jabatan</th>
                                         <th class="text-center">Unit</th>
                                         <th class="text-center">Jenjang</th>
                                         <th class="text-center">Action</th>

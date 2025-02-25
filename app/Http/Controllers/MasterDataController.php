@@ -7,6 +7,8 @@ use App\Models\jenjang\M_JENJANG;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanNonteknis;
 use App\Models\KeterampilanTeknis;
+use App\Models\M_PROFESI;
+use App\Models\MappingNatureOfImpact;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MASTER_JABATAN_UNIT;
 use App\Models\MasterBidangStudi;
@@ -26,26 +28,54 @@ use Yajra\DataTables\Facades\DataTables;
 class MasterDataController extends Controller
 {
 
-// input, edit, delete master data 
-// export excel uraian jabatan 
-// pengabungan data jabatan existing dengan yang baru import data template
-// filter per unit di uraian jabatan
+    public function natureOfImpact() {
+        $data = MappingNatureOfImpact::with('namaProfesi')->get();
+        $option = M_PROFESI::get();
+        return view('pages.masterData.dimensiFinansial.index', ['data' => $data, 'option' => $option]);
+    }
 
-// test upload, validation, testing template jabatan [oke]
-// masterjabatan dihilangkan [oke]
-// jenis jabatan diganti kelompok bisnis [oke]
-// tugas pokok generik dan output pakai data yang batu dari master mbak suci [okee]
-// kemampuan dan pengalaman yang a. (data yang lama) lalu b. c. nya diambil dari master data mbak suci [oke]
-// spesifikasi jabatan nya kebalik pengalaman dan bidang studi nya [oke]
-// dimensi jabatan disesuaikan dengan data yang ada di master mbak suci [oke]
+    public function storeNatureOfImpact(Request $request)
+    {
+        $request->validate([
+            'kode_profesi' => 'required|string',
+            'jenis' => 'required|string',
+        ]);
 
+        MappingNatureOfImpact::create([
+            'kode_profesi' => $request->kode_profesi,
+            'jenis' => $request->jenis,
+        ]);
 
+        return redirect()->route('master.natureOfImpact')->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function updateNatureOfImpact(Request $request)
+    {
+        $request->validate([
+            'kode_profesi' => 'required|string',
+            'jenis' => 'required|string',
+        ]);
+
+        $indikator = MappingNatureOfImpact::findOrFail($request->id);
+        $indikator->update([
+            'kode_profesi' => $request->kode_profesi,
+            'jenis' => $request->jenis,
+        ]);
+
+        return redirect()->route('master.natureOfImpact')->with('success', 'Data berhasil diperbarui');
+    }
+
+    public function deleteNatureOfImpact(Request $request)
+    {
+        $indikator = MappingNatureOfImpact::findOrFail($request->id);
+        $indikator->delete();
+        return redirect()->route('master.natureOfImpact')->with('success', 'Data berhasil dihapus');
+    }
 
     public function indikator() {
         $data = MasterIndikatorOutput::get();
         return view('pages.masterData.indikator.index', ['data' => $data]);
     }
-
 
     public function storeIndikator(Request $request)
     {
@@ -100,12 +130,6 @@ class MasterDataController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui status.');
         }
     }
-    
-    
-    
-    
-    
-
 
     public function unit() {
         $data = M_UNIT::get();
@@ -116,8 +140,8 @@ class MasterDataController extends Controller
         $data = PokoUtamaGenerik::where('jenis','generik')->get();
         return view('pages.masterData.tugasPokokGenerik.index', ['data' => $data]);
     }
+
     public function TugasPokokGenerikStore(Request $request) {
-        // dd($request->all());
         $request->validate([
             'aktivitas' => 'required|string',
             'output' => 'required|string',
@@ -133,6 +157,7 @@ class MasterDataController extends Controller
         ]);
         return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil ditambahkan.');
     }
+
     public function TugasPokokGenerikUpdate(Request $request)
     {
         $request->validate([
@@ -151,6 +176,7 @@ class MasterDataController extends Controller
         ]);
         return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil diperbarui.');
     }
+
     public function TugasPokokGenerikDestroy(Request $request)
     {
         $data = PokoUtamaGenerik::findOrFail($request->id);;
@@ -216,12 +242,9 @@ class MasterDataController extends Controller
 
         return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
     }
-    // Mampu mengetahui dan memahami prosedur pelaksanaan analisis data lanskap dan lingkungan bisnis sesuai ketentuan yang berlaku 
 
     public function updateKompetensi(Request $request)
     {
-        // Debugging untuk memastikan data dikirim dengan benar
-        // dd($request->all());
     
         $kompetensi = DetailKomptensiTeknis::where('kode_master_level', $request->kode_master_level)->firstOrFail();
     
@@ -292,7 +315,7 @@ class MasterDataController extends Controller
             'jenjang' => $jenjang,
         ]);
     }
-     // Menyimpan data baru
+ 
      public function createPendidikan(Request $request)
      {
          $request->validate([
@@ -311,7 +334,6 @@ class MasterDataController extends Controller
          return redirect()->route('master.pendidikan')->with('success', 'Data pendidikan berhasil ditambahkan.');
      }
  
-     // Memperbarui data
      public function updatePendidikan(Request $request)
      {
          $request->validate([
@@ -331,7 +353,6 @@ class MasterDataController extends Controller
          return redirect()->route('master.pendidikan')->with('success', 'Data pendidikan berhasil diupadate.');
      }
  
-     // Menghapus data
      public function deletePendidikan(Request $request)
      {
          $pendidikan = MasterPendidikan::findOrFail($request->id);

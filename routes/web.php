@@ -66,6 +66,10 @@ Route::middleware(['auth'])->group(function () {
     });
     // Master Data Routes
     Route::prefix('master_data')->group(function () {
+        Route::get('nature-of-impact', [MasterDataController::class, 'natureOfImpact'])->name('master.natureOfImpact');
+        Route::post('nature-of-impact/store', [MasterDataController::class, 'storeNatureOfImpact'])->name('master.natureOfImpact.store');
+        Route::post('nature-of-impact/update', [MasterDataController::class, 'updateNatureOfImpact'])->name('master.natureOfImpact.update');
+        Route::post('nature-of-impact/delete', [MasterDataController::class, 'deleteNatureOfImpact'])->name('master.natureOfImpact.delete');
         Route::get('indikator', [MasterDataController::class, 'indikator'])->name('master.indikator');
         Route::post('indikator/create', [MasterDataController::class, 'storeIndikator'])->name('master.indikator.store')->middleware(['role:SuperAdmin,sdmHoManager']);
         Route::post('indikator/edit', [MasterDataController::class, 'updateIndikator'])->name('master.indikator.update')->middleware(['role:SuperAdmin,sdmHoManager']);

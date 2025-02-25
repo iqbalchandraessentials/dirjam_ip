@@ -8,6 +8,8 @@ use App\Models\KeterampilanTeknis;
 use App\Models\M_AKTIVITAS;
 use App\Models\M_KOMUNIKASI;
 use App\Models\M_MAP_PENDIDIKAN;
+use App\Models\M_PROFESI;
+use App\Models\MappingNatureOfImpact;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJabatan;
 use App\Models\MasterPendidikan;
@@ -73,7 +75,6 @@ class TemplateJabatanController extends Controller
     public function getDatas($masterJabatan, $unit_kd = '', $id = null)
     {
         $masterJabatan = base64_decode($masterJabatan);
-    
         // Jika ID adalah angka, ambil data berdasarkan ID
         if (is_numeric($id) && $id !== 'old') {
             return $this->processExistingData(
@@ -95,9 +96,6 @@ class TemplateJabatanController extends Controller
             : $this->processNewData($masterJabatan, $unit_kd);
     }
     
-    /**
-     * Mengambil data UraianMasterJabatan berdasarkan ID.
-     */
     private function getUraianMasterJabatanById($id)
     {
         return UraianMasterJabatan::with([
@@ -107,9 +105,6 @@ class TemplateJabatanController extends Controller
         ])->findOrFail($id);
     }
     
-    /**
-     * Mengambil data UraianMasterJabatan berdasarkan nama.
-     */
     private function getUraianMasterJabatanByName($name)
     {
         return UraianMasterJabatan::with([
@@ -121,8 +116,7 @@ class TemplateJabatanController extends Controller
         ->orderByDesc('id')
         ->first();
     }
-    
-    
+
     private function processExistingData($data, $unit_kd)
     {
         $data['jabatans'] = ViewUraianJabatan::with(['jenjangJabatan', 'namaProfesi'])
@@ -179,6 +173,9 @@ class TemplateJabatanController extends Controller
     
     private function finalizeData($data, $type, $parent_position_id, $position_id)
     {
+        $natureOfImmpact = $data['jabatans'][0]['namaProfesi']['nama_profesi'] ?? $data['jabatans'][0]['nama_profesi'];
+        $kode_nama_profesi = M_PROFESI::where('nama_profesi', $natureOfImmpact)->first()->kode_nama_profesi ?? null;
+        $data['nature_impact'] = MappingNatureOfImpact::where('kode_profesi' , $kode_nama_profesi)->first()->jenis ?? null;
         $data['struktur_organisasi'] = $this->sto($parent_position_id, $position_id);
         $data['tugas_pokok_generik'] = PokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $type)->get();
         $data['masalah_kompleksitas_kerja'] = MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();
