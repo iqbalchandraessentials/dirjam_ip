@@ -379,7 +379,7 @@ class MasterDataController extends Controller
     public function masterJabatan(Request $request)
     {
         if ($request->ajax()) {
-            $data = ViewUraianJabatan::select('master_jabatan', 'siteid');
+            $data = MASTER_JABATAN_UNIT::select('master_jabatan', 'siteid')->distinct();
             return DataTables::of($data)
                 ->addIndexColumn() // Menambahkan kolom nomor urut
                 ->make(true);

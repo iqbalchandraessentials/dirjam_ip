@@ -113,7 +113,7 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
-
+        // database erp dev
         // 'oracle' => [
         //     'driver' => 'oracle',
         //     'tns' => env('SID', '(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP) (HOST = 10.8.10.211)(PORT=1531))(CONNECT_DATA=(SID=erpdev)))'),
@@ -138,7 +138,7 @@ return [
             'username'     => env('DB_USERNAME', ''),
             'password'     => env('DB_PASSWORD', ''),
             'charset'      => 'AL32UTF8',
-            'schema'       => 'DIRJAB',
+            // 'schema'       => 'DIRJAB',
             'prefix'       => '',
         ],
     ],

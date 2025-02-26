@@ -11,14 +11,14 @@
                         <h4 class="box-title">Hak Akses</h4>
                     </div>
                     <div class="col-6 text-right">
+                        {{-- roles user --}}
+                        <a class="btn btn-success text-white mb-3" href="{{route('roles.index')}}">
+                            <i class="ti-eye me-1"></i><span class="ml-1">Roles</span>
+                        </a>
                         <!-- Button trigger modal -->
                         <a class="btn btn-success text-white mb-3" data-toggle="modal" data-target="#addModal"
                             rel="noopener noreferrer">
                             <i class="ti-plus me-1"></i><span class="ml-1"> Add</span>
-                        </a>
-                        {{-- roles user --}}
-                        <a class="btn btn-success text-white mb-3" href="{{route('roles.index')}}">
-                            <i class="ti-eye me-1"></i><span class="ml-1">Roles</span>
                         </a>
                     </div>
                 </div>

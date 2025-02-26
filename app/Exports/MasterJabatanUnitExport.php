@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\MASTER_JABATAN_UNIT;
 use App\Models\ViewUraianJabatan;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
@@ -12,7 +13,7 @@ class MasterJabatanUnitExport implements FromCollection
     */
     public function collection()
     {
-        return ViewUraianJabatan::select('master_jabatan', 'siteid')->get();
+        return $data = MASTER_JABATAN_UNIT::select('master_jabatan', 'siteid')->distinct()->get();
     }
     public function headings(): array
     {

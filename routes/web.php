@@ -76,16 +76,16 @@ Route::middleware(['auth'])->group(function () {
         Route::post('nature-of-impact/update', [MasterDataController::class, 'updateNatureOfImpact'])->name('master.natureOfImpact.update');
         Route::post('nature-of-impact/delete', [MasterDataController::class, 'deleteNatureOfImpact'])->name('master.natureOfImpact.delete');
         Route::get('indikator', [MasterDataController::class, 'indikator'])->name('master.indikator');
-        Route::post('indikator/create', [MasterDataController::class, 'storeIndikator'])->name('master.indikator.store')->middleware(['role:SuperAdmin,sdmHoManager']);
-        Route::post('indikator/edit', [MasterDataController::class, 'updateIndikator'])->name('master.indikator.update')->middleware(['role:SuperAdmin,sdmHoManager']);
-        Route::post('indikator/delete', [MasterDataController::class, 'deleteIndikator'])->name('master.indikator.delete')->middleware(['role:SuperAdmin,sdmHoManager']);
+        Route::post('indikator/create', [MasterDataController::class, 'storeIndikator'])->name('master.indikator.store');
+        Route::post('indikator/edit', [MasterDataController::class, 'updateIndikator'])->name('master.indikator.update');
+        Route::post('indikator/delete', [MasterDataController::class, 'deleteIndikator'])->name('master.indikator.delete');
         Route::get('pendidikan', [MasterDataController::class, 'pendidikan'])->name('master.pendidikan');
-        Route::post('pendidikan/create', [MasterDataController::class, 'createPendidikan'])->name('master.pendidikan.create')->middleware(['role:SuperAdmin,sdmHoManager']);
-        Route::post('pendidikan/update', [MasterDataController::class, 'updatePendidikan'])->name('master.pendidikan.update')->middleware(['role:SuperAdmin,sdmHoManager']);
-        Route::post('pendidikan/delete', [MasterDataController::class, 'deletePendidikan'])->name('master.pendidikan.delete')->middleware(['role:SuperAdmin,sdmHoManager']);
+        Route::post('pendidikan/create', [MasterDataController::class, 'createPendidikan'])->name('master.pendidikan.create');
+        Route::post('pendidikan/update', [MasterDataController::class, 'updatePendidikan'])->name('master.pendidikan.update');
+        Route::post('pendidikan/delete', [MasterDataController::class, 'deletePendidikan'])->name('master.pendidikan.delete');
         Route::get('tugas-pokok-generik', [MasterDataController::class, 'tugasPokokGenerik'])->name('master.tugas_pokok_generik.index');
-        Route::post('tugas-pokok-generik/store', [MasterDataController::class, 'TugasPokokGenerikStore'])->name('master.tugas_pokok_generik.store')->middleware(['role:SuperAdmin,sdmHoManager']);
-        Route::post('tugas-pokok-generik/update', [MasterDataController::class, 'TugasPokokGenerikUpdate'])->name('master.tugas_pokok_generik.update')->middleware(['role:SuperAdmin,sdmHoManager']);
+        Route::post('tugas-pokok-generik/store', [MasterDataController::class, 'TugasPokokGenerikStore'])->name('master.tugas_pokok_generik.store');
+        Route::post('tugas-pokok-generik/update', [MasterDataController::class, 'TugasPokokGenerikUpdate'])->name('master.tugas_pokok_generik.update');
         Route::post('tugas-pokok-generik/delete', [MasterDataController::class, 'TugasPokokGenerikDestroy'])->name('master.tugas_pokok_generik.delete');
         Route::get('default-master-data', [MasterDataController::class, 'defaultMasterData'])->name('master.defaultData');
         Route::get('kompetensi-teknis', [MasterDataController::class, 'masterKompetensiTeknis'])->name('master.kompetensi-teknis');
@@ -100,19 +100,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('jenjang-jabatan', [MasterDataController::class, 'jenjangJabatan'])->name('master.jenjang-jabatan');
         Route::post('jenjang-jabatan/update-status', [MasterDataController::class, 'updateStatus'])->name('master.jenjang-jabatan.update-status');
         Route::get('unit', [MasterDataController::class, 'unit'])->name('master.unit');
-        Route::get('users', [UserController::class, 'index'])->name('users.index')->middleware(['role:SuperAdmin']);
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
         Route::get('stoJobcode', [MasterDataController::class, 'stoJobcode'])->name('master.stoJobcode');
-        Route::resource('roles', RoleController::class)->middleware(['role:SuperAdmin']);
+        Route::resource('roles', RoleController::class);
     });
     // User Management Routes
-    Route::post('users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole')->middleware(['role:SuperAdmin']);
-    Route::post('users/store', [UserController::class, 'store'])->name('users.store')->middleware(['role:SuperAdmin']);
-    Route::post('/users/update', [UserController::class, 'update'])->name('users.update')->middleware(['role:SuperAdmin']);
-    Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission')->middleware(['role:SuperAdmin']);
-    Route::post('users/{user}/updateRolesPermissions', [UserController::class, 'updateRolesPermissions'])->name('users.updateRolesPermissions')->middleware(['role:SuperAdmin']);
+    Route::post('users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
+    Route::post('users/store', [UserController::class, 'store'])->name('users.store');
+    Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
+    Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission');
+    Route::post('users/{user}/updateRolesPermissions', [UserController::class, 'updateRolesPermissions'])->name('users.updateRolesPermissions');
 });
 
-Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.updatePermissions')->middleware(['role:SuperAdmin']);
+Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.updatePermissions');
 Route::middleware(['auth'])->group(function () {
     Route::resource('permissions', PermissionController::class);
     Route::post('permissions/assign/{user}', [PermissionController::class, 'assignPermission'])->name('permissions.assign');

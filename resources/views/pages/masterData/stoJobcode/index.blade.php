@@ -26,7 +26,7 @@
                                 <table id="datatable" class="table table-striped">
                                     <thead>
                                         <tr class="text-uppercase">
-                                            <th>No</th>
+                                            {{-- <th>No</th> --}}
                                             <th>Singkatan Jabatan</th>
                                             <th>Jenis Pembangkit</th>
                                             <th>Singkatan Jabatan Clean</th>
@@ -99,7 +99,7 @@
             serverSide: true,
             ajax: "{{ route('master.stoJobcode') }}",
             columns: [
-                { data: null, render: (data, type, row, meta) => meta.row + 1 }, // No Urut
+                // { data: null, render: (data, type, row, meta) => meta.row + 1 },
                 { data: 'singkatan_jabatan' },
                 { data: 'jenis_pembangkit' },
                 { data: 'singkatan_jabatan_clean' },

@@ -18,7 +18,7 @@
                     <span>Home</span>
                 </a>
             </li>
-            @if(auth()->user()->hasRole('SuperAdmin'))
+            {{-- @if(auth()->user()->hasRole('SuperAdmin')) --}}
                 <li class="treeview {{ Request::segment(1) === 'master_data' ? 'active' : '' }}">
                     <a href="#">
                         <i class="ti-settings"></i>
@@ -95,7 +95,7 @@
                         </li>
                     </ul>
                 </li>
-            @endif
+            {{-- @endif --}}
             <li class="{{ Request::is('template-jabatan/*','template-jabatan', 'template-draft/*') ? 'active' : '' }}">
                 <a href="{{ route('template_jabatan.index') }}">
                     <i class="ti-medall"></i>

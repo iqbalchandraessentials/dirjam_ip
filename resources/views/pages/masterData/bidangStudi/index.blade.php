@@ -48,7 +48,7 @@
                                         </ol>
                                     </td>
                                     <td class="text-center">
-                                        <button class="btn btn-secondary btn-xs btnEdit" data-id="{{ $v->id }}" data-nama="{{ $v->bidang_studi }}" data-konsentrasi="{{ $v->konsentrasi->pluck('konsentrasi')->implode(',') }}">
+                                        <button class="btn btn-primary btn-xs btnEdit" data-id="{{ $v->id }}" data-nama="{{ $v->bidang_studi }}" data-konsentrasi="{{ $v->konsentrasi->pluck('konsentrasi')->implode(',') }}">
                                             <i class="ti-pencil"></i>
                                         </button>
                                         <button class="btn btn-danger btn-xs btnDelete" data-id="{{ $v->id }}">

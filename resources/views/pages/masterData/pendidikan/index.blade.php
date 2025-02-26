@@ -47,7 +47,7 @@
                                         <td class="text-center">{{ $data->pengalaman }}</td>
                                         <td class="text-center">
                                             <!-- Edit Button -->
-                                            <button type="button" class="btn btn-secondary btn-circle btn-xs edit-btn"
+                                            <button type="button" class="btn btn-primary btn-circle btn-xs edit-btn"
                                                 data-id="{{ $data->id }}" data-nama="{{ $data->nama }}"
                                                 data-pengalaman="{{ $data->pengalaman }}"
                                                 data-jenjang="{{ $data->jenjang_jabatan }}">
