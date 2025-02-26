@@ -13,7 +13,7 @@
                             <h4 class="box-title">Master Pendidikan</h4>
                         </div>
                         <div class="col-6 text-right">
-                            <button type="button" id="btnCreate" class="btn btn-success mb-3">
+                            <button type="button" id="btnCreate" class="btn btn-info mb-3">
                                 <i class="ti-plus" style="margin-right: 5px;"></i> Add
                             </button>
                         </div>
@@ -55,7 +55,7 @@
                                             </button>
 
                                             <!-- Delete Button -->
-                                            <button type="button" class="btn btn-secondary btn-circle btn-xs delete-btn"
+                                            <button type="button" class="btn btn-danger btn-circle btn-xs delete-btn"
                                                 data-id="{{ $data->id }}" data-nama="{{ $data->nama }}">
                                                 <i class="ti-trash fa-lg"></i>
                                             </button>

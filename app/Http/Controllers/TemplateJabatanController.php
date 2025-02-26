@@ -18,6 +18,7 @@ use App\Models\unit\M_UNIT;
 use App\Models\UraianMasterJabatan;
 use App\Models\ViewUraianJabatan;
 use App\Models\WewenangJabatan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -66,7 +67,9 @@ class TemplateJabatanController extends Controller
     
     public function draft($id)
     {
-        $data =  MasterJabatan::find($id);
+        $data = MasterJabatan::with(['draftUraianMasterJabatan' => function ($query) {
+            $query->orderBy('created_at', 'asc'); // Sort dari terbaru ke terlama
+        }])->find($id);
         $unit = M_UNIT::select('unit_kd')->where('unit_nama', $data->unit_kode)->first();
         $encodedName = base64_encode($data->nama);
         return view('pages.template.draft',  ['data' => $data, 'unit' => $unit, 'encodedName' => $encodedName]);
@@ -75,7 +78,6 @@ class TemplateJabatanController extends Controller
     public function getDatas($masterJabatan, $unit_kd = '', $id = null)
     {
         $masterJabatan = base64_decode($masterJabatan);
-        // Jika ID adalah angka, ambil data berdasarkan ID
         if (is_numeric($id) && $id !== 'old') {
             return $this->processExistingData(
                 $this->getUraianMasterJabatanById($id),
@@ -83,12 +85,10 @@ class TemplateJabatanController extends Controller
             );
         }
     
-        // Jika ID adalah "old", panggil processNewData
         if ($id == 'old') {    
             return $this->processNewData($masterJabatan, $unit_kd);
         }
         
-        // Jika tidak ada ID, cari berdasarkan nama master jabatan
         $data = $this->getUraianMasterJabatanByName($masterJabatan);
     
         return $data 
@@ -152,6 +152,7 @@ class TemplateJabatanController extends Controller
             'fungsi_utama' => $x->fungsi_utama,
             'nama' => $x->master_jabatan,
             'unit_kd' => $x->unit_kd,
+            'created_at' => Carbon::parse($x->waktu_approve),
             'masterJabatan' => [
                 'jenjangJabatan' => ['nama' => $x->jenjangJabatan->nama ?? $x->jen],
                 'jenis_jabatan' => $type,
@@ -175,7 +176,7 @@ class TemplateJabatanController extends Controller
     {
         $natureOfImmpact = $data['jabatans'][0]['namaProfesi']['nama_profesi'] ?? $data['jabatans'][0]['nama_profesi'];
         $kode_nama_profesi = M_PROFESI::where('nama_profesi', $natureOfImmpact)->first()->kode_nama_profesi ?? null;
-        $data['nature_impact'] = MappingNatureOfImpact::where('kode_profesi' , $kode_nama_profesi)->first()->jenis ?? null;
+        $data['nature_impact'] = MappingNatureOfImpact::where('kode_profesi', $kode_nama_profesi)->first()->jenis ?? ($data['nature_impact'] ?? null);
         $data['struktur_organisasi'] = $this->sto($parent_position_id, $position_id);
         $data['tugas_pokok_generik'] = PokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $type)->get();
         $data['masalah_kompleksitas_kerja'] = MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();

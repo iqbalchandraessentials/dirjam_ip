@@ -74,7 +74,7 @@
                                                     @foreach ($unitOptions as $unit)
                                                         <option value="{{ $unit->unit_kd }}"
                                                             {{ old('unit', request('unit')) == $unit->unit_kd ? 'selected' : '' }}>
-                                                            {{ $unit->unit_nama }}
+                                                            ({{$unit->unit_kd}}) {{ $unit->unit_nama }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -151,7 +151,6 @@
                     }
                 ],
             });
-
             // Reload tabel ketika filter unit berubah
             $('#unitFilter').on('change', function() {
                 table.ajax.reload();
@@ -164,12 +163,12 @@
             });
 
             // Redirect ketika klik baris
-            $('#datatable tbody').on('click', 'tr', function() {
-                let url = $(this).data('href');
-                if (url) {
-                    window.location.href = url;
-                }
-            });
+            // $('#datatable tbody').on('click', 'tr', function() {
+            //     let url = $(this).data('href');
+            //     if (url) {
+            //         window.location.href = url;
+            //     }
+            // });
         });
     </script>
 @endsection

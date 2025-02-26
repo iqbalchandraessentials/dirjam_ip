@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('mapping-kompetensi-non-teknis', [ExportController::class, 'exportMappingKompetensiNonTeknis'])->name('export.mapping_kompetensi_non_teknis');
         Route::get('mapping-kompetensi-teknis', [ExportController::class, 'exportMappingKompetensiTeknis'])->name('export.mapping_kompetensi_teknis');
         Route::get('jabatan-unit', [ExportController::class, 'exportMasterJabatanUnit'])->name('export.jabatan_unit');
+        Route::get('sto-jobcode', [ExportController::class, 'exportStoJobcode'])->name('export.stoJobcode');
         Route::get('default-data', [ExportController::class, 'exportMasterDefaultData'])->name('export.default_data');
         Route::get('uraian-jabatan-PDF/{id}', [ExportController::class, 'exportUraianJabatanPdf'])->name('export.uraian_jabatan_PDF');
         Route::get('uraian-jabatan-Excel/{id}', [ExportController::class, 'exportUraianJabatanExcel'])->name('export.uraian_jabatan_Excel');
@@ -66,6 +67,10 @@ Route::middleware(['auth'])->group(function () {
     });
     // Master Data Routes
     Route::prefix('master_data')->group(function () {
+        Route::get('bidang-studi', [MasterDataController::class, 'bidangStudi'])->name('master.bidangStudi');
+        Route::post('/bidang-studi/store', [MasterDataController::class, 'store'])->name('master.bidangStudi.store');
+        Route::post('/bidang-studi/update', [MasterDataController::class, 'update'])->name('master.bidangStudi.update');
+        Route::post('/bidang-studi/delete', [MasterDataController::class, 'delete'])->name('master.bidangStudi.delete');
         Route::get('nature-of-impact', [MasterDataController::class, 'natureOfImpact'])->name('master.natureOfImpact');
         Route::post('nature-of-impact/store', [MasterDataController::class, 'storeNatureOfImpact'])->name('master.natureOfImpact.store');
         Route::post('nature-of-impact/update', [MasterDataController::class, 'updateNatureOfImpact'])->name('master.natureOfImpact.update');
@@ -96,6 +101,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('jenjang-jabatan/update-status', [MasterDataController::class, 'updateStatus'])->name('master.jenjang-jabatan.update-status');
         Route::get('unit', [MasterDataController::class, 'unit'])->name('master.unit');
         Route::get('users', [UserController::class, 'index'])->name('users.index')->middleware(['role:SuperAdmin']);
+        Route::get('stoJobcode', [MasterDataController::class, 'stoJobcode'])->name('master.stoJobcode');
         Route::resource('roles', RoleController::class)->middleware(['role:SuperAdmin']);
     });
     // User Management Routes

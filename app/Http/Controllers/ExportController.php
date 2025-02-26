@@ -9,6 +9,7 @@ use App\Exports\MasterDefaultDataExport;
 use App\Exports\MasterJabatanUnitExport;
 use App\Exports\MasterKompetensiNonTeknisExport;
 use App\Exports\MasterKompetensiTeknisExport;
+use App\Exports\StoJobcodeExport;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -37,6 +38,10 @@ class ExportController extends Controller
     public function exportMasterJabatanUnit()
     {
         return Excel::download(new MasterJabatanUnitExport, 'Master_Jabatan_Unit-' . date('d-m-Y H-i-s') . '.xlsx');
+    }
+    public function exportStoJobcode()
+    {
+        return Excel::download(new StoJobcodeExport, 'Sto_JobCode-' . date('d-m-Y H-i-s') . '.xlsx');
     }
     public function exportMasterKompetensiNonTeknis()
     {

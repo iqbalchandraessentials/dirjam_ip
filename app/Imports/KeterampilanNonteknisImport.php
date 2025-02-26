@@ -18,19 +18,12 @@ class KeterampilanNonteknisImport implements ToModel, WithValidation, WithHeadin
 
     public function __construct()
     {
-        // Hapus semua data sebelum mengambil referensi dari tabel lain
         KeterampilanNonteknis::truncate();
         
-        // Kemudian ambil data referensi dari tabel lain
         $this->master_jabatan = DB::table('master_jabatan')->pluck('master_jabatan')->toArray();
         $this->masterKompetensiNonyTeknis = DB::table('master_kompetensi_nonteknis')->pluck('kode')->toArray();
     }
-
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+    
     public function model(array $row)
     {
         return new KeterampilanNonteknis([

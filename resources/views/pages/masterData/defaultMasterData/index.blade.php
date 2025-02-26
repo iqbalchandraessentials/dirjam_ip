@@ -15,8 +15,8 @@
                         </h2>
                     </div>
                     <div class="col text-right">
-                        <a href="{{ route('export.default_data') }}" class="btn btn-secondary">
-                            <i class="ti-layout-grid4"></i><span>Excell</span>
+                        <a href="{{ route('export.default_data') }}" class="btn btn-success">
+                            <i class="ti-layout-grid4 mr-3"></i><span>Excell</span>
                         </a>
                     </div>
                 </div>

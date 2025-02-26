@@ -40,7 +40,7 @@
                         </div>
                     @endif
                     <div class="col-12 text-right">
-                        <button type="button" id="btnAdd" class="btn btn-success mb-3">
+                        <button type="button" id="btnAdd" class="btn btn-info mb-3">
                             <i class="ti-plus" style="margin-right: 5px;"></i> Add
                         </button>
                     </div>
@@ -63,7 +63,7 @@
                                                     <td class="text-center"> <span class="badge bg-dark"> {{ $v['level'] }} </span></td>
                                                     <td class="text-left">{{ $v['perilaku'] }}</td>
                                                     <td>
-                                                        <button class="btn btn-secondary btn-xs btnEdit"><i class="ti-pencil"></i></button>
+                                                        <button class="btn btn-primary btn-xs btnEdit"><i class="ti-pencil"></i></button>
                                                         <a href=" {{route('master.kompetensi.delete', $v['id'])}} " class="btn btn-danger btn-xs btnDelete"><i class="ti-trash"></i></a>
                                                     </td>
                                                 </tr>

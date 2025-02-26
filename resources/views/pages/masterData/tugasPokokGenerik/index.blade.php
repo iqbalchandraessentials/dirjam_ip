@@ -12,7 +12,7 @@
                         <h4 class="box-title">Tugas Pokok Generik</h4>
                     </div>
                     <div class="col-6 text-right">
-                        <a class="btn btn-success text-white mb-3"
+                        <a class="btn btn-info text-white mb-3"
                         data-toggle="modal" data-target="#addModal" rel="noopener noreferrer">
                             <i class="ti-plus me-1"></i><span class="ml-1"> Add</span>
                         </a>
@@ -52,7 +52,7 @@
                                                 <td>{{ $v['jenis_jabatan'] }}</td>
                                                 <td class="text-center">
                                                     <!-- Tombol Edit -->
-                                                    <button class="btn btn-secondary btn-circle btn-xs" data-toggle="modal"
+                                                    <button class="btn btn-primary btn-circle btn-xs" data-toggle="modal"
                                                         data-target="#editModal" data-id="{{ $v['id'] }}"
                                                         data-aktivitas="{{ $v['aktivitas'] }}"
                                                         data-output="{{ $v['output'] }}"
@@ -61,7 +61,7 @@
                                                     </button>
 
                                                     <!-- Tombol Delete -->
-                                                    <button class="btn btn-secondary btn-circle btn-xs" data-toggle="modal"
+                                                    <button class="btn btn-danger btn-circle btn-xs" data-toggle="modal"
                                                         data-target="#deleteModal" data-id="{{ $v['id'] }}">
                                                         <i class="ti-trash fa-lg"></i>
                                                     </button>

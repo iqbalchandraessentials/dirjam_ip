@@ -33,6 +33,11 @@
                                 <i class="ti-more"></i>Master Jabatan
                             </a>
                         </li>
+                        <li class="{{ Request::is('master_data/stoJobcode') ? 'active' : '' }}">
+                            <a href="{{ route('master.stoJobcode') }}">
+                                <i class="ti-more"></i>STO Jobcode
+                            </a>
+                        </li>
                         <li class="{{ Request::is('master_data/kompetensi-teknis', 'master_data/mapping-komptensi-teknis', 'master_data/kompetensi-teknis/*') ? 'active' : '' }}">
                             <a href="{{ route('master.kompetensi-teknis') }}">
                                 <i class="ti-more"></i>Kompetensi Teknis
@@ -56,6 +61,11 @@
                         <li class="{{ Request::is('master_data/pendidikan') ? 'active' : '' }}">
                             <a href="{{ route('master.pendidikan') }}">
                                 <i class="ti-more"></i>Pendidikan
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/bidang-studi') ? 'active' : '' }}">
+                            <a href="{{ route('master.bidangStudi') }}">
+                                <i class="ti-more"></i>Bidang Studi
                             </a>
                         </li>
                         <li class="{{ Request::is('master_data/jenjang-jabatan') ? 'active' : '' }}">

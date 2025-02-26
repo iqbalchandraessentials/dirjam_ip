@@ -13,10 +13,10 @@
                             <h4 class="box-title">Master Kompetnsi Teknis</h4>
                         </div>
                         <div class="col-6 text-right">
-                            <a href="{{ route('master.mapping-komptensi-teknis') }}" class="btn btn-success mb-3" rel="noopener noreferrer">
+                            <a href="{{ route('master.mapping-komptensi-teknis') }}" class="btn btn-info mb-3" rel="noopener noreferrer">
                                 <i class="ti-eye me-1"></i><span class="ml-1"> Mapping</span>
                             </a>
-                            <a href="{{ route('export.kompetensi_teknis') }}" class="btn btn-secondary">
+                            <a href="{{ route('export.kompetensi_teknis') }}" class="btn btn-success">
                                 <i class="ti-layout-grid4"></i><span class="ml-1"> Excell</span>
                             </a>
                         </div>
