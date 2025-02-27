@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class KeterampilanNonteknis extends Model
 {
-    // use SoftDeletes;
+
+    protected $table = 'keterampilan_nonteknis';
+
     protected $fillable = [
         'uraian_master_jabatan_id',
         'created_by',

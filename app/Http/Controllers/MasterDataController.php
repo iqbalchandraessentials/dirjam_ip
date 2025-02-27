@@ -26,6 +26,7 @@ use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class MasterDataController extends Controller
@@ -189,15 +190,13 @@ class MasterDataController extends Controller
         return view('pages.masterData.jenjang.index', ['data' => $data]);
     }
 
-    public function updateStatus(Request $request)
+    public function updateStatusJenjang(Request $request)
     {
         try {
             $jenjang = MasterJenjangJabatan::findOrFail($request->id);
             $jenjang->status = $request->status;
             $jenjang->save();
-            // $jenjang->update(['status' => $request->status]);
-
-
+            
             return redirect()->back()->with('success', 'Status berhasil diperbarui.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui status.');
@@ -208,6 +207,18 @@ class MasterDataController extends Controller
     {
         $data = M_UNIT::get();
         return view('pages.masterData.unit.index', ['data' => $data]);
+    }
+
+    public function updateStatusUnit(Request $request)
+    {
+        try {
+            $unit = M_UNIT::where('unit_id', $request->id)->firstOrFail();
+            $unit->update(['status' => $request->status]);
+            
+            return redirect()->back()->with('success', 'Status berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui status.');
+        }
     }
 
     public function tugasPokokGenerik()
@@ -274,8 +285,6 @@ class MasterDataController extends Controller
 
     public function masterKompetensiTeknis(Request $request)
     {
-
-
         if ($request->ajax()) {
             $data = MasterKompetensiTeknis::get();
             return DataTables::of($data)
@@ -307,16 +316,16 @@ class MasterDataController extends Controller
     public function storeKompetensi(Request $request)
     {
         $request->validate([
-            'kode_master_level' => 'required|string|unique:DetailKomptensiTeknis,kode_master_level',
             'kode_master' => 'required|string',
             'level' => 'required',
             'perilaku' => 'required|string',
         ]);
+
         DetailKomptensiTeknis::create([
             'kode_master' => $request->kode_master,
             'level' => $request->level,
             'perilaku' => $request->perilaku,
-            'kode_master_level' => $request->kode_master . $request->level,
+            'kode_master_level' => $request->kode_master.'.'.$request->level,
             'created_by' => Auth::user()->name
         ]);
 
@@ -390,7 +399,7 @@ class MasterDataController extends Controller
     public function stoJobcode(Request $request)
     {
         if ($request->ajax()) {
-            $data =  DB::select('SELECT SINGKATAN_JABATAN,JENIS_PEMBANGKIT,SINGKATAN_JABATAN_CLEAN,KODE_JABATAN,PEOPLE_GROUP_ID,ORG_ID,LEVELING,STRUCTURE,PERSON_ID_PARENT,NAMA_PARENT,NIPEG_PARENT,EMAIL_PARENT,PATH,PARENT_PATH,STATUS,ID,VALID_FROM,VALID_TO,PARENT_NAME,PARENT_POSITION_ID,CHILD_POSITION_ID,CHILD_NAME,PERSON_ID_BAWAHAN,NAMA_BAWAHAN,NIPEG_BAWAHAN,EMAIL_BAWAHAN,MASTER_JABATAN,ORGANIZATION_ID,ORGANIZATION_DESC,MAX_PERSONS,FTE,JOB_ID,JENIS_JABATAN,JEN_P21B,JENJANG,SUBORDINATE_POSITION_ID,FLAG_DEFINITIF,DIREKTORAT,DIVISI,LOCATION_CODE,TOWN_OR_CITY,P22A,POG_MIN,POG_MAX,UNIT_KD,UNIT_KD_REV,UNIT_NAMA,RE FROM INTTALENT.sto_jobcode');
+            $data =  $data =  DB::select('SELECT * FROM INTTALENT.sto_jobcode');
 
             return DataTables::of($data)
                 ->addIndexColumn()

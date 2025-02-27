@@ -14,13 +14,7 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
-
-                    @if (session('error'))
-                        <div class="alert alert-danger">{{ session('error') }}</div>
-                    @endif
+                    @include('components.notification')
                     <div class="table-responsive">
                         <table class="table table-striped dataTables">
                             <thead>
@@ -47,7 +41,7 @@
                                                     {{ $v['status'] == 1 ? 'Active' : 'Inactive' }}
                                                 </button>
                                             </form>
-                                            </td>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

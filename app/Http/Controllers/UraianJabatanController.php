@@ -56,7 +56,7 @@ class UraianJabatanController extends Controller
         }
 
         $jabatans = $query->get();
-        $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->get();
+        $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->where('status', 1)->get();
         $jenjangOptions = MasterJenjangJabatan::select('kode', 'nama')->get();
 
         return view('pages.uraian_jabatan.index', compact('jabatans', 'jenjangOptions', 'unitOptions'));

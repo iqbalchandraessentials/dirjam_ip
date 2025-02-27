@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('keterampilan_nonteknis', function (Blueprint $table) {
+        Schema::create('keterampilan_non_teknis', function (Blueprint $table) {
             $table->id();
+            $table->string('master_jabatan');
             $table->string('kode');
-            $table->enum('kategori',['UTAMA','PERAN','FUNGSI']);
+            $table->enum('kategori',['FUNGSI','PERAN', 'UTAMA']);
             $table->string('jenis')->nullable();
             $table->string('created_by')->nullable();
-            $table->string('master_jabatan');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('keterampilan_nonteknis');
+        Schema::dropIfExists('keterampilan_non_teknis');
     }
 };

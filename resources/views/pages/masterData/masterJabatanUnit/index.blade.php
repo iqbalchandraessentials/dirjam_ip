@@ -18,7 +18,6 @@
                 </div>
             </div>
             <div class="box-body">
-                {{-- Tab Content: Basic Info --}}
                 <div class="row g-0">
                     <div class="col">
                         <div class="box-body">
@@ -32,7 +31,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Data akan otomatis diisi oleh DataTables -->
                                     </tbody>
                                 </table>                                
                             </div>

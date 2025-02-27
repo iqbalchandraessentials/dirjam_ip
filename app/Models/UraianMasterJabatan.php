@@ -11,15 +11,12 @@ class UraianMasterJabatan extends Model
         'master_jabatan_id',
         'nama',
         'unit_kd',
-        'jenis_jabatan',
         'fungsi_utama',
         'anggaran',
         'accountability',
         'nature_impact',
         'created_by',
     ];
-    
-    protected $guarded = ['id'];
 
     function masterJabatan() {
         return $this->belongsTo(MasterJabatan::class, 'master_jabatan_id', 'id');

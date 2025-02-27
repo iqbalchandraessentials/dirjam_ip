@@ -21,14 +21,7 @@
                 </div>
             </div>
             <div class="box-body">
-                @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                @endif
+                @include('components.notification')
                 <div class="row g-0">
                     <div class="col">
                         <div class="box-body">
@@ -52,7 +45,7 @@
                                                 <td>{{ $v['jenis_jabatan'] }}</td>
                                                 <td class="text-center">
                                                     <!-- Tombol Edit -->
-                                                    <button class="btn btn-primary btn-circle btn-xs" data-toggle="modal"
+                                                    <button class="btn btn-primary  btn-xs" data-toggle="modal"
                                                         data-target="#editModal" data-id="{{ $v['id'] }}"
                                                         data-aktivitas="{{ $v['aktivitas'] }}"
                                                         data-output="{{ $v['output'] }}"
@@ -61,7 +54,7 @@
                                                     </button>
 
                                                     <!-- Tombol Delete -->
-                                                    <button class="btn btn-danger btn-circle btn-xs" data-toggle="modal"
+                                                    <button class="btn btn-danger  btn-xs" data-toggle="modal"
                                                         data-target="#deleteModal" data-id="{{ $v['id'] }}">
                                                         <i class="ti-trash fa-lg"></i>
                                                     </button>

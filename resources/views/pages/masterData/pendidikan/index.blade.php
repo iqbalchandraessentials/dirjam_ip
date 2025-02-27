@@ -20,14 +20,7 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endif
+                    @include('components.notification')
                     <div class="table-responsive">
                         <!-- Tabel Data -->
                         <table class="table table-striped dataTables">
@@ -46,16 +39,13 @@
                                         <td class="text-center">{{ $data->nama }}</td>
                                         <td class="text-center">{{ $data->pengalaman }}</td>
                                         <td class="text-center">
-                                            <!-- Edit Button -->
-                                            <button type="button" class="btn btn-primary btn-circle btn-xs edit-btn"
+                                            <button type="button" class="btn btn-primary  btn-xs edit-btn"
                                                 data-id="{{ $data->id }}" data-nama="{{ $data->nama }}"
                                                 data-pengalaman="{{ $data->pengalaman }}"
                                                 data-jenjang="{{ $data->jenjang_jabatan }}">
                                                 <i class="ti-pencil fa-lg"></i>
                                             </button>
-
-                                            <!-- Delete Button -->
-                                            <button type="button" class="btn btn-danger btn-circle btn-xs delete-btn"
+                                            <button type="button" class="btn btn-danger  btn-xs delete-btn"
                                                 data-id="{{ $data->id }}" data-nama="{{ $data->nama }}">
                                                 <i class="ti-trash fa-lg"></i>
                                             </button>

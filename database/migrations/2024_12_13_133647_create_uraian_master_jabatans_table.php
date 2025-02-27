@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('master_jabatan_id');
             $table->string('nama');
-            $table->integer('unit_kd');
+            $table->string('unit_kd');
             $table->string('fungsi_utama',4000);
             $table->string('anggaran')->nullable();
             $table->string('accountability')->nullable();

@@ -29,7 +29,7 @@ class TemplateJabatanController extends Controller
 
     public function index(Request $request)
     {
-        $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->get();
+        $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->where('status', 1)->get();
         $selectUnit = Auth::user()->unitKerja->unit_nama;
         return view('pages.template.index', compact('unitOptions', 'selectUnit'));
     }
@@ -45,7 +45,6 @@ class TemplateJabatanController extends Controller
     public function filterData(Request $request)
     {  
         $unit_kd = $request->input('unit', Auth::user()->unit_kd);
-    
         $data = ViewUraianJabatan::select('master_jabatan', 'unit_kd', 'jen')
             ->groupBy('master_jabatan', 'unit_kd', 'jen')
             ->when(!empty($unit_kd), function ($query) use ($unit_kd) {
@@ -84,11 +83,9 @@ class TemplateJabatanController extends Controller
                 $unit_kd
             );
         }
-    
         if ($id == 'old') {    
             return $this->processNewData($masterJabatan, $unit_kd);
         }
-        
         $data = $this->getUraianMasterJabatanByName($masterJabatan);
     
         return $data 

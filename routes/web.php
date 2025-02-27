@@ -98,8 +98,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('kompetensi-non-teknis', [MasterDataController::class, 'masterKompetensiNonTeknis'])->name('master.kompetensi-non-teknis');
         Route::get('jabatan', [MasterDataController::class, 'masterJabatan'])->name('master.jabatan');
         Route::get('jenjang-jabatan', [MasterDataController::class, 'jenjangJabatan'])->name('master.jenjang-jabatan');
-        Route::post('jenjang-jabatan/update-status', [MasterDataController::class, 'updateStatus'])->name('master.jenjang-jabatan.update-status');
+        Route::post('jenjang-jabatan/update-status', [MasterDataController::class, 'updateStatusJenjang'])->name('master.jenjang-jabatan.update-status');
         Route::get('unit', [MasterDataController::class, 'unit'])->name('master.unit');
+        Route::post('unit/update-status', [MasterDataController::class, 'updateStatusUnit'])->name('master.unit.update-status');
         Route::get('users', [UserController::class, 'index'])->name('users.index');
         Route::get('stoJobcode', [MasterDataController::class, 'stoJobcode'])->name('master.stoJobcode');
         Route::resource('roles', RoleController::class);

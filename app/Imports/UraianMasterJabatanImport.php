@@ -73,15 +73,16 @@ class UraianMasterJabatanImport implements ToCollection
             function getValueFromRows($rows, $map, $default = null)
             {
                 foreach ($map as $row => $value) {
-                    if (isset($rows[$row][1]) && $rows[$row][1] === "v") {
+                    if (isset($rows[$row][1]) && $rows[$row][1] == "v") {
                         return $value;
                     }
                 }
                 return $default;
             }
+
             $data['anggaran'] = getValueFromRows($rows, $anggaranMap);
-            $data['accountability'] = getValueFromRows($rows, $accountabilityMap, 'Non Quantifiable');
-            $data['nature_impact'] = getValueFromRows($rows, $natureImpactMap, '');
+            $data['accountability'] = getValueFromRows($rows, $accountabilityMap);
+            $data['nature_impact'] = getValueFromRows($rows, $natureImpactMap);
 
             // TUGAS POKOK UTAMA DAN OUTPUT
             foreach ($rows as $key => $row) {
@@ -216,7 +217,7 @@ class UraianMasterJabatanImport implements ToCollection
                 ]
             );
             // Buat data UraianMasterJabatan
-             $uraian_jabatan_id = UraianMasterJabatan::create([
+            $uraian_jabatan_id = UraianMasterJabatan::create([
                 'master_jabatan_id' => $master_jabatan->id,
                 'nama' => $data['nama'],
                 'unit_kd' => $viewUraianJabatan['siteid'],

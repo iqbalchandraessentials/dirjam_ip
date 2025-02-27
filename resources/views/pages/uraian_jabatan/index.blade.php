@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    @if (auth()->user()->hasRole(['SuperAdmin']))
+                    {{-- @if (auth()->user()->hasRole(['SuperAdmin'])) --}}
                     <form action="{{ route('uraian_jabatan.filter') }}" method="POST" class="form-horizontal">
                         @csrf
                         <div class="d-flex justify-content-center">
@@ -43,7 +43,7 @@
                             </div>
                         </div>
                     </form>
-                    @endif
+                    {{-- @endif --}}
                     <div class="table-responsive">
                         <table class="table table-striped dataTables">
                             <thead>
