@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Imports;
+
+use App\Models\KeterampilanNonteknis;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+
+class KeterampilanNonteknisImport implements ToModel, WithValidation, WithHeadingRow, WithBatchInserts, WithChunkReading
+{
+    protected $master_jabatan;
+    protected $masterKompetensiNonyTeknis;
+    static $batchData = [];
+
+    public function __construct()
+    {
+        KeterampilanNonteknis::truncate();
+        
+        // $this->master_jabatan = DB::table('master_jabatan')->pluck('master_jabatan')->toArray();
+        $this->masterKompetensiNonyTeknis = DB::table('master_kompetensi_nonteknis')->pluck('kode')->toArray();
+    }
+    
+    // public function model(array $row)
+    // {
+    //     return new KeterampilanNonteknis([
+    //         'kode' => $row['kode'],
+    //         'kategori' => $row['kategori'],
+    //         'jenis' => $row['jenis'],
+    //         'master_jabatan' => $row['master_jabatan'],
+    //         'created_by' => Auth::user()->name,
+    //     ]);
+    // }
+
+    public function model(array $row)
+    {
+        return new KeterampilanNonteknis([
+            'kode' => $row['kode'],
+            'kategori' => $row['kategori'],
+            'jenis' => $row['jenis'],
+            'master_jabatan' => str_replace('&', '&&', $row['master_jabatan']),
+            'created_by' => Auth::user()->name,
+        ]);
+        // Jika batch sudah mencapai 1000, lakukan insert
+        if (count($batchData) >= 1000) {
+            DB::table('keterampilan_nonteknis')->insert($batchData);
+            $batchData = []; // Reset batch
+        }
+
+        return null;
+    }
+
+   
+    public function rules(): array
+    {
+        return [
+            // 'master_jabatan' => ['required', 'string', function ($attribute, $value, $fail) {
+            //     if (!in_array($value, $this->master_jabatan)) {
+            //         $fail("The $attribute is invalid.");
+            //     }
+            // }],
+            'kode' => ['required', 'string', 'max:50', function ($attribute, $value, $fail) {
+                if (!in_array($value, $this->masterKompetensiNonyTeknis)) {
+                    $fail("The $attribute is invalid.");
+                }
+            }],
+            'kategori' => 'required|string',
+        ];
+    }
+    public function batchSize(): int
+    {
+        return 1000;
+    }
+    
+    public function chunkSize(): int
+    {
+        return 1000;
+    }
+}

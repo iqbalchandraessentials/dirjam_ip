@@ -3,7 +3,6 @@
 use Illuminate\Support\Str;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Database Connection Name
@@ -30,7 +29,6 @@ return [
     */
 
     'connections' => [
-
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DB_URL'),
@@ -57,9 +55,11 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+            'options' => extension_loaded('pdo_mysql')
+                ? array_filter([
+                    PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                ])
+                : [],
         ],
 
         'mariadb' => [
@@ -77,9 +77,11 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+            'options' => extension_loaded('pdo_mysql')
+                ? array_filter([
+                    PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                ])
+                : [],
         ],
 
         'pgsql' => [
@@ -111,7 +113,34 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
+        // database erp dev
+        // 'oracle' => [
+        //     'driver' => 'oracle',
+        //     'tns' => env('SID', '(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP) (HOST = 10.8.10.211)(PORT=1531))(CONNECT_DATA=(SID=erpdev)))'),
+        //     'host' => env('DB_HOST', ''),
+        //     'port' => env('DB_PORT', '1521'),
+        //     'database' => env('DB_DATABASE', ''),
+        //     'username' => env('DB_USERNAME', ''),
+        //     'password' => env('DB_PASSWORD', ''),
+        //     'service_name' => env('DB_SERVICE_NAME', ''),
+        //     'charset' =>  'AL32UTF8',
+        //     'prefix' => '',
+        //     // 'encrypt' => env('DB_ENCRYPT', 'yes'),
+        //     // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+        // ],
 
+        // database erp qa
+        'oracle' => [
+            'driver'        => 'oracle',
+            'host'         => env('DB_HOST', ''),
+            'port'         => env('DB_PORT', '1521'),
+            'database'     => env('DB_SERVICE_NAME', ''),
+            'username'     => env('DB_USERNAME', ''),
+            'password'     => env('DB_PASSWORD', ''),
+            'charset'      => 'AL32UTF8',
+            // 'schema'       => 'DIRJAB',
+            'prefix'       => '',
+        ],
     ],
 
     /*
@@ -142,12 +171,11 @@ return [
     */
 
     'redis' => [
-
         'client' => env('REDIS_CLIENT', 'phpredis'),
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
         ],
 
         'default' => [
@@ -167,7 +195,5 @@ return [
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
         ],
-
     ],
-
 ];
