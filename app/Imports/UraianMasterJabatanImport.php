@@ -23,9 +23,6 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 class UraianMasterJabatanImport implements ToCollection
 {
 
-    /**
-     * @param Collection $collection
-     */
     public $tugas_pokok_utama = [];
     public $hubungan_kerja = [];
     public $masalah_kompleksitas_kerja = [];
@@ -104,7 +101,7 @@ class UraianMasterJabatanImport implements ToCollection
                     // Pastikan data valid sebelum dimasukkan ke array
                     if (!empty($row[2]) && !empty($row[3])) {
                         $this->hubungan_kerja[] = [
-                            'komunikasi' => $row[2], // Sesuaikan kolom
+                            'komunikasi' => $row[2],
                             'tujuan' => $row[3],
                             'jenis' => 'internal',
                         ];
@@ -120,7 +117,7 @@ class UraianMasterJabatanImport implements ToCollection
                 if ($key >= 104 && $key <= 111) {
                     if (!empty($row[2]) && !empty($row[3])) {
                         $this->hubungan_kerja[] = [
-                            'komunikasi' => $row[2], // Sesuaikan kolom
+                            'komunikasi' => $row[2],
                             'tujuan' => $row[3],
                             'jenis' => 'eksternal',
                         ];
@@ -204,7 +201,6 @@ class UraianMasterJabatanImport implements ToCollection
             // end of get data
             // dd($viewUraianJabatan);
             // +=+
-
             $viewUraianJabatan['jenis_jabatan'] = $viewUraianJabatan['type'] == 'S' ? 'struktural' : 'fungsional';
             $master_jabatan = MasterJabatan::updateOrCreate(
                 [
@@ -229,9 +225,7 @@ class UraianMasterJabatanImport implements ToCollection
              ]);
              
             $uraian_jabatan_id = $uraian_jabatan_id->id;
-            //  tugas pokok utama 
             foreach ($data['tugas_pokok_utama'] as $x) {
-                // Cek jika 'aktivitas' dan 'output' tidak kosong
                 if (!empty($x['aktivitas']) && !empty($x['output'])) {
                     PokoUtamaGenerik::create([
                         'uraian_master_jabatan_id' => $uraian_jabatan_id,
@@ -292,16 +286,13 @@ class UraianMasterJabatanImport implements ToCollection
             }
              foreach ($data['pendidikan'] as $x) {
                 if (!empty($x['pendidikan']) && !empty($x['pengalaman'])) {
-                    // Cari data pengalaman berdasarkan jenjang jabatan dan nama pendidikan
                     $pengalaman = MasterPendidikan::select('pengalaman')
                         ->where('jenjang_jabatan', $viewUraianJabatan->jen)
                         ->where('nama', $x['pendidikan'])
                         ->first();
 
-                    // Validasi pengalaman agar hanya angka
                     $pengalamanValue = is_numeric($pengalaman->pengalaman) ? $pengalaman->pengalaman : 0;
 
-                    // Buat entri di tabel SpesifikasiPendidikan
                     SpesifikasiPendidikan::create([
                         'uraian_master_jabatan_id' => $uraian_jabatan_id,
                         'pendidikan' => $x['pendidikan'],

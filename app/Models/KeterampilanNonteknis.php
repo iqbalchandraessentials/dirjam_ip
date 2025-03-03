@@ -10,12 +10,11 @@ class KeterampilanNonteknis extends Model
     protected $table = 'keterampilan_nonteknis';
 
     protected $fillable = [
-        'uraian_master_jabatan_id',
-        'created_by',
+        'master_jabatan',
         'kode',
         'kategori',
         'jenis',
-        'master_jabatan',
+        'created_by',
     ];
     
     public function detail()

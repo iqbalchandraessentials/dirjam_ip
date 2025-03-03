@@ -44,7 +44,7 @@ dd($data);
                     <div class="col text-right">
                         @if (isset($data['masterJabatan']['id']))
                             <a href="{{ route('template_jabatan.draft', $data['masterJabatan']['id']) }}"
-                                class="btn btn-secondary">
+                                class="btn btn-info">
                                 <i class="ti-view-list-alt"></i><span> Draft</span>
                             </a>
                         @endif
@@ -52,11 +52,11 @@ dd($data);
                             $encodedName = base64_encode($data['nama']);
                         @endphp
                         
-                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['id'] ?? 'old']) }}" class="btn btn-secondary">
+                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['id'] ?? 'old']) }}" class="btn btn-primary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
                         
-                        <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['id'] ?? 'old']) }}" class="btn btn-secondary">
+                        <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['id'] ?? 'old']) }}" class="btn btn-success">
                             <i class="ti-layout-grid4"></i><span>Excel</span>
                         </a>
                                          

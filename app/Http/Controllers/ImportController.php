@@ -9,6 +9,7 @@ use App\Imports\KompetensiTeknisImport;
 use App\Imports\MasterDefaultDataImport;
 use App\Imports\MasterKompetensiNonTeknisImport;
 use App\Imports\UraianMasterJabatanImport;
+use App\Models\KeterampilanNonteknis;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportController extends Controller
@@ -59,6 +60,7 @@ class ImportController extends Controller
             $request->validate([
                 'file' => 'required|mimes:xlsx,xls,csv',
             ]);
+            KeterampilanNonteknis::truncate();
             Excel::import(new KeterampilanNonteknisImport, $request->file('file'));
             session()->flash('success', 'Mapping Keterampilan Non Teknis berhasil diupload, mohon periksa kembali.');
             return redirect()->route('master.mapping-komptensi-non-teknis');
