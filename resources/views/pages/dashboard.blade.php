@@ -7,15 +7,6 @@
 @section('title', 'Dashboard | Direktori Jabatan')
 
 @section('content')
-    {{-- <div class="box">
-        <div class="box-header">
-            <div class="row">
-                <div class="box-title text-center">
-                    <h1></h1>
-                </div>
-            </div>
-        </div>
-        <div class="box-body"> --}}
             <div id="indonesia-power" style="height: 300px;"></div>
             <div class="row text-center" id="cluster">
                 <div class="col-md-4">
@@ -34,8 +25,6 @@
                     </a>
                 </div>
             </div>
-        {{-- </div> --}}
-    {{-- </div> --}}
 @endsection
 
 @section('script')
