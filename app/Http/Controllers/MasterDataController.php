@@ -98,12 +98,44 @@ class MasterDataController extends Controller
         return response()->json(['success' => 'Data berhasil dihapus']);
     }
 
+    // public function natureOfImpact()
+    // {
+    //     $data = MappingNatureOfImpact::with('namaProfesi')->get();
+    //     $option = M_PROFESI::get();
+    //     return view('pages.masterData.dimensiFinansial.index', ['data' => $data, 'option' => $option]);
+    // }
+
     public function natureOfImpact()
-    {
-        $data = MappingNatureOfImpact::with('namaProfesi')->get();
-        $option = M_PROFESI::get();
-        return view('pages.masterData.dimensiFinansial.index', ['data' => $data, 'option' => $option]);
+{
+    $option = M_PROFESI::get();
+    return view('pages.masterData.dimensiFinansial.index',['option' => $option]);
+}
+
+public function getNatureOfImpact(Request $request)
+{
+    if ($request->ajax()) {
+        $data = MappingNatureOfImpact::with('namaProfesi')->select('id', 'kode_profesi', 'jenis');
+
+        return DataTables::of($data)
+            ->addColumn('nama_profesi', function ($row) {
+                return $row->namaProfesi->nama_profesi ?? $row->kode_profesi;
+            })
+            ->addColumn('action', function ($row) {
+                return '
+                    <button class="btn btn-primary btn-xs btnEdit" 
+                        data-id="' . $row->id . '" 
+                        data-kode_profesi="' . $row->kode_profesi . '" 
+                        data-jenis="' . $row->jenis . '">
+                        <i class="ti-pencil"></i>
+                    </button>
+                    <button class="btn btn-danger btn-xs btnDelete" data-id="' . $row->id . '">
+                        <i class="ti-trash"></i>
+                    </button>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
+}
 
     public function storeNatureOfImpact(Request $request)
     {
@@ -390,7 +422,11 @@ class MasterDataController extends Controller
         if ($request->ajax()) {
             $data = MASTER_JABATAN_UNIT::select('master_jabatan', 'siteid')->distinct();
             return DataTables::of($data)
-                ->addIndexColumn() // Menambahkan kolom nomor urut
+                ->addIndexColumn()
+                ->addColumn('unit_nama', function ($row) {
+                    return $row->unit ? $row->unit->unit_nama : '-';
+                })
+                ->rawColumns(['unit_nama'])
                 ->make(true);
         }
         return view('pages.masterData.masterJabatanUnit.index');

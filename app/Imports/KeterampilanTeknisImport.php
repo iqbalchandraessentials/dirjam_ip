@@ -19,7 +19,7 @@ class KeterampilanTeknisImport implements ToModel, WithValidation, WithHeadingRo
     public function __construct()
     {
         KeterampilanTeknis::query()->delete();
-        $this->master_jabatan = DB::table('mst_jabatan')->pluck('master_jabatan')->toArray();
+        $this->master_jabatan = DB::table('master_jabatan_unit')->pluck('master_jabatan')->toArray();
         $this->masterKompetensiTeknis = DB::table('master_kompetensi_teknis')->pluck('kode')->toArray();
     }
 
@@ -38,11 +38,11 @@ class KeterampilanTeknisImport implements ToModel, WithValidation, WithHeadingRo
     public function rules(): array
     {
         return [
-            // 'master_jabatan' => ['required', 'string', function ($attribute, $value, $fail) {
-            //     if (!in_array($value, $this->master_jabatan)) {
-            //         $fail("The $attribute is invalid.");
-            //     }
-            // }],
+            'master_jabatan' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!in_array($value, $this->master_jabatan)) {
+                    $fail("The $attribute is invalid.");
+                }
+            }],
             'kode' => ['required', 'string', 'max:50', function ($attribute, $value, $fail) {
                 if (!in_array($value, $this->masterKompetensiTeknis)) {
                     $fail("The $attribute is invalid.");

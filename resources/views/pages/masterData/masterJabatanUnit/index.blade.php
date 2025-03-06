@@ -25,12 +25,11 @@
                                 <table id="datatable" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th class="text-left">No.</th>
                                             <th class="text-center">Nama</th>
                                             <th class="text-center">Unit</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="text-center">
                                     </tbody>
                                 </table>                                
                             </div>
@@ -51,9 +50,8 @@
                 serverSide: true,
                 ajax: "{{ route('master.jabatan') }}", // Ganti dengan route ke fungsi `masterJabatan`
                 columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false }, // Kolom nomor urut
-                    { data: 'master_jabatan', name: 'master_jabatan' }, // Kolom nama master jabatan
-                    { data: 'siteid', name: 'siteid', className: 'text-center' } // Kolom unit
+                    { data: 'master_jabatan', name: 'master_jabatan', className: 'text-capitalize' },
+                    { data: 'unit_nama', name: 'unit_nama' }
                 ],
             });
         });

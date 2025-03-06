@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="{{ asset('css/meus.css') }}">
 <link rel="stylesheet" href="{{ asset('css/master_style.css') }}">
 <link rel="stylesheet" href="{{ asset('css/skins/_all-skins.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('css/skins/_all-skins.css') }}"> --}}
 <link rel="stylesheet" href="{{ asset('vendor/c3/c3.min.css') }}">
 <link rel="stylesheet" href="{{ asset('vendor/daterangepicker/daterangepicker.css') }}">
 {{-- <link rel="stylesheet" href="{{ asset('vendor/fullcalendar/fullcalendar.min.css') }}">

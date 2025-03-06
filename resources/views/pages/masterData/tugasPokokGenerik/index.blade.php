@@ -29,7 +29,7 @@
                                 <table class="table table-striped dataTables">
                                     <thead>
                                         <tr>
-                                            <th class="text-Left">No.</th>
+                                            {{-- <th class="text-Left">No.</th> --}}
                                             <th class="text-center" width="40%">Aktivitas</th>
                                             <th class="text-center" width="30%">Output</th>
                                             <th class="text-center">Jenis jabatan</th>
@@ -39,7 +39,7 @@
                                     <tbody>
                                         @foreach ($data as $x => $v)
                                             <tr>
-                                                <td>{{ $x + 1 }}</td>
+                                                {{-- <td>{{ $x + 1 }}</td> --}}
                                                 <td>{{ $v['aktivitas'] }}</td>
                                                 <td>{{ $v['output'] }}</td>
                                                 <td>{{ $v['jenis_jabatan'] }}</td>
@@ -52,7 +52,6 @@
                                                         data-jenis="{{ $v['jenis_jabatan'] }}">
                                                         <i class="ti-pencil fa-lg"></i>
                                                     </button>
-
                                                     <!-- Tombol Delete -->
                                                     <button class="btn btn-danger  btn-xs" data-toggle="modal"
                                                         data-target="#deleteModal" data-id="{{ $v['id'] }}">
@@ -78,27 +77,21 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            // Modal Edit
             $('#editModal').on('show.bs.modal', function(event) {
-                const button = $(event.relatedTarget); // Tombol yang memicu modal
-                const id = button.data('id'); // Ambil data-id
-                const aktivitas = button.data('aktivitas'); // Ambil data-aktivitas
-                const output = button.data('output'); // Ambil data-output
-                const jenis = button.data('jenis'); // Ambil data-jenis
-
-                // Isi nilai pada input di modal
+                const button = $(event.relatedTarget); 
+                const id = button.data('id'); 
+                const aktivitas = button.data('aktivitas'); 
+                const output = button.data('output'); 
+                const jenis = button.data('jenis'); 
                 $(this).find('#edit-id').val(id);
                 $(this).find('#edit-aktivitas').val(aktivitas);
                 $(this).find('#edit-output').val(output);
                 $(this).find('#edit-jenis_jabatan').val(jenis);
             });
 
-            // Modal Delete
             $('#deleteModal').on('show.bs.modal', function(event) {
-                const button = $(event.relatedTarget); // Tombol yang memicu modal
-                const id = button.data('id'); // Ambil data-id
-
-                // Isi nilai pada input hidden di modal
+                const button = $(event.relatedTarget); 
+                const id = button.data('id');                 
                 $(this).find('#delete-id').val(id);
             });
         });

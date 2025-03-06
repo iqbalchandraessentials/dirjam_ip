@@ -3,8 +3,8 @@
     <a href="javascript:void(0);" class="logo">
         <!-- mini logo -->
         <div class="logo-mini">
-            <span class="dark-logo"><img src="{{ asset('img/dirjab_logo2.png') }}" style="height: 32px" alt="logo"></span>
-            <span class="light-logo"><img src="{{ asset('img/dirjab_logo2.png') }}" style="height: 32px" alt="logo"></span>
+            <span class="dark-logo test1"><img src="{{ asset('img/ip.png') }}" style="height: 46px" alt="logo"></span>
+            <span class="light-logo test2"><img src="{{ asset('img/ip.png') }}" style="height: 46px" alt="logo"></span>
             {{-- <i class="ti-blackboard"></i> --}}
         </div>
         <!-- logo-->
@@ -304,7 +304,7 @@
                     </a>
                     <ul class="dropdown-menu animated flipInX">
                         <!-- User image -->
-                        <li class="user-header bg-img" data-overlay="3">
+                        <li class="user-header" style="background-color: #14A2B8" data-overlay="3">
                             <div class="flexbox align-self-center">
                                 <img src="{{ asset('img/logo.png') }}" class="float-left rounded-circle" alt="User Image">
                                 <h4 class="user-name align-self-center">

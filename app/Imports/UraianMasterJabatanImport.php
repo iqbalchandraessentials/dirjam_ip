@@ -6,7 +6,6 @@ use App\Models\HubunganKerja;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanTeknis;
 use App\Models\MasalahKompleksitasKerja;
-use App\Models\MASTER_JABTAN;
 use App\Models\MasterJabatan;
 use App\Models\MasterPendidikan;
 use App\Models\SpesifikasiPendidikan;
@@ -296,8 +295,8 @@ class UraianMasterJabatanImport implements ToCollection
                     SpesifikasiPendidikan::create([
                         'uraian_master_jabatan_id' => $uraian_jabatan_id,
                         'pendidikan' => $x['pendidikan'],
-                        'pengalaman' => $pengalamanValue, // Pastikan tipe data numerik
-                        'bidang_studi' => $x['bidang_studi'] ?? null, // Default ke null jika tidak ada
+                        'pengalaman' => $pengalamanValue,
+                        'bidang_studi' => $x['bidang_studi'] ?? null,
                     ]);
                 }
             };

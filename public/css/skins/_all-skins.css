@@ -367,6 +367,16 @@ Project:	UltimatePro Admin - Responsive Admin Template
 
 /*---light sidebar---*/
 
+
+ .slimScrollDiv {
+  background-color: #15A2B9;
+ 
+}
+ .slimScrollDiv .sidebar .sidebar-menu .active {
+  background-color: whitesmoke;
+ }
+
+
 .light-sidebar .main-header li.user-header {
   background-color: #fff;
 }
@@ -385,11 +395,25 @@ Project:	UltimatePro Admin - Responsive Admin Template
 }
 .light-sidebar .sidebar-menu > li > .treeview-menu {
   margin: 0 0px;
-  background: #fff;
+  background: #15A2B9;
 }
+
+.light-sidebar .sidebar-menu > li > .treeview-menu .active a {
+  color:#212529;
+}
+
+/* .table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #15A2B9;
+ } */
+
 .light-sidebar .sidebar a {
-  color: #212529;
+  color: #ffffff;
 }
+.sidebar-menu > li > a > i {
+  color: #ffffff;
+}
+
 .light-sidebar .sidebar a:hover {
   text-decoration: none;
 }

@@ -7,180 +7,81 @@
 @section('title', 'Dashboard | Direktori Jabatan')
 
 @section('content')
-<div class="">
-<div class="row">
-        <div class="col-xl-4">
-            <!--begin::Stats Widget 13-->
-            <a href="{{ url('dashboard/registration/detail/daily') }}" class="card card-custom bg-hover-state-danger card-stretch gutter-b">
-                <!--begin::Body-->
-                <div class="card-body">
-                    <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
-                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                        <i class="ti-bolt display-4"></i>
-                        <!--end::Svg Icon-->
-                    </span>
-                    <div class="text-inverse-danger font-weight-bolder font-size-h5 mb-2 mt-5">
-                        Indonesia Power
-                    </div>
-                    <div class="font-weight-bold text-inverse-danger font-size-lg" id="todayData">
-                        99%
-                    </div>
+    {{-- <div class="box">
+        <div class="box-header">
+            <div class="row">
+                <div class="box-title text-center">
+                    <h1></h1>
                 </div>
-                <!--end::Body-->
-            </a>
-            <!--end::Stats Widget 13-->
+            </div>
         </div>
-        <div class="col-xl-4">
-            <!--begin::Stats Widget 13-->
-            <a href="#" class="card card-custom bg-hover-state-warning card-stretch gutter-b">
-                <!--begin::Body-->
-                <div class="card-body">
-                    <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
-                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                      <i class="ti-bar-chart display-5"></i>
-                        <!--end::Svg Icon-->
-                    </span>
-                    <div class="text-inverse-warning font-weight-bolder font-size-h5 mb-2 mt-5">
-                        CMU
-                    </div>
-                    <div class="font-weight-bold text-inverse-warning font-size-lg" id="weekData">
-                        100%
-                    </div>
+        <div class="box-body"> --}}
+            <div id="indonesia-power" style="height: 300px;"></div>
+            <div class="row text-center" id="cluster">
+                <div class="col-md-4">
+                    <a href="{{ route('cluster.detail', 1) }}">
+                        <div id="cluster1" style="height: 250px;"></div>
+                    </a>
                 </div>
-                <!--end::Body-->
-            </a>
-            <!--end::Stats Widget 13-->
-        </div>
-        <div class="col-xl-4">
-            <!--begin::Stats Widget 13-->
-            <a href="#" class="card card-custom  bg-hover-state-primary card-stretch gutter-b">
-                <!--begin::Body-->
-                <div class="card-body">
-                    <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
-                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                      <i class="ti-bar-chart display-5"></i>
-                        <!--end::Svg Icon-->
-                    </span>
-                    <div class="text-inverse-primary font-weight-bolder font-size-h5 mb-2 mt-5">
-                        KP
-                    </div>
-                    <div class="font-weight-bold text-inverse-primary font-size-lg" id="monthData">
-                        99%
-                    </div>
+                <div class="col-md-4">
+                    <a href="{{ route('cluster.detail', 2) }}">
+                        <div id="cluster2" style="height: 250px;"></div>
+                    </a>
                 </div>
-                <!--end::Body-->
-            </a>
-            <!--end::Stats Widget 13-->
-        </div>
-    </div>
+                <div class="col-md-4">
+                    <a href="{{ route('cluster.detail', 3) }}">
+                        <div id="cluster3" style="height: 250px;"></div>
+                    </a>
+                </div>
+            </div>
+        {{-- </div> --}}
+    {{-- </div> --}}
+@endsection
 
-    <div class="row">
-        <div class="col-xl-4">
-            <!--begin::Stats Widget 13-->
-            <a href="#" class="card card-custom  bg-hover-state-success card-stretch gutter-b">
-                <!--begin::Body-->
-                <div class="card-body">
-                    <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
-                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                      <i class="ti-bar-chart display-5"></i>
-                        <!--end::Svg Icon-->
-                    </span>
-                    <div class="text-inverse-success font-weight-bolder font-size-h5 mb-2 mt-5">
-                        MSU
-                    </div>
-                    <div class="font-weight-bold text-inverse-success font-size-lg" id="yearData">
-                        100%
-                    </div>
-                </div>
-                <!--end::Body-->
-            </a>
-            <!--end::Stats Widget 13-->
-        </div>
-        <div class="col-xl-4">
-            <!--begin::Stats Widget 16-->
-            <a href="#" class="card card-custom card-stretch gutter-b">
-                <!--begin::Body-->
-                <div class="card-body">
-                    <span class="svg-icon svg-icon-2x svg-icon-info">
-                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                      <i class="ti-bar-chart display-5"></i>
-                        <!--end::Svg Icon-->
-                    </span>
-                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">
-                        PGU
-                    </div>
-                    <div class="font-weight-bold text-inverse-white font-size-sm" id="activationData">
-                        100%
-                    </div>
-                </div>
-                <!--end::Body-->
-            </a>
-            <!--end::Stats Widget 16-->
-        </div>
+@section('script')
 
-        <div class="col-xl-4">
-            <!--begin::Stats Widget 16-->
-            <a href="#" class="card card-custom card-stretch gutter-b">
-                <!--begin::Body-->
-                <div class="card-body">
-                    <span class="svg-icon svg-icon-2x svg-icon-info">
-                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                      <i class="ti-bar-chart display-5"></i>
-                        <!--end::Svg Icon-->
-                    </span>
-                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">
-                        POMU
-                    </div>
-                    <div class="font-weight-bold text-inverse-white font-size-sm" id="activeData">
-                        100%
-                    </div>
-                </div>
-                <!--end::Body-->
-            </a>
-            <!--end::Stats Widget 16-->
-        </div>
-        <div class="col-xl-4">
-            <!--begin::Stats Widget 16-->
-            <a href="#" class="card card-custom card-stretch gutter-b">
-                <!--begin::Body-->
-                <div class="card-body">
-                    <span class="svg-icon svg-icon-2x svg-icon-info">
-                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                      <i class="ti-bar-chart display-5"></i>
-                        <!--end::Svg Icon-->
-                    </span>
-                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">
-                        UPK
-                    </div>
-                    <div class="font-weight-bold text-inverse-white font-size-sm" id="activeData">
-                        100%
-                    </div>
-                </div>
-                <!--end::Body-->
-            </a>
-            <!--end::Stats Widget 16-->
-        </div>
-        <div class="col-xl-4">
-            <!--begin::Stats Widget 16-->
-            <a href="#" class="card card-custom card-stretch gutter-b">
-                <!--begin::Body-->
-                <div class="card-body">
-                    <span class="svg-icon svg-icon-2x svg-icon-info">
-                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
-                      <i class="ti-bar-chart display-5"></i>
-                        <!--end::Svg Icon-->
-                    </span>
-                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">
-                        UPDK
-                    </div>
-                    <div class="font-weight-bold text-inverse-white font-size-sm" id="activeData">
-                        100%
-                    </div>
-                </div>
-                <!--end::Body-->
-            </a>
-            <!--end::Stats Widget 16-->
-        </div>
-    </div>
-</div>
-    @endsection
+    <script>
+      $(document).ready(function() {
+
+        new Morris.Donut({
+            element: 'indonesia-power',
+            data: [{
+                label: "Indonesia Power",
+                value: 100
+            }],
+            colors: ['#14A2B8'],
+            resize: true
+        });
+
+        new Morris.Donut({
+            element: 'cluster1',
+            data: [{
+                label: "Cluster 1",
+                value: 100
+            }],
+            colors: ['#14A2B8'],
+            resize: true
+        });
+
+        new Morris.Donut({
+            element: 'cluster2',
+            data: [{
+                label: "Cluster 2",
+                value: 100
+            }],
+            colors: ['#14A2B8'],
+            resize: true
+        });
+
+        new Morris.Donut({
+            element: 'cluster3',
+            data: [{
+                label: "Cluster 3",
+                value: 100
+            }],
+            colors: ['#14A2B8'],
+            resize: true
+        });
+    });
+    </script>
+@endsection

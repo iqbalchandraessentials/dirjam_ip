@@ -10,7 +10,7 @@
                             <h4 class="box-title">Master Bidang Studi</h4>
                         </div>
                         <div class="col-6 text-right">
-                            <button type="button" id="btnAdd" class="btn btn-success mb-3">
+                            <button type="button" id="btnAdd" class="btn btn-info mb-3">
                                 <i class="ti-plus" style="margin-right: 5px;"></i> Add
                             </button>
                         </div>
@@ -22,7 +22,7 @@
                         <table class="table table-striped dataTables">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
+                                    {{-- <th>No.</th> --}}
                                     <th class="text-center">Bidang Studi</th>
                                     <th class="text-center">Konsentrasi</th>
                                     <th class="text-center">Action</th>
@@ -31,7 +31,7 @@
                             <tbody id="data-table">
                                 @foreach ($data as $x => $v)
                                 <tr data-id="{{ $v->id }}">
-                                    <td>{{ $x + 1 }}</td>
+                                    {{-- <td>{{ $x + 1 }}</td> --}}
                                     <td class="text-center">{{ $v->bidang_studi }}</td>
                                     <td>
                                         <ol>

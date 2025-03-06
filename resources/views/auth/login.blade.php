@@ -1,20 +1,19 @@
 @extends('layouts.auth')
 @section('title', 'Login | Direktori Jabatan')
 @push('addon-style')
-    <style>
-        .bg-custom {
-            background: url('/img/bg-01.jpg') no-repeat center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-        }
 
-        /* .no-gutters {
-        margin-right: 0;
-        margin-left: 50px;
-    } */
-    </style>
+@php
+    $images = ["/img/1.jpg", "/img/2.jpg", "/img/3.jpg", "/img/4.jpg"];
+    $randomImage = $images[array_rand($images)];
+@endphp
+
+<style>
+    .bg-custom {
+        background: url('{{ $randomImage }}') no-repeat center fixed;
+        background-size: cover;
+    }
+</style>
+
 @endpush
 @section('content')
 <div class="container h-p100">
@@ -25,8 +24,11 @@
                     <div class="p-30 content-bottom rounded bg-img box-shadowed" data-overlay="9">
 
                         @if (session('login_error'))
-                        <div class="alert alert-danger">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             {{ session('login_error') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     @endif
 
@@ -90,3 +92,5 @@
     </div>
 </div>
     @endsection
+
+    

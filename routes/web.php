@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\MasterDataController;
@@ -16,6 +17,8 @@ Route::post('/login-dirjab', [LoginController::class, 'login'])->name('login.dir
 Route::get('/', function () {
     return view('pages.dashboard');
 })->middleware(['auth', 'verified']);
+
+Route::get('/cluster-detail/{id}', [DashboardController::class, 'getClusterDetail'])->name('cluster.detail');
 
 
 Route::get('/bidang-studi', function () {
@@ -72,6 +75,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/bidang-studi/update', [MasterDataController::class, 'update'])->name('master.bidangStudi.update');
         Route::post('/bidang-studi/delete', [MasterDataController::class, 'delete'])->name('master.bidangStudi.delete');
         Route::get('nature-of-impact', [MasterDataController::class, 'natureOfImpact'])->name('master.natureOfImpact');
+        Route::get('get-nature-of-impact', [MasterDataController::class, 'getNatureOfImpact'])->name('master.getNatureOfImpact');
         Route::post('nature-of-impact/store', [MasterDataController::class, 'storeNatureOfImpact'])->name('master.natureOfImpact.store');
         Route::post('nature-of-impact/update', [MasterDataController::class, 'updateNatureOfImpact'])->name('master.natureOfImpact.update');
         Route::post('nature-of-impact/delete', [MasterDataController::class, 'deleteNatureOfImpact'])->name('master.natureOfImpact.delete');

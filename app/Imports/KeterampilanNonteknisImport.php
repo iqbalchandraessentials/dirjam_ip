@@ -16,13 +16,11 @@ class KeterampilanNonteknisImport implements ToModel, WithValidation, WithHeadin
     protected $master_jabatan;
     protected $masterKompetensiNonTeknis;
 
-    // public function __construct()
-    // {
-    //     KeterampilanNonteknis::truncate();
-        
-    //     $this->master_jabatan = DB::table('mst_jabatan')->pluck('master_jabatan')->toArray();
-    //     $this->masterKompetensiNonTeknis = DB::table('master_kompetensi_nonteknis')->pluck('kode')->toArray();
-    // }
+    public function __construct()
+    {   
+        $this->master_jabatan = DB::table('master_jabatan_unit')->pluck('master_jabatan')->toArray();
+        $this->masterKompetensiNonTeknis = DB::table('master_kompetensi_nonteknis')->pluck('kode')->toArray();
+    }
     
     public function model(array $row)
     {
@@ -39,6 +37,16 @@ class KeterampilanNonteknisImport implements ToModel, WithValidation, WithHeadin
     public function rules(): array
     {
         return [
+            'master_jabatan' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!in_array($value, $this->master_jabatan)) {
+                    $fail("The $attribute is invalid.");
+                }
+            }],
+            'kode' => ['required', 'string', 'max:50', function ($attribute, $value, $fail) {
+                if (!in_array($value, $this->masterKompetensiNonTeknis)) {
+                    $fail("The $attribute is invalid.");
+                }
+            }],
             'kategori' => 'required|string',
         ];
     }

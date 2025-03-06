@@ -10,7 +10,7 @@
                     <h4 class="box-title">Mapping Nature OF Impact</h4>
                 </div>
                 <div class="col-6 text-right">
-                    <button type="button" id="btnAdd" class="btn btn-success mb-3">
+                    <button type="button" id="btnAdd" class="btn btn-info mb-3">
                         <i class="ti-plus" style="margin-right: 5px;"></i> Add
                     </button>
                 </div>
@@ -19,36 +19,16 @@
         <div class="box-body">
             @include('components.notification')
             <div class="table-responsive">
-                <table class="table table-striped dataTables">
+                <table id="datatable" class="table table-striped">
                     <thead>
                         <tr>
-                            <th class="text-left">No.</th>
                             <th class="text-center">Kelompok Profesi</th>
                             <th class="text-center">Nama Profesi</th>
                             <th class="text-center">Jenis</th>
                             <th class="text-center">#</th>
                         </tr>
                     </thead>
-                    <tbody id="data-table">
-                        @foreach ($data as $x => $v)
-                            <tr data-id="{{ $v->id }}">
-                                <td>{{ $x + 1 }}</td>
-                                <td class="text-center">{{ $v->kode_profesi }}</td>
-                                <td class="text-center">{{ $v->namaProfesi->nama_profesi ?? $v->kode_profesi }}</td>
-                                <td class="text-center">{{ $v->jenis }}</td>
-                                <td class="text-right">
-                                    <button class="btn btn-primary btn-xs btnEdit" 
-                                        data-id="{{ $v->id }}" 
-                                        data-kode_profesi="{{ $v->kode_profesi }}" 
-                                        data-jenis="{{ $v->jenis }}">
-                                        <i class="ti-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-danger btn-xs btnDelete" data-id="{{ $v->id }}">
-                                        <i class="ti-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
+                    <tbody>
                     </tbody>
                 </table>
             </div>
@@ -60,7 +40,18 @@
 @section('script')
     <script>
        $(document).ready(function() {
-            $('.select2').select2(); // Inisialisasi Select2
+
+        $('#datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('master.getNatureOfImpact') }}",
+            columns: [
+                { data: 'kode_profesi', name: 'kode_profesi', className: "text-center" },
+                { data: 'nama_profesi', name: 'nama_profesi', className: "text-center" },
+                { data: 'jenis', name: 'jenis', className: "text-center" },
+                { data: 'action', name: 'action', orderable: false, searchable: false, className: "text-center" }
+            ]
+        });
 
             // Tambah Data
             $('#btnAdd').click(function() {

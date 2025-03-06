@@ -1171,7 +1171,7 @@ a:hover {
     white-space: nowrap;
     align-items: center;
     line-height: 25px;
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
 }
 .sidebar-menu .treeview-menu > li.active > a,
 .sidebar-menu .treeview-menu > li > a:hover {

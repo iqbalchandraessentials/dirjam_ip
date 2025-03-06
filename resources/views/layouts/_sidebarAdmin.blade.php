@@ -3,7 +3,7 @@
     <section class="sidebar">
         <!-- sidebar menu-->
         <ul class="sidebar-menu" data-widget="tree">
-            {{-- <li class="header nav-small-cap text-uppercase">Approval List</li> --}}
+            <li class="header nav-small-cap text-uppercase text-white">Direktori Jabatan</li>
             {{-- <li class="pt-3 {{ Request::is('approval_list') ? 'active' : '' }}">
                 <a href="{{ route('approval_list') }}">
                     <i class="ti-clipboard"></i>
@@ -12,7 +12,7 @@
             </li> --}}
         
             {{-- <li class="header nav-small-cap text-uppercase">Job Description</li> --}}
-            <li class="{{ Request::is('home') ? 'active' : '' }}">
+            <li class="{{ Request::is('home','cluster-detail/*' , '/') ? 'active' : '' }}">
                 <a href="{{ route('home') }}">
                     <i class="ti-home"></i>
                     <span>Home</span>
@@ -33,11 +33,7 @@
                                 <i class="ti-more"></i>Master Jabatan
                             </a>
                         </li>
-                        <li class="{{ Request::is('master_data/stoJobcode') ? 'active' : '' }}">
-                            <a href="{{ route('master.stoJobcode') }}">
-                                <i class="ti-more"></i>STO Jobcode
-                            </a>
-                        </li>
+
                         <li class="{{ Request::is('master_data/kompetensi-teknis', 'master_data/mapping-komptensi-teknis', 'master_data/kompetensi-teknis/*') ? 'active' : '' }}">
                             <a href="{{ route('master.kompetensi-teknis') }}">
                                 <i class="ti-more"></i>Kompetensi Teknis
@@ -46,6 +42,11 @@
                         <li class="{{ Request::is('master_data/kompetensi-non-teknis', 'master_data/mapping-komptensi-non-teknis') ? 'active' : '' }}">
                             <a href="{{ route('master.kompetensi-non-teknis') }}">
                                 <i class="ti-more"></i>Kompetensi Non Teknis
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/nature-of-impact' ,'master_data/nature-of-impact/*') ? 'active' : '' }}">
+                            <a href="{{ route('master.natureOfImpact') }}">
+                                <i class="ti-more"></i>Dimensi Finansial
                             </a>
                         </li>
                         <li class="{{ Request::is('master_data/tugas-pokok-generik') ? 'active' : '' }}">
@@ -73,11 +74,6 @@
                                 <i class="ti-more"></i>Jenjang Jabatan
                             </a>
                         </li>
-                        <li class="{{ Request::is('master_data/nature-of-impact' ,'master_data/nature-of-impact/*') ? 'active' : '' }}">
-                            <a href="{{ route('master.natureOfImpact') }}">
-                                <i class="ti-more"></i>Dimensi Finansial
-                            </a>
-                        </li>
                         <li class="{{ Request::is('master_data/unit') ? 'active' : '' }}">
                             <a href="{{ route('master.unit') }}">
                                 <i class="ti-more"></i>Unit
@@ -86,6 +82,11 @@
                         <li class="{{ Request::is('master_data/indikator') ? 'active' : '' }}">
                             <a href="{{ route('master.indikator') }}">
                                 <i class="ti-more"></i>Output Indikator
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('master_data/stoJobcode') ? 'active' : '' }}">
+                            <a href="{{ route('master.stoJobcode') }}">
+                                <i class="ti-more"></i>STO Jobcode
                             </a>
                         </li>
                         <li class="{{ Request::is('master_data/users', 'master_data/roles') ? 'active' : '' }}">

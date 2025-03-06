@@ -190,9 +190,7 @@
                             <h4 class="box-title">List of Role</h4>
                         </div>
                         <div class="col-6 text-right">
-                            <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#createRoleModal">
-                                <i class="ti-plus" style="margin-right: 5px;"></i> Add Role
-                            </button>                                                      
+                            <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#createRoleModal"><i class="ti-plus" style="margin-right: 5px;"></i> Add</button>                                                      
                         </div>
                     </div>
                 </div>
@@ -201,23 +199,23 @@
                         <table class="table table-striped dataTables">
                             <thead>
                                 <tr>
-                                    <th>Role Name</th>
+                                    <th class="text-center">Role Name</th>
                                     {{-- <th>Permissions</th> --}}
-                                    <th>Actions</th>
+                                    <th class="text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($roles as $role)
                                     <tr>
-                                        <td>{{ $role->name }}</td>
+                                        <td class="text-center">{{ $role->name }}</td>
                                         {{-- <td>
                                             @foreach ($role->permissions as $permission)
                                                 <span class="badge badge-primary">{{ $permission->name }}</span>
                                             @endforeach
                                         </td> --}}
-                                        <td>
+                                        <td class="text-right">
                                             <!-- Edit button to add/remove permissions -->
-                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editPermissionsModal{{ $role->id }}">
+                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editPermissionsModal{{ $role->id }}">
                                                 <i class="ti-pencil"></i>
                                             </button>
                         

@@ -74,7 +74,7 @@
                         <table class="table table-striped" id="datatable">
                             <thead>
                                 <tr>
-                                    <th class="text-left">No.</th>
+                                    {{-- <th class="text-left">No.</th> --}}
                                     <th class="text-left">Master Jabatan</th>
                                     <th class="text-center">Unit</th>
                                     <th class="text-center">Jenjang</th>
@@ -104,12 +104,13 @@
                         d.unit = $('#unitFilter').val() || "{{ Auth::user()->unit_kd }}";
                     }
                 },
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
+                columns: [
+                    // {
+                    //     data: 'DT_RowIndex',
+                    //     name: 'DT_RowIndex',
+                    //     orderable: false,
+                    //     searchable: false
+                    // },
                     {
                         data: 'master_jabatan',
                         name: 'master_jabatan'
