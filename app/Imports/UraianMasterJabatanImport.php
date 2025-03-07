@@ -10,9 +10,10 @@ use App\Models\MasterJabatan;
 use App\Models\MasterPendidikan;
 use App\Models\SpesifikasiPendidikan;
 use App\Models\PokoUtamaGenerik;
+use App\Models\unit\M_UNIT;
 use App\Models\WewenangJabatan;
 use App\Models\UraianMasterJabatan;
-use App\Models\ViewUraianJabatan;
+use App\Models\TEMPLATE_ACUAN_V;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -35,13 +36,17 @@ class UraianMasterJabatanImport implements ToCollection
         try {
             $data = [];
             $data['nama'] =   $rows[10][4];
-            $viewUraianJabatan = ViewUraianJabatan::select(['master_jabatan','DESCRIPTION','jen','TYPE','SITEID'])->where('master_jabatan', $data['nama'])->first();
+            $unit_nama = $rows[5][0];
+            $unit = M_UNIT::whereRaw('LOWER(unit_nama) = LOWER(?)', [$unit_nama])->first();
+            $data['unit_id'] = $unit->unit_kd ?? $unit_nama;
+            $viewUraianJabatan =  TEMPLATE_ACUAN_V::select(['master_jabatan','jen','TYPE','SITEID'])->where('master_jabatan', $data['nama'])->first();
             if (!$viewUraianJabatan) {
                 return redirect()->back()->with('error', 'Nama Master jabatan tidak ditemukan');
             }
             if (!$data['nama']) {
                 return redirect()->back()->with('error','Master jabatan kosong');
             }
+
             // fungsi utama
             $data['fungsi_utama'] =  $rows[21][1] ;
             if (!$data['fungsi_utama']) {
@@ -97,7 +102,6 @@ class UraianMasterJabatanImport implements ToCollection
             // HUBUNGAN KERJA
             foreach ($rows as $key => $row) {
                 if ($key >= 90 && $key <= 101) {
-                    // Pastikan data valid sebelum dimasukkan ke array
                     if (!empty($row[2]) && !empty($row[3])) {
                         $this->hubungan_kerja[] = [
                             'komunikasi' => $row[2],
@@ -107,11 +111,9 @@ class UraianMasterJabatanImport implements ToCollection
                     }
                 }
             }
-
-            if (empty($this->hubungan_kerja[0]['komunikasi'])) {
-                return redirect()->back()->with('error','Hubungan Kerja Internal kosong');
-            }
-
+            // if (empty($this->hubungan_kerja[0]['komunikasi'])) {
+            //     return redirect()->back()->with('error','Hubungan Kerja Internal kosong');
+            // }
             foreach ($rows as $key => $row) {
                 if ($key >= 104 && $key <= 111) {
                     if (!empty($row[2]) && !empty($row[3])) {
@@ -123,9 +125,9 @@ class UraianMasterJabatanImport implements ToCollection
                     }
                 }
             }
-            if (empty($this->hubungan_kerja[0]['komunikasi'])) {
-                return redirect()->back()->with('error','Hubungan kerja Eksternal kosong');
-            }
+            // if (empty($this->hubungan_kerja[0]['komunikasi'])) {
+            //     return redirect()->back()->with('error','Hubungan kerja Eksternal kosong');
+            // }
             $data['hubungan_kerja'] = $this->hubungan_kerja;
             // MASALAH, KOMPLEKSITAS KERJA DAN TANTANGAN UTAMA
             foreach ($rows as $key => $row) {
@@ -206,7 +208,7 @@ class UraianMasterJabatanImport implements ToCollection
                     'nama' => $viewUraianJabatan['master_jabatan']
                 ],
                 [
-                    'unit_kode' => $viewUraianJabatan['description'], // Data yang akan diupdate atau dibuat
+                    'unit_kode' => $data['unit_id'],
                     'jenis_jabatan' => $viewUraianJabatan['jenis_jabatan'],
                     'jenjang_kode' => $viewUraianJabatan['jen'],
                 ]

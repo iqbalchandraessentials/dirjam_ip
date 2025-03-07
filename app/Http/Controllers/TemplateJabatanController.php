@@ -69,9 +69,8 @@ class TemplateJabatanController extends Controller
         $data = MasterJabatan::with(['draftUraianMasterJabatan' => function ($query) {
             $query->orderBy('created_at', 'asc'); // Sort dari terbaru ke terlama
         }])->find($id);
-        $unit = M_UNIT::select('unit_kd')->where('unit_nama', $data->unit_kode)->first();
         $encodedName = base64_encode($data->nama);
-        return view('pages.template.draft',  ['data' => $data, 'unit' => $unit, 'encodedName' => $encodedName]);
+        return view('pages.template.draft',  ['data' => $data, 'unit_kd' => $data->unit_kode, 'encodedName' => $encodedName]);
     }
 
     public function getDatas($masterJabatan, $unit_kd = '', $id = null)
@@ -86,7 +85,7 @@ class TemplateJabatanController extends Controller
         if ($id == 'old') {    
             return $this->processNewData($masterJabatan, $unit_kd);
         }
-        $data = $this->getUraianMasterJabatanByName($masterJabatan);
+        $data = $this->getUraianMasterJabatanByName($masterJabatan, $unit_kd);
     
         return $data 
             ? $this->processExistingData($data, $unit_kd)
@@ -102,14 +101,15 @@ class TemplateJabatanController extends Controller
         ])->findOrFail($id);
     }
     
-    private function getUraianMasterJabatanByName($name)
+    private function getUraianMasterJabatanByName($name, $unit_kd)
     {
         return UraianMasterJabatan::with([
-            'masterJabatan', 'PokoUtamaGenerik', 'hubunganKerja',
+            'masterJabatan','unit', 'PokoUtamaGenerik', 'hubunganKerja',
             'masalahKompleksitasKerja', 'wewenangJabatan',
             'spesifikasiPendidikan', 'kemampuandanPengalaman'
         ])
         ->where('nama', $name)
+        ->where('unit_kd', $unit_kd)
         ->orderByDesc('id')
         ->first();
     }
@@ -123,6 +123,7 @@ class TemplateJabatanController extends Controller
         ->distinct()
         ->orderBy('MASTER_JABATAN')
         ->get();
+        $data['masterJabatan']['unit_kode'] = $data['unit']['unit_nama'];
         $type = $data->jenis_jabatan == 'F' ? 'fungsional' : 'struktural';
         $position_id = $data['jabatans'][0]['position_id'] ?? null;
         $parent_position_id = $data['jabatans'][0]['parent_position_id'] ?? null;

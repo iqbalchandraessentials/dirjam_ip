@@ -414,6 +414,12 @@ Project:	UltimatePro Admin - Responsive Admin Template
   color: #ffffff;
 }
 
+.content-wrapper {
+  background: url('/img/bg_lu.png');
+  background-position: 0px 75px;
+  background-size: cover;
+}
+
 .light-sidebar .sidebar a:hover {
   text-decoration: none;
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\unit\M_UNIT;
 use Illuminate\Database\Eloquent\Model;
 
 class UraianMasterJabatan extends Model
@@ -20,6 +21,9 @@ class UraianMasterJabatan extends Model
 
     function masterJabatan() {
         return $this->belongsTo(MasterJabatan::class, 'master_jabatan_id', 'id');
+    }
+    function unit() {
+        return $this->hasOne(M_UNIT::class, 'unit_kd', 'unit_kd');
     }
     public function PokoUtamaGenerik()
     {

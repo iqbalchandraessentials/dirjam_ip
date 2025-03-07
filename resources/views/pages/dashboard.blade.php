@@ -5,72 +5,49 @@
 @endsection
 
 @section('title', 'Dashboard | Direktori Jabatan')
-
 @section('content')
-            <div id="indonesia-power" style="height: 300px;"></div>
-            <div class="row text-center" id="cluster">
-                <div class="col-md-4">
-                    <a href="{{ route('cluster.detail', 1) }}">
-                        <div id="cluster1" style="height: 250px;"></div>
-                    </a>
+    
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <div id="IndonesiaPower" style="height: 300px;"></div>
                 </div>
-                <div class="col-md-4">
-                    <a href="{{ route('cluster.detail', 2) }}">
-                        <div id="cluster2" style="height: 250px;"></div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="{{ route('cluster.detail', 3) }}">
-                        <div id="cluster3" style="height: 250px;"></div>
-                    </a>
-                </div>
+            </div>
+            
+            <div class="row mt-4">
+                @foreach ($chartdata as $v)
+                    @if ($v['element'] !== 'IndonesiaPower')
+                        <div class="col-4">
+                            <a href="{{route('cluster.detail', $v['element'])}}">
+                                <div id="{{ $v['element'] }}" style="height: 200px;"></div>
+                            </a>
+                        </div>
+                    @endif
+                @endforeach
             </div>
 @endsection
 
 @section('script')
-
-    <script>
-      $(document).ready(function() {
-
+<script>
+    $(document).ready(function() {
+        // Chart Indonesia Power dengan warna khusus
         new Morris.Donut({
-            element: 'indonesia-power',
-            data: [{
-                label: "Indonesia Power",
-                value: 100
-            }],
-            colors: ['#14A2B8'],
+            element: 'IndonesiaPower',
+            data: {!! json_encode(collect($chartdata)->firstWhere('element', 'IndonesiaPower')['data']) !!},
+            colors: ["rgb(238,62,52)"], // Warna merah
             resize: true
         });
 
-        new Morris.Donut({
-            element: 'cluster1',
-            data: [{
-                label: "Cluster 1",
-                value: 100
-            }],
-            colors: ['#14A2B8'],
-            resize: true
-        });
-
-        new Morris.Donut({
-            element: 'cluster2',
-            data: [{
-                label: "Cluster 2",
-                value: 100
-            }],
-            colors: ['#14A2B8'],
-            resize: true
-        });
-
-        new Morris.Donut({
-            element: 'cluster3',
-            data: [{
-                label: "Cluster 3",
-                value: 100
-            }],
-            colors: ['#14A2B8'],
-            resize: true
-        });
+        // Chart lainnya
+        @foreach ($chartdata as $v)
+            @if ($v['element'] !== 'IndonesiaPower')
+                new Morris.Donut({
+                    element: '{{ $v['element'] }}',
+                    data: {!! json_encode($v['data']) !!},
+                    colors: ["#14A2B8", "#FF5733", "#28A745", "#FFC107", "#6C757D", "#17A2B8", "#DC3545"], // Warna random
+                    resize: true
+                });
+            @endif
+        @endforeach
     });
-    </script>
+</script>
 @endsection
