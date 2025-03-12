@@ -2,14 +2,9 @@
 
 namespace App\Imports;
 
-use App\Models\existing\UraianJabatan;
 use App\Models\HubunganKerja;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanTeknis;
-use App\Models\M_AKTIVITAS;
-use App\Models\M_KOMUNIKASI;
-use App\Models\M_PENGAMBILAN_KEPUTUSAN;
-use App\Models\M_TANTANGAN;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJabatan;
 use App\Models\MasterPendidikan;
@@ -125,7 +120,7 @@ class UraianMasterJabatanImport implements ToCollection
                         $this->hubungan_kerja[] = [
                             'komunikasi' => $row[2],
                             'tujuan' => $row[3],
-                            'jenis' => 'external',
+                            'jenis' => 'eksternal',
                         ];
                     }
                 }
@@ -206,25 +201,39 @@ class UraianMasterJabatanImport implements ToCollection
             }
             // end of get data
             // dd($viewUraianJabatan);
-            // dd($data['tugas_pokok_utama']);
             // +=+
-            $uraian_jabatan = UraianJabatan::where('active_flag', 1)->where('nama_template', $data['nama'])->where('unit_kd', $data['unit_id'])->first();
-            $uraian_jabatan->update([
-                'fungsi_utama'=>$data['fungsi_utama'],
-                'diubah_oleh'=> Auth::user()->name,
-            ]); 
-            $uraian_jabatan_id = $uraian_jabatan->uraian_jabatan_id;
-            // dd($uraian_jabatan->uraian_jabatan_id);
-
-            // Hapus semua aktivitas lama berdasarkan uraian_jabatan_id
-            M_AKTIVITAS::where('uraian_jabatan_id', $uraian_jabatan_id)->delete();
+            $viewUraianJabatan['jenis_jabatan'] = $viewUraianJabatan['type'] == 'S' ? 'struktural' : 'fungsional';
+            $master_jabatan = MasterJabatan::updateOrCreate(
+                [
+                    'nama' => $viewUraianJabatan['master_jabatan']
+                ],
+                [
+                    'unit_kode' => $data['unit_id'],
+                    'jenis_jabatan' => $viewUraianJabatan['jenis_jabatan'],
+                    'jenjang_kode' => $viewUraianJabatan['jen'],
+                ]
+            );
+            // Buat data UraianMasterJabatan
+            $uraian_jabatan_id = UraianMasterJabatan::create([
+                'master_jabatan_id' => $master_jabatan->id,
+                'nama' => $data['nama'],
+                'unit_kd' => $viewUraianJabatan['siteid'],
+                'fungsi_utama' => $data['fungsi_utama'],
+                'anggaran' => $data['anggaran'],
+                'accountability' => $data['accountability'],
+                'nature_impact' => $data['nature_impact'],
+                'created_by' => Auth::user()->name,
+             ]);
+             
+            $uraian_jabatan_id = $uraian_jabatan_id->id;
             foreach ($data['tugas_pokok_utama'] as $x) {
                 if (!empty($x['aktivitas']) && !empty($x['output'])) {
-                    M_AKTIVITAS::create([
-                        'uraian_jabatan_id' => $uraian_jabatan_id,
+                    PokoUtamaGenerik::create([
+                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
                         'aktivitas' => $x['aktivitas'],
                         'output' => $x['output'],
-                        'dibuat_oleh' => Auth::user()->name,
+                        'jenis' => 'utama',
+                        'created_by' => Auth::user()->name,
                     ]);
                 }
             }
@@ -241,36 +250,30 @@ class UraianMasterJabatanImport implements ToCollection
                         'level' => $x['level'],
                     ]);
                 }
-            }
-            M_KOMUNIKASI::where('uraian_jabatan_id', $uraian_jabatan_id)->delete();
+            }    
             foreach ($data['hubungan_kerja'] as $x) {
                 if (!empty($x['komunikasi']) && !empty($x['tujuan']) && !empty($x['jenis'])) {
-                    M_KOMUNIKASI::create([
-                        'uraian_jabatan_id' => $uraian_jabatan_id,
-                        'subjek' => $x['komunikasi'],
+                    HubunganKerja::create([
+                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
+                        'komunikasi' => $x['komunikasi'],
                         'tujuan' => $x['tujuan'],
-                        'lingkup_flag' => $x['jenis'],
-                        'dibuat_oleh' => Auth::user()->name,
+                        'jenis' => $x['jenis'],
                     ]);
                 }
             }
-            M_TANTANGAN::where('uraian_jabatan_id', $uraian_jabatan_id)->delete();
             foreach ($data['masalah_kompleksitas_kerja'] as $x) {
                 if (!empty($x['masalah_kompleksitas_kerja'])) {
-                    M_TANTANGAN::create([
-                        'uraian_jabatan_id' => $uraian_jabatan_id,
-                        'tantangan' => $x['masalah_kompleksitas_kerja'],
-                        'dibuat_oleh' => Auth::user()->name,
+                    MasalahKompleksitasKerja::create([
+                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
+                        'definisi' => $x['masalah_kompleksitas_kerja'],
                     ]);
                 }
             }
-            M_PENGAMBILAN_KEPUTUSAN::where('uraian_jabatan_id', $uraian_jabatan_id)->delete();
             foreach ($data['wewenang_jabatan'] as $x) {
                 if (!empty($x['wewenang_jabatan'])) {
-                    M_PENGAMBILAN_KEPUTUSAN::create([
-                        'uraian_jabatan_id' => $uraian_jabatan_id,
-                        'pengambilan_keputusan' => $x['wewenang_jabatan'],
-                        'dibuat_oleh' => Auth::user()->name,
+                    WewenangJabatan::create([
+                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
+                        'definisi' => $x['wewenang_jabatan'],
                     ]);
                 }
             }

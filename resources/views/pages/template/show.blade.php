@@ -197,7 +197,7 @@ dd($data);
                                             <td><span class="badge bg-dark"
                                                     style="min-width: 32px">{{ $x + 1 }}</span></td>
                                             <td style="text-align: justify">{{ $v['aktivitas'] }}</td>
-                                            <td style="text-align: justify"></td>
+                                            <td style="text-align: justify">{{$v['output'] ?? ''}} </td>
                                         </tr>
                                     @endif
                                 @empty

@@ -36,7 +36,7 @@
         new Morris.Donut({
             element: '{{ $v['element'] }}',
             data: {!! json_encode($v['data']) !!},
-            colors: ["#14A2B8"], // Warna dalam format string
+            colors: ["#14A2B8", "#213339"], // Warna dalam format string
             resize: true
         });
         @endforeach

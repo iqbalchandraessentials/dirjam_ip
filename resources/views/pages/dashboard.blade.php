@@ -6,7 +6,8 @@
 
 @section('title', 'Dashboard | Direktori Jabatan')
 @section('content')
-    
+<div class="box">
+    <div class="box-body">
             <div class="row justify-content-center">
                 <div class="col-6">
                     <div id="IndonesiaPower" style="height: 300px;"></div>
@@ -24,6 +25,8 @@
                     @endif
                 @endforeach
             </div>
+            </div>
+            </div>
 @endsection
 
 @section('script')
@@ -33,7 +36,7 @@
         new Morris.Donut({
             element: 'IndonesiaPower',
             data: {!! json_encode(collect($chartdata)->firstWhere('element', 'IndonesiaPower')['data']) !!},
-            colors: ["rgb(238,62,52)"], // Warna merah
+            colors: ["#14A3B9"],
             resize: true
         });
 

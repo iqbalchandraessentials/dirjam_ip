@@ -8,7 +8,9 @@ use App\Models\KeterampilanTeknis;
 use App\Models\M_AKTIVITAS;
 use App\Models\M_KOMUNIKASI;
 use App\Models\M_MAP_PENDIDIKAN;
+use App\Models\M_PENGAMBILAN_KEPUTUSAN;
 use App\Models\M_PROFESI;
+use App\Models\M_TANTANGAN;
 use App\Models\MappingNatureOfImpact;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJabatan;
@@ -146,6 +148,8 @@ class TemplateJabatanController extends Controller
             return response()->json(['error' => 'Data tidak ditemukan'], 404);
         }
         $type = $x->type == 'F' ? 'fungsional' : 'struktural';
+        $tantangan = M_TANTANGAN::select('tantangan')->where('uraian_jabatan_id', $x->template_id)->get();
+        $pengambilan_keputusan = M_PENGAMBILAN_KEPUTUSAN::select('pengambilan_keputusan')->where('uraian_jabatan_id', $x->template_id)->get();
         $data = [
             'fungsi_utama' => $x->fungsi_utama,
             'nama' => $x->master_jabatan,
@@ -163,7 +167,9 @@ class TemplateJabatanController extends Controller
             ->distinct()
             ->orderBy('MASTER_JABATAN')
             ->get(),
-            'PokoUtamaGenerik' => M_AKTIVITAS::where('uraian_jabatan_id', $x->template_id)->get()
+            'PokoUtamaGenerik' => M_AKTIVITAS::where('uraian_jabatan_id', $x->template_id)->get(),
+            'masalah_kompleksitas_kerja' => isset($tantangan[0]['tantangan']) ? $tantangan : null,
+            'wewenang_jabatan' => isset($pengambilan_keputusan[0]['pengambilan_keputusan']) ? $pengambilan_keputusan : null,
         ];
         $data['spesifikasiPendidikan'] = (new M_MAP_PENDIDIKAN())->getByJabatan($x->template_id);
         $data['hubunganKerja'] = M_KOMUNIKASI::where('URAIAN_JABATAN_ID', $x->template_id)->orderBy('URUTAN')->get();
@@ -177,8 +183,8 @@ class TemplateJabatanController extends Controller
         $data['nature_impact'] = MappingNatureOfImpact::where('kode_profesi', $kode_nama_profesi)->first()->jenis ?? ($data['nature_impact'] ?? null);
         $data['struktur_organisasi'] = $this->sto($parent_position_id, $position_id);
         $data['tugas_pokok_generik'] = PokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $type)->get();
-        $data['masalah_kompleksitas_kerja'] = MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();
-        $data['wewenang_jabatan'] = WewenangJabatan::where('jenis_jabatan', $type)->get();
+        $data['masalah_kompleksitas_kerja'] = $data['masalah_kompleksitas_kerja'] ?? MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();
+        $data['wewenang_jabatan'] = $data['wewenang_jabatan'] ?? WewenangJabatan::where('jenis_jabatan', $type)->get();
         $data['kemampuan_dan_pengalaman'] = KemampuandanPengalaman::where('jenis_jabatan', $type)->get();
         $data['keterampilan_non_teknis'] = KeterampilanNonteknis::where('master_jabatan', $data['nama'])->get();
         $core = KeterampilanTeknis::where('kategori', 'CORE')->where('master_jabatan', $data['nama'])->get();

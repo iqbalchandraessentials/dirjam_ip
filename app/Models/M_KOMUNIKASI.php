@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\DB;
 class M_KOMUNIKASI extends Model
 {
     protected $table = 'KOMUNIKASI';
+    protected $primaryKey = 'KOMUNIKASI_ID';
+    public $timestamps = false; // Jika tidak ada created_at dan updated_at
+    public $incrementing = true;// jika AKTIVITAS_ID auto increment.
+
+    protected $fillable = [
+        'uraian_jabatan_id',
+        'subjek',
+        'tujuan',
+        'lingkup_flag',
+        'dibuat_oleh',
+    ];
+
+
     public function getByJabatan($id = "", $lingkup = "")
     {
         $query = DB::table($this->table)
