@@ -2,131 +2,198 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JabatanLamaBaru;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanNonteknis;
 use App\Models\KeterampilanTeknis;
 use App\Models\M_AKTIVITAS;
-use App\Models\M_JABATAN;
-use App\Models\M_KEWENANGAN_JABATAN;
 use App\Models\M_KOMUNIKASI;
 use App\Models\M_MAP_PENDIDIKAN;
 use App\Models\M_PENGAMBILAN_KEPUTUSAN;
+use App\Models\M_PROFESI;
 use App\Models\M_TANTANGAN;
-use App\Models\M_URAIAN_JABATAN;
 use App\Models\MappingNatureOfImpact;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJabatan;
-use App\Models\MasterJenjangJabatan;
 use App\Models\MasterPendidikan;
-use App\Models\TEMPLATE_ACUAN_V;
 use App\Models\PokoUtamaGenerik;
-use App\Models\SpesifikasiPendidikan;
 use App\Models\unit\M_UNIT;
+use App\Models\UraianMasterJabatan;
 use App\Models\ViewUraianJabatan;
 use App\Models\WewenangJabatan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
-class UraianJabatanController extends Controller
+class TemplateJabatanController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $jabatans = ViewUraianJabatan::where('unit_kd', Auth::user()->unit_kd)->get();
-        $jenjangOptions  = MasterJenjangJabatan::get();
-        $unitOptions  = M_UNIT::select(['unit_kd', 'unit_nama'])->get();
+        $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->where('status', 1)->get();
         $selectUnit = Auth::user()->unitKerja->unit_nama;
-        return view('pages.uraian_jabatan.index', compact('jenjangOptions', 'unitOptions', 'jabatans', 'selectUnit'));
+        return view('pages.template.index', compact('unitOptions', 'selectUnit'));
     }
 
-    public function show(string $id)
+    public function show($masterJabatan, $unit_kd, $id = null)
     {
-        $data = $this->getDatas($id);
-        return view('pages.uraian_jabatan.show', ['data' => $data]);
+        $data = $this->getDatas($masterJabatan, $unit_kd, $id);
+        return view('pages.template.show', [
+            'data' => $data,
+        ]);
     }
 
     public function filterData(Request $request)
-    {
-        $unit = $request->input('unit');
-        $jenjang = $request->input('jenjang');
-        $query = ViewUraianJabatan::query();
-        if ($unit) {
-            $query->where('unit_kd', $unit);
-        }
-
-        $jabatans = $query->get();
-        $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->where('status', 1)->get();
-        $jenjangOptions = MasterJenjangJabatan::select('kode', 'nama')->get();
-
-        return view('pages.uraian_jabatan.index', compact('jabatans', 'jenjangOptions', 'unitOptions'));
-    }
-
-
-    public function getDatas($id)
-    {
-        $data = M_URAIAN_JABATAN::where('URAIAN_JABATAN_ID', $id)->firstOrFail();
-        $jabatan = M_JABATAN::where('POSITION_ID', $data->position_id)->firstOrFail();
-        $type = $jabatan->type == "S" ? "struktural" : "fungsional";
-
-        $data['nature_of_impact'] = MappingNatureOfImpact::where('kode_profesi', $jabatan->nama_profesi)->value('jenis');
-
-        $aktivitas = M_AKTIVITAS::where('uraian_jabatan_id', $jabatan->template_id)->get();
-        $id = $jabatan->template_id;
-        if ($aktivitas->isEmpty()) {
-            $aktivitas = M_AKTIVITAS::where('URAIAN_JABATAN_ID', $jabatan->uraian_jabatan_id)->get();
-            $id = $jabatan->uraian_jabatan_id;
-        }
-
-        $data["aktivitas"] = $aktivitas;
-        $data['kemampuan_dan_pengalaman'] = KemampuandanPengalaman::where('uraian_master_jabatan_id', $jabatan->template_id)->get();
-        if ($data['kemampuan_dan_pengalaman']->isEmpty()) {
-            $data['kemampuan_dan_pengalaman'] = KemampuandanPengalaman::where('jenis_jabatan', $type)->get();
-        }
-
-        $spesifikasiPendidikan = SpesifikasiPendidikan::where('uraian_master_jabatan_id', $jabatan->template_id)->get();
-        $data['pendidikan'] = $spesifikasiPendidikan->isEmpty() ? (new M_MAP_PENDIDIKAN())->getByJabatan($id) : $spesifikasiPendidikan;
-
-        $data['komunikasi_internal'] = M_KOMUNIKASI::where(['LINGKUP_FLAG' => 'internal', 'URAIAN_JABATAN_ID' => $id])->orderBy('URUTAN')->get();
-        $data['komunikasi_external'] = M_KOMUNIKASI::where(['LINGKUP_FLAG' => 'external', 'URAIAN_JABATAN_ID' => $id])->orderBy('URUTAN')->get();
-
-        $data['tantangan'] = M_TANTANGAN::where('URAIAN_JABATAN_ID', $id)->get();
-        if ($data['tantangan']->isEmpty() || $data['tantangan']->whereNotNull('definisi')->isEmpty()) {
-            $data['tantangan'] = MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();
-        }
-
-        $data['pengambilan_keputusan'] = M_PENGAMBILAN_KEPUTUSAN::where('URAIAN_JABATAN_ID', $id)->orderBy('URUTAN')->get();
-        if ($data['pengambilan_keputusan']->isEmpty() || !$data['pengambilan_keputusan'][0]->definisi) {
-            $data['pengambilan_keputusan'] = WewenangJabatan::where('jenis_jabatan', $type)->get();
-        }
-
-        $data['aktivitas_generik'] = PokoUtamaGenerik::where(['jenis' => 'generik', 'jenis_jabatan' => $type])->get();
-        $data['jabatan'] = $jabatan;
-        $data['uraian_jabatan_id'] = $data->uraian_jabatan_id;
-        $data['struktur_organisasi'] = $this->sto($jabatan['parent_position_id'], $jabatan['position_id']);
-
-        $data['keterampilan_non_teknis'] = KeterampilanNonteknis::where('MASTER_JABATAN', $jabatan->master_jabatan)->get();
-
-        $core = KeterampilanTeknis::where(['kategori' => 'CORE', 'MASTER_JABATAN' => $jabatan->master_jabatan])->get();
-        $enabler = KeterampilanTeknis::where(['kategori' => 'ENABLER', 'MASTER_JABATAN' => $jabatan->master_jabatan])->get();
-        $data['keterampilan_teknis'] = $core->merge($enabler);
-
-        if (empty($data['komunikasi_internal'][0]['tujuan'])) {
-            $data['komunikasi_internal'] = [];
-        }
-
-        return $data;
-    }
-
-    public function getPendidikanByJabatanId($id)
-    {
-        return DB::table('MAP_PENDIDIKAN as mp')
-            ->join('pendidikan as p', 'p.pendidikan_id', '=', 'mp.pendidikan_id')
-            ->select('mp.*', 'p.*')
-            ->where('mp.uraian_jabatan_id', $id)
-            ->orderBy('mp.pendidikan_id', 'DESC')
+    {  
+        $unit_kd = $request->input('unit', Auth::user()->unit_kd);
+        $data = ViewUraianJabatan::select('master_jabatan', 'unit_kd', 'jen')
+            ->groupBy('master_jabatan', 'unit_kd', 'jen')
+            ->when(!empty($unit_kd), function ($query) use ($unit_kd) {
+                return $query->where('unit_kd', $unit_kd);
+            })
             ->get();
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) use ($unit_kd) {
+                $encodedName = base64_encode($row->master_jabatan); 
+                return '
+                    <a href="' . route('template_jabatan.show', ['encoded_name' => $encodedName, 'unit_kd' => $unit_kd]) . '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                    <a href="' . route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $unit_kd]) . '" class="btn btn-xs btn-success"><i class="fa fa-table"></i></a>
+                    <a href="' . route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $unit_kd]) . '" class="btn btn-xs btn-primary"><i class="ti-printer"></i></a>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+    
+    public function draft($id)
+    {
+        $data = MasterJabatan::with(['draftUraianMasterJabatan' => function ($query) {
+            $query->orderBy('created_at', 'asc'); // Sort dari terbaru ke terlama
+        }])->find($id);
+        $encodedName = base64_encode($data->nama);
+        return view('pages.template.draft',  ['data' => $data, 'unit_kd' => $data->unit_kode, 'encodedName' => $encodedName]);
+    }
+
+    public function getDatas($masterJabatan, $unit_kd = '', $id = null)
+    {
+        $masterJabatan = base64_decode($masterJabatan);
+        if (is_numeric($id) && $id !== 'old') {
+            return $this->processExistingData(
+                $this->getUraianMasterJabatanById($id),
+                $unit_kd
+            );
+        }
+        if ($id == 'old') {    
+            return $this->processNewData($masterJabatan, $unit_kd);
+        }
+        $data = $this->getUraianMasterJabatanByName($masterJabatan, $unit_kd);
+    
+        return $data 
+            ? $this->processExistingData($data, $unit_kd)
+            : $this->processNewData($masterJabatan, $unit_kd);
+    }
+    
+    private function getUraianMasterJabatanById($id)
+    {
+        return UraianMasterJabatan::with([
+            'masterJabatan', 'PokoUtamaGenerik', 'hubunganKerja',
+            'masalahKompleksitasKerja', 'wewenangJabatan',
+            'spesifikasiPendidikan', 'kemampuandanPengalaman'
+        ])->findOrFail($id);
+    }
+    
+    private function getUraianMasterJabatanByName($name, $unit_kd)
+    {
+        return UraianMasterJabatan::with([
+            'masterJabatan','unit', 'PokoUtamaGenerik', 'hubunganKerja',
+            'masalahKompleksitasKerja', 'wewenangJabatan',
+            'spesifikasiPendidikan', 'kemampuandanPengalaman'
+        ])
+        ->where('nama', $name)
+        ->where('unit_kd', $unit_kd)
+        ->orderByDesc('id')
+        ->first();
+    }
+
+    private function processExistingData($data, $unit_kd)
+    {
+        $data['jabatans'] = ViewUraianJabatan::with(['jenjangJabatan', 'namaProfesi'])
+        ->select('jabatan', 'position_id', 'NAMA_PROFESI', 'bawahan_langsung', 'total_bawahan', 'DESCRIPTION', 'JEN', 'ATASAN_LANGSUNG')
+        ->where('MASTER_JABATAN', $data['nama'])
+        ->where('SITEID', $unit_kd)
+        ->distinct()
+        ->orderBy('MASTER_JABATAN')
+        ->get();
+        $data['masterJabatan']['unit_kode'] = $data['unit']['unit_nama'];
+        $type = $data->jenis_jabatan == 'F' ? 'fungsional' : 'struktural';
+        $position_id = $data['jabatans'][0]['position_id'] ?? null;
+        $parent_position_id = $data['jabatans'][0]['parent_position_id'] ?? null;
+        foreach ($data['spesifikasiPendidikan'] as $key => $item) {
+            $masterPendidikan = MasterPendidikan::where('nama', $item['pendidikan'])
+                ->where('jenjang_jabatan', $data['jabatans'][0]['jen'] ?? null)
+                ->first();
+            $data['spesifikasiPendidikan'][$key]['pengalaman'] = $masterPendidikan->pengalaman ?? '-';
+        }
+        return $this->finalizeData($data, $type, $parent_position_id, $position_id);
+    }
+    
+    private function processNewData($masterJabatan, $unit_kd)
+    {
+        $x = ViewUraianJabatan::where('MASTER_JABATAN', $masterJabatan)
+            ->where('SITEID', $unit_kd)
+            ->with(['jenjangJabatan', 'namaProfesi'])
+            ->first();
+        if (!$x) {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        }
+        $type = $x->type == 'F' ? 'fungsional' : 'struktural';
+        $tantangan = M_TANTANGAN::select('tantangan')->where('uraian_jabatan_id', $x->template_id)->get();
+        $pengambilan_keputusan = M_PENGAMBILAN_KEPUTUSAN::select('pengambilan_keputusan')->where('uraian_jabatan_id', $x->template_id)->get();
+        $data = [
+            'fungsi_utama' => $x->fungsi_utama,
+            'nama' => $x->master_jabatan,
+            'unit_kd' => $x->unit_kd,
+            'created_at' => Carbon::parse($x->waktu_approve),
+            'masterJabatan' => [
+                'jenjangJabatan' => ['nama' => $x->jenjangJabatan->nama ?? $x->jen],
+                'jenis_jabatan' => $type,
+                'unit_kode' => $x->description,
+            ],
+            'jabatans' => ViewUraianJabatan::with(['jenjangJabatan', 'namaProfesi'])
+            ->select('jabatan', 'position_id', 'bawahan_langsung', 'total_bawahan', 'NAMA_PROFESI', 'DESCRIPTION', 'JEN', 'ATASAN_LANGSUNG')
+            ->where('MASTER_JABATAN', $x['master_jabatan'])
+            ->where('SITEID', $unit_kd)
+            ->distinct()
+            ->orderBy('MASTER_JABATAN')
+            ->get(),
+            'PokoUtamaGenerik' => M_AKTIVITAS::where('uraian_jabatan_id', $x->template_id)->get(),
+            'masalahKompleksitasKerja' => isset($tantangan[0]['tantangan']) ? $tantangan : null,
+            'wewenangJabatan' => isset($pengambilan_keputusan[0]['pengambilan_keputusan']) ? $pengambilan_keputusan : null,
+        ];
+        $data['spesifikasiPendidikan'] = (new M_MAP_PENDIDIKAN())->getByJabatan($x->template_id);
+        $data['hubunganKerja'] = M_KOMUNIKASI::where('URAIAN_JABATAN_ID', $x->template_id)->orderBy('URUTAN')->get();
+        return $this->finalizeData($data, $type, $x->parent_position_id, $x->position_id);
+    }
+    
+    private function finalizeData($data, $type, $parent_position_id, $position_id)
+    {
+        $natureOfImmpact = $data['jabatans'][0]['namaProfesi']['nama_profesi'] ?? $data['jabatans'][0]['nama_profesi'];
+        $kode_nama_profesi = M_PROFESI::where('nama_profesi', $natureOfImmpact)->first()->kode_nama_profesi ?? null;
+        $data['nature_impact'] = MappingNatureOfImpact::where('kode_profesi', $kode_nama_profesi)->first()->jenis ?? ($data['nature_impact'] ?? null);
+        $data['struktur_organisasi'] = $this->sto($parent_position_id, $position_id);
+        $data['tugas_pokok_generik'] = PokoUtamaGenerik::where('jenis', 'generik')->where('jenis_jabatan', $type)->get();
+        $data['masalahKompleksitasKerja'] = $data['masalahKompleksitasKerja'] ?? MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();
+        $data['wewenangJabatan'] = $data['wewenangJabatan'] ?? WewenangJabatan::where('jenis_jabatan', $type)->get();
+        $data['kemampuan_dan_pengalaman'] = KemampuandanPengalaman::where('jenis_jabatan', $type)->get();
+        $data['keterampilan_non_teknis'] = KeterampilanNonteknis::where('master_jabatan', $data['nama'])->get();
+        $core = KeterampilanTeknis::where('kategori', 'CORE')->where('master_jabatan', $data['nama'])->get();
+        $enabler = KeterampilanTeknis::where('kategori', 'ENABLER')->where('master_jabatan', $data['nama'])->get();
+        $data['keterampilan_teknis'] = $core->merge($enabler);
+        if (!empty($data['hubunganKerja']) && empty($data['hubunganKerja'][0]['tujuan'])) {
+            $data['hubunganKerja'] = [];
+        }
+        return $data;
     }
 
     public function sto($id = "", $now = "")
@@ -256,31 +323,31 @@ class UraianJabatanController extends Controller
             $q = DB::table('IP_URJAB_ATASAN_LANGSUNG')->where('parent_position_id', $id)->get();
 
             $jabatans = [];
-
+    
             foreach ($q as $key) {
                 if ($key->jenis_jabatan == 'Struktural') {
                     $jabatans[$key->position_id] = $key->child_name;
                 }
             }
-
+    
             $q2 = DB::table('IP_URJAB_ATASAN_LANGSUNG')->where('position_id', $now)->first();
-
+    
             $n = count($jabatans);
             $m = floor($n / 2);
-
+    
             $jns = ($n % 2 == 0) ? 'genap' : 'ganjil';
             $m = ($jns == 'genap') ? $m - 1 : $m;
             $head = ($jns == 'genap') ? "colspan='2'" : ($n == 2 ? "colspan='3'" : "");
-
+    
             $max = 1000;
             $width = $n > 0 ? ceil(100 / $n) : 100;
             $s = $n == 2 ? "colspan='2'" : '';
-
+    
             $html = "";
-
+    
             if ($q2) {
                 $html .= "<table style='text-align:center;' cellspacing='0' cellpadding='0'>";
-
+    
                 if ($q2->parent_position_id != "") {
                     $html .= "<tr>";
                     $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
@@ -291,20 +358,20 @@ class UraianJabatanController extends Controller
                     $html .= "</td>";
                     $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
                     $html .= "</tr>";
-
+    
                     $html .= "<tr>";
                     $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
                     $html .= "<td $head><div><div style='height:10px; width:1px; margin:0 auto; background:#ccc'></div></div></td>";
                     $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
                     $html .= "</tr>";
                 }
-
+    
                 $html .= "<tr>";
                 $html .= $n > 1 ? "<td colspan='$m'></td>" : "";
-
+    
                 $x = 0;
                 $posz = [];
-
+    
                 foreach ($q as $key) {
                     if ($key->jenis_jabatan != 'Struktural') {
                         $html2 = $key->position_id == $now
@@ -316,11 +383,11 @@ class UraianJabatanController extends Controller
                         $x++;
                     }
                 }
-
+    
                 $wid = $x > 3 ? (($x - 3) * 8) + 30 : 30;
-
+    
                 $html .= "<td $head><div style='height:{$wid}px; width:1px; margin:0 auto; background:#ccc;'>";
-
+    
                 if ($n == 0) {
                     if (is_array($posz)) {
                         $html .= "<div style='position:absolute;width:300px'><ol style='margin-left:-20px;'>";
@@ -330,9 +397,9 @@ class UraianJabatanController extends Controller
                         $html .= "</ol></div>";
                     }
                 }
-
+    
                 $html .= "</div></td>";
-
+    
                 if ($n > 1) {
                     $html .= "<td colspan='$m'><div><ol style='margin-left:-80px;'>";
                     if (is_array($posz)) {
@@ -342,10 +409,10 @@ class UraianJabatanController extends Controller
                     }
                     $html .= "</ol></div></td>";
                 }
-
+    
                 $html .= "</tr>";
                 $html .= "<tr>";
-
+    
                 $i = 1;
                 foreach ($q as $key) {
                     if ($key->jenis_jabatan == 'Struktural') {
@@ -358,7 +425,7 @@ class UraianJabatanController extends Controller
                         $i++;
                     }
                 }
-
+    
                 $html .= "</tr><tr>";
                 foreach ($q as $key) {
                     if ($key->jenis_jabatan == 'Struktural') {

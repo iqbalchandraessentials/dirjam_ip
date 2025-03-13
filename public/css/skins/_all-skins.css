@@ -372,9 +372,10 @@ Project:	UltimatePro Admin - Responsive Admin Template
   background-color: #213339;
  
 }
- .slimScrollDiv .sidebar .sidebar-menu .active {
+
+/* .slimScrollDiv .sidebar .sidebar-menu .active {
   background-color: whitesmoke;
- }
+ } */
 
 
 .light-sidebar .main-header li.user-header {

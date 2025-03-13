@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
     // template jabatan
     Route::get('template-jabatan', [TemplateJabatanController::class, 'index'])->name('template_jabatan.index');
     Route::get('template-jabatan/{encoded_name}/{unit_kd?}/{id?}', [TemplateJabatanController::class, 'show'])->name('template_jabatan.show');
-    Route::get('template-draft/{id}', [TemplateJabatanController::class, 'draft'])->name('template_jabatan.draft');
+    Route::get('template-draft/{encoded_name}/{unit_kd?}', [TemplateJabatanController::class, 'draft'])->name('template_jabatan.draft');
     Route::get('filter-template-jabatan/', [TemplateJabatanController::class, 'filterData'])->name('template_jabatan.filter');
     // import data
     Route::prefix('import')->group(function () {

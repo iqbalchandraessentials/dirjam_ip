@@ -213,7 +213,6 @@ class UraianMasterJabatanImport implements ToCollection
                     'jenjang_kode' => $viewUraianJabatan['jen'],
                 ]
             );
-            
             // Buat data UraianMasterJabatan
             $uraian_jabatan_id = UraianMasterJabatan::create([
                 'master_jabatan_id' => $master_jabatan->id,

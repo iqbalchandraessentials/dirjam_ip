@@ -19,9 +19,11 @@ use App\Models\unit\M_UNIT;
 use App\Models\WewenangJabatan;
 use App\Models\UraianMasterJabatan;
 use App\Models\VIEW_TEMPLATE;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
@@ -204,20 +206,27 @@ class UraianMasterJabatanImport implements ToCollection
             if (!empty($errors)) {
                 return redirect()->back()->with('error', implode(', ', $errors));
             }
+
             // end of get data
             // dd($viewUraianJabatan);
             // dd($data['tugas_pokok_utama']);
             // +=+
-            $uraian_jabatan = UraianJabatan::where('active_flag', 1)->where('nama_template', $data['nama'])->where('unit_kd', $data['unit_id'])->first();
-            $uraian_jabatan->update([
-                'fungsi_utama'=>$data['fungsi_utama'],
-                'diubah_oleh'=> Auth::user()->name,
-            ]); 
-            $uraian_jabatan_id = $uraian_jabatan->uraian_jabatan_id;
-            // dd($uraian_jabatan->uraian_jabatan_id);
+            $turnOff = UraianJabatan::where('active_flag', 1)
+            ->where('nama_template', $data['nama'])
+            ->where('unit_kd', $data['unit_id']) // Pastikan unit_kd sesuai dengan database
+            ->update(['active_flag' => 0, 'sign4_id' => 0]);
+            // DB::commit();
 
-            // Hapus semua aktivitas lama berdasarkan uraian_jabatan_id
-            M_AKTIVITAS::where('uraian_jabatan_id', $uraian_jabatan_id)->delete();
+            $uraian_jabatan = UraianJabatan::create([
+                'nama_template' => $data['nama'],
+                'fungsi_utama' => $data['fungsi_utama'],
+                'unit_kd' => $data['unit_id'], 
+                'dibuat_oleh' => Auth::user()->name,
+                'waktu_dibuat' => Carbon::now(),
+                'active_flag' => 1,
+                'sign4_id' => 1
+            ]);
+            $uraian_jabatan_id = $uraian_jabatan->URAIAN_JABATAN_ID;
             foreach ($data['tugas_pokok_utama'] as $x) {
                 if (!empty($x['aktivitas']) && !empty($x['output'])) {
                     M_AKTIVITAS::create([
@@ -225,6 +234,7 @@ class UraianMasterJabatanImport implements ToCollection
                         'aktivitas' => $x['aktivitas'],
                         'output' => $x['output'],
                         'dibuat_oleh' => Auth::user()->name,
+                        'waktu_dibuat' => Carbon::now(),
                     ]);
                 }
             }
@@ -242,7 +252,6 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
-            M_KOMUNIKASI::where('uraian_jabatan_id', $uraian_jabatan_id)->delete();
             foreach ($data['hubungan_kerja'] as $x) {
                 if (!empty($x['komunikasi']) && !empty($x['tujuan']) && !empty($x['jenis'])) {
                     M_KOMUNIKASI::create([
@@ -251,26 +260,27 @@ class UraianMasterJabatanImport implements ToCollection
                         'tujuan' => $x['tujuan'],
                         'lingkup_flag' => $x['jenis'],
                         'dibuat_oleh' => Auth::user()->name,
+                        'waktu_dibuat' => Carbon::now()
                     ]);
                 }
             }
-            M_TANTANGAN::where('uraian_jabatan_id', $uraian_jabatan_id)->delete();
             foreach ($data['masalah_kompleksitas_kerja'] as $x) {
                 if (!empty($x['masalah_kompleksitas_kerja'])) {
                     M_TANTANGAN::create([
                         'uraian_jabatan_id' => $uraian_jabatan_id,
                         'tantangan' => $x['masalah_kompleksitas_kerja'],
                         'dibuat_oleh' => Auth::user()->name,
+                        'waktu_dibuat' => Carbon::now()
                     ]);
                 }
             }
-            M_PENGAMBILAN_KEPUTUSAN::where('uraian_jabatan_id', $uraian_jabatan_id)->delete();
             foreach ($data['wewenang_jabatan'] as $x) {
                 if (!empty($x['wewenang_jabatan'])) {
                     M_PENGAMBILAN_KEPUTUSAN::create([
                         'uraian_jabatan_id' => $uraian_jabatan_id,
                         'pengambilan_keputusan' => $x['wewenang_jabatan'],
                         'dibuat_oleh' => Auth::user()->name,
+                        'waktu_dibuat' => Carbon::now()
                     ]);
                 }
             }
@@ -282,6 +292,7 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
+            
              foreach ($data['pendidikan'] as $x) {
                 if (!empty($x['pendidikan']) && !empty($x['pengalaman'])) {
                     $pengalaman = MasterPendidikan::select('pengalaman')
@@ -292,7 +303,7 @@ class UraianMasterJabatanImport implements ToCollection
                     $pengalamanValue = is_numeric($pengalaman->pengalaman) ? $pengalaman->pengalaman : 0;
 
                     SpesifikasiPendidikan::create([
-                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
+                        'URAIAN_MASTER_JABATAN_ID' => $uraian_jabatan_id,
                         'pendidikan' => $x['pendidikan'],
                         'pengalaman' => $pengalamanValue,
                         'bidang_studi' => $x['bidang_studi'] ?? null,

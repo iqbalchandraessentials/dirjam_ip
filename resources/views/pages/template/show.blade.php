@@ -19,12 +19,6 @@
 @section('title', 'Template Jabatan | ' . $data['nama'])
 
 @section('content')
-{{-- @php
-dd($data);
-    
-@endphp --}}
-
-
     <div class="col-sm-12">
         <div class="box">
             <div class="box-header">
@@ -41,22 +35,21 @@ dd($data);
                             </p>
                         @endif
                     </div>
+                    @php
+                        $encodedName = base64_encode($data['nama']);
+                    @endphp
                     <div class="col text-right">
-                        @if (isset($data['masterJabatan']['id']))
-                            <a href="{{ route('template_jabatan.draft', $data['masterJabatan']['id']) }}"
+                        @if ($data['jumlahRecord'] > 1)
+                            <a href="{{ route('template_jabatan.draft', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd']]) }}"
                                 class="btn btn-info">
                                 <i class="ti-view-list-alt"></i><span> Draft</span>
                             </a>
                         @endif
-                        @php
-                            $encodedName = base64_encode($data['nama']);
-                        @endphp
-                        
-                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['id'] ?? 'old']) }}" class="btn btn-primary">
+                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['id'] ?? null ]) }}" class="btn btn-primary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
                         
-                        <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['id'] ?? 'old']) }}" class="btn btn-success">
+                        <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['id'] ?? null ]) }}" class="btn btn-success">
                             <i class="ti-layout-grid4"></i><span>Excel</span>
                         </a>
                                          
@@ -546,7 +539,7 @@ dd($data);
                                 </tr>
                             </thead>
                             <tbody class="">
-                                @foreach ($data['masalah_kompleksitas_kerja'] as $x => $v)
+                                @foreach ($data['masalahKompleksitasKerja'] as $x => $v)
                                     <tr>
                                         <td> <span class="badge bg-dark"
                                                 style="min-width: 32px">{{ $x + 1 }}</span></td>
@@ -582,7 +575,7 @@ dd($data);
                                 </tr>
                             </thead>
                             <tbody class="">
-                                @foreach ($data['wewenang_jabatan'] as $x => $v)
+                                @foreach ($data['wewenangJabatan'] as $x => $v)
                                     <tr>
                                         <td> <span class="badge bg-dark"
                                                 style="min-width: 32px">{{ $x + 1 }}</span></td>

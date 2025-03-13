@@ -36,7 +36,7 @@
         new Morris.Donut({
             element: 'IndonesiaPower',
             data: {!! json_encode(collect($chartdata)->firstWhere('element', 'IndonesiaPower')['data']) !!},
-            colors: ["#14A3B9"],
+            colors: ["#14A3B9", "#FF5733"],
             resize: true
         });
 
@@ -46,7 +46,7 @@
                 new Morris.Donut({
                     element: '{{ $v['element'] }}',
                     data: {!! json_encode($v['data']) !!},
-                    colors: ["#14A2B8", "#FF5733", "#28A745", "#FFC107", "#6C757D", "#17A2B8", "#DC3545"], // Warna random
+                    colors: ["#14A2B8", "#FF5733", "#28A745", "#FFC107", "#6C757D", "#17A2B8", "#DC3545"],
                     resize: true
                 });
             @endif

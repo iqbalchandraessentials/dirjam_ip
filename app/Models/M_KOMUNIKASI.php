@@ -18,6 +18,7 @@ class M_KOMUNIKASI extends Model
         'tujuan',
         'lingkup_flag',
         'dibuat_oleh',
+        'waktu_dibuat'
     ];
 
 

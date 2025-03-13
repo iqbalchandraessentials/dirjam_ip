@@ -15,6 +15,7 @@ class M_AKTIVITAS extends Model
         'aktivitas',
         'output',
         'dibuat_oleh',
+        'waktu_dibuat'
     ];
 
 

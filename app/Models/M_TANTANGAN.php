@@ -14,7 +14,8 @@ class M_TANTANGAN extends Model
     protected $fillable = [
         'uraian_jabatan_id',
         'tantangan',
-        'dibuat_oleh'
+        'dibuat_oleh',
+        'waktu_dibuat'
     ];
 
 }

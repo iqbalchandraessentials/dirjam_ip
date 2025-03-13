@@ -14,6 +14,7 @@ class M_PENGAMBILAN_KEPUTUSAN extends Model
     protected $fillable = [
         'uraian_jabatan_id',
         'pengambilan_keputusan',
-        'dibuat_oleh'
+        'dibuat_oleh',
+        'waktu_dibuat'
     ];
 }

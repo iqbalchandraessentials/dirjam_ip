@@ -30,11 +30,16 @@ class DashboardController extends Controller
     
             $persen = ($total > 0) ? round(($n / $total) * 100) : 0;
     
-            // Simpan ke array chartdata
-            $chartdata[] = [
-                'element' => $j,
-                'data' => [['label' => $j, 'value' => $persen]],
-            ];
+            // Tambahkan data jika persen > 0
+            if ($persen > 0) {
+                $chartdata[] = [
+                    'element' => $j,
+                    'data' => [
+                        ['label' => $j, 'value' => $persen],
+                        ['label' => '-', 'value' => 100 - $persen] // Tambahkan agar total 100%
+                    ],
+                ];
+            }
     
             // Akumulasi untuk Indonesia Power
             $total_n_all += $n;
@@ -44,14 +49,19 @@ class DashboardController extends Controller
         // Hitung persentase untuk Indonesia Power
         $persen_indonesia_power = ($total_all > 0) ? round(($total_n_all / $total_all) * 100) : 0;
     
-        // Tambahkan Indonesia Power ke chartdata
-        $chartdata[] = [
-            'element' => 'IndonesiaPower',
-            'data' => [['label' => 'Indonesia Power', 'value' => $persen_indonesia_power]],
-        ];
+        if ($persen_indonesia_power > 0) {
+            $chartdata[] = [
+                'element' => 'IndonesiaPower',
+                'data' => [
+                    ['label' => 'Indonesia Power', 'value' => $persen_indonesia_power],
+                    ['label' => '-', 'value' => 100 - $persen_indonesia_power]
+                ],
+            ];
+        }
     
         return view('pages.dashboard', compact('chartdata'));
     }
+    
 
 
     public function getClusterDetail($id)
