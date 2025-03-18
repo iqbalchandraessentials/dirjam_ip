@@ -3,27 +3,20 @@
 namespace App\Imports;
 
 use App\Models\existing\UraianJabatan;
-use App\Models\HubunganKerja;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanTeknis;
 use App\Models\M_AKTIVITAS;
 use App\Models\M_KOMUNIKASI;
 use App\Models\M_PENGAMBILAN_KEPUTUSAN;
 use App\Models\M_TANTANGAN;
-use App\Models\MasalahKompleksitasKerja;
-use App\Models\MasterJabatan;
 use App\Models\MasterPendidikan;
 use App\Models\SpesifikasiPendidikan;
-use App\Models\PokoUtamaGenerik;
 use App\Models\unit\M_UNIT;
-use App\Models\WewenangJabatan;
-use App\Models\UraianMasterJabatan;
 use App\Models\VIEW_TEMPLATE;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 

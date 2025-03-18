@@ -17,8 +17,8 @@
                         <select class="form-control" style="width: 100%;" id="jenis_jabatan" name="jenis_jabatan"
                             required>
                             <option selected disabled>Pilih</option>
-                            <option value="struktural">Struktural</option>
-                            <option value="fungsional">Fungsional</option>
+                            <option value="S">Struktural</option>
+                            <option value="F">Fungsional</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -59,8 +59,8 @@
                         <label for="jenis_jabatan">Jenis Jabatan</label>
                         <select class="form-control" style="width: 100%;" id="edit-jenis_jabatan" name="jenis_jabatan" required>
                             <option selected disabled>Pilih</option>
-                            <option value="struktural">Struktural</option>
-                            <option value="fungsional">Fungsional</option>
+                            <option value="S">Struktural</option>
+                            <option value="F">Fungsional</option>
                         </select>
                     </div>
                     <div class="form-group">

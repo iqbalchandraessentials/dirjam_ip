@@ -2,25 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JabatanLamaBaru;
 use App\Models\KemampuandanPengalaman;
-use App\Models\KeterampilanNonteknis;
 use App\Models\KeterampilanTeknis;
-use App\Models\M_AKTIVITAS;
-use App\Models\M_JABATAN;
-use App\Models\M_KEWENANGAN_JABATAN;
-use App\Models\M_KOMUNIKASI;
 use App\Models\M_MAP_PENDIDIKAN;
-use App\Models\M_PENGAMBILAN_KEPUTUSAN;
-use App\Models\M_TANTANGAN;
-use App\Models\M_URAIAN_JABATAN;
 use App\Models\MappingNatureOfImpact;
 use App\Models\MasalahKompleksitasKerja;
-use App\Models\MasterJabatan;
 use App\Models\MasterJenjangJabatan;
-use App\Models\MasterPendidikan;
-use App\Models\TEMPLATE_ACUAN_V;
-use App\Models\PokoUtamaGenerik;
 use App\Models\SpesifikasiPendidikan;
 use App\Models\unit\M_UNIT;
 use App\Models\ViewUraianJabatan;
@@ -34,11 +21,10 @@ class UraianJabatanController extends Controller
 
     public function index()
     {
-        $jabatans = ViewUraianJabatan::where('unit_kd', Auth::user()->unit_kd)->get();
-        $jenjangOptions  = MasterJenjangJabatan::get();
+        $jabatans = ViewUraianJabatan::where('unit_kd', Auth::user()->unit_kd)->where('completed', 'Completed')->where('status', 'APPROVE')->get();
         $unitOptions  = M_UNIT::select(['unit_kd', 'unit_nama'])->get();
         $selectUnit = Auth::user()->unitKerja->unit_nama;
-        return view('pages.uraian_jabatan.index', compact('jenjangOptions', 'unitOptions', 'jabatans', 'selectUnit'));
+        return view('pages.uraian_jabatan.index', compact('unitOptions', 'jabatans', 'selectUnit'));
     }
 
     public function show(string $id)
@@ -66,56 +52,23 @@ class UraianJabatanController extends Controller
 
     public function getDatas($id)
     {
-        $data = M_URAIAN_JABATAN::where('URAIAN_JABATAN_ID', $id)->firstOrFail();
-        $jabatan = M_JABATAN::where('POSITION_ID', $data->position_id)->firstOrFail();
-        $type = $jabatan->type == "S" ? "struktural" : "fungsional";
-
-        $data['nature_of_impact'] = MappingNatureOfImpact::where('kode_profesi', $jabatan->nama_profesi)->value('jenis');
-
-        $aktivitas = M_AKTIVITAS::where('uraian_jabatan_id', $jabatan->template_id)->get();
-        $id = $jabatan->template_id;
-        if ($aktivitas->isEmpty()) {
-            $aktivitas = M_AKTIVITAS::where('URAIAN_JABATAN_ID', $jabatan->uraian_jabatan_id)->get();
-            $id = $jabatan->uraian_jabatan_id;
-        }
-
-        $data["aktivitas"] = $aktivitas;
-        $data['kemampuan_dan_pengalaman'] = KemampuandanPengalaman::where('uraian_master_jabatan_id', $jabatan->template_id)->get();
-        if ($data['kemampuan_dan_pengalaman']->isEmpty()) {
-            $data['kemampuan_dan_pengalaman'] = KemampuandanPengalaman::where('jenis_jabatan', $type)->get();
-        }
-
-        $spesifikasiPendidikan = SpesifikasiPendidikan::where('uraian_master_jabatan_id', $jabatan->template_id)->get();
+        $data = ViewUraianJabatan::where('uraian_jabatan_id', $id)->firstOrFail();
+        $data['nature_of_impact'] = MappingNatureOfImpact::where('kode_profesi', $data->nama_profesi)->value('jenis');
+        $spesifikasiPendidikan = SpesifikasiPendidikan::where('uraian_master_jabatan_id', $data->template_id)->get();
         $data['pendidikan'] = $spesifikasiPendidikan->isEmpty() ? (new M_MAP_PENDIDIKAN())->getByJabatan($id) : $spesifikasiPendidikan;
-
-        $data['komunikasi_internal'] = M_KOMUNIKASI::where(['LINGKUP_FLAG' => 'internal', 'URAIAN_JABATAN_ID' => $id])->orderBy('URUTAN')->get();
-        $data['komunikasi_external'] = M_KOMUNIKASI::where(['LINGKUP_FLAG' => 'external', 'URAIAN_JABATAN_ID' => $id])->orderBy('URUTAN')->get();
-
-        $data['tantangan'] = M_TANTANGAN::where('URAIAN_JABATAN_ID', $id)->get();
         if ($data['tantangan']->isEmpty() || $data['tantangan']->whereNotNull('definisi')->isEmpty()) {
-            $data['tantangan'] = MasalahKompleksitasKerja::where('jenis_jabatan', $type)->get();
+            $data['tantangan'] = MasalahKompleksitasKerja::where('jenis_jabatan', $data->type)->get();
         }
-
-        $data['pengambilan_keputusan'] = M_PENGAMBILAN_KEPUTUSAN::where('URAIAN_JABATAN_ID', $id)->orderBy('URUTAN')->get();
         if ($data['pengambilan_keputusan']->isEmpty() || !$data['pengambilan_keputusan'][0]->definisi) {
-            $data['pengambilan_keputusan'] = WewenangJabatan::where('jenis_jabatan', $type)->get();
+            $data['pengambilan_keputusan'] = WewenangJabatan::where('jenis_jabatan', $data->type)->get();
         }
-
-        $data['aktivitas_generik'] = PokoUtamaGenerik::where(['jenis' => 'generik', 'jenis_jabatan' => $type])->get();
-        $data['jabatan'] = $jabatan;
-        $data['uraian_jabatan_id'] = $data->uraian_jabatan_id;
-        $data['struktur_organisasi'] = $this->sto($jabatan['parent_position_id'], $jabatan['position_id']);
-
-        $data['keterampilan_non_teknis'] = KeterampilanNonteknis::where('MASTER_JABATAN', $jabatan->master_jabatan)->get();
-
-        $core = KeterampilanTeknis::where(['kategori' => 'CORE', 'MASTER_JABATAN' => $jabatan->master_jabatan])->get();
-        $enabler = KeterampilanTeknis::where(['kategori' => 'ENABLER', 'MASTER_JABATAN' => $jabatan->master_jabatan])->get();
-        $data['keterampilan_teknis'] = $core->merge($enabler);
-
+        $data['kemampuan_dan_pengalaman'] = $data['kemampuanDanPengalaman'] ? $data['kemampuanDanPengalaman'] : KemampuandanPengalaman::where('jenis_jabatan', $data['type'])->get();
+        $data['keterampilan_teknis'] = KeterampilanTeknis::where('master_jabatan', $data['master_jabatan'])->whereIn('kategori', ['CORE', 'ENABLER'])->get();
+        $data['struktur_organisasi'] = $this->sto($data['parent_position_id'], $data['position_id']);
+        $data['spesifikasi_pendidikan'] = $data['spesifikasi_pendidikan']->isEmpty() ?  (new M_MAP_PENDIDIKAN())->getByJabatan($data['template_id']) : $data['spesifikasi_pendidikan'];
         if (empty($data['komunikasi_internal'][0]['tujuan'])) {
             $data['komunikasi_internal'] = [];
         }
-
         return $data;
     }
 

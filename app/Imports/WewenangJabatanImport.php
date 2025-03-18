@@ -17,8 +17,9 @@ class WewenangJabatanImport implements ToModel, WithHeadingRow, WithValidation
     */
     public function model(array $row)
     {
+        $jenis_jabatan = $row['jenis_jabatan'] == 'struktural' ? 'S' : 'F';
         return new WewenangJabatan([
-            'jenis_jabatan' => $row['jenis_jabatan'],
+            'jenis_jabatan' => $jenis_jabatan,
             'definisi' => $row['definisi'],
             'created_by' => Auth::user()->name,
         ]);

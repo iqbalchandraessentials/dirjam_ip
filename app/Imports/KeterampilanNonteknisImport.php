@@ -18,7 +18,7 @@ class KeterampilanNonteknisImport implements ToModel, WithValidation, WithHeadin
 
     public function __construct()
     {   
-        $this->master_jabatan = DB::table('master_jabatan_unit')->pluck('master_jabatan')->toArray();
+        $this->master_jabatan = DB::table('v_tm_jabatan')->pluck('master_jabatan')->toArray();
         $this->masterKompetensiNonTeknis = DB::table('master_kompetensi_nonteknis')->pluck('kode')->toArray();
     }
     

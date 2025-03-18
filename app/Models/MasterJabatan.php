@@ -6,29 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class MasterJabatan extends Model
 {
-    protected $table = 'MASTER_JABATANS';
+    protected $table = 'MST_JABATAN_TB';
+    protected $primaryKey = 'id';
+    public $incrementing = true;
+    public $timestamps = false; 
+
     protected $fillable = [
-    'nama',
-    'aktif',
-    'unit_kode',
-    'jenis_jabatan',
-    'jenjang_kode',
+        'id', 'master_jabatan', 'singkatan_jabatan_clean', 'aktif'
     ];
 
-    public function uraianMasterJabatan()
+    public function singkatan()
     {
-        return $this->hasOne(UraianMasterJabatan::class, 'master_jabatan_id', 'id')->latestOfMany();
+        return $this->hasMany(MasterSingkatanJabatan::class, 'master_jabatan', 'master_jabatan');
     }
-    
-    public function draftUraianMasterJabatan()
-    {
-        return $this->hasMany(UraianMasterJabatan::class, 'master_jabatan_id', 'id');
-    }
-
-    public function jenjangJabatan()
-    {
-        return $this->hasOne(MasterJenjangJabatan::class, 'kode', 'jenjang_kode');
-    }
-
 
 }

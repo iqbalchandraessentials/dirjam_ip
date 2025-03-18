@@ -42,7 +42,7 @@
                                                 {{-- <td>{{ $x + 1 }}</td> --}}
                                                 <td>{{ $v['aktivitas'] }}</td>
                                                 <td>{{ $v['output'] }}</td>
-                                                <td>{{ $v['jenis_jabatan'] }}</td>
+                                                <td>{{ $v['jenis_jabatan'] == 'S' ? 'Struktural' : 'Fungsional' }}</td>
                                                 <td class="text-center">
                                                     <!-- Tombol Edit -->
                                                     <button class="btn btn-primary  btn-xs" data-toggle="modal"

@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\KemampuanDanPengalaman;
+use App\Models\KemampuandanPengalaman;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -14,7 +14,7 @@ class KemampuanDanPengalamanSheet implements FromCollection, WithHeadings, WithT
     */
     public function collection()
     {
-        return KemampuanDanPengalaman::select(['jenis_jabatan','definisi'])->whereNotNull('jenis_jabatan')->get();
+        return KemampuandanPengalaman::select(['jenis_jabatan','definisi'])->whereNotNull('jenis_jabatan')->get();
     }
     public function headings(): array
     {

@@ -7,18 +7,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        @include('Layouts._head')
+        @include('layouts._head')
         @yield('head')
 
     </head>
     <body class="skin-light light-sidebar sidebar-mini fixed">
         <div class="wrapper">
-            @include('Layouts._navbar')
+            @include('layouts._navbar')
             <!-- Left side column. contains the logo and sidebar -->
             {{-- @if(auth()->user()->hasRole('Admin')) --}}
-            @include('Layouts._sidebarAdmin')
+            @include('layouts._sidebarAdmin')
             {{-- @else
-            @include('Layouts._sidebar')
+            @include('layouts._sidebar')
             @endif --}}
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -42,7 +42,7 @@
                 ?>
             </footer>
         </div>
-        @include('Layouts._script')
+        @include('layouts._script')
         @yield('script')
     </body>
 </html>

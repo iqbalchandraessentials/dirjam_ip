@@ -34,14 +34,14 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td class="text-center">
-                                                        <a href="{{ route('template_jabatan.show', ['encoded_name' => $encodedName, 'unit_kd' => $unit_kd, 'id' => $v->uraian_jabatan_id]) }}">
                                                             {{ \Carbon\Carbon::parse($v->waktu_dibuat)->format('d-m-Y') }}
-                                                        </a>
                                                     </td>
                                                     <td class="text-center">
                                                             {{ $v->dibuat_oleh }}
                                                     </td>
                                                     <td class="text-center">
+
+                                                        <a href="{{ route('template_jabatan.show', ['encoded_name' => $encodedName, 'unit_kd' => $unit_kd, 'id' => $v->uraian_jabatan_id ]) }}" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
                                                         <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $unit_kd, 'id' => $v->uraian_jabatan_id]) }}" class="btn btn-xs btn-info"><i class="fa fa-table"></i></a>
                                                         <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $unit_kd, 'id' => $v->uraian_jabatan_id]) }}" class="btn btn-xs btn-success"><i class="ti-printer"></i></a>
                                                     </td>

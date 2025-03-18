@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\BidangStudi;
 use App\Models\DetailKomptensiTeknis;
-use App\Models\jenjang\M_JENJANG;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanNonteknis;
 use App\Models\KeterampilanTeknis;
@@ -12,21 +11,19 @@ use App\Models\Konsentrasi;
 use App\Models\M_PROFESI;
 use App\Models\MappingNatureOfImpact;
 use App\Models\MasalahKompleksitasKerja;
-use App\Models\MASTER_JABATAN_UNIT;
-use App\Models\MasterBidangStudi;
 use App\Models\MasterIndikatorOutput;
+use App\Models\MasterJabatan;
 use App\Models\MasterJenjangJabatan;
 use App\Models\MasterKompetensiNonteknis;
 use App\Models\MasterKompetensiTeknis;
 use App\Models\MasterPendidikan;
+use App\Models\MasterSingkatanJabatan;
 use App\Models\PokoUtamaGenerik;
 use App\Models\unit\M_UNIT;
-use App\Models\ViewUraianJabatan;
 use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class MasterDataController extends Controller
@@ -38,64 +35,80 @@ class MasterDataController extends Controller
         return view('pages.masterData.bidangStudi.index', ['data' => $data]);
     }
 
-    public function store(Request $request)
+    public function bidangStudiStore(Request $request)
     {
         $request->validate([
-            'bidang_studi' => 'required|string|max:255',
-            'konsentrasi' => 'nullable|array',
-            'konsentrasi.*' => 'string|max:255',
+            'bidang_studi' => 'required|string|max:255|unique:bidang_studi',
+            'konsentrasi' => 'nullable|string'
         ]);
-
-        $bidang = BidangStudi::create(['bidang_studi' => $request->bidang_studi]);
-
-        if ($request->konsentrasi) {
-            foreach ($request->konsentrasi as $kons) {
-                Konsentrasi::create([
-                    'bidang_studi_id' => $bidang->id,
-                    'konsentrasi' => $kons,
-                ]);
+    
+        try {
+            $bidang = BidangStudi::create([
+                'bidang_studi' => $request->bidang_studi
+            ]);
+    
+            if ($request->konsentrasi) {
+                $konsentrasiList = explode(',', $request->konsentrasi);
+                foreach ($konsentrasiList as $konsentrasi) {
+                    Konsentrasi::create([
+                        'bidang_studi_id' => $bidang->bidang_studi_id,
+                        'konsentrasi' => trim($konsentrasi)
+                    ]);
+                }
             }
+    
+            return redirect()->route('master.bidangStudi')->with('success',  'Bidang Studi berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return redirect()->route('master.bidangStudi')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-
-        return response()->json(['success' => 'Data berhasil ditambahkan']);
     }
+    
 
-    public function update(Request $request)
+    public function bidangStudiUpdate(Request $request)
     {
         $request->validate([
-            'id' => 'required|exists:bidang_studi,id',
-            'bidang_studi' => 'required|string|max:255',
-            'konsentrasi' => 'nullable|array',
-            'konsentrasi.*' => 'string|max:255',
+            'id' => 'required|exists:bidang_studi,id', // Memastikan ID valid
+            'bidang_studi' => 'required|string|max:255|unique:bidang_studi,bidang_studi,' . $request->id,
+            'konsentrasi' => 'nullable|string'
         ]);
-
-        $bidang = BidangStudi::findOrFail($request->id);
-        $bidang->update(['bidang_studi' => $request->bidang_studi]);
-
-        // Hapus konsentrasi lama & tambahkan yang baru
-        Konsentrasi::where('bidang_studi_id', $bidang->id)->delete();
-        if ($request->konsentrasi) {
-            foreach ($request->konsentrasi as $kons) {
-                Konsentrasi::create([
-                    'bidang_studi_id' => $bidang->id,
-                    'konsentrasi' => $kons,
-                ]);
+    
+        try {
+            $bidang = BidangStudi::findOrFail($request->id); // Perbaikan dari where()
+            $bidang->update([
+                'bidang_studi' => $request->bidang_studi
+            ]);
+    
+            // Update konsentrasi
+            Konsentrasi::where('bidang_studi_id', $bidang->id)->delete(); // Perbaikan dari bidang_studi_id ke id
+            if ($request->konsentrasi) {
+                $konsentrasiList = explode(',', $request->konsentrasi);
+                foreach ($konsentrasiList as $konsentrasi) {
+                    Konsentrasi::create([
+                        'bidang_studi_id' => $bidang->id, // Perbaikan dari bidang_studi_id ke id
+                        'konsentrasi' => trim($konsentrasi)
+                    ]);
+                }
             }
+    
+            return redirect()->route('master.bidangStudi')->with('success',  'Bidang Studi berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->route('master.bidangStudi')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-
-        return response()->json(['success' => 'Data berhasil diperbarui']);
     }
+    
+    
 
-    public function delete(Request $request)
+    public function bidangStudiDelete(Request $request)
     {
-        $request->validate([
-            'id' => 'required|exists:bidang_studi,id',
-        ]);
-
-        BidangStudi::where('id', $request->id)->delete();
-        Konsentrasi::where('bidang_studi_id', $request->id)->delete();
-
-        return response()->json(['success' => 'Data berhasil dihapus']);
+        try {
+            $bidang_studi_id = $request->id;
+            $bidang = BidangStudi::where('bidang_studi_id', $bidang_studi_id)->first();
+            $bidang->delete();
+    
+            return redirect()->route('master.bidangStudi')->with('success',  'Bidang Studi berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->route('master.bidangStudi')->with('error',  'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     // public function natureOfImpact()
@@ -106,22 +119,22 @@ class MasterDataController extends Controller
     // }
 
     public function natureOfImpact()
-{
-    $option = M_PROFESI::get();
-    return view('pages.masterData.dimensiFinansial.index',['option' => $option]);
-}
+    {
+        $option = M_PROFESI::get();
+        return view('pages.masterData.dimensiFinansial.index', ['option' => $option]);
+    }
 
-public function getNatureOfImpact(Request $request)
-{
-    if ($request->ajax()) {
-        $data = MappingNatureOfImpact::with('namaProfesi')->select('id', 'kode_profesi', 'jenis');
+    public function getNatureOfImpact(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = MappingNatureOfImpact::with('namaProfesi')->select('id', 'kode_profesi', 'jenis');
 
-        return DataTables::of($data)
-            ->addColumn('nama_profesi', function ($row) {
-                return $row->namaProfesi->nama_profesi ?? $row->kode_profesi;
-            })
-            ->addColumn('action', function ($row) {
-                return '
+            return DataTables::of($data)
+                ->addColumn('nama_profesi', function ($row) {
+                    return $row->namaProfesi->nama_profesi ?? $row->kode_profesi;
+                })
+                ->addColumn('action', function ($row) {
+                    return '
                     <button class="btn btn-primary btn-xs btnEdit" 
                         data-id="' . $row->id . '" 
                         data-kode_profesi="' . $row->kode_profesi . '" 
@@ -131,11 +144,11 @@ public function getNatureOfImpact(Request $request)
                     <button class="btn btn-danger btn-xs btnDelete" data-id="' . $row->id . '">
                         <i class="ti-trash"></i>
                     </button>';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
     }
-}
 
     public function storeNatureOfImpact(Request $request)
     {
@@ -228,7 +241,7 @@ public function getNatureOfImpact(Request $request)
             $jenjang = MasterJenjangJabatan::findOrFail($request->id);
             $jenjang->status = $request->status;
             $jenjang->save();
-            
+
             return redirect()->back()->with('success', 'Status berhasil diperbarui.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui status.');
@@ -246,7 +259,7 @@ public function getNatureOfImpact(Request $request)
         try {
             $unit = M_UNIT::where('unit_id', $request->id)->firstOrFail();
             $unit->update(['status' => $request->status]);
-            
+
             return redirect()->back()->with('success', 'Status berhasil diperbarui.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui status.');
@@ -255,7 +268,7 @@ public function getNatureOfImpact(Request $request)
 
     public function tugasPokokGenerik()
     {
-        $data = PokoUtamaGenerik::where('jenis', 'generik')->get();
+        $data = PokoUtamaGenerik::get();
         return view('pages.masterData.tugasPokokGenerik.index', ['data' => $data]);
     }
 
@@ -265,13 +278,12 @@ public function getNatureOfImpact(Request $request)
             'aktivitas' => 'required|string',
             'output' => 'required|string',
             'jenis_jabatan' => 'required|string',
-
         ]);
+
         PokoUtamaGenerik::create([
             'aktivitas' => $request->aktivitas,
             'output' => $request->output,
             'jenis_jabatan' => $request->jenis_jabatan,
-            'jenis' => $request->jenis,
             'created_by' => Auth::user()->name,
         ]);
         return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil ditambahkan.');
@@ -290,7 +302,6 @@ public function getNatureOfImpact(Request $request)
             'aktivitas' => $request->aktivitas,
             'output' => $request->output,
             'jenis_jabatan' => $request->jenis_jabatan,
-            'jenis' => $request->jenis,
             'created_by' => Auth::user()->name,
         ]);
         return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil diperbarui.');
@@ -336,7 +347,7 @@ public function getNatureOfImpact(Request $request)
         $data = MasterKompetensiTeknis::with('level')->find($id);
         return view('pages.masterData.kompetensiTeknis.show', ['data' => $data]);
     }
-    public function masterKompetensiNonTeknis(Request $request)
+    public function MasterKompetensiNonteknis(Request $request)
     {
         if ($request->ajax()) {
             $data = MasterKompetensiNonteknis::select(['kode', 'nama', 'singkatan', 'jenis', 'definisi']);
@@ -357,7 +368,7 @@ public function getNatureOfImpact(Request $request)
             'kode_master' => $request->kode_master,
             'level' => $request->level,
             'perilaku' => $request->perilaku,
-            'kode_master_level' => $request->kode_master.'.'.$request->level,
+            'kode_master_level' => $request->kode_master . '.' . $request->level,
             'created_by' => Auth::user()->name
         ]);
 
@@ -420,28 +431,137 @@ public function getNatureOfImpact(Request $request)
     public function masterJabatan(Request $request)
     {
         if ($request->ajax()) {
-            $data = MASTER_JABATAN_UNIT::select('master_jabatan', 'siteid')->distinct();
+            $data = MasterJabatan::select('id', 'master_jabatan', 'singkatan_jabatan_clean', 'aktif');
+
             return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('unit_nama', function ($row) {
-                    return $row->unit ? $row->unit->unit_nama : '-';
+                ->addColumn('status', function ($row) {
+                    return $row->aktif
+                        ? '<span class="badge bg-success">Aktif</span>'
+                        : '<span class="badge bg-danger">Tidak Aktif</span>';
                 })
-                ->rawColumns(['unit_nama'])
+                ->addColumn('aksi', function ($row) {
+                    return '<a href="' . route('master.jabatan.form', $row->id) . '" class="btn btn-primary btn-xs">
+                                <i class="ti-pencil fa-lg"></i>
+                            </a>
+                            <form action="' . route('master.jabatan.delete', $row->id) . '" method="POST" class="d-inline" onsubmit="return confirm(\'Yakin ingin menghapus data ini?\');">
+                                ' . csrf_field() . '
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger btn-xs">
+                                    <i class="ti-trash fa-lg"></i>
+                                </button>
+                            </form>';
+                })
+                ->rawColumns(['status', 'aksi'])
                 ->make(true);
         }
+
         return view('pages.masterData.masterJabatanUnit.index');
+    }
+
+
+    public function formMasterJabatan($id = null)
+    {
+        $jabatan = null;
+        if ($id) {
+            $jabatan = MasterJabatan::with('singkatan')->findOrFail($id);
+        }
+        return view('pages.masterData.masterJabatanUnit.form', compact('jabatan'));
+    }
+
+    public function storeMasterJabatan(Request $request)
+    {
+        try {
+            $request->validate([
+                'master_jabatan' => 'required|unique:MST_JABATAN_TB,master_jabatan',
+                'singkatan_jabatan_clean' => 'required|unique:MST_JABATAN_TB,singkatan_jabatan_clean',
+                'aktif' => 'required|boolean',
+                'singkatan_jabatan' => 'array',
+                'singkatan_jabatan.*' => 'nullable|string|max:255',
+            ]);
+
+            $jabatan = MasterJabatan::create([
+                'master_jabatan' => $request->master_jabatan,
+                'singkatan_jabatan_clean' => $request->singkatan_jabatan_clean,
+                'aktif' => $request->aktif
+            ]);
+
+            foreach ($request->singkatan_jabatan as $singkatan) {
+                if (!empty($singkatan)) {
+                    MasterSingkatanJabatan::create([
+                        'master_jabatan' => $request->master_jabatan,
+                        'singkatan_jabatan' => $singkatan,
+                        'aktif' => 1
+                    ]);
+                }
+            }
+            return redirect()->route('master.jabatan')->with('success', 'Master Jabatan berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function updateMasterJabatan(Request $request)
+    {
+        try {
+            $id = $request->id;
+            $jabatan = MasterJabatan::findOrFail($id);
+
+            $request->validate([
+                'master_jabatan' => "required|unique:MST_JABATAN_TB,master_jabatan,{$id},id",
+                'singkatan_jabatan_clean' => "required|unique:MST_JABATAN_TB,singkatan_jabatan_clean,{$id},id",
+                'aktif' => 'required|boolean',
+                'singkatan_jabatan' => 'array',
+                'singkatan_jabatan.*' => 'nullable|string|max:255',
+            ]);
+
+            $jabatan->update([
+                'master_jabatan' => $request->master_jabatan,
+                'singkatan_jabatan_clean' => $request->singkatan_jabatan_clean,
+                'aktif' => $request->aktif
+            ]);
+
+            // Hapus singkatan jabatan lama berdasarkan ID master_jabatan
+            MasterSingkatanJabatan::where('master_jabatan', $jabatan->master_jabatan)->delete();
+
+            // Tambahkan singkatan jabatan yang baru
+            foreach ($request->singkatan_jabatan as $singkatan) {
+                if (!empty($singkatan)) {
+                    MasterSingkatanJabatan::insert([
+                        'master_jabatan' => $jabatan->master_jabatan,
+                        'singkatan_jabatan' => $singkatan,
+                        'aktif' => 1
+                    ]);
+                }
+            }
+
+            return redirect()->route('master.jabatan')->with('success', 'Master Jabatan berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+    
+    public function destroyMasterJabatan($id)
+    {
+        try {
+            $jabatan = MasterJabatan::findOrFail($id);
+            $jabatan->delete();
+
+            return redirect()->route('master.jabatan')->with('success', 'Data berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function stoJobcode(Request $request)
     {
         if ($request->ajax()) {
             $data =  $data =  DB::select('SELECT * FROM INTTALENT.sto_jobcode');
-
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->make(true);
         }
         return view('pages.masterData.stoJobcode.index');
+
     }
 
     public function pendidikan()

@@ -57,7 +57,7 @@
                                                 @endif
                                                 @foreach ($unitOptions as $unit)
                                                     <option value="{{ $unit->unit_kd }}"
-                                                        {{ old('unit', request('unit')) == $unit->unit_kd ? 'selected' : '' }}>
+                                                        {{ old('unit', request('unit')) == $unit->unit_kd ? 'selected' : '' }}>       
                                                         ({{ $unit->unit_kd }})
                                                         {{ $unit->unit_nama }}
                                                     </option>

@@ -97,12 +97,12 @@
         <th style="" rowspan="4">
             <br />
             <span style="font-size: 18px; text-transform: capitalize;">TEMPLATE JABATAN <br />
-                <span style="font-size: 16px">{{ $data['nama'] }}
+                <span style="font-size: 16px">{{ $data['master_jabatan'] }}
                     <br />
                     <br />
         </th>
         <td style="width:110px">Tanggal</td>
-        <td style="width:140px">{{ isset($data['created_at']) ? date_format($data['created_at'], 'd-m-Y') : '-' }}</td>
+        <td style="width:140px">{{ isset($data['waktu_dibuat']) ? date_format($data['waktu_dibuat'], 'd-m-Y') : '-' }}</td>
     </tr>
     <tr>
         <td>No Record</td>
@@ -134,7 +134,7 @@
                 <tr>
                     <td>Master Jabatan</td>
                     <td>:</td>
-                    <td>{{ $data['nama'] }}</td>
+                    <td>{{ $data['master_jabatan'] }}</td>
                 </tr>
                 <tr>
                     <td>Sebutan Jabatan</td>
@@ -153,21 +153,21 @@
                     <td>Jenis Jabatan</td>
                     <td>:</td>
                     <td>
-                        {{ strtoupper($data['masterJabatan']['jenis_jabatan']) }}
+                        {{ strtoupper($data['jenis_jabatan']) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Jenjang Jabatan</td>
                     <td>:</td>
                     <td>
-                        {{ strtoupper($data['masterJabatan']['jenjangJabatan']['nama']) }}
+                        {{ strtoupper($data['jenjang_jabatan']['nama']) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Kelompok Bisnis</td>
                     <td>:</td>
                     <td>
-                        {{ strtoupper($data['jabatans'][0]['namaProfesi']['nama_profesi'] ?? $data['jabatans'][0]['nama_profesi']) }}
+                        {{ strtoupper($data['namaProfesi']['nama_profesi'] ?? $data['nama_profesi']) }}
                     </td>
 
                 </tr>
@@ -175,7 +175,7 @@
                     <td>Unit Kerja</td>
                     <td>:</td>
                     <td>
-                        {{ strtoupper($data['masterJabatan']['unit_kode'] ?? 'Tidak ada Unit Kerja') }}
+                        {{ strtoupper($data['description']) }}
                     </td>
                 </tr>
                 <tr>
@@ -224,20 +224,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($data['PokoUtamaGenerik'] as $x => $v)
-                        @if (isset($v['jenis']) == 'utama')
+                    @forelse ($data['tugas_pokok_utama'] as $x => $v)
                             <tr>
                                 <td style="text-align: center">{{ $x + 1 }}</td>
                                 <td style="text-align: justify">{{ $v['aktivitas'] }}</td>
                                 <td style="text-align: justify">{{ $v['output'] }}</td>
                             </tr>
-                        @else
-                            <tr>
-                                <td style="text-align: center">{{ $x + 1 }}</td>
-                                <td style="text-align: justify">{{ $v['aktivitas'] }}</td>
-                                <td style="text-align: justify"></td>
-                            </tr>
-                        @endif
                     @empty
                         <tr>
                             <td>1</td>
@@ -267,13 +259,11 @@
                 </thead>
                 <tbody>
                     @foreach ($data['tugas_pokok_generik'] as $x => $v)
-                        @if ($v['jenis'] == 'generik')
                             <tr>
                                 <td style="text-align: center"> {{ $x + 1 }}</td>
                                 <td style="text-align: justify">{{ $v['aktivitas'] }}</td>
                                 <td style="text-align: justify">{{ $v['output'] }}</td>
                             </tr>
-                        @endif
                     @endforeach
                 </tbody>
             </table>
@@ -456,13 +446,13 @@
                         </thead>
                         <tbody>
                             @php $no = 1; @endphp
-                            @forelse ($data['hubunganKerja'] as $x => $v)
-                                @if ($v['jenis'] == 'internal' || $v['lingkup_flag'] == 'internal')
+                            @forelse ($data['hubungan_kerja'] as $x => $v)
+                                @if ($v['lingkup_flag'] == 'internal')
                                     @if (!empty($v['tujuan']))
                                         <tr>
                                             <td style="text-align: center">{{ $no++ }}</td>
                                             <td style="text-align: justify">
-                                                {{ isset($v['subjek']) ? $v['subjek'] : $v['komunikasi'] }}</td>
+                                                {{ $v['subjek'] }}</td>
                                             <td style="text-align: justify">{{ $v['tujuan'] }}</td>
                                         </tr>
                                     @else
@@ -496,13 +486,13 @@
                         </thead>
                         <tbody>
                             @php $no = 1; @endphp
-                            @forelse ($data['hubunganKerja'] as $x => $v)
-                                @if ($v['jenis'] == 'eksternal' || $v['lingkup_flag'] == 'external')
+                            @forelse ($data['hubungan_kerja'] as $x => $v)
+                                @if ($v['lingkup_flag'] == 'external')
                                 @if (!empty($v['tujuan']))
                                     <tr>
                                         <td style="text-align: center">{{ $no++ }} </td>
                                         <td style="text-align: justify">
-                                            {{ isset($v['subjek']) ? $v['subjek'] : $v['komunikasi'] }}</td>
+                                            {{ $v['subjek'] }}</td>
                                         <td style="text-align: justify">{{ $v['tujuan'] }}</td>
                                     </tr>
                                     @else
@@ -540,7 +530,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data['masalah_kompleksitas_kerja'] as $x => $v)
+                        @foreach ($data['tantangan'] as $x => $v)
                             <tr style="text-align: center">
                                 <td> {{ $x + 1 }}</td>
                                 <td >{{ isset($v['tantangan']) ? $v['tantangan'] : $v['definisi'] }}</td>
@@ -567,7 +557,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data['wewenang_jabatan'] as $x => $v)
+                        @foreach ($data['pengambilan_keputusan'] as $x => $v)
                             <tr style="text-align: center">
                                 <td>{{ $x + 1 }}</td>
                                 <td >
@@ -599,8 +589,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (!empty($data['spesifikasiPendidikan']) && count($data['spesifikasiPendidikan']) > 0)
-                            @foreach ($data['spesifikasiPendidikan'] as $i => $item)
+                        @if (!empty($data['spesifikasi_pendidikan']) && count($data['spesifikasi_pendidikan']) > 0)
+                            @foreach ($data['spesifikasi_pendidikan'] as $i => $item)
                                 @php
                                     $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang(
                                         $item->map_pendidikan_id,

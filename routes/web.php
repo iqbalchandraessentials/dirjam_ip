@@ -59,9 +59,9 @@ Route::middleware(['auth'])->group(function () {
     // Master Data Routes
     Route::prefix('master_data')->group(function () {
         Route::get('bidang-studi', [MasterDataController::class, 'bidangStudi'])->name('master.bidangStudi');
-        Route::post('/bidang-studi/store', [MasterDataController::class, 'store'])->name('master.bidangStudi.store');
-        Route::post('/bidang-studi/update', [MasterDataController::class, 'update'])->name('master.bidangStudi.update');
-        Route::post('/bidang-studi/delete', [MasterDataController::class, 'delete'])->name('master.bidangStudi.delete');
+        Route::post('/bidang-studi/store', [MasterDataController::class, 'bidangStudiStore'])->name('master.bidangStudi.store');
+        Route::post('/bidang-studi/update', [MasterDataController::class, 'bidangStudiUpdate'])->name('master.bidangStudi.update');
+        Route::post('/bidang-studi/delete', [MasterDataController::class, 'bidangStudiDelete'])->name('master.bidangStudi.delete');
         Route::get('nature-of-impact', [MasterDataController::class, 'natureOfImpact'])->name('master.natureOfImpact');
         Route::get('get-nature-of-impact', [MasterDataController::class, 'getNatureOfImpact'])->name('master.getNatureOfImpact');
         Route::post('nature-of-impact/store', [MasterDataController::class, 'storeNatureOfImpact'])->name('master.natureOfImpact.store');
@@ -89,6 +89,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('mapping-komptensi-teknis', [MasterDataController::class, 'mappingkomptensiTeknis'])->name('master.mapping-komptensi-teknis');
         Route::get('kompetensi-non-teknis', [MasterDataController::class, 'masterKompetensiNonTeknis'])->name('master.kompetensi-non-teknis');
         Route::get('jabatan', [MasterDataController::class, 'masterJabatan'])->name('master.jabatan');
+        Route::get('jabatan/form/{id?}', [MasterDataController::class, 'formMasterJabatan'])->name('master.jabatan.form');
+        Route::delete('jabatan/delete/{id}', [MasterDataController::class, 'destroyMasterJabatan'])->name('master.jabatan.delete');
+        Route::post('jabatan/store', [MasterDataController::class, 'storeMasterJabatan'])->name('master.jabatan.store');
+        Route::post('jabatan/update', [MasterDataController::class, 'updateMasterJabatan'])->name('master.jabatan.update');
         Route::get('jenjang-jabatan', [MasterDataController::class, 'jenjangJabatan'])->name('master.jenjang-jabatan');
         Route::post('jenjang-jabatan/update-status', [MasterDataController::class, 'updateStatusJenjang'])->name('master.jenjang-jabatan.update-status');
         Route::get('unit', [MasterDataController::class, 'unit'])->name('master.unit');

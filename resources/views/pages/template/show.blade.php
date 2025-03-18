@@ -16,7 +16,7 @@
     </style>
 @endsection
 
-@section('title', 'Template Jabatan | ' . $data['nama'])
+@section('title', 'Template Jabatan | ' . $data['master_jabatan'])
 
 @section('content')
     <div class="col-sm-12">
@@ -29,14 +29,14 @@
                             <i class="ti-file"></i>
                             TEMPLATE
                         </h2>
-                        @if (isset($data['created_at']))
+                        @if (isset($data['waktu_dibuat']))
                             <p>
-                                {{ date_format($data['created_at'], 'd-m-Y') }}
+                                {{ date_format($data['waktu_dibuat'], 'd-m-Y') }}
                             </p>
                         @endif
                     </div>
                     @php
-                        $encodedName = base64_encode($data['nama']);
+                        $encodedName = base64_encode($data['master_jabatan']);
                     @endphp
                     <div class="col text-right">
                         @if ($data['jumlahRecord'] > 1)
@@ -45,11 +45,11 @@
                                 <i class="ti-view-list-alt"></i><span> Draft</span>
                             </a>
                         @endif
-                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['id'] ?? null ]) }}" class="btn btn-primary">
+                        <a href="{{ route('export.template_jabatan_PDF', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['template_id'] ?? null ]) }}" class="btn btn-primary">
                             <i class="ti-printer"></i><span> Cetak</span>
                         </a>
                         
-                        <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['id'] ?? null ]) }}" class="btn btn-success">
+                        <a href="{{ route('export.template_jabatan_Excel', ['encoded_name' => $encodedName, 'unit_kd' => $data['unit_kd'] ?? null, 'id' => $data['template_id'] ?? null ]) }}" class="btn btn-success">
                             <i class="ti-layout-grid4"></i><span>Excel</span>
                         </a>
                                          
@@ -72,7 +72,7 @@
                             <tr>
                                 <td><b> Master Jabatan</b></td>
                                 <td>:</td>
-                                <td class="text-left">{{ $data['nama'] }}</td>
+                                <td class="text-left">{{ $data['master_jabatan'] }}</td>
                             </tr>
                             <tr>
                                 <td><b> Sebutan Jabatan</b></td>
@@ -92,28 +92,28 @@
                                 <td><b> Jenis Jabatan</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase">
-                                    {{ strtoupper($data['masterJabatan']['jenis_jabatan']) }}
+                                    {{ strtoupper($data['jenis_jabatan']) }}
                                 </td>
                             </tr>
                             <tr>
                                 <td><b> Jenjang Jabatan</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase">
-                                    {{ strtoupper($data['masterJabatan']['jenjangJabatan']['nama']) }}
+                                    {{ strtoupper($data['jenjang_jabatan']['nama']) }}
                                 </td>
                             </tr>
                             <tr>
                                 <td><b> Kelompok Bisnis</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase">
-                                    {{$data['jabatans'][0]['namaProfesi']['nama_profesi'] ?? $data['jabatans'][0]['nama_profesi'] }}
+                                    {{$data['namaProfesi']['nama_profesi'] ?? $data['nama_profesi'] }}
                                 </td>
                             </tr>
                             <tr>
                                 <td><b> Unit Kerja</b></td>
                                 <td>:</td>
                                 <td class="text-left text-uppercase">
-                                    {{ $data['masterJabatan']['unit_kode'] ?? 'Tidak ada Unit Kerja' }}
+                                    {{ $data['description'] }}
                                 </td>
                             </tr>
                             <tr>
@@ -177,22 +177,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($data['PokoUtamaGenerik'] as $x => $v)
-                                    @if (isset($v['jenis']) == 'utama')
-                                        <tr>
-                                            <td><span class="badge bg-dark"
-                                                    style="min-width: 32px">{{ $x + 1 }}</span></td>
-                                            <td style="text-align: justify">{{ $v['aktivitas'] }}</td>
-                                            <td style="text-align: justify">{{ $v['output'] }}</td>
-                                        </tr>
-                                    @else
+                                @forelse ($data['tugas_pokok_utama'] as $x => $v)
                                         <tr>
                                             <td><span class="badge bg-dark"
                                                     style="min-width: 32px">{{ $x + 1 }}</span></td>
                                             <td style="text-align: justify">{{ $v['aktivitas'] }}</td>
                                             <td style="text-align: justify">{{$v['output'] ?? ''}} </td>
                                         </tr>
-                                    @endif
                                 @empty
                                     <tr>
                                         <td class="text-center" colspan="3">Tidak ada data</td>
@@ -225,14 +216,12 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($data['tugas_pokok_generik'] as $x => $v)
-                                        @if ($v['jenis'] == 'generik')
                                             <tr>
                                                 <td><span class="badge bg-dark"
                                                         style="min-width: 32px">{{ $x + 1 }}</span></td>
                                                 <td style="text-align: justify">{{ $v['aktivitas'] }}</td>
                                                 <td style="text-align: justify">{{ $v['output'] }}</td>
                                             </tr>
-                                        @endif
                                     @endforeach
                                 </tbody>
                             </table>
@@ -444,15 +433,15 @@
                             </thead>
                             <tbody>
                                 @php $no = 1; @endphp
-                                @forelse ($data['hubunganKerja'] as $v)  
-                                    @if ($v['jenis'] == 'internal' || $v['lingkup_flag'] == 'internal')
+                                @forelse ($data['hubungan_kerja'] as $v)  
+                                    @if ($v['lingkup_flag'] == 'internal')
                                         @if (!empty($v['tujuan'])) 
                                             <tr>
                                                 <td>
                                                     <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
                                                 </td>
                                                 <td style="text-align: center">
-                                                    {{ $v['subjek'] ?? $v['komunikasi'] }} 
+                                                    {{ $v['komunikasi'] }} 
                                                 </td>
                                                 <td style="text-align: center">{{ $v['tujuan'] }}</td>
                                             </tr>
@@ -486,15 +475,15 @@
                             </thead>
                             <tbody>
                                 @php $no = 1; @endphp
-                                @forelse ($data['hubunganKerja'] as $v) 
-                                @if ($v['jenis'] == 'eksternal' || $v['lingkup_flag'] == 'external')
+                                @forelse ($data['hubungan_kerja'] as $v) 
+                                @if ($v['lingkup_flag'] == 'external')
                                     @if (!empty($v['tujuan'] )) 
                                         <tr>
                                             <td>
                                                 <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
                                             </td>
                                             <td style="text-align: center">
-                                                {{ $v['subjek'] ?? $v['komunikasi'] }} 
+                                                {{ $v['komunikasi'] }} 
                                             </td>
                                             <td style="text-align: center">{{ $v['tujuan'] }}</td>
                                         </tr>
@@ -539,7 +528,7 @@
                                 </tr>
                             </thead>
                             <tbody class="">
-                                @foreach ($data['masalahKompleksitasKerja'] as $x => $v)
+                                @foreach ($data['tantangan'] as $x => $v)
                                     <tr>
                                         <td> <span class="badge bg-dark"
                                                 style="min-width: 32px">{{ $x + 1 }}</span></td>
@@ -575,7 +564,7 @@
                                 </tr>
                             </thead>
                             <tbody class="">
-                                @foreach ($data['wewenangJabatan'] as $x => $v)
+                                @foreach ($data['pengambilan_keputusan'] as $x => $v)
                                     <tr>
                                         <td> <span class="badge bg-dark"
                                                 style="min-width: 32px">{{ $x + 1 }}</span></td>
@@ -616,8 +605,8 @@
                                 </tr>
                             </thead>
                             <tbody class="text-center">
-                                @if (!empty($data['spesifikasiPendidikan']) && count($data['spesifikasiPendidikan']) > 0)
-                                    @foreach ($data['spesifikasiPendidikan'] as $i => $item)
+                                @if (!empty($data['spesifikasi_pendidikan']) && count($data['spesifikasi_pendidikan']) > 0)
+                                    @foreach ($data['spesifikasi_pendidikan'] as $i => $item)
                                         @php
                                             $bidangQuery = (new \App\Models\M_MAP_PENDIDIKAN())->getBidang(
                                                 $item->map_pendidikan_id,
@@ -877,7 +866,7 @@
                                             <td>{{ $v['level'] }}</td>
                                             <td>{{ $v['kategori'] }}</td>
                                             <td style="text-align: justify">
-                                                {{ $v->detailMasterKompetensiTeknis->perilaku ?? 'N/A' }}</td>
+                                                {{ $v->detailMasterKompetensiTeknis->perilaku ?? '' }}</td>
                                         </tr>
                                     @endif
                                 @empty
@@ -907,8 +896,8 @@
                 </div>
             </div>
 
-            <div class="box-body pt-0">
-                <div class="row" style=" margin-bottom:40%">
+            <div class="box-body pt-0 d-flex justify-content-center" style="padding: 40px;">
+                <div class="row" style="display: block;  margin-bottom:90px">
                     @if (isset($data['struktur_organisasi']))
                         <div class="col-12" id="sto" style="transform: scale(0.7); transform-origin: top center;">
                             {!! $data['struktur_organisasi'] !!}

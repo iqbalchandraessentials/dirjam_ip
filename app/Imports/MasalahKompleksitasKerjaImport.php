@@ -17,8 +17,9 @@ class MasalahKompleksitasKerjaImport implements ToModel, WithHeadingRow, WithVal
     */
     public function model(array $row)
     {
+        $jenis_jabatan = $row['jenis_jabatan'] == 'struktural' ? 'S' : 'F';
         return new MasalahKompleksitasKerja([
-            'jenis_jabatan' => $row['jenis_jabatan'],
+            'jenis_jabatan' => $jenis_jabatan,
             'definisi' => $row['definisi'],
             'created_by' => Auth::user()->name,
         ]);

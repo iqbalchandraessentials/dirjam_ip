@@ -19,7 +19,7 @@ class KeterampilanTeknisImport implements ToModel, WithValidation, WithHeadingRo
     public function __construct()
     {
         KeterampilanTeknis::query()->delete();
-        $this->master_jabatan = DB::table('master_jabatan_unit')->pluck('master_jabatan')->toArray();
+        $this->master_jabatan = DB::table('v_tm_jabatan')->pluck('master_jabatan')->toArray();
         $this->masterKompetensiTeknis = DB::table('master_kompetensi_teknis')->pluck('kode')->toArray();
     }
 

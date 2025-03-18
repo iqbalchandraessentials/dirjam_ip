@@ -37,6 +37,16 @@
     ul li {
         text-indent: -5px;
     }
+    .struktur-organisasi-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    }
+
+    .struktur-organisasi-content {
+        display: block;
+        margin-bottom: 90px;
+    }
 </style>
 
 <h3>11. STRUKTUR ORGANISASI</h3>
@@ -46,8 +56,8 @@
 </small>
 <br>
 <br>
-<div style="width: 100%; height: auto;">
-    <div style="transform: scale(0.7); transform-origin: top center">
+<div class="struktur-organisasi-container">
+    <div class="struktur-organisasi-content">
         {!! $data['struktur_organisasi'] !!}
-</div>
+    </div>
 </div>

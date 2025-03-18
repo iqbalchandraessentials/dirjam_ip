@@ -28,7 +28,7 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="{{ Request::is('master_data/jabatan') ? 'active' : '' }}">
+                        <li class="{{ Request::is('master_data/jabatan', 'master_data/jabatan/*') ? 'active' : '' }}">
                             <a href="{{ route('master.jabatan') }}">
                                 <i class="ti-more"></i>Master Jabatan
                             </a>

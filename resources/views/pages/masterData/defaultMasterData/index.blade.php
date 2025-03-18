@@ -16,7 +16,7 @@
                     </div>
                     <div class="col text-right">
                         <a href="{{ route('export.default_data') }}" class="btn btn-success">
-                            <i class="ti-layout-grid4 mr-3"></i><span>Excell</span>
+                            <i class="ti-layout-grid4 mr-3"></i><span> Excell</span>
                         </a>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                                             <tr>
                                                 <td>{{ $x + 1 }}</td>
                                                 <td>{{ $v['definisi'] }}</td>
-                                                <td class="text-center">{{ $v['jenis_jabatan'] }}</td>
+                                                <td class="text-center">{{ $v['jenis_jabatan'] == 'S' ? 'Struktural' : 'Fungsional' }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -99,7 +99,7 @@
                                             <tr>
                                                 <td>{{ $x + 1 }}</td>
                                                 <td>{{ $v['definisi'] }}</td>
-                                                <td class="text-center">{{ $v['jenis_jabatan'] }}</td>
+                                                <td class="text-center">{{ $v['jenis_jabatan'] == 'S' ? 'Struktural' : 'Fungsional' }}</td>
 
                                             </tr>
                                         @endforeach
@@ -138,7 +138,7 @@
                                             <tr>
                                                 <td>{{ $x + 1 }}</td>
                                                 <td>{{ $v['definisi'] }}</td>
-                                                <td class="text-center">{{ $v['jenis_jabatan'] }}</td>
+                                                <td class="text-center">{{ $v['jenis_jabatan'] == 'S' ? 'Struktural' : 'Fungsional' }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

@@ -22,28 +22,22 @@
                                 <div class="col">
                                     <div class="form-group d-flex align-items-center">
                                         <label for="unit" class="mr-3 mb-0">Unit:</label>
-                                        <select class="form-control select2" name="unit">
+                                        <select class="form-control select2" name="unit" onchange="this.form.submit()">
                                             @if(isset($selectUnit))
                                             <option selected disabled>{{$selectUnit}}</option>
                                             @endif
                                             @foreach ($unitOptions as $unit)
                                                 <option value="{{ $unit->unit_kd }}" 
                                                     {{ old('unit', request('unit')) == $unit->unit_kd ? 'selected' : '' }}>
-                                                    ({{ $unit->unit_kd }})
-                                                    {{ $unit->unit_nama }}
+                                                    ({{ $unit->unit_kd }}) {{ $unit->unit_nama }}
                                                 </option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-auto">
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary ml-2"><i class="ti-search"></i></button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                    </form>
+                    </form>                    
                     {{-- @endif --}}
                     <div class="table-responsive">
                         <table class="table table-striped dataTables">
