@@ -23,14 +23,7 @@
                 <div class="col-lg-4 col-md-5 col-12">
                     <div class="p-30 content-bottom rounded bg-img box-shadowed" data-overlay="9">
 
-                        @if (session('login_error'))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ session('login_error') }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endif
+                        @include('components.notification')
 
                         <form method="POST" action="{{ route('login.dirjab') }}">
                             @csrf

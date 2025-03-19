@@ -20,7 +20,7 @@ class ViewUraianJabatan extends Model
 
     public function tugas_pokok_utama()
     {
-        return $this->hasMany(M_AKTIVITAS::class, 'uraian_jabatan_id', 'template_id');
+        return $this->hasMany(Aktivitas::class, 'uraian_jabatan_id', 'template_id');
     }
 
     public function tugas_pokok_generik()
@@ -36,12 +36,12 @@ class ViewUraianJabatan extends Model
 
      public function tantangan()
     {
-        return $this->hasMany(M_TANTANGAN::class, 'uraian_jabatan_id', 'template_id');
+        return $this->hasMany(Tantangan::class, 'uraian_jabatan_id', 'template_id');
     }
 
     public function pengambilan_keputusan()
     {
-        return $this->hasMany(M_PENGAMBILAN_KEPUTUSAN::class, 'uraian_jabatan_id', 'template_id');
+        return $this->hasMany(PengambilanKeputusan::class, 'uraian_jabatan_id', 'template_id');
     }
     
     public function kemampuan_dan_pengalaman()
@@ -51,13 +51,11 @@ class ViewUraianJabatan extends Model
 
     public function hubungan_kerja()
     {   
-        return $this->hasMany(M_KOMUNIKASI::class, 'uraian_jabatan_id', 'template_id');   
+        return $this->hasMany(Komunikasi::class, 'uraian_jabatan_id', 'template_id');   
     }
 
     public function keterampilan_non_teknis()
     {   
         return $this->hasMany(KeterampilanNonteknis::class, 'master_jabatan', 'master_jabatan');
     }
-    
-
 }

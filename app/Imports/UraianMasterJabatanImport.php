@@ -5,10 +5,10 @@ namespace App\Imports;
 use App\Models\existing\UraianJabatan;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanTeknis;
-use App\Models\M_AKTIVITAS;
-use App\Models\M_KOMUNIKASI;
-use App\Models\M_PENGAMBILAN_KEPUTUSAN;
-use App\Models\M_TANTANGAN;
+use App\Models\Aktivitas;
+use App\Models\Komunikasi;
+use App\Models\PengambilanKeputusan;
+use App\Models\Tantangan;
 use App\Models\MasterPendidikan;
 use App\Models\SpesifikasiPendidikan;
 use App\Models\unit\M_UNIT;
@@ -111,7 +111,7 @@ class UraianMasterJabatanImport implements ToCollection
                     }
                 }
             }
-            // if (empty($this->hubungan_kerja[0]['komunikasi'])) {
+            // if (empty($this->hubungan_kerja[0]['subjek'])) {
             //     return redirect()->back()->with('error','Hubungan Kerja Internal kosong');
             // }
             foreach ($rows as $key => $row) {
@@ -125,7 +125,7 @@ class UraianMasterJabatanImport implements ToCollection
                     }
                 }
             }
-            // if (empty($this->hubungan_kerja[0]['komunikasi'])) {
+            // if (empty($this->hubungan_kerja[0]['subjek'])) {
             //     return redirect()->back()->with('error','Hubungan kerja Eksternal kosong');
             // }
             $data['hubungan_kerja'] = $this->hubungan_kerja;
@@ -222,7 +222,7 @@ class UraianMasterJabatanImport implements ToCollection
             $uraian_jabatan_id = $uraian_jabatan->URAIAN_JABATAN_ID;
             foreach ($data['tugas_pokok_utama'] as $x) {
                 if (!empty($x['aktivitas']) && !empty($x['output'])) {
-                    M_AKTIVITAS::create([
+                    Aktivitas::create([
                         'uraian_jabatan_id' => $uraian_jabatan_id,
                         'aktivitas' => $x['aktivitas'],
                         'output' => $x['output'],
@@ -246,10 +246,10 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
             foreach ($data['hubungan_kerja'] as $x) {
-                if (!empty($x['komunikasi']) && !empty($x['tujuan']) && !empty($x['jenis'])) {
-                    M_KOMUNIKASI::create([
+                if (!empty($x['subjek']) && !empty($x['tujuan']) && !empty($x['jenis'])) {
+                    Komunikasi::create([
                         'uraian_jabatan_id' => $uraian_jabatan_id,
-                        'subjek' => $x['komunikasi'],
+                        'subjek' => $x['subjek'],
                         'tujuan' => $x['tujuan'],
                         'lingkup_flag' => $x['jenis'],
                         'dibuat_oleh' => Auth::user()->name,
@@ -259,7 +259,7 @@ class UraianMasterJabatanImport implements ToCollection
             }
             foreach ($data['masalah_kompleksitas_kerja'] as $x) {
                 if (!empty($x['masalah_kompleksitas_kerja'])) {
-                    M_TANTANGAN::create([
+                    Tantangan::create([
                         'uraian_jabatan_id' => $uraian_jabatan_id,
                         'tantangan' => $x['masalah_kompleksitas_kerja'],
                         'dibuat_oleh' => Auth::user()->name,
@@ -269,7 +269,7 @@ class UraianMasterJabatanImport implements ToCollection
             }
             foreach ($data['wewenang_jabatan'] as $x) {
                 if (!empty($x['wewenang_jabatan'])) {
-                    M_PENGAMBILAN_KEPUTUSAN::create([
+                    PengambilanKeputusan::create([
                         'uraian_jabatan_id' => $uraian_jabatan_id,
                         'pengambilan_keputusan' => $x['wewenang_jabatan'],
                         'dibuat_oleh' => Auth::user()->name,

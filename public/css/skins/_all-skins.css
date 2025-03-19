@@ -369,8 +369,7 @@ Project:	UltimatePro Admin - Responsive Admin Template
 
 
  .slimScrollDiv {
-  background-color: #213339;
- 
+  background-color: #012d36;
 }
 
 /* .slimScrollDiv .sidebar .sidebar-menu .active {
@@ -392,8 +391,13 @@ Project:	UltimatePro Admin - Responsive Admin Template
   color: #fff;
 }
 .light-sidebar .sidebar-menu>li:hover>a, .light-sidebar .sidebar-menu>li.active>a, .light-sidebar .sidebar-menu > li.menu-open > a{
-  color: #7d9202;
-  background-color: rgb(5, 6, 51);
+  color: #ffffff;
+  background-color: #035b71;
+}
+.sidebar-menu > li.active > a > i,
+.sidebar-menu > li:hover > a > i,
+.sidebar-menu > li.menu-open > a > i {
+    color: #ffffff;
 }
 .light-sidebar .sidebar-menu > li > .treeview-menu {
   margin: 0 0px;
@@ -401,7 +405,7 @@ Project:	UltimatePro Admin - Responsive Admin Template
 }
 
 .light-sidebar .sidebar-menu > li > .treeview-menu .active a {
-  color:#cce446;
+  color:#ffffff;
 }
 
 /* .table-striped>tbody>tr:nth-child(odd)>td, 

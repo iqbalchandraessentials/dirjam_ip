@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class M_KOMUNIKASI extends Model
+class Komunikasi extends Model
 {
     protected $table = 'KOMUNIKASI';
     protected $primaryKey = 'KOMUNIKASI_ID';

@@ -111,7 +111,7 @@ class UraianMasterJabatanImport implements ToCollection
                     }
                 }
             }
-            // if (empty($this->hubungan_kerja[0]['komunikasi'])) {
+            // if (empty($this->hubungan_kerja[0]['subjek'])) {
             //     return redirect()->back()->with('error','Hubungan Kerja Internal kosong');
             // }
             foreach ($rows as $key => $row) {
@@ -125,7 +125,7 @@ class UraianMasterJabatanImport implements ToCollection
                     }
                 }
             }
-            // if (empty($this->hubungan_kerja[0]['komunikasi'])) {
+            // if (empty($this->hubungan_kerja[0]['subjek'])) {
             //     return redirect()->back()->with('error','Hubungan kerja Eksternal kosong');
             // }
             $data['hubungan_kerja'] = $this->hubungan_kerja;
@@ -252,10 +252,10 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }    
             foreach ($data['hubungan_kerja'] as $x) {
-                if (!empty($x['komunikasi']) && !empty($x['tujuan']) && !empty($x['jenis'])) {
+                if (!empty($x['subjek']) && !empty($x['tujuan']) && !empty($x['jenis'])) {
                     HubunganKerja::create([
                         'uraian_master_jabatan_id' => $uraian_jabatan_id,
-                        'komunikasi' => $x['komunikasi'],
+                        'komunikasi' => $x['subjek'],
                         'tujuan' => $x['tujuan'],
                         'jenis' => $x['jenis'],
                     ]);

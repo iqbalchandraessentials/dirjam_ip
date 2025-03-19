@@ -29,41 +29,44 @@ class LoginController extends Controller
             return back()->with('login_error', 'Username atau password salah!');
         }
     
-        // 2️⃣ Coba Autentikasi via LDAP tanpa menyimpan ke database
-        // try {
-        //     $connection = Container::getConnection();
-        //     $ldapBind = $connection->auth()->attempt("$user_id@indonesiapower.corp", $password);
+        // // 2️⃣ Coba Autentikasi via LDAP tanpa menyimpan ke database
+        try {
+            $connection = Container::getConnection();
+            $ldapBind = $connection->auth()->attempt("$user_id@indonesiapower.corp", $password);
     
-        //     if ($ldapBind) {
-        //         // Ambil data user dari LDAP
-        //         $ldapUser = LdapUser::where('samaccountname', $user_id)->first();
+            if ($ldapBind) {
+                // Ambil data user dari LDAP
+                $ldapUser = LdapUser::where('samaccountname', $user_id)->first();
     
-        //         if (!$ldapUser) {
-        //             return back()->withErrors(['login' => 'User tidak ditemukan di LDAP.']);
-        //         }
+                if (!$ldapUser) {
+                    return back()->with('error', 'User tidak ditemukan di LDAP.');
+                }
     
-        //         // Simpan data user ke session Laravel
-        //         Session::put('user', [
-        //             'nama'        => $ldapUser->cn[0] ?? $user_id,
-        //             'jabatan'     => $ldapUser->title[0] ?? '',
-        //             'user_id'     => $ldapUser->samaccountname[0] ?? $user_id,
-        //             'username'    => $ldapUser->samaccountname[0] ?? $user_id,
-        //             'email'       => $ldapUser->mail[0] ?? "$user_id@indonesiapower.corp",
-        //             'ou'          => $ldapUser->physicaldeliveryofficename[0] ?? '',
-        //             'department'  => $ldapUser->department[0] ?? '',
-        //             'company'     => $ldapUser->company[0] ?? '',
-        //             'nip'         => $ldapUser->postofficebox[0] ?? '',
-        //             'photo'       => isset($ldapUser->thumbnailphoto) ? 
-        //                              'data:image/jpeg;base64,' . base64_encode($ldapUser->thumbnailphoto[0]) : asset('assets/images/user.png'),
-        //         ]);
-    
-        //         return redirect()->intended(route('home'));
-        //     }
-        // } catch (BindException $e) {
-        //     return back()->withErrors(['login' => 'Username atau password salah!']);
-        // }
-    
-            
+                // Simpan data user ke session Laravel
+                Session::put('user', [
+                    'nama'        => $ldapUser->cn[0] ?? $user_id,
+                    'jabatan'     => $ldapUser->title[0] ?? '',
+                    'user_id'     => $ldapUser->samaccountname[0] ?? $user_id,
+                    'username'    => $ldapUser->samaccountname[0] ?? $user_id,
+                    'email'       => $ldapUser->mail[0] ?? "$user_id@indonesiapower.corp",
+                    'ou'          => $ldapUser->physicaldeliveryofficename[0] ?? '',
+                    'department'  => $ldapUser->department[0] ?? '',
+                    'company'     => $ldapUser->company[0] ?? '',
+                    'nip'         => $ldapUser->postofficebox[0] ?? '',
+                    'photo'       => isset($ldapUser->thumbnailphoto) ? 
+                                    'data:image/jpeg;base64,' . base64_encode($ldapUser->thumbnailphoto[0]) : asset('assets/images/user.png'),
+                ]);
+
+                // Tambahkan di sini
+                // $userSession = session('user');
+                // dd($userSession);  
+
+                // redirect sebaiknya di letakkan setelah dd
+                return redirect()->intended(route('home'));
+            }
+        } catch (BindException $e) {
+            return back()->with('error', 'Username atau password salah!');
+        }     
     }
 
     public function logout()

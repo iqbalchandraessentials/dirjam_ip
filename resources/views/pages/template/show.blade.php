@@ -441,7 +441,7 @@
                                                     <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
                                                 </td>
                                                 <td style="text-align: center">
-                                                    {{ $v['komunikasi'] }} 
+                                                    {{ $v['subjek'] }} 
                                                 </td>
                                                 <td style="text-align: center">{{ $v['tujuan'] }}</td>
                                             </tr>
@@ -483,7 +483,7 @@
                                                 <span class="badge bg-dark" style="min-width: 32px">{{ $no++ }}</span>
                                             </td>
                                             <td style="text-align: center">
-                                                {{ $v['komunikasi'] }} 
+                                                {{ $v['subjek'] }} 
                                             </td>
                                             <td style="text-align: center">{{ $v['tujuan'] }}</td>
                                         </tr>

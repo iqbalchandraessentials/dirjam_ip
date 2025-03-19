@@ -3,8 +3,8 @@
     <a href="javascript:void(0);" class="logo">
         <!-- mini logo -->
         <div class="logo-mini">
-            <span class="dark-logo test1"><img src="{{ asset('img/ip.png') }}" style="height: 46px" alt="logo"></span>
-            <span class="light-logo test2"><img src="{{ asset('img/ip.png') }}" style="height: 46px" alt="logo"></span>
+            <span class="dark-logo test1"><img src="{{ asset('img/PLN-IP-DIRJAB.png') }}" style="height: 46px" alt="logo"></span>
+            <span class="light-logo test2"><img src="{{ asset('img/PLN-IP-DIRJAB.png') }}" style="height: 46px" alt="logo"></span>
             {{-- <i class="ti-blackboard"></i> --}}
         </div>
         <!-- logo-->
@@ -16,9 +16,9 @@
     <nav class="navbar navbar-static-top">
         <!-- Sidebar toggle button-->
         <div>
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            {{-- <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <i class="ti-align-left"></i>
-            </a>
+            </a> --}}
         </div>
         <div class="navbar-custom-menu r-side">
             <ul class="nav navbar-nav">
@@ -304,9 +304,9 @@
                     </a>
                     <ul class="dropdown-menu animated flipInX">
                         <!-- User image -->
-                        <li class="user-header" style="background-color: #14A2B8" data-overlay="3">
+                        <li class="user-header" style="background-color: #262626" data-overlay="3">
                             <div class="flexbox align-self-center">
-                                <img src="{{ asset('img/logo.png') }}" class="float-left rounded-circle" alt="User Image">
+                                <img src="{{ asset('img/avatar/user2-160x160.jpeg') }}" class="float-left rounded-circle" alt="User Image">
                                 <h4 class="user-name align-self-center">
                                     <span>{{Auth::user()->name}}</span>
                                     <small>{{ Auth::user()->unitKerja->unit_nama }}</small>

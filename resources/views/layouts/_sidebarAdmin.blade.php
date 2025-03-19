@@ -1,24 +1,28 @@
 <aside class="main-sidebar">
-    <!-- sidebar-->
+    <!-- Sidebar -->
     <section class="sidebar">
-        <!-- sidebar menu-->
+        <!-- Sidebar menu -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="header nav-small-cap text-uppercase text-white">Direktori Jabatan</li>
-            {{-- <li class="pt-3 {{ Request::is('approval_list') ? 'active' : '' }}">
-                <a href="{{ route('approval_list') }}">
-                    <i class="ti-clipboard"></i>
-                    <span>Approval List</span>
-                </a>
-            </li> --}}
-        
-            {{-- <li class="header nav-small-cap text-uppercase">Job Description</li> --}}
+            <!-- User Header -->
+            <li class="user-header text-center" style="margin-top: 20px;">
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <img src="{{ asset('img/avatar/user2-160x160.jpeg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="User Image">
+                </div>
+            </li>
+            <li class="header nav-small-cap text-uppercase text-white text-center">
+                {{ Auth::user()->name }}
+                <br>
+                @foreach(Auth::user()->getRoleNames() as $role)
+                    {{ $role }}
+                @endforeach
+            </li>
             <li class="{{ Request::is('home','cluster-detail/*' , '/') ? 'active' : '' }}">
                 <a href="{{ route('home') }}">
                     <i class="ti-home"></i>
                     <span>Home</span>
                 </a>
             </li>
-            {{-- @if(auth()->user()->hasRole('SuperAdmin')) --}}
+            
                 <li class="treeview {{ Request::segment(1) === 'master_data' ? 'active' : '' }}">
                     <a href="#">
                         <i class="ti-settings"></i>
@@ -96,7 +100,6 @@
                         </li>
                     </ul>
                 </li>
-            {{-- @endif --}}
             <li class="{{ Request::is('template-jabatan/*','template-jabatan', 'template-draft/*') ? 'active' : '' }}">
                 <a href="{{ route('template_jabatan.index') }}">
                     <i class="ti-medall"></i>
@@ -126,8 +129,7 @@
                     <i class="ti-power-off"></i>
                     <span>Log Out</span>
                 </a>
-            </li>
+            </li>           
         </ul>
-        
     </section>
 </aside>

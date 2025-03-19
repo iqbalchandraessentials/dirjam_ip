@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\KemampuandanPengalaman;
 use App\Models\KeterampilanNonteknis;
 use App\Models\KeterampilanTeknis;
-use App\Models\M_AKTIVITAS;
-use App\Models\M_KOMUNIKASI;
+use App\Models\Aktivitas;
+use App\Models\Komunikasi;
 use App\Models\M_MAP_PENDIDIKAN;
-use App\Models\M_PENGAMBILAN_KEPUTUSAN;
+use App\Models\PengambilanKeputusan;
 use App\Models\M_PROFESI;
-use App\Models\M_TANTANGAN;
+use App\Models\Tantangan;
 use App\Models\MappingNatureOfImpact;
 use App\Models\MasalahKompleksitasKerja;
 use App\Models\MasterJabatan;
@@ -148,8 +148,8 @@ class TemplateJabatanController extends Controller
             return response()->json(['error' => 'Data tidak ditemukan'], 404);
         }
         $type = $x->type == 'F' ? 'fungsional' : 'struktural';
-        $tantangan = M_TANTANGAN::select('tantangan')->where('uraian_jabatan_id', $x->template_id)->get();
-        $pengambilan_keputusan = M_PENGAMBILAN_KEPUTUSAN::select('pengambilan_keputusan')->where('uraian_jabatan_id', $x->template_id)->get();
+        $tantangan = Tantangan::select('tantangan')->where('uraian_jabatan_id', $x->template_id)->get();
+        $pengambilan_keputusan = PengambilanKeputusan::select('pengambilan_keputusan')->where('uraian_jabatan_id', $x->template_id)->get();
         $data = [
             'fungsi_utama' => $x->fungsi_utama,
             'nama' => $x->master_jabatan,
@@ -167,12 +167,12 @@ class TemplateJabatanController extends Controller
             ->distinct()
             ->orderBy('MASTER_JABATAN')
             ->get(),
-            'PokoUtamaGenerik' => M_AKTIVITAS::where('uraian_jabatan_id', $x->template_id)->get(),
+            'PokoUtamaGenerik' => Aktivitas::where('uraian_jabatan_id', $x->template_id)->get(),
             'masalahKompleksitasKerja' => isset($tantangan[0]['tantangan']) ? $tantangan : null,
             'wewenangJabatan' => isset($pengambilan_keputusan[0]['pengambilan_keputusan']) ? $pengambilan_keputusan : null,
         ];
         $data['spesifikasiPendidikan'] = (new M_MAP_PENDIDIKAN())->getByJabatan($x->template_id);
-        $data['hubunganKerja'] = M_KOMUNIKASI::where('URAIAN_JABATAN_ID', $x->template_id)->orderBy('URUTAN')->get();
+        $data['hubunganKerja'] = Komunikasi::where('URAIAN_JABATAN_ID', $x->template_id)->orderBy('URUTAN')->get();
         return $this->finalizeData($data, $type, $x->parent_position_id, $x->position_id);
     }
     

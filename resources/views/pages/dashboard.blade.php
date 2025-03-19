@@ -5,52 +5,54 @@
 @endsection
 
 @section('title', 'Dashboard | Direktori Jabatan')
+
 @section('content')
-<div class="box">
-    <div class="box-body">
-            <div class="row justify-content-center">
-                <div class="col-6">
-                    <div id="IndonesiaPower" style="height: 300px;"></div>
-                </div>
+<div class="box shadow">
+    <div class="box-header">
+        <div class="row">
+            <div class="box-title text-center">
+                <h1>Dashboard</h1>
             </div>
-            
-            <div class="row mt-4">
-                @foreach ($chartdata as $v)
-                    @if ($v['element'] !== 'IndonesiaPower')
-                        <div class="col-4">
-                            <a href="{{route('cluster.detail', $v['element'])}}">
-                                <div id="{{ $v['element'] }}" style="height: 200px;"></div>
-                            </a>
+            <hr>
+        </div>
+    </div>
+        <div class="box-body">
+            {{-- Tampilan untuk Indonesia Power --}}
+            <div class="row">
+            <div class="col-12 col-md-8 col-xl-6">
+                    <div class="flexbox flex-justified text-center mb-30 bg-primary">
+                        <div class="no-shrink py-30">
+                            <span class="ti-bolt font-size-50"></span>
                         </div>
+                        <div class="py-30 bg-white text-dark">
+                            <div class="font-size-30">{{ $persen_indonesia_power }}/<span class="font-size-18">{{ $sisa_persen_indonesia_power }}</span></div>
+                            <span>Indonesia Power</span>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="row">
+                {{-- Tampilan untuk Jenis Progres lainnya --}}
+                @foreach($dataPersen as $data)
+                    @if ($data['jenis'] !== 'Indonesia Power')
+                    <div class="col-12 col-md-6 col-xl-4">
+                    <div class="flexbox flex-justified text-center mb-30 bg-danger">
+                        <a href=" {{route('cluster.detail', $data['jenis'])}} ">
+                            <div class="no-shrink py-30 text-white">
+                                <span class="ti-link font-size-50"></span>
+                            </div>
+                        </a>
+                        <div class="py-30 bg-white text-dark">
+                            <div class="font-size-30">{{  $data['persen'] }}/<span class="font-size-18">{{ $data['sisa_persen'] }}</span></div>
+                            <span>{{ $data['jenis'] }}</span>
+                        </div>
+                    </div>
+                    </div>
                     @endif
                 @endforeach
             </div>
-            </div>
-            </div>
+        </div>
+    </div>
 @endsection
 
-@section('script')
-<script>
-    $(document).ready(function() {
-        // Chart Indonesia Power dengan warna khusus
-        new Morris.Donut({
-            element: 'IndonesiaPower',
-            data: {!! json_encode(collect($chartdata)->firstWhere('element', 'IndonesiaPower')['data']) !!},
-            colors: ["#14A3B9", "#FF5733"],
-            resize: true
-        });
 
-        // Chart lainnya
-        @foreach ($chartdata as $v)
-            @if ($v['element'] !== 'IndonesiaPower')
-                new Morris.Donut({
-                    element: '{{ $v['element'] }}',
-                    data: {!! json_encode($v['data']) !!},
-                    colors: ["#14A2B8", "#FF5733", "#28A745", "#FFC107", "#6C757D", "#17A2B8", "#DC3545"],
-                    resize: true
-                });
-            @endif
-        @endforeach
-    });
-</script>
-@endsection
