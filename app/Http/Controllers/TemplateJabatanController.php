@@ -68,13 +68,21 @@ class TemplateJabatanController extends Controller
     public function getDatas($masterJabatan, $unit_kd = '', $id = null)
     {
         $masterJabatan = base64_decode($masterJabatan);
-        $data = ViewUraianJabatan::where([['MASTER_JABATAN', $masterJabatan],['SITEID', $unit_kd]])->with(['namaProfesi','jenjang_jabatan','tugas_pokok_utama','tugas_pokok_generik', 'hubungan_kerja', 'keterampilan_non_teknis'])->first();
+        $data = ViewUraianJabatan::where([['MASTER_JABATAN', $masterJabatan],['SITEID', $unit_kd]])->with(['namaProfesi','jenjang_jabatan','tugas_pokok_generik','keterampilan_non_teknis'])->first();
         if (!$data) {
             return response()->json(['error' => 'Data tidak ditemukan'], 404);
         }
+        if ($id) {
+            $urjab = UraianJabatan::with(['tugas_pokok_utama','spesifikasi_pendidikan','tantangan','pengambilan_keputusan','kemampuan_dan_pengalaman'])->where('uraian_jabatan_id', $id)->first();
+            $data['tugas_pokok_utama'] = $urjab->tugas_pokok_utama;
+            $data['spesifikasi_pendidikan'] = $urjab->spesifikasi_pendidikan;
+            $data['tantangan'] = $urjab->tantangan;
+            $data['pengambilan_keputusan'] = $urjab->pengambilan_keputusan;
+            $data['kemampuan_dan_pengalaman'] = $urjab->kemampuan_dan_pengalaman;
+        }
         foreach ($data['spesifikasi_pendidikan'] as $key => $item) {
-            $masterPendidikan = MasterPendidikan::where('nama', $item['pendidikan'])->where('jenjang_jabatan', $data['jabatans'][0]['jen'] ?? null)->first();
-            $data['spesifikasi_pendidikan'][$key]['pengalaman'] = $masterPendidikan->pengalaman ?? '-';
+            $masterPendidikan = MasterPendidikan::where('nama', $item['pendidikan'])->where('jenjang_jabatan', $data['jen'] ?? null)->first();
+            $data['spesifikasi_pendidikan'][$key]['pengalaman'] = $masterPendidikan->pengalaman ?? $item->pengalaman;
         }
         $data['jenis_jabatan'] = $data['jen'] == 'F' ? 'FUNGSIONAL' : 'STRUKTRUAL';
         $data['waktu_dibuat'] = Carbon::parse($data['waktu_dibuat']);

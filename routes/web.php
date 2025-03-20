@@ -12,11 +12,10 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\TemplateJabatanController;
 use App\Http\Controllers\UraianJabatanController;
 
-Route::post('/login-dirjab', [LoginController::class, 'login'])->name('login.dirjab');
+Route::middleware(['guest'])->group(function () {
+    Route::post('/login-dirjab', [LoginController::class, 'login'])->name('login.dirjab');
+});
 
-Route::get('/dashboard', function () {
-    return view('pages.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 // Route::get('/approval_list', function () {
 //     return view('pages.approval_list');
@@ -24,7 +23,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
-    Route::get('/home', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('home');
+    Route::get('/home', [DashboardController::class, 'index'])->name('home');
+    Route::get('/dasboard', [DashboardController::class, 'index'])->name('dasboard');
     Route::get('/cluster-detail/{id}', [DashboardController::class, 'getClusterDetail'])->name('cluster.detail');
     Route::resource('uraian_jabatan', UraianJabatanController::class);
     Route::post('filter-uraian_jabatan/', [UraianJabatanController::class, 'filterData'])->name('uraian_jabatan.filter');
@@ -107,10 +107,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
     Route::post('users/{user}/assign-permission', [UserController::class, 'assignPermission'])->name('users.assignPermission');
     Route::post('users/{user}/updateRolesPermissions', [UserController::class, 'updateRolesPermissions'])->name('users.updateRolesPermissions');
-});
-
-Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.updatePermissions');
-Route::middleware(['auth'])->group(function () {
+    // permission
+    Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.updatePermissions');
     Route::resource('permissions', PermissionController::class);
     Route::post('permissions/assign/{user}', [PermissionController::class, 'assignPermission'])->name('permissions.assign');
 });

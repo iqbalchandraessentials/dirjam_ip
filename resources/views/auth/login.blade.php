@@ -38,11 +38,11 @@
                                             <i class="ti-user"></i>
                                         </span>
                                     </div>
-                                    <input type="text" id="user_id"
-                                        class="form-control pl-15 bg-transparent bt-0 bl-0 br-0 text-white @error('user_id') is-invalid @enderror"
-                                        name="user_id" value="{{ old('user_id') }}" required autocomplete="username"
+                                    <input type="text" id="username"
+                                        class="form-control pl-15 bg-transparent bt-0 bl-0 br-0 text-white @error('username') is-invalid @enderror"
+                                        name="username" value="{{ old('username') }}" required autocomplete="username"
                                         autofocus placeholder="Masukkan Username">
-                                    @error('user_id')
+                                    @error('username')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

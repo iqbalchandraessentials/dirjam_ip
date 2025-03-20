@@ -19,7 +19,7 @@
         <div class="box-body">
             {{-- Tampilan untuk Indonesia Power --}}
             <div class="row">
-            <div class="col-12 col-md-8 col-xl-6">
+            <div class="col-12 col-md-8 col-xl-3">
                     <div class="flexbox flex-justified text-center mb-30 bg-primary">
                         <div class="no-shrink py-30">
                             <span class="ti-bolt font-size-50"></span>
@@ -30,16 +30,14 @@
                         </div>
                     </div>
                 </div>
-                </div>
-                <div class="row">
                 {{-- Tampilan untuk Jenis Progres lainnya --}}
                 @foreach($dataPersen as $data)
                     @if ($data['jenis'] !== 'Indonesia Power')
-                    <div class="col-12 col-md-6 col-xl-4">
+                    <div class="col-12 col-md-6 col-xl-3">
                     <div class="flexbox flex-justified text-center mb-30 bg-danger">
                         <a href=" {{route('cluster.detail', $data['jenis'])}} ">
                             <div class="no-shrink py-30 text-white">
-                                <span class="ti-link font-size-50"></span>
+                                <span class="ti-briefcase font-size-50"></span>
                             </div>
                         </a>
                         <div class="py-30 bg-white text-dark">
