@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pokok_utama_generiks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('uraian_master_jabatan_id')->nullable();
+            $table->unsignedBigInteger('uraian_jabatan_id')->nullable();
             $table->enum('jenis_jabatan',['fungsional','struktural'])->nullable();
             $table->string('aktivitas', 2000);
             $table->string('output');

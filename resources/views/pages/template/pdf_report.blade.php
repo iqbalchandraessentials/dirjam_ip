@@ -102,7 +102,7 @@
                     <br />
         </th>
         <td style="width:110px">Tanggal</td>
-        <td style="width:140px">{{ isset($data['waktu_dibuat']) ? date_format($data['waktu_dibuat'], 'd-m-Y') : '-' }}</td>
+        <td style="width:140px">{{ $data['waktu_approve'] }}</td>
     </tr>
     <tr>
         <td>No Record</td>

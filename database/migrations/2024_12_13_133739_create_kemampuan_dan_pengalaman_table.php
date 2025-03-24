@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('kemampuan_dan_pengalaman', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('uraian_master_jabatan_id')->nullable();
+            $table->unsignedBigInteger('uraian_jabatan_id')->nullable();
             $table->enum('jenis_jabatan',['fungsional','struktural'])->nullable();
             $table->string('definisi');
             $table->string('created_by')->nullable();

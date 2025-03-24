@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SpesifikasiPendidikan extends Model
 {
     protected $fillable = [
-        'URAIAN_MASTER_JABATAN_ID',
+        'uraian_jabatan_id',
         'pendidikan',
         'pengalaman',
         'bidang_studi',

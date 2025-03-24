@@ -104,7 +104,7 @@ class UraianMasterJabatanImport implements ToCollection
                 if ($key >= 90 && $key <= 101) {
                     if (!empty($row[2]) && !empty($row[3])) {
                         $this->hubungan_kerja[] = [
-                            'komunikasi' => $row[2],
+                            'subjek' => $row[2],
                             'tujuan' => $row[3],
                             'jenis' => 'internal',
                         ];
@@ -118,7 +118,7 @@ class UraianMasterJabatanImport implements ToCollection
                 if ($key >= 104 && $key <= 111) {
                     if (!empty($row[2]) && !empty($row[3])) {
                         $this->hubungan_kerja[] = [
-                            'komunikasi' => $row[2],
+                            'subjek' => $row[2],
                             'tujuan' => $row[3],
                             'jenis' => 'external',
                         ];
@@ -193,22 +193,20 @@ class UraianMasterJabatanImport implements ToCollection
             if ($validator->fails()) {
                 return redirect()->back()->with('error','Komptensi Teknis salah atau kosong');
             }
-            $data['kompetensi_teknis'] = $this->kompetensi_teknis;
             // akhir kompetensi teknis
+            $data['kompetensi_teknis'] = $this->kompetensi_teknis;
             // menampilkan error
             if (!empty($errors)) {
                 return redirect()->back()->with('error', implode(', ', $errors));
             }
-
             // end of get data
             // dd($viewUraianJabatan);
-            // dd($data['tugas_pokok_utama']);
+            // dd($data);
             // +=+
             $turnOff = UraianJabatan::where('active_flag', 1)
             ->where('nama_template', $data['nama'])
-            ->where('unit_kd', $data['unit_id']) // Pastikan unit_kd sesuai dengan database
-            ->update(['active_flag' => 0, 'sign4_id' => 0]);
-            // DB::commit();
+            ->where('unit_kd', $data['unit_id'])
+            ->update(['active_flag' => 0, 'sign4_id' => 0, 'template_flag' => null ]);
 
             $uraian_jabatan = UraianJabatan::create([
                 'nama_template' => $data['nama'],
@@ -216,14 +214,20 @@ class UraianMasterJabatanImport implements ToCollection
                 'unit_kd' => $data['unit_id'], 
                 'dibuat_oleh' => Auth::user()->name,
                 'waktu_dibuat' => Carbon::now(),
+                'anggaran' => $data['anggaran'],
+                'accountability' => $data['accountability'],
+                'nature_impact' => $data['nature_impact'],
                 'active_flag' => 1,
-                'sign4_id' => 1
+                'status' => 'TEMPLATE',
+                'template_flag' => 1,
+                'sign4_id' => 1,
+                'periode_date' => Carbon::now(),
             ]);
-            $uraian_jabatan_id = $uraian_jabatan->URAIAN_JABATAN_ID;
+
             foreach ($data['tugas_pokok_utama'] as $x) {
                 if (!empty($x['aktivitas']) && !empty($x['output'])) {
                     Aktivitas::create([
-                        'uraian_jabatan_id' => $uraian_jabatan_id,
+                        'uraian_jabatan_id' => $uraian_jabatan->uraian_jabatan_id,
                         'aktivitas' => $x['aktivitas'],
                         'output' => $x['output'],
                         'dibuat_oleh' => Auth::user()->name,
@@ -232,7 +236,70 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
 
+            foreach ($data['hubungan_kerja'] as $x) {
+                if (!empty($x['subjek']) && !empty($x['tujuan']) && !empty($x['jenis'])) {
+                   $test [] = Komunikasi::create([
+                        'uraian_jabatan_id' => $uraian_jabatan->uraian_jabatan_id,
+                        'subjek' => $x['subjek'],
+                        'tujuan' => $x['tujuan'],
+                        'lingkup_flag' => $x['jenis'],
+                        'dibuat_oleh' => Auth::user()->name,
+                        'waktu_dibuat' => Carbon::now()
+                    ]);
+                }
+            }
+
+            foreach ($data['masalah_kompleksitas_kerja'] as $x) {
+                if (!empty($x['masalah_kompleksitas_kerja'])) {
+                    Tantangan::create([
+                        'uraian_jabatan_id' => $uraian_jabatan->uraian_jabatan_id,
+                        'tantangan' => $x['masalah_kompleksitas_kerja'],
+                        'dibuat_oleh' => Auth::user()->name,
+                        'waktu_dibuat' => Carbon::now()
+                    ]);
+                }
+            }
+
+            foreach ($data['wewenang_jabatan'] as $x) {
+                if (!empty($x['wewenang_jabatan'])) {
+                    PengambilanKeputusan::create([
+                        'uraian_jabatan_id' => $uraian_jabatan->uraian_jabatan_id,
+                        'pengambilan_keputusan' => $x['wewenang_jabatan'],
+                        'dibuat_oleh' => Auth::user()->name,
+                        'waktu_dibuat' => Carbon::now()
+                    ]);
+                }
+            }
+
+            foreach ($data['pendidikan'] as $x) {
+                if (!empty($x['pendidikan']) && !empty($x['pengalaman'])) {
+                    $pengalaman = MasterPendidikan::select('pengalaman')
+                        ->where('jenjang_jabatan', $viewUraianJabatan->jen)
+                        ->where('nama', $x['pendidikan'])
+                        ->first();
+
+                    $pengalamanValue = is_numeric($pengalaman->pengalaman) ? $pengalaman->pengalaman : 0;
+
+                    SpesifikasiPendidikan::create([
+                        'uraian_jabatan_id' => $uraian_jabatan->uraian_jabatan_id,
+                        'pendidikan' => $x['pendidikan'],
+                        'pengalaman' => $pengalamanValue,
+                        'bidang_studi' => $x['bidang_studi'] ?? null,
+                    ]);
+                }
+            }
+
+            foreach ($data['kemampuan_pengalaman'] as $x) {
+                if (!empty($x['definisi'])) {
+                    KemampuandanPengalaman::create([
+                        'uraian_jabatan_id' => $uraian_jabatan->uraian_jabatan_id,
+                        'definisi' => $x['definisi'],
+                    ]);
+                }
+            }
+
             KeterampilanTeknis::where('master_jabatan', $data['nama'] )->where('kategori', 'CORE')->delete();
+
             foreach ($data['kompetensi_teknis'] as $x) {
                 if (!empty($x['kode_kompetensi']) && !empty($x['level'])) {
                     $master_detail_kompetensi = $x['kode_kompetensi'].'.'.$x['level'];
@@ -245,64 +312,6 @@ class UraianMasterJabatanImport implements ToCollection
                     ]);
                 }
             }
-            foreach ($data['hubungan_kerja'] as $x) {
-                if (!empty($x['subjek']) && !empty($x['tujuan']) && !empty($x['jenis'])) {
-                    Komunikasi::create([
-                        'uraian_jabatan_id' => $uraian_jabatan_id,
-                        'subjek' => $x['subjek'],
-                        'tujuan' => $x['tujuan'],
-                        'lingkup_flag' => $x['jenis'],
-                        'dibuat_oleh' => Auth::user()->name,
-                        'waktu_dibuat' => Carbon::now()
-                    ]);
-                }
-            }
-            foreach ($data['masalah_kompleksitas_kerja'] as $x) {
-                if (!empty($x['masalah_kompleksitas_kerja'])) {
-                    Tantangan::create([
-                        'uraian_jabatan_id' => $uraian_jabatan_id,
-                        'tantangan' => $x['masalah_kompleksitas_kerja'],
-                        'dibuat_oleh' => Auth::user()->name,
-                        'waktu_dibuat' => Carbon::now()
-                    ]);
-                }
-            }
-            foreach ($data['wewenang_jabatan'] as $x) {
-                if (!empty($x['wewenang_jabatan'])) {
-                    PengambilanKeputusan::create([
-                        'uraian_jabatan_id' => $uraian_jabatan_id,
-                        'pengambilan_keputusan' => $x['wewenang_jabatan'],
-                        'dibuat_oleh' => Auth::user()->name,
-                        'waktu_dibuat' => Carbon::now()
-                    ]);
-                }
-            }
-            foreach ($data['kemampuan_pengalaman'] as $x) {
-                if (!empty($x['definisi'])) {
-                    KemampuandanPengalaman::create([
-                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
-                        'definisi' => $x['definisi'],
-                    ]);
-                }
-            }
-            
-             foreach ($data['pendidikan'] as $x) {
-                if (!empty($x['pendidikan']) && !empty($x['pengalaman'])) {
-                    $pengalaman = MasterPendidikan::select('pengalaman')
-                        ->where('jenjang_jabatan', $viewUraianJabatan->jen)
-                        ->where('nama', $x['pendidikan'])
-                        ->first();
-
-                    $pengalamanValue = is_numeric($pengalaman->pengalaman) ? $pengalaman->pengalaman : 0;
-
-                    SpesifikasiPendidikan::create([
-                        'URAIAN_MASTER_JABATAN_ID' => $uraian_jabatan_id,
-                        'pendidikan' => $x['pendidikan'],
-                        'pengalaman' => $pengalamanValue,
-                        'bidang_studi' => $x['bidang_studi'] ?? null,
-                    ]);
-                }
-            };
             return $data['nama'];
         } catch (\Exception $e) {
             Log::error('Error saat membuat Template jabatan: ' . $e->getMessage());

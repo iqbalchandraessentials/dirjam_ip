@@ -1081,7 +1081,7 @@ class ExportController extends Controller
         $spreadsheet = IOFactory::load($templatePath);
         $objPHPExcel = $spreadsheet->getActiveSheet();
         $objPHPExcel->setCellValue("A6", strtoupper($data['description']));
-        $objPHPExcel->setCellValue("G4", isset($data['waktu_dibuat']) ? date_format($data['waktu_dibuat'], 'd-m-Y') : '-');
+        $objPHPExcel->setCellValue("G4", isset($data['waktu_approve']) ? $data['waktu_approve'] : '-');
         $objPHPExcel->setCellValue("G5", "-");
         $objPHPExcel->setCellValue("G6", "-");
         $objPHPExcel->setCellValue("G7", "SUDAH DI VALDASI");

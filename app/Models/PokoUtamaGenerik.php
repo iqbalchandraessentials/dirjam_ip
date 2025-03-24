@@ -8,7 +8,7 @@ class PokoUtamaGenerik extends Model
 {
     protected $table = 'pokok_utama_generiks';
     protected $fillable = [
-        'uraian_master_jabatan_id',
+        'uraian_jabatan_id',
         'aktivitas',
         'jenis_jabatan',
         'output',

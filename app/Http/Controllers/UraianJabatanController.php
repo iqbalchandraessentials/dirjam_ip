@@ -54,7 +54,7 @@ class UraianJabatanController extends Controller
     {
         $data = ViewUraianJabatan::where('uraian_jabatan_id', $id)->firstOrFail();
         $data['nature_of_impact'] = MappingNatureOfImpact::where('kode_profesi', $data->nama_profesi)->value('jenis');
-        $spesifikasiPendidikan = SpesifikasiPendidikan::where('uraian_master_jabatan_id', $data->template_id)->get();
+        $spesifikasiPendidikan = SpesifikasiPendidikan::where('uraian_jabatan_id', $data->template_id)->get();
         $data['pendidikan'] = $spesifikasiPendidikan->isEmpty() ? (new M_MAP_PENDIDIKAN())->getByJabatan($id) : $spesifikasiPendidikan;
         if ($data['tantangan']->isEmpty() || $data['tantangan']->whereNotNull('definisi')->isEmpty()) {
             $data['tantangan'] = MasalahKompleksitasKerja::where('jenis_jabatan', $data->type)->get();

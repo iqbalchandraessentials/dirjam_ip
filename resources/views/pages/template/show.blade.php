@@ -29,9 +29,9 @@
                             <i class="ti-file"></i>
                             TEMPLATE
                         </h2>
-                        @if (isset($data['waktu_dibuat']))
+                        @if (isset($data['waktu_approve']))
                             <p>
-                                {{ date_format($data['waktu_dibuat'], 'd-m-Y') }}
+                                {{ $data['waktu_approve'] }}
                             </p>
                         @endif
                     </div>

@@ -229,7 +229,7 @@ class UraianMasterJabatanImport implements ToCollection
             foreach ($data['tugas_pokok_utama'] as $x) {
                 if (!empty($x['aktivitas']) && !empty($x['output'])) {
                     PokoUtamaGenerik::create([
-                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
+                        'uraian_jabatan_id' => $uraian_jabatan_id,
                         'aktivitas' => $x['aktivitas'],
                         'output' => $x['output'],
                         'jenis' => 'utama',
@@ -254,7 +254,7 @@ class UraianMasterJabatanImport implements ToCollection
             foreach ($data['hubungan_kerja'] as $x) {
                 if (!empty($x['subjek']) && !empty($x['tujuan']) && !empty($x['jenis'])) {
                     HubunganKerja::create([
-                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
+                        'uraian_jabatan_id' => $uraian_jabatan_id,
                         'komunikasi' => $x['subjek'],
                         'tujuan' => $x['tujuan'],
                         'jenis' => $x['jenis'],
@@ -264,7 +264,7 @@ class UraianMasterJabatanImport implements ToCollection
             foreach ($data['masalah_kompleksitas_kerja'] as $x) {
                 if (!empty($x['masalah_kompleksitas_kerja'])) {
                     MasalahKompleksitasKerja::create([
-                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
+                        'uraian_jabatan_id' => $uraian_jabatan_id,
                         'definisi' => $x['masalah_kompleksitas_kerja'],
                     ]);
                 }
@@ -272,7 +272,7 @@ class UraianMasterJabatanImport implements ToCollection
             foreach ($data['wewenang_jabatan'] as $x) {
                 if (!empty($x['wewenang_jabatan'])) {
                     WewenangJabatan::create([
-                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
+                        'uraian_jabatan_id' => $uraian_jabatan_id,
                         'definisi' => $x['wewenang_jabatan'],
                     ]);
                 }
@@ -280,7 +280,7 @@ class UraianMasterJabatanImport implements ToCollection
             foreach ($data['kemampuan_pengalaman'] as $x) {
                 if (!empty($x['definisi'])) {
                     KemampuandanPengalaman::create([
-                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
+                        'uraian_jabatan_id' => $uraian_jabatan_id,
                         'definisi' => $x['definisi'],
                     ]);
                 }
@@ -295,7 +295,7 @@ class UraianMasterJabatanImport implements ToCollection
                     $pengalamanValue = is_numeric($pengalaman->pengalaman) ? $pengalaman->pengalaman : 0;
 
                     SpesifikasiPendidikan::create([
-                        'uraian_master_jabatan_id' => $uraian_jabatan_id,
+                        'uraian_jabatan_id' => $uraian_jabatan_id,
                         'pendidikan' => $x['pendidikan'],
                         'pengalaman' => $pengalamanValue,
                         'bidang_studi' => $x['bidang_studi'] ?? null,

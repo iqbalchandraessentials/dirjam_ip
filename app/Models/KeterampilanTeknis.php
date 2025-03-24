@@ -31,6 +31,6 @@ class KeterampilanTeknis extends Model
     }
     public function uraianJabatan()
     {
-        return $this->hasOne(UraianMasterJabatan::class, 'id', 'uraian_master_jabatan_id');
+        return $this->hasOne(UraianMasterJabatan::class, 'id', 'uraian_jabatan_id');
     }
 }

@@ -31,12 +31,8 @@ class TemplateJabatanController extends Controller
     public function filterData(Request $request)
     {
         $unit_kd = $request->input('unit', Auth::user()->unit_kd);
-        $data = ViewUraianJabatan::where('completed', 'Completed')->where('status', 'APPROVE')->select('master_jabatan', 'unit_kd', 'jen')
-            ->groupBy('master_jabatan', 'unit_kd', 'jen')
-            ->when(!empty($unit_kd), function ($query) use ($unit_kd) {
-                return $query->where('unit_kd', $unit_kd);
-            })
-            ->get();
+        // $data = ViewUraianJabatan::where('completed', 'Completed')->where('status', 'APPROVE')->where('unit_kd', $unit_kd)->get();
+        $data = ViewUraianJabatan::where('completed', 'Completed')->where('status', 'APPROVE')->select('status', 'master_jabatan', 'unit_kd', 'jen')->groupBy('status', 'master_jabatan', 'unit_kd', 'jen')->where('unit_kd', $unit_kd)->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) use ($unit_kd) {
@@ -73,17 +69,20 @@ class TemplateJabatanController extends Controller
             return response()->json(['error' => 'Data tidak ditemukan'], 404);
         }
         if ($id) {
-            $urjab = UraianJabatan::with(['tugas_pokok_utama','spesifikasi_pendidikan','tantangan','pengambilan_keputusan','kemampuan_dan_pengalaman'])->where('uraian_jabatan_id', $id)->first();
+            $urjab = UraianJabatan::with(['tugas_pokok_utama', 'hubungan_kerja', 'spesifikasi_pendidikan','tantangan','pengambilan_keputusan','kemampuan_dan_pengalaman'])->where('uraian_jabatan_id', $id)->first();
             $data['tugas_pokok_utama'] = $urjab->tugas_pokok_utama;
-            $data['spesifikasi_pendidikan'] = $urjab->spesifikasi_pendidikan;
+            $data['hubungan_kerja'] = $urjab->hubungan_kerja;
             $data['tantangan'] = $urjab->tantangan;
             $data['pengambilan_keputusan'] = $urjab->pengambilan_keputusan;
+            $data['spesifikasi_pendidikan'] = $urjab->spesifikasi_pendidikan;
             $data['kemampuan_dan_pengalaman'] = $urjab->kemampuan_dan_pengalaman;
+            $data['waktu_approve'] = $urjab->waktu_dibuat;
         }
         foreach ($data['spesifikasi_pendidikan'] as $key => $item) {
             $masterPendidikan = MasterPendidikan::where('nama', $item['pendidikan'])->where('jenjang_jabatan', $data['jen'] ?? null)->first();
             $data['spesifikasi_pendidikan'][$key]['pengalaman'] = $masterPendidikan->pengalaman ?? $item->pengalaman;
         }
+        $data['waktu_approve'] = Carbon::parse($data['waktu_approve'])->format('d-m-Y');
         $data['jenis_jabatan'] = $data['jen'] == 'F' ? 'FUNGSIONAL' : 'STRUKTRUAL';
         $data['waktu_dibuat'] = Carbon::parse($data['waktu_dibuat']);
         $data['jumlahRecord'] = UraianJabatan::where([['NAMA_TEMPLATE', $masterJabatan],['unit_kd', $unit_kd]])->count();

@@ -172,7 +172,7 @@ class TemplateJabatanController extends Controller
             'wewenangJabatan' => isset($pengambilan_keputusan[0]['pengambilan_keputusan']) ? $pengambilan_keputusan : null,
         ];
         $data['spesifikasiPendidikan'] = (new M_MAP_PENDIDIKAN())->getByJabatan($x->template_id);
-        $data['hubunganKerja'] = Komunikasi::where('URAIAN_JABATAN_ID', $x->template_id)->orderBy('URUTAN')->get();
+        $data['hubunganKerja'] = Komunikasi::where('uraian_jabatan_id', $x->template_id)->orderBy('URUTAN')->get();
         return $this->finalizeData($data, $type, $x->parent_position_id, $x->position_id);
     }
     

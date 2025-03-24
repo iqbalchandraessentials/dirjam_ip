@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MasalahKompleksitasKerja extends Model
 {
     protected $fillable = [
-        'uraian_master_jabatan_id',
+        'uraian_jabatan_id',
         'definisi',
         'jenis_jabatan',
         'created_by'

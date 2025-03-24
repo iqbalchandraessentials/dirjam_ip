@@ -14,7 +14,7 @@ class M_MAP_PENDIDIKAN extends Model
         return DB::table('MAP_PENDIDIKAN as mp')
             ->join('PENDIDIKAN as p', 'p.PENDIDIKAN_ID', '=', 'mp.PENDIDIKAN_ID')
             ->select('mp.*', 'p.*')
-            ->where('mp.URAIAN_JABATAN_ID', $id)
+            ->where('mp.uraian_jabatan_id', $id)
             ->orderBy('mp.PENDIDIKAN_ID', 'DESC')
             ->get();
     }

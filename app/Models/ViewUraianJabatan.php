@@ -31,7 +31,7 @@ class ViewUraianJabatan extends Model
     public function spesifikasi_pendidikan()
     {
         
-        return $this->hasMany(SpesifikasiPendidikan::class, 'uraian_master_jabatan_id', 'template_id');
+        return $this->hasMany(SpesifikasiPendidikan::class, 'uraian_jabatan_id', 'template_id');
     }
 
      public function tantangan()
@@ -46,7 +46,7 @@ class ViewUraianJabatan extends Model
     
     public function kemampuan_dan_pengalaman()
     {   
-        return $this->hasMany(KemampuandanPengalaman::class, 'uraian_master_jabatan_id', 'template_id');
+        return $this->hasMany(KemampuandanPengalaman::class, 'uraian_jabatan_id', 'template_id');
     }
 
     public function hubungan_kerja()
