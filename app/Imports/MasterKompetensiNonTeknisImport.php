@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\MasterKompetensiNonTeknis;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -30,7 +31,7 @@ class MasterKompetensiNonTeknisImport implements ToModel,WithValidation, WithHea
             'singkatan' => $row['singkatan'],
             'jenis' => $row['jenis'],
             'definisi' => $row['definisi'],
-            'created_by' => Auth::user()->name,
+            'created_by' => Session::get('user')['nama'] ?? 'SYSTEM',
         ]);
     }
     public function rules(): array

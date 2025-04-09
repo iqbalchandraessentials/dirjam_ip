@@ -17,14 +17,10 @@ Route::middleware(['guest'])->group(function () {
 });
 
 
-// Route::get('/approval_list', function () {
-//     return view('pages.approval_list');
-// })->middleware(['auth', 'verified'])->name('approval_list');
-
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth.session'])->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
-    Route::get('/home', [DashboardController::class, 'index'])->name('home');
     Route::get('/dasboard', [DashboardController::class, 'index'])->name('dasboard');
+    Route::get('/home', [DashboardController::class, 'index'])->name('home');
     Route::get('/cluster-detail/{id}', [DashboardController::class, 'getClusterDetail'])->name('cluster.detail');
     Route::resource('uraian_jabatan', UraianJabatanController::class);
     Route::post('filter-uraian_jabatan/', [UraianJabatanController::class, 'filterData'])->name('uraian_jabatan.filter');
@@ -98,6 +94,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('unit', [MasterDataController::class, 'unit'])->name('master.unit');
         Route::post('unit/update-status', [MasterDataController::class, 'updateStatusUnit'])->name('master.unit.update-status');
         Route::get('users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/tambah-roles', function () { return response()->view('pages.masterData.users.form'); });
         Route::get('stoJobcode', [MasterDataController::class, 'stoJobcode'])->name('master.stoJobcode');
         Route::resource('roles', RoleController::class);
     });

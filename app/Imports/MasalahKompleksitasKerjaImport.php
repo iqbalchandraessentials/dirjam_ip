@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\MasalahKompleksitasKerja;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -21,7 +22,7 @@ class MasalahKompleksitasKerjaImport implements ToModel, WithHeadingRow, WithVal
         return new MasalahKompleksitasKerja([
             'jenis_jabatan' => $jenis_jabatan,
             'definisi' => $row['definisi'],
-            'created_by' => Auth::user()->name,
+            'created_by' => Session::get('user')['nama'] ?? 'SYSTEM',
         ]);
     }
     public function rules(): array

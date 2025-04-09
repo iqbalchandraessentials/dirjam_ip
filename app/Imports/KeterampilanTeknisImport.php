@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
@@ -31,7 +32,7 @@ class KeterampilanTeknisImport implements ToModel, WithValidation, WithHeadingRo
             'level' => $row['level'],
             'master_detail_kompetensi_id' => $row['master_detail_kompetensi_id'],
             'kategori' => $row['kategori'],
-            'created_by' => Auth::user()->name,
+            'created_by' => Session::get('user')['nama'] ?? 'SYSTEM',
         ]);
     }
     

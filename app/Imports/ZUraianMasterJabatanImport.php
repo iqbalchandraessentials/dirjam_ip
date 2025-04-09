@@ -17,6 +17,7 @@ use App\Models\VIEW_TEMPLATE;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
@@ -222,7 +223,7 @@ class UraianMasterJabatanImport implements ToCollection
                 'anggaran' => $data['anggaran'],
                 'accountability' => $data['accountability'],
                 'nature_impact' => $data['nature_impact'],
-                'created_by' => Auth::user()->name,
+                'created_by' => Session::get('user')['nama'] ?? 'SYSTEM',
              ]);
              
             $uraian_jabatan_id = $uraian_jabatan_id->id;
@@ -233,7 +234,7 @@ class UraianMasterJabatanImport implements ToCollection
                         'aktivitas' => $x['aktivitas'],
                         'output' => $x['output'],
                         'jenis' => 'utama',
-                        'created_by' => Auth::user()->name,
+                        'created_by' => Session::get('user')['nama'] ?? 'SYSTEM',
                     ]);
                 }
             }

@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\DetailKomptensiTeknis;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -22,7 +23,7 @@ class DetailKomptensiTeknisImport implements ToModel, WithValidation, WithHeadin
             'level'=> $row['level'],
             'perilaku'=> $row['perilaku'],
             'kode_master_level'=> $row['kode_master_level'],
-            'created_by'=> Auth::user()->name,
+            'created_by'=> Session::get('user')['nama'] ?? 'SYSTEM',
         ]);
     }
     public function rules(): array

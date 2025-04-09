@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
@@ -212,7 +213,7 @@ class UraianMasterJabatanImport implements ToCollection
                 'nama_template' => $data['nama'],
                 'fungsi_utama' => $data['fungsi_utama'],
                 'unit_kd' => $data['unit_id'], 
-                'dibuat_oleh' => Auth::user()->name,
+                'dibuat_oleh' => Session::get('user')['nama'] ?? 'SYSTEM',
                 'waktu_dibuat' => Carbon::now(),
                 'anggaran' => $data['anggaran'],
                 'accountability' => $data['accountability'],
@@ -230,7 +231,7 @@ class UraianMasterJabatanImport implements ToCollection
                         'uraian_jabatan_id' => $uraian_jabatan->uraian_jabatan_id,
                         'aktivitas' => $x['aktivitas'],
                         'output' => $x['output'],
-                        'dibuat_oleh' => Auth::user()->name,
+                        'dibuat_oleh' => Session::get('user')['nama'] ?? 'SYSTEM',
                         'waktu_dibuat' => Carbon::now(),
                     ]);
                 }
@@ -243,7 +244,7 @@ class UraianMasterJabatanImport implements ToCollection
                         'subjek' => $x['subjek'],
                         'tujuan' => $x['tujuan'],
                         'lingkup_flag' => $x['jenis'],
-                        'dibuat_oleh' => Auth::user()->name,
+                        'dibuat_oleh' => Session::get('user')['nama'] ?? 'SYSTEM',
                         'waktu_dibuat' => Carbon::now()
                     ]);
                 }
@@ -254,7 +255,7 @@ class UraianMasterJabatanImport implements ToCollection
                     Tantangan::create([
                         'uraian_jabatan_id' => $uraian_jabatan->uraian_jabatan_id,
                         'tantangan' => $x['masalah_kompleksitas_kerja'],
-                        'dibuat_oleh' => Auth::user()->name,
+                        'dibuat_oleh' => Session::get('user')['nama'] ?? 'SYSTEM',
                         'waktu_dibuat' => Carbon::now()
                     ]);
                 }
@@ -265,7 +266,7 @@ class UraianMasterJabatanImport implements ToCollection
                     PengambilanKeputusan::create([
                         'uraian_jabatan_id' => $uraian_jabatan->uraian_jabatan_id,
                         'pengambilan_keputusan' => $x['wewenang_jabatan'],
-                        'dibuat_oleh' => Auth::user()->name,
+                        'dibuat_oleh' => Session::get('user')['nama'] ?? 'SYSTEM',
                         'waktu_dibuat' => Carbon::now()
                     ]);
                 }

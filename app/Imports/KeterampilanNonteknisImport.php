@@ -29,7 +29,7 @@ class KeterampilanNonteknisImport implements ToModel, WithValidation, WithHeadin
             'kategori' => $row['kategori'],
             'jenis' => $row['jenis'],
             'master_jabatan' => $row['master_jabatan'],
-            'created_by' => Auth::user()->name ?? 'system',
+            'created_by' => Session::get('user')['nama'] ?? 'SYSTEM' ?? 'system',
         ]);
     }
 

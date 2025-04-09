@@ -24,6 +24,7 @@ use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class MasterDataController extends Controller
@@ -160,7 +161,7 @@ class MasterDataController extends Controller
         MappingNatureOfImpact::create([
             'kode_profesi' => $request->kode_profesi,
             'jenis' => $request->jenis,
-            'created_by' => Auth::user()->name
+            'created_by' => Session::get('user')['nama'] ?? 'SYSTEM'
         ]);
 
         return redirect()->route('master.natureOfImpact')->with('success', 'Data berhasil ditambahkan');
@@ -284,7 +285,7 @@ class MasterDataController extends Controller
             'aktivitas' => $request->aktivitas,
             'output' => $request->output,
             'jenis_jabatan' => $request->jenis_jabatan,
-            'created_by' => Auth::user()->name,
+            'created_by' => Session::get('user')['nama'] ?? 'SYSTEM',
         ]);
         return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil ditambahkan.');
     }
@@ -302,7 +303,7 @@ class MasterDataController extends Controller
             'aktivitas' => $request->aktivitas,
             'output' => $request->output,
             'jenis_jabatan' => $request->jenis_jabatan,
-            'created_by' => Auth::user()->name,
+            'created_by' => Session::get('user')['nama'] ?? 'SYSTEM',
         ]);
         return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil diperbarui.');
     }
@@ -369,7 +370,7 @@ class MasterDataController extends Controller
             'level' => $request->level,
             'perilaku' => $request->perilaku,
             'kode_master_level' => $request->kode_master . '.' . $request->level,
-            'created_by' => Auth::user()->name
+            'created_by' => Session::get('user')['nama'] ?? 'SYSTEM'
         ]);
 
         return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
@@ -586,7 +587,7 @@ class MasterDataController extends Controller
             'nama' => $request->nama,
             'pengalaman' => $request->pengalaman,
             'jenjang_jabatan' => $request->jenjang_jabatan,
-            'created_by' => Auth::user()->name,
+            'created_by' => Session::get('user')['nama'] ?? 'SYSTEM',
         ]);
 
         return redirect()->route('master.pendidikan')->with('success', 'Data pendidikan berhasil ditambahkan.');
@@ -605,7 +606,7 @@ class MasterDataController extends Controller
             'nama' => $request->nama,
             'pengalaman' => $request->pengalaman,
             'jenjang_jabatan' => $request->jenjang_jabatan,
-            'created_by' => Auth::user()->name,
+            'created_by' => Session::get('user')['nama'] ?? 'SYSTEM',
         ]);
 
         return redirect()->route('master.pendidikan')->with('success', 'Data pendidikan berhasil diupadate.');

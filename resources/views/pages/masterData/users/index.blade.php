@@ -11,17 +11,21 @@
                         <h4 class="box-title">Hak Akses</h4>
                     </div>
                     <div class="col-6 text-right">
-                        <a class="btn btn-info text-white mb-3" href="{{route('roles.index')}}">
+                        {{-- <a class="btn btn-info text-white mb-3" href="{{route('roles.index')}}">
                             <i class="ti-eye me-1"></i><span class="ml-1">Roles</span>
+                        </a> --}}
+                        <a class="btn btn-primary text-white mb-3" href="{{url('master_data/tambah-roles')}}">
+                            <i class="ti-plus me-1"></i><span class="ml-1">Add</span>
                         </a>
-                        <a class="btn btn-primary text-white mb-3" data-toggle="modal" data-target="#addModal"
+                        {{-- <a class="btn btn-primary text-white mb-3" data-toggle="modal" data-target="#addModal"
                             rel="noopener noreferrer">
                             <i class="ti-plus me-1"></i><span class="ml-1"> Add</span>
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>
             <div class="box-body">
+
                 @include('components.notification')
                 <table class="table table-bordered table-striped dataTables">
                     <thead class="table-dark">
@@ -29,12 +33,22 @@
                             <th>Name</th>
                             <th>Unit</th>
                             <th>Roles</th>
-                            <th style="width: 350px;">Actions</th>
+                            {{-- <th style="width: 350px;">Actions</th> --}}
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
-                            <tr>
+
+
+                        <tr>
+                            <td class="text-capitalize"> 
+                                {{$user->nama_lengkap}}
+                            </td>
+                            <td> {{$user->unit_id}} </td>
+                            <td> {{$user->role}} </td>
+                        </tr>
+
+                            {{-- <tr>
                                 <td class="text-uppercase"> 
                                     <a href="#" class="edit-user-btn"
                                         data-user="{{ json_encode($user) }}">{{ $user->name }}</a>
@@ -64,18 +78,18 @@
                                         </form>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr> --}}
                         @endforeach
                     </tbody>
                 </table>
-               @include('pages.masterData.users.partial.modal')
+               {{-- @include('pages.masterData.users.partial.modal') --}}
             </div>
         </div>
     </div>
 @endsection
 
 @section('script')
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             // Submit form with confirmation for Assign Role
             $('.assign-role-form').on('submit', function(e) {
@@ -106,5 +120,5 @@
                 $('#editUserModal').modal('show');
             });
         });
-    </script>
+    </script> --}}
 @endsection

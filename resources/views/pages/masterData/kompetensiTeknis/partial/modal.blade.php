@@ -30,7 +30,7 @@
                         <textarea class="form-control" id="perilaku" name="perilaku" rows="4" required></textarea>
                     </div>
                     <input type="hidden" id="kode_master_level" name="kode_master_level">
-                    <input type="hidden" id="created_by" name="created_by" value="{{ Auth::user()->name }}">
+                    <input type="hidden" id="created_by" name="created_by" value="{{ Session::get('user')['nama'] ?? 'SYSTEM' }}">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
