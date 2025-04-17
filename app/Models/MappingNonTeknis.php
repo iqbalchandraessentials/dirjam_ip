@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class KeterampilanNonteknis extends Model
+class MappingNonTeknis extends Model
 {
-
-    protected $table = 'keterampilan_nonteknis';
+    protected $table = 'MAPPING_NON_TEKNIS';
 
     protected $fillable = [
         'master_jabatan',
+        'jenis_pembangkit',
         'kode',
         'kategori',
         'jenis',

@@ -24,6 +24,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        try {   
         $request->validate([
             'userid'     => 'required',
             'name'       => 'required',
@@ -31,39 +32,22 @@ class UserController extends Controller
             'hak_akses'  => 'required',
         ]);
 
-        $user = User::updateOrCreate(
+        User::updateOrCreate(
             ['user_id' => $request->userid],
             [
-                'name'     => $request->name,
-                'email'    => $request->email,
-                'nip'      => $request->nipeg,
-                'role'     => $request->hak_akses,
-                'dibuat_oleh'  => Session::get('user')['nama'] ?? 'SYSTEM',
+                'user_id'       => $request->userid,
+                'nama_lengkap'  => $request->name,
+                'email'         => $request->email,
+                'role'          => $request->hak_akses,
+                'dibuat_oleh'   => Session::get('user')['nama'] ?? 'SYSTEM',
             ]
         );
-
+        
         return redirect()->route('users.index')->with('success', 'Role berhasil di-assign.');
         
-        // try {   
-        //     $validated = $request->validate([
-        //         'name' => 'required|string|max:255',
-        //         'email' => 'required|email|unique:users,email',
-        //         'password' => 'required',
-        //         'unit_kd' => 'required|string|max:255',
-        //         'user_id' => 'required|string|unique:users,user_id',
-        //     ]);
-        //      User::create([
-        //         'name' => $validated['name'],
-        //         'email' => $validated['email'],
-        //         'password' => Hash::make($validated['password']),
-        //         'unit_kd' => $validated['unit_kd'],
-        //         'user_id' => $validated['user_id'],
-        //     ]);
-
-        //     return redirect()->back()->with('success', 'Data berhasil ditambahkan.');;
-        // } catch (ValidationException $e) {
-        //     return redirect()->back()->with('success', $e->errors());;
-        // }
+        } catch (ValidationException $e) {
+            return redirect()->back()->with('success', $e->errors());;
+        }
     }
 
     public function updateRolesPermissions(Request $request, User $user)

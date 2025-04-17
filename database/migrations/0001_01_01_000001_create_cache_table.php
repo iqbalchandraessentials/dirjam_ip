@@ -33,3 +33,7 @@ return new class extends Migration
         Schema::dropIfExists('cache_locks');
     }
 };
+
+
+
+database/migrations/0001_01_01_000002_create_jobs_table

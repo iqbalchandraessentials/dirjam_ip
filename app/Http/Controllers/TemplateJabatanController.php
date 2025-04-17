@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\existing\UraianJabatan;
 use App\Models\KemampuandanPengalaman;
-use App\Models\KeterampilanTeknis;
+use App\Models\MappingTeknis;
 use App\Models\M_MAP_PENDIDIKAN;
 use App\Models\MappingNatureOfImpact;
 use App\Models\MasalahKompleksitasKerja;
@@ -14,8 +14,8 @@ use App\Models\ViewUraianJabatan;
 use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class TemplateJabatanController extends Controller
@@ -24,13 +24,16 @@ class TemplateJabatanController extends Controller
     public function index(Request $request)
     {
         $unitOptions = M_UNIT::select(['unit_kd', 'unit_nama'])->where('status', 1)->get();
-        $selectUnit = Auth::user()->unitKerja->unit_nama;
-        return view('pages.template.index', compact('unitOptions', 'selectUnit'));
+        $selectUnit = Session::get('user')['ou'];
+        $unit_kd = M_UNIT::select(['unit_kd', 'unit_nama'])->where('unit_nama', Session::get('user')['ou'])->first()->unit_kd;
+
+        return view('pages.template.index', compact('unitOptions', 'selectUnit', 'unit_kd'));
     }
 
     public function filterData(Request $request)
     {
-        $unit_kd = $request->input('unit', Auth::user()->unit_kd);
+        $unit = M_UNIT::select(['unit_kd', 'unit_nama'])->where('unit_nama', Session::get('user')['ou'])->first()->unit_kd;
+        $unit_kd = $request->input('unit', $unit);
         // $data = ViewUraianJabatan::where('completed', 'Completed')->where('status', 'APPROVE')->where('unit_kd', $unit_kd)->get();
         $data = ViewUraianJabatan::where('completed', 'Completed')->where('status', 'APPROVE')->select('status', 'master_jabatan', 'unit_kd', 'jen')->groupBy('status', 'master_jabatan', 'unit_kd', 'jen')->where('unit_kd', $unit_kd)->get();
         return DataTables::of($data)
@@ -96,7 +99,7 @@ class TemplateJabatanController extends Controller
         $pengambilan_keputusan = isset($data['pengambilan_keputusan'][0]['pengambilan_keputusan']) &&!empty($data['pengambilan_keputusan'][0]['pengambilan_keputusan']) ? $data['pengambilan_keputusan'] : null;
         $data['pengambilan_keputusan'] = $pengambilan_keputusan ?? WewenangJabatan::where('jenis_jabatan', $data['type'])->get();
         $data['kemampuan_dan_pengalaman'] = $data['kemampuanDanPengalaman'] ? $data['kemampuanDanPengalaman'] : KemampuandanPengalaman::where('jenis_jabatan', $data['type'])->get();
-        $data['keterampilan_teknis'] = KeterampilanTeknis::where('master_jabatan', $data['master_jabatan'])->whereIn('kategori', ['CORE', 'ENABLER'])->get();
+        $data['keterampilan_teknis'] = MappingTeknis::where('master_jabatan', $data['master_jabatan'])->whereIn('kategori', ['CORE', 'ENABLER'])->get();
         return $data;
     }
 

@@ -2,59 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\M_PROGRES;
+use App\Models\PersenUrjabPembangkit;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
 
     public function index()
-{
-    $progres = M_PROGRES::orderByDesc('PERSEN')->get();
-    $jp = ["Indonesia Power", "PGU", "POMU", "UPK", "UPDK", "OMU", "KP", "MSU"];
+    {
+        $progres = PersenUrjabPembangkit::get();
     
-    $total_n_all = 0;
-    $total_all = 0;
-    $dataPersen = [];
-
-    foreach ($jp as $j) {
-        $n = 0;
-        $total = 0;
-
-        foreach ($progres as $key) {
-            if ($j === $key->jenis) {
-                $n += $key->n;
-                $total += $key->total;
-            }
-        }
-
-        $persen = ($total > 0) ? round(($n / $total) * 100) : 0;
-        $sisa_persen = 100 - $persen;
-
-        $dataPersen[] = [
-            'jenis' => $j,
-            'persen' => $persen,
-            'sisa_persen' => $sisa_persen
+        // Ambil rata-rata dari kolom 'persen'
+        $rataPersen = $progres->avg(function ($item) {
+            return (float) $item->persen;
+        });
+    
+        // Batasi maksimum ke 100 jika perlu
+        $rataPersen = round(min($rataPersen, 100), 2);
+    
+        $indonesiaPower = (object) [
+            'jenis_pembangkit' => 'IndonesiaPower',
+            'n' => $progres->sum('n'),
+            'total' => $progres->sum('total'),
+            'persen' => $rataPersen,
         ];
-
-        // Mengakumulasi total keseluruhan untuk Indonesia Power
-        $total_n_all += $n;
-        $total_all += $total;
+    
+        $progres->prepend($indonesiaPower);
+    
+        return view('pages.dashboard', compact('progres'));
     }
-
-    $persen_indonesia_power = ($total_all > 0) ? round(($total_n_all / $total_all) * 100) : 0;
-    $sisa_persen_indonesia_power = 100 - $persen_indonesia_power;
-
-    return view('pages.dashboard', compact('dataPersen', 'persen_indonesia_power', 'sisa_persen_indonesia_power'));
-}
-
-    
-    
-
 
     public function getClusterDetail($id)
     {
-        $progres = M_PROGRES::where('jenis', $id)->orderByDesc('PERSEN')->get();
+        $progres = PersenUrjabPembangkit::where('jenis', $id)->orderByDesc('PERSEN')->get();
         $chartData = [];
     
         foreach ($progres as $v) {

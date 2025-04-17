@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Models\existing\UraianJabatan;
 use App\Models\KemampuandanPengalaman;
-use App\Models\KeterampilanTeknis;
+use App\Models\MappingTeknis;
 use App\Models\Aktivitas;
 use App\Models\Komunikasi;
 use App\Models\PengambilanKeputusan;
@@ -299,12 +299,12 @@ class UraianMasterJabatanImport implements ToCollection
                 }
             }
 
-            KeterampilanTeknis::where('master_jabatan', $data['nama'] )->where('kategori', 'CORE')->delete();
+            MappingTeknis::where('master_jabatan', $data['nama'] )->where('kategori', 'CORE')->delete();
 
             foreach ($data['kompetensi_teknis'] as $x) {
                 if (!empty($x['kode_kompetensi']) && !empty($x['level'])) {
                     $master_detail_kompetensi = $x['kode_kompetensi'].'.'.$x['level'];
-                    KeterampilanTeknis::create([
+                    MappingTeknis::create([
                         'master_jabatan' => $data['nama'],
                         'kode' => $x['kode_kompetensi'],
                         'master_detail_kompetensi_id' => $master_detail_kompetensi,

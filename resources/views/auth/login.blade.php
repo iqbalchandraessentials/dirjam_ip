@@ -66,10 +66,7 @@
 
                             <div class="row">
                                 <div class="col-12">
-                                    {{-- <div class="checkbox text-white"> --}}
-                                        {{-- <input type="checkbox" id="remember_me" name="remember" hidden> --}}
                                         <label for="basic_checkbox_1">Login menggunakan username & password korporat</label>
-                                    {{-- </div> --}}
                                 </div>
                                 <div class="col-12 text-center mt-4">
                                     <button type="submit" class="btn btn-info btn-block margin-top-10">

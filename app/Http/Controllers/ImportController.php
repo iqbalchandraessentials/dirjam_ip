@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\KeterampilanNonteknisImport;
-use App\Imports\KeterampilanTeknisImport;
+use App\Imports\MappingNonTeknisImport;
+use App\Imports\MappingTeknisImport;
 use Illuminate\Http\Request;
 use App\Imports\KompetensiTeknisImport;
 use App\Imports\MasterDefaultDataImport;
 use App\Imports\MasterKompetensiNonTeknisImport;
 use App\Imports\UraianMasterJabatanImport;
-use App\Models\KeterampilanNonteknis;
+use App\Models\MappingNonTeknis;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportController extends Controller
@@ -60,8 +60,8 @@ class ImportController extends Controller
             $request->validate([
                 'file' => 'required|mimes:xlsx,xls,csv',
             ]);
-            KeterampilanNonteknis::truncate();
-            Excel::import(new KeterampilanNonteknisImport, $request->file('file'));
+            MappingNonTeknis::truncate();
+            Excel::import(new MappingNonTeknisImport, $request->file('file'));
             session()->flash('success', 'Mapping Keterampilan Non Teknis berhasil diupload, mohon periksa kembali.');
             return redirect()->route('master.mapping-komptensi-non-teknis');
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
@@ -109,7 +109,7 @@ class ImportController extends Controller
         }
     }
 
-    public function mappingKeterampilanTeknis(Request $request)
+    public function mappingMappingTeknis(Request $request)
     {
         try {
             // Validasi file yang diunggah
@@ -118,7 +118,7 @@ class ImportController extends Controller
             ]);
     
             // Proses import data
-            Excel::import(new KeterampilanTeknisImport, $request->file('file'));
+            Excel::import(new MappingTeknisImport, $request->file('file'));
     
             // Jika berhasil
             session()->flash('success', 'Mapping Keterampilan Teknis berhasil diupload, mohon periksa kembali.');

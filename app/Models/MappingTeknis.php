@@ -3,18 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class KeterampilanTeknis extends Model
+class MappingTeknis extends Model
 {
-    // use SoftDeletes;
-    
     protected $fillable = [
         'kode',
         'master_detail_kompetensi_id',
         'level',
         'kategori',
         'master_jabatan',
+        'jenis_pembangkit',
         'created_by'
     ];
     // Pastikan Anda memiliki kolom deleted_at di tabel yang sesuai
@@ -28,9 +26,5 @@ class KeterampilanTeknis extends Model
     public function detailMasterKompetensiTeknis()
     {
         return $this->hasOne(DetailKomptensiTeknis::class, 'kode_master_level', 'master_detail_kompetensi_id');
-    }
-    public function uraianJabatan()
-    {
-        return $this->hasOne(UraianMasterJabatan::class, 'id', 'uraian_jabatan_id');
     }
 }

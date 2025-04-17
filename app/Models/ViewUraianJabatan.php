@@ -25,7 +25,7 @@ class ViewUraianJabatan extends Model
 
     public function tugas_pokok_generik()
     {
-        return $this->hasMany(PokoUtamaGenerik::class, 'jenis_jabatan', 'type');
+        return $this->hasMany(AktivitasGenerik::class, 'jenis_jabatan', 'type');
     }
 
     public function spesifikasi_pendidikan()
@@ -56,6 +56,6 @@ class ViewUraianJabatan extends Model
 
     public function keterampilan_non_teknis()
     {   
-        return $this->hasMany(KeterampilanNonteknis::class, 'master_jabatan', 'master_jabatan');
+        return $this->hasMany(MappingNonTeknis::class, 'master_jabatan', 'master_jabatan');
     }
 }

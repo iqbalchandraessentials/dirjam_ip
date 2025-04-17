@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\BidangStudi;
 use App\Models\DetailKomptensiTeknis;
 use App\Models\KemampuandanPengalaman;
-use App\Models\KeterampilanNonteknis;
-use App\Models\KeterampilanTeknis;
+use App\Models\MappingNonTeknis;
+use App\Models\MappingTeknis;
 use App\Models\Konsentrasi;
 use App\Models\M_PROFESI;
 use App\Models\MappingNatureOfImpact;
@@ -18,11 +18,11 @@ use App\Models\MasterKompetensiNonteknis;
 use App\Models\MasterKompetensiTeknis;
 use App\Models\MasterPendidikan;
 use App\Models\MasterSingkatanJabatan;
-use App\Models\PokoUtamaGenerik;
+use App\Models\AktivitasGenerik;
+use App\Models\MasterDefaultData;
 use App\Models\unit\M_UNIT;
 use App\Models\WewenangJabatan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
@@ -34,7 +34,7 @@ class MasterDataController extends Controller
     {
         $data = BidangStudi::with('konsentrasi')->get();
         return view('pages.masterData.bidangStudi.index', ['data' => $data]);
-    }
+    } 
 
     public function bidangStudiStore(Request $request)
     {
@@ -111,13 +111,6 @@ class MasterDataController extends Controller
             return redirect()->route('master.bidangStudi')->with('error',  'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-
-    // public function natureOfImpact()
-    // {
-    //     $data = MappingNatureOfImpact::with('namaProfesi')->get();
-    //     $option = M_PROFESI::get();
-    //     return view('pages.masterData.dimensiFinansial.index', ['data' => $data, 'option' => $option]);
-    // }
 
     public function natureOfImpact()
     {
@@ -269,7 +262,7 @@ class MasterDataController extends Controller
 
     public function tugasPokokGenerik()
     {
-        $data = PokoUtamaGenerik::get();
+        $data = AktivitasGenerik::get();
         return view('pages.masterData.tugasPokokGenerik.index', ['data' => $data]);
     }
 
@@ -281,7 +274,7 @@ class MasterDataController extends Controller
             'jenis_jabatan' => 'required|string',
         ]);
 
-        PokoUtamaGenerik::create([
+        AktivitasGenerik::create([
             'aktivitas' => $request->aktivitas,
             'output' => $request->output,
             'jenis_jabatan' => $request->jenis_jabatan,
@@ -298,7 +291,7 @@ class MasterDataController extends Controller
             'jenis_jabatan' => 'required|string',
         ]);
 
-        $data = PokoUtamaGenerik::findOrFail($request->id);
+        $data = AktivitasGenerik::findOrFail($request->id);
         $data->update([
             'aktivitas' => $request->aktivitas,
             'output' => $request->output,
@@ -310,16 +303,16 @@ class MasterDataController extends Controller
 
     public function TugasPokokGenerikDestroy(Request $request)
     {
-        $data = PokoUtamaGenerik::findOrFail($request->id);;
+        $data = AktivitasGenerik::findOrFail($request->id);;
         $data->delete();
         return redirect()->route('master.tugas_pokok_generik.index')->with('success', 'Data berhasil dihapus.');
     }
 
     public function defaultMasterData()
     {
-        $masalahKompleksitasKerja = MasalahKompleksitasKerja::whereNotNull('jenis_jabatan')->get();
-        $wewenangJabatan = WewenangJabatan::whereNotNull('jenis_jabatan')->get();
-        $kemampuandanPengalaman = KemampuandanPengalaman::whereNotNull('jenis_jabatan')->get();
+        $masalahKompleksitasKerja = MasterDefaultData::where('kategori', 'T')->get();
+        $wewenangJabatan = MasterDefaultData::where('kategori', 'W')->get();
+        $kemampuandanPengalaman = MasterDefaultData::where('kategori', 'K')->get();
         return view('pages.masterData.defaultMasterData.index', [
             'masalahKompleksitasKerja' => $masalahKompleksitasKerja,
             'wewenangJabatan' => $wewenangJabatan,
@@ -401,7 +394,7 @@ class MasterDataController extends Controller
     public function mappingkomptensiNonTeknis(Request $request)
     {
         if ($request->ajax()) {
-            $data = KeterampilanNonteknis::with('detail')->select('keterampilan_nonteknis.*');
+            $data = MappingNonTeknis::with('detail')->select('keterampilan_nonteknis.*');
             return DataTables::of($data)
                 ->addColumn('nama_kompetensi', function ($row) {
                     return $row->detail->nama ?? '-';
@@ -414,7 +407,7 @@ class MasterDataController extends Controller
     public function mappingkomptensiTeknis(Request $request)
     {
         if ($request->ajax()) {
-            $data = KeterampilanTeknis::with('master')->select('keterampilan_teknis.*');
+            $data = MappingTeknis::with('master')->select('keterampilan_teknis.*');
             return DataTables::of($data)
                 ->addIndexColumn() // Tambahkan ini untuk menambahkan nomor indeks ke data
                 ->editColumn('master_jabatan', function ($row) {
@@ -562,7 +555,6 @@ class MasterDataController extends Controller
                 ->make(true);
         }
         return view('pages.masterData.stoJobcode.index');
-
     }
 
     public function pendidikan()

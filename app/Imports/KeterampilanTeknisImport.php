@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\KeterampilanTeknis;
+use App\Models\MappingTeknis;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -12,21 +12,21 @@ use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class KeterampilanTeknisImport implements ToModel, WithValidation, WithHeadingRow, WithBatchInserts, WithChunkReading
+class MappingTeknisImport implements ToModel, WithValidation, WithHeadingRow, WithBatchInserts, WithChunkReading
 {
     protected $master_jabatan;
     protected $masterKompetensiTeknis;
 
     public function __construct()
     {
-        KeterampilanTeknis::query()->delete();
+        MappingTeknis::query()->delete();
         $this->master_jabatan = DB::table('v_tm_jabatan')->pluck('master_jabatan')->toArray();
         $this->masterKompetensiTeknis = DB::table('master_kompetensi_teknis')->pluck('kode')->toArray();
     }
 
     public function model(array $row)
     {
-        return new KeterampilanTeknis([
+        return new MappingTeknis([
             'master_jabatan' => $row['master_jabatan'],
             'kode' => $row['kode'],
             'level' => $row['level'],

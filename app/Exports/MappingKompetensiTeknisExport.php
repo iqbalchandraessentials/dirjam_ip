@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\KeterampilanTeknis;
+use App\Models\MappingTeknis;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -13,7 +13,7 @@ class MappingKompetensiTeknisExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        return KeterampilanTeknis::whereNotNull('master_jabatan')->get([
+        return MappingTeknis::whereNotNull('master_jabatan')->get([
             'master_jabatan',
             'kode',
             'level',
